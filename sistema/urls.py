@@ -1,11 +1,11 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'sistema.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
+urlpatterns = patterns(
+    '',
     url(r'^admin/', include(admin.site.urls)),
-    (r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 )
+
+admin.site.site_header = _('NeuroMat System')
