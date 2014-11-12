@@ -86,7 +86,6 @@ class Investigator(models.Model):
     # force_password_change to False.
     def password_change_signal(sender, instance, **kwargs):
         try:
-
             if User.objects.all().count() == 0:
                 return
 
