@@ -38,7 +38,7 @@ class PassageAdminForm(forms.ModelForm):
         }
 
     class Media:
-        #js = ('/static/js/pedido.js',)
+        js = ('/static/js/pedido.js',)
         css = {
             'all': ('/static/css/customization.css',)
         }
