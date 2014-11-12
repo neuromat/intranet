@@ -32,7 +32,7 @@ class InvestigatorAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return super(InvestigatorAdmin, self).get_readonly_fields(request, obj)
         else:
-            return ('user', 'force_password_change')
+            return 'user', 'force_password_change'
 
 admin.site.register(Investigator, InvestigatorAdmin)
 
