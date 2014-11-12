@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from validation import CPF
+from django.db.models import signals
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -51,8 +52,10 @@ class Investigator(models.Model):
 
     '__unicode__'		Returns the full name from User class.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    'create_user_profile_signal' and 'password_change_signal' force password change on first login.
     """
     user = models.OneToOneField(User, verbose_name=_('User'))
+    force_password_change = models.BooleanField(_('Force password change'), default=True)
     nickname = models.CharField(_('Nickname'), max_length=20, blank=True, null=True)
     role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
@@ -73,6 +76,34 @@ class Investigator(models.Model):
     # Returns the full name from User class
     def __unicode__(self):
         return u'%s %s' % (self.user.first_name, self.user.last_name)
+
+    # Post_save signal that will create an Investigator every time a User is created.
+    def create_user_profile_signal(sender, instance, created, **kwargs):
+        if created:
+            Investigator.objects.create(user=instance)
+
+    # If user exists and he is not superuser, checks if the password was changed to modify
+    # force_password_change to False.
+    def password_change_signal(sender, instance, **kwargs):
+        try:
+
+            if User.objects.all().count() == 0:
+                return
+
+            user = User.objects.get(username=instance.username)
+
+            if user.is_superuser:
+                return
+
+            if not user.password == instance.password:
+                profile, created = Investigator.objects.get_or_create(user=user)
+                profile.force_password_change = False
+                profile.save()
+        except User.DoesNotExist:
+            pass
+
+    signals.pre_save.connect(password_change_signal, sender=User, dispatch_uid='accounts.models')
+    signals.post_save.connect(create_user_profile_signal, sender=User, dispatch_uid='accounts.models')
 
     # Description of the model / Sort by name
     class Meta:

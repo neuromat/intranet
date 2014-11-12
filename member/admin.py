@@ -10,7 +10,7 @@ class InvestigatorAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('user', 'nickname', 'role', 'institution',)
+            'fields': ('force_password_change', 'user', 'nickname', 'role', 'institution',)
         }),
         (_('Personal Info'), {
             'fields': ('rg', 'cpf', 'passport')
@@ -27,12 +27,12 @@ class InvestigatorAdmin(admin.ModelAdmin):
             return Investigator.objects.all()
         return Investigator.objects.filter(user=request.user)
 
-    # If not superuser, do not show the user combobox
+    # If not superuser, do not show the user combobox and force_password_change
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
             return super(InvestigatorAdmin, self).get_readonly_fields(request, obj)
         else:
-            return 'user'
+            return ('user', 'force_password_change')
 
 admin.site.register(Investigator, InvestigatorAdmin)
 
