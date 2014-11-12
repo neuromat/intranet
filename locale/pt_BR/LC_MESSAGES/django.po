@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-10 16:41-0200\n"
+"POT-Creation-Date: 2014-11-12 14:22-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr "Seminário"
 msgid "Seminars"
 msgstr "Seminários"
 
-#: activity/models.py:50 member/models.py:79 member/models.py:86
+#: activity/models.py:50 member/models.py:110 member/models.py:117
 #: order/models.py:27
 msgid "Investigator"
 msgstr "Pesquisador"
@@ -99,105 +99,109 @@ msgstr "Informações de Contato"
 msgid "Account"
 msgstr "Dados do usuário"
 
-#: member/models.py:17
+#: member/models.py:18
 #, python-format
 msgid "%s is not a valid CPF"
 msgstr "%s não é um CPF válido"
 
-#: member/models.py:21 member/models.py:34 member/models.py:85
+#: member/models.py:22 member/models.py:35 member/models.py:116
 #: order/models.py:9 research/models.py:31 research/models.py:72
 msgid "Name"
 msgstr "Nome"
 
-#: member/models.py:28 member/models.py:57
+#: member/models.py:29 member/models.py:60
 msgid "Role"
 msgstr "Papel"
 
-#: member/models.py:29
+#: member/models.py:30
 msgid "Roles"
 msgstr "Papéis"
 
-#: member/models.py:35
+#: member/models.py:36
 msgid "Acronym"
 msgstr "Sigla"
 
-#: member/models.py:42 member/models.py:58
+#: member/models.py:43 member/models.py:61
 msgid "Institution"
 msgstr "Instituição"
 
-#: member/models.py:43
+#: member/models.py:44
 msgid "Institutions"
 msgstr "Instituições"
 
-#: member/models.py:55
+#: member/models.py:57
 msgid "User"
 msgstr "Usuário"
 
-#: member/models.py:56
+#: member/models.py:58
+msgid "Force password change"
+msgstr "Forçar mudança de senha"
+
+#: member/models.py:59
 msgid "Nickname"
 msgstr "Apelido"
 
-#: member/models.py:59
+#: member/models.py:62
 msgid "RG"
 msgstr "RG"
 
-#: member/models.py:60
+#: member/models.py:63
 msgid "CPF"
 msgstr "CPF"
 
-#: member/models.py:61
+#: member/models.py:64
 msgid "Passport"
 msgstr "Passaporte"
 
-#: member/models.py:62
+#: member/models.py:65
 msgid "Phone"
 msgstr "Telefone"
 
-#: member/models.py:63
+#: member/models.py:66
 msgid "Cell Phone"
 msgstr "Celular"
 
-#: member/models.py:64
+#: member/models.py:67
 msgid "Zip Code"
 msgstr "CEP"
 
-#: member/models.py:65
+#: member/models.py:68
 msgid "Address"
 msgstr "Endereço"
 
-#: member/models.py:66
+#: member/models.py:69
 msgid "Complement"
 msgstr "Complemento"
 
-#: member/models.py:67
+#: member/models.py:70
 msgid "Number"
 msgstr "Número"
 
-#: member/models.py:68
+#: member/models.py:71
 msgid "District"
 msgstr "Bairro"
 
-#: member/models.py:69
+#: member/models.py:72
 msgid "City"
 msgstr "Cidade"
 
-#: member/models.py:70
+#: member/models.py:73
 msgid "State"
 msgstr "Estado"
 
-#: member/models.py:71
+#: member/models.py:74
 msgid "Country"
 msgstr "País"
 
-#: member/models.py:80
+#: member/models.py:111
 msgid "Investigators"
 msgstr "Pesquisadores"
 
-#: member/models.py:93
+#: member/models.py:124
 msgid "Name in citation"
 msgstr "Nome em citações"
 
-#: member/models.py:94
+#: member/models.py:125
 msgid "Name in citations"
 msgstr "Nome em citações"
 
@@ -507,3 +511,7 @@ msgstr "Trabalho em andamento"
 #: research/models.py:124
 msgid "Works in Progress"
 msgstr "Trabalhos em andamento"
+
+#: sistema/urls.py:11
+msgid "NeuroMat System"
+msgstr ""
