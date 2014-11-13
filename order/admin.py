@@ -5,7 +5,11 @@ from django.utils.translation import ugettext_lazy as _
 
 # Register your models here.
 
-admin.site.register(OrderStatus)
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'date_modified', 'order_date', 'status', 'type_of_order', 'requester')
+
+admin.site.register(Order, OrderAdmin)
 
 
 class CongressAdmin(admin.ModelAdmin):

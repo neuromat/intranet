@@ -4,18 +4,29 @@ from member.models import Investigator
 
 # Create your models here.
 
+# Defining types of order
+CONGRESS = 'c'
+HARDWARE_SOFTWARE = 'h'
+SERVICE = 's'
+PASSAGE = 'p'
+DAILY_STIPEND = 'd'
+REIMBURSEMENT = 'r'
+ORDER_TYPE = (
+    (CONGRESS, _('Congress')),
+    (HARDWARE_SOFTWARE, _('Hardware and software')),
+    (SERVICE, _('Service')),
+    (PASSAGE, _('Passage')),
+    (DAILY_STIPEND, _('Daily stipend')),
+    (REIMBURSEMENT, _('Reimbursement')),
+)
 
-class OrderStatus(models.Model):
-    name = models.CharField(_('Name'), max_length=50)
-
-    # Returns the name
-    def __unicode__(self):
-        return u'%s' % self.name
-
-    class Meta:
-        verbose_name = _('Order status')
-        verbose_name_plural = _('Orders status')
-        ordering = ('name', )
+# Defining status of order
+OPEN = 'o'
+CLOSED = 'c'
+ORDER_STATUS = (
+    (OPEN, _('Open')),
+    (CLOSED, _('Closed')),
+)
 
 
 class Order(models.Model):
@@ -26,9 +37,10 @@ class Order(models.Model):
     """
     requester = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
     justification = models.TextField(_('Justification'), max_length=500)
-    status = models.ForeignKey(OrderStatus, default=1, verbose_name=_('Status'), blank=True, null=True)
     order_date = models.DateTimeField(_('Order date'), auto_now_add=True, blank=True)
     date_modified = models.DateTimeField(_('Modified'), auto_now=True, blank=True)
+    type_of_order = models.CharField(max_length=1, choices=ORDER_TYPE, blank=True)
+    status = models.CharField(max_length=1, default=OPEN, choices=ORDER_STATUS, blank=True)
 
     def __unicode__(self):
         return u'%s' % self.requester
@@ -54,6 +66,11 @@ class Congress(Order):
         verbose_name = _('Congress')
         verbose_name_plural = _('Congress')
 
+    # Sets the type of order
+    def save(self, *args, **kwargs):
+        self.type_of_order = CONGRESS
+        super(Congress, self).save(*args, **kwargs)
+
 
 class HardwareSoftware(Order):
     """
@@ -67,6 +84,11 @@ class HardwareSoftware(Order):
         verbose_name = _('Hardware and Software')
         verbose_name_plural = _('Hardwares and Softwares')
 
+    # Sets the type of order
+    def save(self, *args, **kwargs):
+        self.type_of_order = HARDWARE_SOFTWARE
+        super(HardwareSoftware, self).save(*args, **kwargs)
+
 
 class Service(Order):
     """
@@ -78,6 +100,11 @@ class Service(Order):
     class Meta:
         verbose_name = _('Service')
         verbose_name_plural = _('Services')
+
+    # Sets the type of order
+    def save(self, *args, **kwargs):
+        self.type_of_order = SERVICE
+        super(Service, self).save(*args, **kwargs)
 
 
 class Passage(Order):
@@ -99,6 +126,11 @@ class Passage(Order):
         verbose_name = _('Passage')
         verbose_name_plural = _('Passages')
 
+    # Sets the type of order
+    def save(self, *args, **kwargs):
+        self.type_of_order = PASSAGE
+        super(Passage, self).save(*args, **kwargs)
+
 
 class DailyStipend(Order):
     """
@@ -114,6 +146,11 @@ class DailyStipend(Order):
         verbose_name = _('Daily stipend')
         verbose_name_plural = _('Daily stipends')
 
+    # Sets the type of order
+    def save(self, *args, **kwargs):
+        self.type_of_order = DAILY_STIPEND
+        super(DailyStipend, self).save(*args, **kwargs)
+
 
 class Reimbursement(Order):
     """
@@ -125,3 +162,8 @@ class Reimbursement(Order):
     class Meta:
         verbose_name = _('Reimbursement')
         verbose_name_plural = _('Reimbursements')
+
+    # Sets the type of order
+    def save(self, *args, **kwargs):
+        self.type_of_order = REIMBURSEMENT
+        super(Reimbursement, self).save(*args, **kwargs)
