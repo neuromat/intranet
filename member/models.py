@@ -91,9 +91,6 @@ class Investigator(models.Model):
 
             user = User.objects.get(username=instance.username)
 
-            if user.is_superuser:
-                return
-
             if not user.password == instance.password:
                 profile, created = Investigator.objects.get_or_create(user=user)
                 profile.force_password_change = False
