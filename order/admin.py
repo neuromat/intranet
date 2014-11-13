@@ -111,7 +111,7 @@ class HardwareSoftwareAdmin(admin.ModelAdmin):
     # If not superuser, do not show the status field
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
-            return super(ReimbursementAdmin, self).get_readonly_fields(request, obj)
+            return super(HardwareSoftwareAdmin, self).get_readonly_fields(request, obj)
         else:
             return 'status'
 
