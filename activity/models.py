@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from member.models import Investigator
+from member.models import Investigator, Institution
 
 
 class TrainingProgram(models.Model):
@@ -59,3 +59,45 @@ class ScientificMission(models.Model):
         verbose_name = _('Scientific mission')
         verbose_name_plural = _('Scientific missions')
         ordering = ('investigator', )
+
+
+class Meeting(models.Model):
+    """
+    An instance of this class is a meeting.
+
+    """
+    institution = models.ManyToManyField(Institution, verbose_name=_('Institution'))
+    title = models.CharField(_('Title'), max_length=200)
+    start_date = models.DateField(_('Start date'))
+    end_date = models.DateField(_('End date'))
+    description = models.TextField(_('Description'), max_length=500)
+    url = models.URLField(_('URL'), blank=True, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.title
+
+    class Meta:
+        verbose_name = _('Meeting')
+        verbose_name_plural = _('Meetings')
+        ordering = ('start_date', )
+
+
+class GeneralEvent(models.Model):
+    """
+    An instance of this class is a general event.
+
+    """
+    speaker = models.ManyToManyField(Investigator, verbose_name=_('Speaker'))
+    title = models.CharField(_('Title'), max_length=200)
+    start_date = models.DateField(_('Start date'))
+    end_date = models.DateField(_('End date'), blank=True, null=True)
+    description = models.TextField(_('Description'), max_length=500)
+    url = models.URLField(_('URL'), blank=True, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.investigator
+
+    class Meta:
+        verbose_name = _('General event')
+        verbose_name_plural = _('General events')
+        ordering = ('start_date', )
