@@ -131,7 +131,7 @@ class Passage(Order):
     destination = models.CharField(_('Destination'), max_length=200)
     outbound_date = models.DateField(_('Outbound Date'))
     outbound_date_preference = models.CharField(_('Outbound Preferred time'), max_length=10, blank=True, null=True)
-    inbound_date = models.DateField(_('Inbound Date'))
+    inbound_date = models.DateField(_('Inbound Date'), blank=True, null=True)
     inbound_date_preference = models.CharField(_('Inbound Preferred time'), max_length=10, blank=True, null=True)
     type = models.NullBooleanField(_('Type of Trip'))
     type_transportation = models.NullBooleanField(_('Type of transportation'))
