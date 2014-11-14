@@ -38,7 +38,7 @@ class SuperOrder(admin.ModelAdmin):
                 obj.status = 'o'
         obj.save()
 
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(SuperOrder):
     list_display = ('id_order', 'date_modified', 'order_date', 'status', 'type_of_order', 'requester')
     list_per_page = 15
     list_filter = ('requester', 'status', 'type_of_order',)

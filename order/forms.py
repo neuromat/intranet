@@ -5,13 +5,13 @@ from django.utils.translation import ugettext_lazy as _
 
 
 TRIP_ANSWER = (
-    ('0', _('Round Trip')),
-    ('1', _('One Way')),
+    ('False', _('Round Trip')),
+    ('True', _('One Way')),
 )
 
 TRANSPORTATION = (
-    ('0', _('Aerial ')),
-    ('1', _('Terrestrial')),
+    ('False', _('Aerial ')),
+    ('True', _('Terrestrial')),
 )
 
 TIME = (
