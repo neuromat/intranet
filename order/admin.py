@@ -2,21 +2,53 @@ from django.contrib import admin
 from order.models import *
 from forms import *
 from django.utils.translation import ugettext_lazy as _
+import copy
 
 # Register your models here.
 
 
+class SuperOrder(admin.ModelAdmin):
+    # Shows the requests according to the user permission
+    def get_queryset(self, request):
+        qs = super(SuperOrder, self).get_queryset(request)
+        # If super-user, show all
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(requester=request.user)
+
+    # If not superuser, do not show the status field
+    def get_readonly_fields(self, request, obj=None):
+        ro_fields = super(SuperOrder, self).get_readonly_fields(request, obj)
+        if not request.user.is_superuser:
+            ro_fields = list(ro_fields) + ['status']
+        return ro_fields
+
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
+        if request.user.is_superuser:
+            fieldsets[0][1]['fields'].append('requester')
+        return fieldsets
+
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            if not change:
+                obj.requester = Investigator.objects.get(user=request.user)
+                obj.status = 'o'
+        obj.save()
+
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date_modified', 'order_date', 'status', 'type_of_order', 'requester')
+    list_display = ('id_order', 'date_modified', 'order_date', 'status', 'type_of_order', 'requester')
+    list_per_page = 15
+    list_filter = ('requester', 'status', 'type_of_order',)
 
 admin.site.register(Order, OrderAdmin)
 
 
-class CongressAdmin(admin.ModelAdmin):
+class CongressAdmin(SuperOrder):
 
     fieldsets = (
         (None, {
-            'fields': ('status', 'requester',)
+            'fields': ['status']
         }),
         (_('Congress Info'), {
             'fields': ('name', 'url', 'value', 'start_date', 'end_date', 'invitation')
@@ -30,48 +62,14 @@ class CongressAdmin(admin.ModelAdmin):
 
     list_display_links = ('order_number', 'status', 'name', 'order_date')
 
-    # Getting the ID and showing as order number
-    def order_number(self, obj):
-        return obj.congress.id
-    order_number.short_description = _('Order number')
-    order_number.admin_order_field = '-id'
-
-    # Shows the requests according to the user permission
-    def get_queryset(self, request):
-        qs = super(CongressAdmin, self).get_queryset(request)
-        # If super-user, show all
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(requester=request.user)
-
-    # Auto select current user
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(CongressAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['requester'].initial = request.user
-        return form
-
-    # If not superuser, do not allow user switching
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'requester':
-            if not request.user.is_superuser:
-                kwargs["queryset"] = Investigator.objects.filter(user=request.user)
-        return super(CongressAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    # If not superuser, do not show the status field
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return super(CongressAdmin, self).get_readonly_fields(request, obj)
-        else:
-            return 'status'
-
 admin.site.register(Congress, CongressAdmin)
 
 
-class HardwareSoftwareAdmin(admin.ModelAdmin):
+class HardwareSoftwareAdmin(SuperOrder):
 
     fieldsets = (
         (None, {
-            'fields': ('status', 'requester',)
+            'fields': ['status']
         }),
         (_('Hardware or Software Info'), {
             'fields': ('type', 'amount')
@@ -85,48 +83,14 @@ class HardwareSoftwareAdmin(admin.ModelAdmin):
 
     list_display_links = ('order_number', 'status', 'type', 'order_date')
 
-    # Getting the ID and showing as order number
-    def order_number(self, obj):
-        return obj.hardwaresoftware.id
-    order_number.short_description = _('Order number')
-    order_number.admin_order_field = '-id'
-
-    # Shows the requests according to the user permission
-    def get_queryset(self, request):
-        qs = super(HardwareSoftwareAdmin, self).get_queryset(request)
-        # If super-user, show all
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(requester=request.user)
-
-    # Auto select current user
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(HardwareSoftwareAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['requester'].initial = request.user
-        return form
-
-    # If not superuser, do not allow user switching
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'requester':
-            if not request.user.is_superuser:
-                kwargs["queryset"] = Investigator.objects.filter(user=request.user)
-        return super(HardwareSoftwareAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    # If not superuser, do not show the status field
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return super(HardwareSoftwareAdmin, self).get_readonly_fields(request, obj)
-        else:
-            return 'status'
-
 admin.site.register(HardwareSoftware, HardwareSoftwareAdmin)
 
 
-class ServiceAdmin(admin.ModelAdmin):
+class ServiceAdmin(SuperOrder):
 
     fieldsets = (
         (None, {
-            'fields': ('status', 'requester',)
+            'fields': ['status']
         }),
         (_('Service Info'), {
             'fields': ('type',)
@@ -140,48 +104,14 @@ class ServiceAdmin(admin.ModelAdmin):
 
     list_display_links = ('order_number', 'status', 'type', 'order_date')
 
-    # Getting the ID and showing as order number
-    def order_number(self, obj):
-        return obj.service.id
-    order_number.short_description = _('Order number')
-    order_number.admin_order_field = '-id'
-
-    # Shows the requests according to the user permission
-    def get_queryset(self, request):
-        qs = super(ServiceAdmin, self).get_queryset(request)
-        # If super-user, show all
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(requester=request.user)
-
-    # Auto select current user
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(ServiceAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['requester'].initial = request.user
-        return form
-
-    # If not superuser, do not allow user switching
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'requester':
-            if not request.user.is_superuser:
-                kwargs["queryset"] = Investigator.objects.filter(user=request.user)
-        return super(ServiceAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    # If not superuser, do not show the status field
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return super(ServiceAdmin, self).get_readonly_fields(request, obj)
-        else:
-            return 'status'
-
 admin.site.register(Service, ServiceAdmin)
 
 
-class PassageAdmin(admin.ModelAdmin):
+class PassageAdmin(SuperOrder):
 
     fieldsets = (
         (None, {
-            'fields': ('status', 'requester',)
+            'fields': ['status']
         }),
         (_('Passage Info'), {
             'fields': ('type_transportation', 'type', 'origin', 'destination', 'outbound_date',
@@ -200,48 +130,14 @@ class PassageAdmin(admin.ModelAdmin):
 
     form = PassageAdminForm
 
-    # Getting the ID and showing as order number
-    def order_number(self, obj):
-        return obj.passage.id
-    order_number.short_description = _('Order number')
-    order_number.admin_order_field = '-id'
-
-    # Shows the requests according to the user permission
-    def get_queryset(self, request):
-        qs = super(PassageAdmin, self).get_queryset(request)
-        # If super-user, show all
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(requester=request.user)
-
-    # Auto select current user
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(PassageAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['requester'].initial = request.user
-        return form
-
-    # If not superuser, do not allow user switching
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'requester':
-            if not request.user.is_superuser:
-                kwargs["queryset"] = Investigator.objects.filter(user=request.user)
-        return super(PassageAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    # If not superuser, do not show the status field
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return super(PassageAdmin, self).get_readonly_fields(request, obj)
-        else:
-            return 'status'
-
 admin.site.register(Passage, PassageAdmin)
 
 
-class DailyStipendAdmin(admin.ModelAdmin):
+class DailyStipendAdmin(SuperOrder):
 
     fieldsets = (
         (None, {
-            'fields': ('status', 'requester',)
+            'fields': ['status']
         }),
         (_('Daily stipend Info'), {
             'fields': ('origin', 'destination', 'departure', 'arrival')
@@ -255,48 +151,14 @@ class DailyStipendAdmin(admin.ModelAdmin):
 
     list_display_links = ('order_number', 'status', 'origin', 'destination', 'order_date')
 
-    # Getting the ID and showing as order number
-    def order_number(self, obj):
-        return obj.dailystipend.id
-    order_number.short_description = _('Order number')
-    order_number.admin_order_field = '-id'
-
-    # Shows the requests according to the user permission
-    def get_queryset(self, request):
-        qs = super(DailyStipendAdmin, self).get_queryset(request)
-        # If super-user, show all
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(requester=request.user)
-
-    # Auto select current user
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(DailyStipendAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['requester'].initial = request.user
-        return form
-
-    # If not superuser, do not allow user switching
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'requester':
-            if not request.user.is_superuser:
-                kwargs["queryset"] = Investigator.objects.filter(user=request.user)
-        return super(DailyStipendAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    # If not superuser, do not show the status field
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return super(DailyStipendAdmin, self).get_readonly_fields(request, obj)
-        else:
-            return 'status'
-
 admin.site.register(DailyStipend, DailyStipendAdmin)
 
 
-class ReimbursementAdmin(admin.ModelAdmin):
+class ReimbursementAdmin(SuperOrder):
 
     fieldsets = (
         (None, {
-            'fields': ('status', 'requester',)
+            'fields': ['status']
         }),
         (_('Reimbursement Info'), {
             'fields': ('why',)
@@ -309,39 +171,5 @@ class ReimbursementAdmin(admin.ModelAdmin):
     list_display = ('order_number', 'status', 'requester', 'why', 'order_date')
 
     list_display_links = ('order_number', 'status', 'why', 'order_date')
-
-    # Getting the ID and showing as order number
-    def order_number(self, obj):
-        return obj.reimbursement.id
-    order_number.short_description = _('Order number')
-    order_number.admin_order_field = '-id'
-
-    # Shows the requests according to the user permission
-    def get_queryset(self, request):
-        qs = super(ReimbursementAdmin, self).get_queryset(request)
-        # If super-user, show all
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(requester=request.user)
-
-    # Auto select current user
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(ReimbursementAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['requester'].initial = request.user
-        return form
-
-    # If not superuser, do not allow user switching
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'requester':
-            if not request.user.is_superuser:
-                kwargs['queryset'] = Investigator.objects.filter(user=request.user)
-        return super(ReimbursementAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    # If not superuser, do not show the status field
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return super(ReimbursementAdmin, self).get_readonly_fields(request, obj)
-        else:
-            return 'status'
 
 admin.site.register(Reimbursement, ReimbursementAdmin)

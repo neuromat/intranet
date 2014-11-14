@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from member.models import Investigator
+from django.core.urlresolvers import reverse
+from model_utils.managers import InheritanceManager
 
 # Create your models here.
 
@@ -41,13 +43,26 @@ class Order(models.Model):
     date_modified = models.DateTimeField(_('Modified'), auto_now=True, blank=True)
     type_of_order = models.CharField(max_length=1, choices=ORDER_TYPE, blank=True)
     status = models.CharField(max_length=1, default=OPEN, choices=ORDER_STATUS, blank=True)
+    objects = InheritanceManager()
 
     def __unicode__(self):
         return u'%s' % self.requester
 
     # Description of the model / Sort by title
     class Meta:
-        ordering = ('requester', )
+        ordering = ('-date_modified', )
+
+    def id_order(self):
+        orders = Order.objects.filter(id=self.id).select_subclasses()
+        order = orders[0]
+        return '<a href="%s">%s</a>' % (reverse('admin:%s_%s_change' % (order._meta.app_label, order._meta.module_name), args=(order.id,)), order.id)
+    id_order.allow_tags = True
+
+    # Getting the ID and showing as order number
+    def order_number(self):
+        return self.id
+    order_number.short_description = _('Order number')
+    order_number.admin_order_field = '-id'
 
 
 class Congress(Order):
