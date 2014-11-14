@@ -23,12 +23,14 @@ class SuperOrder(admin.ModelAdmin):
             ro_fields = list(ro_fields) + ['status']
         return ro_fields
 
+    # If not superuser, do not show the requester field
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
         if request.user.is_superuser:
             fieldsets[0][1]['fields'].append('requester')
         return fieldsets
 
+    # If not superuser, set the requester as the current user and status as Open
     def save_model(self, request, obj, form, change):
         if not request.user.is_superuser:
             if not change:
