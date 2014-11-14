@@ -7,4 +7,8 @@ $(document).ready(function () {
         $("#id_inbound_date").parents('.row').show();
         $("#id_inbound_date_preference").parents('.row').show();
     });
+    if (id_type_1.checked){
+        $("#id_inbound_date").parents('.row').hide();
+        $("#id_inbound_date_preference").parents('.row').hide();
+    }
 });
