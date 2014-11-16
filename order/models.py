@@ -47,7 +47,7 @@ class Order(models.Model):
     justification = models.TextField(_('Justification'), max_length=500)
     order_date = models.DateTimeField(_('Order date'), auto_now_add=True, blank=True)
     date_modified = models.DateTimeField(_('Modified'), auto_now=True, blank=True)
-    type_of_order = models.CharField(max_length=1, choices=ORDER_TYPE, blank=True)
+    type_of_order = models.CharField(_('Type of order'), max_length=1, choices=ORDER_TYPE, blank=True)
     status = models.CharField(max_length=1, default=OPEN, choices=ORDER_STATUS, blank=True)
     objects = InheritanceManager()
 
