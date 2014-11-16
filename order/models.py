@@ -56,6 +56,8 @@ class Order(models.Model):
 
     # Description of the model / Sort by title
     class Meta:
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
         ordering = ('-date_modified', )
 
     def id_order(self):
