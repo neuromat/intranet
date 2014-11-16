@@ -41,7 +41,7 @@ class SuperOrder(admin.ModelAdmin):
 class OrderAdmin(SuperOrder):
     list_display = ('id_order', 'date_modified', 'order_date', 'status', 'type_of_order', 'requester')
     list_per_page = 15
-    list_filter = ('requester', 'status', 'type_of_order',)
+    list_filter = ('status', 'type_of_order', 'requester',)
 
 admin.site.register(Order, OrderAdmin)
 
