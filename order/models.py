@@ -64,6 +64,8 @@ class Order(models.Model):
         return '<a href="%s">%s</a>' % (reverse('admin:%s_%s_change' % (order._meta.app_label, order._meta.module_name),
                                                 args=(order.id,)), order.id)
     id_order.allow_tags = True
+    id_order.short_description = _('Order number')
+    id_order.admin_order_field = '-id'
 
     # Getting the ID and showing as order number
     def order_number(self):
