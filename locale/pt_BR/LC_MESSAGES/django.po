@@ -357,7 +357,7 @@ msgstr "Data/hora do pedido"
 
 #: order/models.py:49
 msgid "Modified"
-msgstr "Alterado"
+msgstr "Alterado em"
 
 #: order/models.py:50
 msgid "Type of order"
@@ -369,7 +369,7 @@ msgstr "Pedidos"
 
 #: order/models.py:69 order/models.py:75
 msgid "Order number"
-msgstr "Número do pedido"
+msgstr "Nr do pedido"
 
 #: order/models.py:84
 msgid "Congress name"
