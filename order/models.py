@@ -24,10 +24,16 @@ ORDER_TYPE = (
 
 # Defining status of order
 OPEN = 'o'
-CLOSED = 'c'
+PENDING = 'p'
+CANCELED = 'c'
+APPROVED = 'a'
+DENIED = 'd'
 ORDER_STATUS = (
     (OPEN, _('Open')),
-    (CLOSED, _('Closed')),
+    (PENDING, _('Pending')),
+    (CANCELED, _('Canceled')),
+    (APPROVED, _('Approved')),
+    (DENIED, _('Denied'))
 )
 
 
@@ -35,7 +41,7 @@ class Order(models.Model):
     """
 
     '__unicode__'		Returns the requester.
-    'class Meta'		Ordering of data by requester.
+    'class Meta'		Ordering of data by date modification.
     """
     requester = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
     justification = models.TextField(_('Justification'), max_length=500)
@@ -55,7 +61,8 @@ class Order(models.Model):
     def id_order(self):
         orders = Order.objects.filter(id=self.id).select_subclasses()
         order = orders[0]
-        return '<a href="%s">%s</a>' % (reverse('admin:%s_%s_change' % (order._meta.app_label, order._meta.module_name), args=(order.id,)), order.id)
+        return '<a href="%s">%s</a>' % (reverse('admin:%s_%s_change' % (order._meta.app_label, order._meta.module_name),
+                                                args=(order.id,)), order.id)
     id_order.allow_tags = True
 
     # Getting the ID and showing as order number
