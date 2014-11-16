@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-12 14:22-0200\n"
+"POT-Creation-Date: 2014-11-16 17:02-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,16 +21,18 @@ msgstr ""
 msgid "Activity"
 msgstr "Atividade"
 
-#: activity/models.py:11 activity/models.py:31
+#: activity/models.py:11 activity/models.py:31 activity/models.py:90
 msgid "Speaker"
 msgstr "Palestrante"
 
-#: activity/models.py:12 activity/models.py:32 research/models.py:16
+#: activity/models.py:12 activity/models.py:32 activity/models.py:70
+#: activity/models.py:91 research/models.py:16
 msgid "Title"
 msgstr "Título"
 
-#: activity/models.py:13 order/models.py:63 order/models.py:76
-#: order/models.py:123 research/models.py:114
+#: activity/models.py:13 activity/models.py:73 activity/models.py:94
+#: order/models.py:106 order/models.py:124 order/models.py:186
+#: research/models.py:114
 msgid "Description"
 msgstr "Descrição"
 
@@ -62,8 +64,8 @@ msgstr "Seminário"
 msgid "Seminars"
 msgstr "Seminários"
 
-#: activity/models.py:50 member/models.py:110 member/models.py:117
-#: order/models.py:27
+#: activity/models.py:50 member/models.py:109 member/models.py:116
+#: order/models.py:46
 msgid "Investigator"
 msgstr "Pesquisador"
 
@@ -71,11 +73,13 @@ msgstr "Pesquisador"
 msgid "Mission"
 msgstr "Missão"
 
-#: activity/models.py:52 order/models.py:49
+#: activity/models.py:52 activity/models.py:71 activity/models.py:92
+#: order/models.py:87
 msgid "Start date"
 msgstr "Início"
 
-#: activity/models.py:53 order/models.py:50
+#: activity/models.py:53 activity/models.py:72 activity/models.py:93
+#: order/models.py:88
 msgid "End date"
 msgstr "Término"
 
@@ -86,6 +90,31 @@ msgstr "Missão científica"
 #: activity/models.py:60
 msgid "Scientific missions"
 msgstr "Missões científicas"
+
+#: activity/models.py:69 member/models.py:43 member/models.py:61
+msgid "Institution"
+msgstr "Instituição"
+
+#: activity/models.py:74 activity/models.py:95 order/models.py:85
+#: research/models.py:58
+msgid "URL"
+msgstr ""
+
+#: activity/models.py:80
+msgid "Meeting"
+msgstr "Reunião"
+
+#: activity/models.py:81
+msgid "Meetings"
+msgstr "Reuniões"
+
+#: activity/models.py:101
+msgid "General event"
+msgstr "Evento"
+
+#: activity/models.py:102
+msgid "General events"
+msgstr "Eventos"
 
 #: member/admin.py:15
 msgid "Personal Info"
@@ -104,8 +133,8 @@ msgstr "Dados do usuário"
 msgid "%s is not a valid CPF"
 msgstr "%s não é um CPF válido"
 
-#: member/models.py:22 member/models.py:35 member/models.py:116
-#: order/models.py:9 research/models.py:31 research/models.py:72
+#: member/models.py:22 member/models.py:35 member/models.py:115
+#: research/models.py:31 research/models.py:72
 msgid "Name"
 msgstr "Nome"
 
@@ -120,10 +149,6 @@ msgstr "Papéis"
 #: member/models.py:36
 msgid "Acronym"
 msgstr "Sigla"
-
-#: member/models.py:43 member/models.py:61
-msgid "Institution"
-msgstr "Instituição"
 
 #: member/models.py:44
 msgid "Institutions"
@@ -193,57 +218,52 @@ msgstr "Estado"
 msgid "Country"
 msgstr "País"
 
-#: member/models.py:111
+#: member/models.py:110
 msgid "Investigators"
 msgstr "Pesquisadores"
 
-#: member/models.py:124
+#: member/models.py:123
 msgid "Name in citation"
 msgstr "Nome em citações"
 
-#: member/models.py:125
+#: member/models.py:124
 msgid "Name in citations"
 msgstr "Nome em citações"
 
-#: order/admin.py:17
+#: order/admin.py:55
 msgid "Congress Info"
 msgstr "Informações do Congresso"
 
-#: order/admin.py:20 order/admin.py:75 order/admin.py:130 order/admin.py:245
-#: order/admin.py:300
+#: order/admin.py:58 order/admin.py:79 order/admin.py:100 order/admin.py:147
+#: order/admin.py:168
 msgid "Purpose"
 msgstr "Finalidade"
 
-#: order/admin.py:32 order/admin.py:87 order/admin.py:142 order/admin.py:202
-#: order/admin.py:257 order/admin.py:312
-msgid "Order number"
-msgstr "Número do pedido"
-
-#: order/admin.py:72
+#: order/admin.py:76
 msgid "Hardware or Software Info"
 msgstr "Informações sobre o Hardware ou Software"
 
-#: order/admin.py:127
+#: order/admin.py:97
 msgid "Service Info"
 msgstr "Informações sobre o serviço "
 
-#: order/admin.py:182
+#: order/admin.py:118
 msgid "Passage Info"
 msgstr "Informações sobre a passagem"
 
-#: order/admin.py:186
+#: order/admin.py:122
 msgid "Purpose of the trip"
 msgstr "Finalidade da viagem"
 
-#: order/admin.py:242
+#: order/admin.py:144
 msgid "Daily stipend Info"
 msgstr "Informações sobre a Diária"
 
-#: order/admin.py:297
+#: order/admin.py:165
 msgid "Reimbursement Info"
 msgstr "Informações sobre o reembolso"
 
-#: order/apps.py:9
+#: order/apps.py:9 order/models.py:59
 msgid "Order"
 msgstr "Pedido"
 
@@ -283,136 +303,151 @@ msgstr "Noite (18:00 - 00:00)"
 msgid "Night (12am - 6am)"
 msgstr "Madrugada (00:00 - 06:00)"
 
-#: order/models.py:16
-msgid "Order status"
-msgstr "Status do pedido"
-
-#: order/models.py:17
-msgid "Orders status"
-msgstr "Status dos pedidos"
-
-#: order/models.py:28
-msgid "Justification"
-msgstr "Justificativa"
-
-#: order/models.py:29 research/models.py:49 research/models.py:94
-#: research/models.py:115
-msgid "Status"
-msgstr "Status"
-
-#: order/models.py:30
-msgid "Order date"
-msgstr "Data/hora do pedido"
-
-#: order/models.py:31
-msgid "Modified"
-msgstr "Alterado"
-
-#: order/models.py:46
-msgid "Congress name"
-msgstr "Nome do congresso"
-
-#: order/models.py:47 research/models.py:58
-msgid "URL"
-msgstr ""
-
-#: order/models.py:48
-msgid "Value"
-msgstr "Valor"
-
-#: order/models.py:51
-msgid "Invitation"
-msgstr "Convite"
-
-#: order/models.py:54 order/models.py:55
+#: order/models.py:17 order/models.py:92 order/models.py:93
 msgid "Congress"
 msgstr "Congresso"
 
-#: order/models.py:64
-msgid "Amount"
-msgstr "Quantidade"
-
-#: order/models.py:67
-msgid "Hardware and Software"
+#: order/models.py:18
+msgid "Hardware and software"
 msgstr "Hardware e Software"
 
-#: order/models.py:68
-msgid "Hardwares and Softwares"
-msgstr "Hardwares e Softwares"
-
-#: order/models.py:79
+#: order/models.py:19 order/models.py:127
 msgid "Service"
 msgstr "Serviço"
 
-#: order/models.py:80
-msgid "Services"
-msgstr "Serviços"
-
-#: order/models.py:88 order/models.py:108
-msgid "Origin"
-msgstr "Origem"
-
-#: order/models.py:89 order/models.py:109
-msgid "Destination"
-msgstr "Destino"
-
-#: order/models.py:90
-msgid "Outbound Date"
-msgstr "Data de saída"
-
-#: order/models.py:91
-msgid "Outbound Preferred time"
-msgstr "Período de preferência"
-
-#: order/models.py:92
-msgid "Inbound Date"
-msgstr "Data de retorno"
-
-#: order/models.py:93
-msgid "Inbound Preferred time"
-msgstr "Período de preferência"
-
-#: order/models.py:94
-msgid "Type of Trip"
-msgstr "Tipo de viagem"
-
-#: order/models.py:95
-msgid "Type of transportation"
-msgstr "Tipo de transporte"
-
-#: order/models.py:96
-msgid "Note"
-msgstr "Observação"
-
-#: order/models.py:99
+#: order/models.py:20 order/models.py:152
 msgid "Passage"
 msgstr "Passagem"
 
-#: order/models.py:100
-msgid "Passages"
-msgstr "Passagens"
-
-#: order/models.py:110
-msgid "Departure"
-msgstr "Partida"
-
-#: order/models.py:111
-msgid "Arrival"
-msgstr "Chegada"
-
-#: order/models.py:114
+#: order/models.py:21 order/models.py:172
 msgid "Daily stipend"
 msgstr "Diária"
 
-#: order/models.py:115
-msgid "Daily stipends"
-msgstr "Diárias"
-
-#: order/models.py:126
+#: order/models.py:22 order/models.py:189
 msgid "Reimbursement"
 msgstr "Reembolso"
 
-#: order/models.py:127
+#: order/models.py:32
+msgid "Open"
+msgstr "Aberto"
+
+#: order/models.py:33
+msgid "Pending"
+msgstr "Pendente"
+
+#: order/models.py:34
+msgid "Canceled"
+msgstr "Cancelado"
+
+#: order/models.py:35
+msgid "Approved"
+msgstr "Aprovado"
+
+#: order/models.py:36
+msgid "Denied"
+msgstr "Negado"
+
+#: order/models.py:47
+msgid "Justification"
+msgstr "Justificativa"
+
+#: order/models.py:48
+msgid "Order date"
+msgstr "Data/hora do pedido"
+
+#: order/models.py:49
+msgid "Modified"
+msgstr "Alterado"
+
+#: order/models.py:60
+msgid "Orders"
+msgstr "Pedidos"
+
+#: order/models.py:69 order/models.py:75
+msgid "Order number"
+msgstr "Número do pedido"
+
+#: order/models.py:84
+msgid "Congress name"
+msgstr "Nome do congresso"
+
+#: order/models.py:86
+msgid "Value"
+msgstr "Valor"
+
+#: order/models.py:89
+msgid "Invitation"
+msgstr "Convite"
+
+#: order/models.py:107
+msgid "Amount"
+msgstr "Quantidade"
+
+#: order/models.py:110
+msgid "Hardware and Software"
+msgstr "Hardware e Software"
+
+#: order/models.py:111
+msgid "Hardwares and Softwares"
+msgstr "Hardwares e Softwares"
+
+#: order/models.py:128
+msgid "Services"
+msgstr "Serviços"
+
+#: order/models.py:141 order/models.py:166
+msgid "Origin"
+msgstr "Origem"
+
+#: order/models.py:142 order/models.py:167
+msgid "Destination"
+msgstr "Destino"
+
+#: order/models.py:143
+msgid "Outbound Date"
+msgstr "Data de saída"
+
+#: order/models.py:144
+msgid "Outbound Preferred time"
+msgstr "Período de preferência"
+
+#: order/models.py:145
+msgid "Inbound Date"
+msgstr "Data de retorno"
+
+#: order/models.py:146
+msgid "Inbound Preferred time"
+msgstr "Período de preferência"
+
+#: order/models.py:147
+msgid "Type of Trip"
+msgstr "Tipo de viagem"
+
+#: order/models.py:148
+msgid "Type of transportation"
+msgstr "Tipo de transporte"
+
+#: order/models.py:149
+msgid "Note"
+msgstr "Observação"
+
+#: order/models.py:153
+msgid "Passages"
+msgstr "Passagens"
+
+#: order/models.py:168
+msgid "Departure"
+msgstr "Partida"
+
+#: order/models.py:169
+msgid "Arrival"
+msgstr "Chegada"
+
+#: order/models.py:173
+msgid "Daily stipends"
+msgstr "Diárias"
+
+#: order/models.py:190
 msgid "Reimbursements"
 msgstr "Reembolsos"
 
@@ -443,6 +478,10 @@ msgstr "Status dos artigos"
 #: research/models.py:48 research/models.py:90 research/models.py:113
 msgid "Author"
 msgstr "Autor"
+
+#: research/models.py:49 research/models.py:94 research/models.py:115
+msgid "Status"
+msgstr "Status"
 
 #: research/models.py:50
 msgid "DOI"
@@ -515,3 +554,34 @@ msgstr "Trabalhos em andamento"
 #: sistema/urls.py:11
 msgid "NeuroMat System"
 msgstr ""
+
+#: templates/admin/base_site.html:4
+msgid "Django site admin"
+msgstr ""
+
+#: templates/admin/index.html:12
+msgid "Home"
+msgstr ""
+
+#: templates/admin/index.html:46
+#, python-format
+msgid "Models available in the %(name)s application."
+msgstr ""
+
+#: templates/admin/index.html:60
+msgid "Add"
+msgstr "Adicionar"
+
+#: templates/admin/index.html:64
+msgid "Change"
+msgstr "Alterar"
+
+#: templates/admin/index.html:73
+msgid "You don't have permission to edit anything."
+msgstr "Você não tem permissão para editar nada."
+
+#~ msgid "Order status"
+#~ msgstr "Status do pedido"
+
+#~ msgid "Orders status"
+#~ msgstr "Status dos pedidos"
