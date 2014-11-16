@@ -91,6 +91,9 @@ class Investigator(models.Model):
 
             user = User.objects.get(username=instance.username)
 
+            if user.is_superuser:
+                return
+
             if not user.password == instance.password:
                 profile, created = Investigator.objects.get_or_create(user=user)
                 profile.force_password_change = False
@@ -101,7 +104,7 @@ class Investigator(models.Model):
     signals.pre_save.connect(password_change_signal, sender=User, dispatch_uid='accounts.models')
     signals.post_save.connect(create_user_profile_signal, sender=User, dispatch_uid='accounts.models')
 
-    # Description of the model / Sort by name
+    # Description of the model / Sort by user
     class Meta:
         verbose_name = _('Investigator')
         verbose_name_plural = _('Investigators')
