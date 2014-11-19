@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-16 19:58-0200\n"
+"POT-Creation-Date: 2014-11-19 16:34-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,7 +98,7 @@ msgstr "Instituição"
 #: activity/models.py:74 activity/models.py:95 order/models.py:85
 #: research/models.py:58
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: activity/models.py:80
 msgid "Meeting"
@@ -134,7 +134,7 @@ msgid "%s is not a valid CPF"
 msgstr "%s não é um CPF válido"
 
 #: member/models.py:22 member/models.py:35 member/models.py:115
-#: research/models.py:31 research/models.py:72
+#: order/models.py:84 research/models.py:31 research/models.py:72
 msgid "Name"
 msgstr "Nome"
 
@@ -223,16 +223,16 @@ msgid "Investigators"
 msgstr "Pesquisadores"
 
 #: member/models.py:123
-msgid "Name in citation"
-msgstr "Nome em citações"
+msgid "Bibliographic citation"
+msgstr "Nome em citação bibliográfica"
 
 #: member/models.py:124
-msgid "Name in citations"
-msgstr "Nome em citações"
+msgid "Bibliographic citations"
+msgstr "Nome em citações bibliográficas"
 
 #: order/admin.py:55
-msgid "Congress Info"
-msgstr "Informações do Congresso"
+msgid "Event Info"
+msgstr "Informações do Evento"
 
 #: order/admin.py:58 order/admin.py:79 order/admin.py:100 order/admin.py:147
 #: order/admin.py:168
@@ -241,14 +241,14 @@ msgstr "Finalidade"
 
 #: order/admin.py:76
 msgid "Hardware or Software Info"
-msgstr "Informações sobre o Hardware ou Software"
+msgstr "Informações sobre o hardware ou software"
 
 #: order/admin.py:97
 msgid "Service Info"
 msgstr "Informações sobre o serviço "
 
 #: order/admin.py:118
-msgid "Passage Info"
+msgid "Ticket Info"
 msgstr "Informações sobre a passagem"
 
 #: order/admin.py:122
@@ -257,7 +257,7 @@ msgstr "Finalidade da viagem"
 
 #: order/admin.py:144
 msgid "Daily stipend Info"
-msgstr "Informações sobre a Diária"
+msgstr "Informações sobre a diária"
 
 #: order/admin.py:165
 msgid "Reimbursement Info"
@@ -303,11 +303,11 @@ msgstr "Noite (18:00 - 00:00)"
 msgid "Night (12am - 6am)"
 msgstr "Madrugada (00:00 - 06:00)"
 
-#: order/models.py:17 order/models.py:92 order/models.py:93
-msgid "Congress"
-msgstr "Congresso"
+#: order/models.py:17 order/models.py:92
+msgid "Scientific event"
+msgstr "Evento"
 
-#: order/models.py:18
+#: order/models.py:18 order/models.py:110
 msgid "Hardware and software"
 msgstr "Hardware e Software"
 
@@ -316,7 +316,7 @@ msgid "Service"
 msgstr "Serviço"
 
 #: order/models.py:20 order/models.py:152
-msgid "Passage"
+msgid "Ticket"
 msgstr "Passagem"
 
 #: order/models.py:21 order/models.py:172
@@ -371,10 +371,6 @@ msgstr "Pedidos"
 msgid "Order number"
 msgstr "Nr do pedido"
 
-#: order/models.py:84
-msgid "Congress name"
-msgstr "Nome do congresso"
-
 #: order/models.py:86
 msgid "Value"
 msgstr "Valor"
@@ -383,17 +379,17 @@ msgstr "Valor"
 msgid "Invitation"
 msgstr "Convite"
 
+#: order/models.py:93
+msgid "Scientific events"
+msgstr "Eventos"
+
 #: order/models.py:107
 msgid "Amount"
 msgstr "Quantidade"
 
-#: order/models.py:110
-msgid "Hardware and Software"
-msgstr "Hardware e Software"
-
 #: order/models.py:111
-msgid "Hardwares and Softwares"
-msgstr "Hardwares e Softwares"
+msgid "Hardwares and softwares"
+msgstr "Hardwares e softwares"
 
 #: order/models.py:128
 msgid "Services"
@@ -436,7 +432,7 @@ msgid "Note"
 msgstr "Observação"
 
 #: order/models.py:153
-msgid "Passages"
+msgid "Tickets"
 msgstr "Passagens"
 
 #: order/models.py:168
@@ -556,36 +552,63 @@ msgid "Works in Progress"
 msgstr "Trabalhos em andamento"
 
 #: sistema/urls.py:11
-msgid "NeuroMat System"
+msgid "NeuroMat Individual Report of Activities"
 msgstr ""
 
-#: templates/admin/base_site.html:4
-msgid "Django site admin"
+#: sistema/urls.py:12 templates/admin/base_site.html:4
+msgid "NIRA admin"
 msgstr ""
+
+#: sistema/urls.py:13
+msgid "Administration"
+msgstr "Administração"
 
 #: templates/admin/index.html:12
 msgid "Home"
+msgstr "Início"
+
+#: templates/admin/index.html:42
+msgid "About NIRA"
+msgstr "Sobre o NIRA"
+
+#: templates/admin/index.html:43
+msgid ""
+"Main goals of the NeuroMat Individual Report of Activities (NIRA) are "
+"twofold. Firstly, it will automatically feed NeuroMat's annual Report of "
+"Activities, a document that is submitted annually to the São Paulo Research "
+"Foundation (FAPESP). Secondly, it will serve as a direct liaison of each "
+"investigator and NeuroMat's administrative body, especially in the "
+"identifying and processing of needs for the course of NeuroMat-related "
+"activities."
 msgstr ""
+"O NeuroMat Individual Report of Activities (NIRA) possui dois objetivos. "
+"Primeiro, ele irá alimentar automaticamente o relatório anual de atividades "
+"do NeuroMat, um documento  obrigatório que é apresentado anualmente à "
+"Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP). Segundo, ele "
+"vai servir como um elo de ligação entre cada investigador e o corpo "
+"administrativo do NeuroMat, especialmente na identificação e no tratamento "
+"das necessidades para o curso das atividades relacionadas com o NeuroMat."
 
-#: templates/admin/index.html:46
-#, python-format
-msgid "Models available in the %(name)s application."
+#: templates/admin/index.html:48
+msgid "See your orders"
+msgstr "Veja seus pedidos"
+
+#: templates/admin/index.html:49
+msgid ""
+"Track the status of your order, if you have any questions, please contact us "
+"at (11) 3091-1716 or via e-mail at ti@numec.prp.usp.br."
 msgstr ""
+"Acompanhe o status do seu pedido, se você tiver alguma dúvida, por favor, "
+"entre em contato conosco pelo telefone (11) 3091-1716 ou pelo e-mail "
+"ti@numec.prp.usp.br."
 
-#: templates/admin/index.html:60
-msgid "Add"
-msgstr "Adicionar"
+#: templates/admin/index.html:50
+msgid "Check"
+msgstr "Verificar"
 
-#: templates/admin/index.html:64
-msgid "Change"
-msgstr "Alterar"
+#: templates/admin/index.html:54
+msgid "NIRA version:"
+msgstr "Versão do NIRA:"
 
-#: templates/admin/index.html:73
-msgid "You don't have permission to edit anything."
-msgstr "Você não tem permissão para editar nada."
-
-#~ msgid "Order status"
-#~ msgstr "Status do pedido"
-
-#~ msgid "Orders status"
-#~ msgstr "Status dos pedidos"
+#~ msgid "Name in citation"
+#~ msgstr "Nome em citações"
