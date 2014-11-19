@@ -7,17 +7,17 @@ from model_utils.managers import InheritanceManager
 # Create your models here.
 
 # Defining types of order
-CONGRESS = 'c'
+EVENT = 'e'
 HARDWARE_SOFTWARE = 'h'
 SERVICE = 's'
-PASSAGE = 'p'
+TICKET = 't'
 DAILY_STIPEND = 'd'
 REIMBURSEMENT = 'r'
 ORDER_TYPE = (
-    (CONGRESS, _('Congress')),
+    (EVENT, _('Scientific event')),
     (HARDWARE_SOFTWARE, _('Hardware and software')),
     (SERVICE, _('Service')),
-    (PASSAGE, _('Passage')),
+    (TICKET, _('Ticket')),
     (DAILY_STIPEND, _('Daily stipend')),
     (REIMBURSEMENT, _('Reimbursement')),
 )
@@ -76,12 +76,12 @@ class Order(models.Model):
     order_number.admin_order_field = '-id'
 
 
-class Congress(Order):
+class Event(Order):
     """
-    An instance of this class is a solicitation for inscription in a congress.
+    An instance of this class is a solicitation for inscription in an event.
 
     """
-    name = models.CharField(_('Congress name'), max_length=200)
+    name = models.CharField(_('Name'), max_length=200)
     url = models.URLField(_('URL'), max_length=50, blank=True, null=True)
     value = models.CharField(_('Value'), max_length=15, blank=True, null=True)
     start_date = models.DateField(_('Start date'))
@@ -89,13 +89,13 @@ class Congress(Order):
     invitation = models.FileField(_('Invitation'))
 
     class Meta:
-        verbose_name = _('Congress')
-        verbose_name_plural = _('Congress')
+        verbose_name = _('Scientific event')
+        verbose_name_plural = _('Scientific events')
 
     # Sets the type of order
     def save(self, *args, **kwargs):
-        self.type_of_order = CONGRESS
-        super(Congress, self).save(*args, **kwargs)
+        self.type_of_order = EVENT
+        super(Event, self).save(*args, **kwargs)
 
 
 class HardwareSoftware(Order):
@@ -107,8 +107,8 @@ class HardwareSoftware(Order):
     amount = models.IntegerField(_('Amount'), max_length=5)
 
     class Meta:
-        verbose_name = _('Hardware and Software')
-        verbose_name_plural = _('Hardwares and Softwares')
+        verbose_name = _('Hardware and software')
+        verbose_name_plural = _('Hardwares and softwares')
 
     # Sets the type of order
     def save(self, *args, **kwargs):
@@ -133,7 +133,7 @@ class Service(Order):
         super(Service, self).save(*args, **kwargs)
 
 
-class Passage(Order):
+class Ticket(Order):
     """
     An instance of this class is a solicitation for a new passage.
 
@@ -149,13 +149,13 @@ class Passage(Order):
     note = models.CharField(_('Note'), max_length=200, blank=True, null=True)
 
     class Meta:
-        verbose_name = _('Passage')
-        verbose_name_plural = _('Passages')
+        verbose_name = _('Ticket')
+        verbose_name_plural = _('Tickets')
 
     # Sets the type of order
     def save(self, *args, **kwargs):
-        self.type_of_order = PASSAGE
-        super(Passage, self).save(*args, **kwargs)
+        self.type_of_order = TICKET
+        super(Ticket, self).save(*args, **kwargs)
 
 
 class DailyStipend(Order):

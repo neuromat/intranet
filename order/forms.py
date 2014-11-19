@@ -1,5 +1,5 @@
 from django import forms
-from order.models import Passage
+from order.models import Ticket
 from django.forms import RadioSelect, Select
 from django.utils.translation import ugettext_lazy as _
 
@@ -23,10 +23,10 @@ TIME = (
 )
 
 
-class PassageAdminForm(forms.ModelForm):
+class TicketAdminForm(forms.ModelForm):
 
     class Meta:
-        model = Passage
+        model = Ticket
 
         fields = ['type', 'outbound_date_preference', 'inbound_date_preference', 'type_transportation']
 

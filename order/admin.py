@@ -46,13 +46,13 @@ class OrderAdmin(SuperOrder):
 admin.site.register(Order, OrderAdmin)
 
 
-class CongressAdmin(SuperOrder):
+class EventAdmin(SuperOrder):
 
     fieldsets = (
         (None, {
             'fields': ['status']
         }),
-        (_('Congress Info'), {
+        (_('Event Info'), {
             'fields': ('name', 'url', 'value', 'start_date', 'end_date', 'invitation')
         }),
         (_('Purpose'), {
@@ -64,7 +64,7 @@ class CongressAdmin(SuperOrder):
 
     list_display_links = ('order_number', 'status', 'name', 'order_date')
 
-admin.site.register(Congress, CongressAdmin)
+admin.site.register(Event, EventAdmin)
 
 
 class HardwareSoftwareAdmin(SuperOrder):
@@ -109,13 +109,13 @@ class ServiceAdmin(SuperOrder):
 admin.site.register(Service, ServiceAdmin)
 
 
-class PassageAdmin(SuperOrder):
+class TicketAdmin(SuperOrder):
 
     fieldsets = (
         (None, {
             'fields': ['status']
         }),
-        (_('Passage Info'), {
+        (_('Ticket Info'), {
             'fields': ('type_transportation', 'type', 'origin', 'destination', 'outbound_date',
                        'outbound_date_preference', 'inbound_date', 'inbound_date_preference', 'note')
         }),
@@ -130,9 +130,9 @@ class PassageAdmin(SuperOrder):
     list_display_links = ('order_number', 'status', 'origin', 'destination', 'outbound_date', 'inbound_date',
                           'order_date')
 
-    form = PassageAdminForm
+    form = TicketAdminForm
 
-admin.site.register(Passage, PassageAdmin)
+admin.site.register(Ticket, TicketAdmin)
 
 
 class DailyStipendAdmin(SuperOrder):
