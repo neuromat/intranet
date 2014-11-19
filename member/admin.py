@@ -37,11 +37,11 @@ class InvestigatorAdmin(admin.ModelAdmin):
 admin.site.register(Investigator, InvestigatorAdmin)
 
 
-class NameCitationAdmin(admin.ModelAdmin):
+class BibliographicCitationAdmin(admin.ModelAdmin):
     fields = ['investigator', 'name']
 
     list_display = ('investigator', 'name')
 
     list_display_links = ('investigator',)
 
-admin.site.register(NameCitation, NameCitationAdmin)
+admin.site.register(BibliographicCitation, BibliographicCitationAdmin)

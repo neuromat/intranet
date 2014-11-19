@@ -111,7 +111,7 @@ class Investigator(models.Model):
         ordering = ('user', )
 
 
-class NameCitation(models.Model):
+class BibliographicCitation(models.Model):
     name = models.CharField(_('Name'), max_length=50)
     investigator = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
 
@@ -120,6 +120,6 @@ class NameCitation(models.Model):
         return u'%s' % self.name
 
     class Meta:
-        verbose_name = _('Name in citation')
-        verbose_name_plural = _('Name in citations')
+        verbose_name = _('Bibliographic citation')
+        verbose_name_plural = _('Bibliographic citations')
         ordering = ('name', )
