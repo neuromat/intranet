@@ -74,7 +74,7 @@ class HardwareSoftwareAdmin(SuperOrder):
             'fields': ['status']
         }),
         (_('Hardware or Software Info'), {
-            'fields': ('type', 'amount')
+            'fields': ('type', 'quantity')
         }),
         (_('Purpose'), {
             'fields': ('justification',)
