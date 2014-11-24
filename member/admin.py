@@ -27,12 +27,12 @@ class InvestigatorAdmin(admin.ModelAdmin):
             return Investigator.objects.all()
         return Investigator.objects.filter(user=request.user)
 
-    # If not superuser, do not show the user combobox and force_password_change
+    # If not superuser, do not show force_password_change, user and role fields
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
             return super(InvestigatorAdmin, self).get_readonly_fields(request, obj)
         else:
-            return 'user', 'force_password_change'
+            return 'user', 'force_password_change', 'role'
 
 admin.site.register(Investigator, InvestigatorAdmin)
 
