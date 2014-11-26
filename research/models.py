@@ -14,7 +14,11 @@ class Document(models.Model):
     'class Meta'		Sets the class as abstract and the ordering of data by date of modification.
     """
     title = models.CharField(_('Title'), max_length=200)
-    reference = models.TextField(_('Reference to NeuroMat'))
+    reference = models.TextField(_('Reference to NeuroMat'),
+                                 help_text='You should copy here the lines of your work that makes reference to CEPID '
+                                           'NeuroMat, e.g., this article (thesis,...) was produced as part of the '
+                                           'activities of FAPESP Center for Neuromathematics (grant #2013/07699-0, '
+                                           'S.Paulo Research Foundation).')
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(default=datetime.datetime.now)
 
