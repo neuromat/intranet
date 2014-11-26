@@ -5,3 +5,5 @@ from activity.models import *
 admin.site.register(TrainingProgram)
 admin.site.register(Seminar)
 admin.site.register(ScientificMission)
+admin.site.register(Meeting)
+admin.site.register(GeneralEvent)
