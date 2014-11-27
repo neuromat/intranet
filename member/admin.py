@@ -44,4 +44,23 @@ class BibliographicCitationAdmin(admin.ModelAdmin):
 
     list_display_links = ('investigator',)
 
+    # Shows the investigators according to the user permission
+    def get_queryset(self, request):
+        if request.user.is_superuser:
+            return BibliographicCitation.objects.all()
+        return BibliographicCitation.objects.filter(investigator=request.user)
+
+    # Auto select current user
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(BibliographicCitationAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields['investigator'].initial = request.user
+        return form
+
+    # If not superuser, do not allow user switching
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'investigator':
+            if not request.user.is_superuser:
+                kwargs["queryset"] = Investigator.objects.filter(user=request.user)
+        return super(BibliographicCitationAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 admin.site.register(BibliographicCitation, BibliographicCitationAdmin)
