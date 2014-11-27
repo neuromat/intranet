@@ -6,4 +6,4 @@ from django.utils.translation import ugettext_lazy as _
 
 class ActivityConfig(AppConfig):
     name = 'activity'
-    verbose_name = _('Project activity')
+    verbose_name = _('Project activities')
