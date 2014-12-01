@@ -8,19 +8,19 @@ class TrainingProgram(models.Model):
     An instance of this class is a training program.
 
     """
-    speaker = models.ForeignKey(Investigator, verbose_name=_('Speaker'))
+    investigator = models.ForeignKey(Investigator, verbose_name=_('Speaker'))
     title = models.CharField(_('Title'), max_length=200)
     description = models.TextField(_('Description'), max_length=500, blank=True, null=True)
     date = models.DateField(_('Date'))
     duration = models.CharField(_('Duration'), max_length=20)
 
     def __unicode__(self):
-        return u'%s' % self.speaker
+        return u'%s' % self.investigator
 
     class Meta:
         verbose_name = _('Training Program')
         verbose_name_plural = _('Training Programs')
-        ordering = ('speaker', )
+        ordering = ('investigator', )
 
 
 class Seminar(models.Model):
@@ -28,18 +28,18 @@ class Seminar(models.Model):
     An instance of this class is a seminar.
 
     """
-    speaker = models.ForeignKey(Investigator, verbose_name=_('Speaker'))
+    investigator = models.ForeignKey(Investigator, verbose_name=_('Speaker'))
     title = models.CharField(_('Title'), max_length=200)
     abstract = models.TextField(_('Abstract'), max_length=500, blank=True, null=True)
     date = models.DateField(_('Date'))
 
     def __unicode__(self):
-        return u'%s' % self.speaker
+        return u'%s' % self.investigator
 
     class Meta:
         verbose_name = _('Seminar')
         verbose_name_plural = _('Seminars')
-        ordering = ('speaker', )
+        ordering = ('investigator', )
 
 
 class ScientificMission(models.Model):
@@ -87,7 +87,7 @@ class GeneralEvent(models.Model):
     An instance of this class is a general event.
 
     """
-    speaker = models.ManyToManyField(Investigator, verbose_name=_('Speaker'))
+    investigator = models.ManyToManyField(Investigator, verbose_name=_('Speaker'))
     title = models.CharField(_('Title'), max_length=200)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
@@ -95,7 +95,7 @@ class GeneralEvent(models.Model):
     url = models.URLField(_('URL'), blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s' % self.investigator
+        return u'%s' % self.title
 
     class Meta:
         verbose_name = _('General event')
