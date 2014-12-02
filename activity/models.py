@@ -66,7 +66,8 @@ class Meeting(models.Model):
     An instance of this class is a meeting.
 
     """
-    institution = models.ManyToManyField(Institution, verbose_name=_('Institution'))
+    institution = models.ManyToManyField(Institution, verbose_name=_('Institution'), blank=True)
+    investigator = models.ManyToManyField(Investigator, verbose_name=_('Speaker'), blank=True)
     title = models.CharField(_('Title'), max_length=200)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'))
