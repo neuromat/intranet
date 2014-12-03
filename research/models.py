@@ -5,6 +5,13 @@ import datetime
 
 # Create your models here.
 
+IN_PROGRESS = 'i'
+CONCLUDED = 'c'
+STATUS_ANSWER = (
+    (IN_PROGRESS, _('In Progress')),
+    (CONCLUDED, _('Concluded')),
+)
+
 
 class Document(models.Model):
     """
@@ -95,7 +102,7 @@ class AcademicWork(Document):
     supervisor = models.ForeignKey(Investigator, verbose_name=_('Supervisor'), related_name='supervisor_academic_work')
     co_supervisor = models.ManyToManyField(Investigator, verbose_name=_('Co-Supervisor'),
                                            related_name='co_supervisor_academic_work', blank=True, null=True)
-    status = models.NullBooleanField(_('Status'))
+    status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER)
 
     class Meta:
         verbose_name = _('Academic Work')
@@ -116,7 +123,7 @@ class WorkInProgress(models.Model):
     """
     author = models.ForeignKey(Investigator, verbose_name=_('Author'))
     description = models.TextField(_('Description'), max_length=500)
-    status = models.NullBooleanField(_('Status'))
+    status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(default=datetime.datetime.now)
 
