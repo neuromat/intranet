@@ -20,7 +20,7 @@ class ActivityAdmin(admin.ModelAdmin):
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(ActivityAdmin, self).get_fieldsets(request, obj))
         if request.user.is_superuser:
-            fieldsets[0][1]['fields'].append('investigator')
+            fieldsets[0][1]['fields'].insert(0, 'investigator')
         return fieldsets
 
     # If not superuser, set the investigator as the current user
