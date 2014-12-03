@@ -3,9 +3,6 @@ from activity.models import *
 import copy
 #from django.utils.translation import ugettext_lazy as _
 
-admin.site.register(Meeting)
-
-
 class GeneralEventAdmin(admin.ModelAdmin):
     list_display = ('title', 'start_date', 'end_date', 'url')
     list_display_links = ('title', 'start_date', 'end_date', 'url')
