@@ -4,7 +4,18 @@ import copy
 #from django.utils.translation import ugettext_lazy as _
 
 admin.site.register(Meeting)
-admin.site.register(GeneralEvent)
+
+
+class GeneralEventAdmin(admin.ModelAdmin):
+    list_display = ('title', 'start_date', 'end_date', 'url')
+    list_display_links = ('title', 'start_date', 'end_date', 'url')
+admin.site.register(GeneralEvent, GeneralEventAdmin)
+
+
+class MeetingAdmin(admin.ModelAdmin):
+    list_display = ('title', 'start_date', 'end_date', 'url')
+    list_display_links = ('title', 'start_date', 'end_date', 'url')
+admin.site.register(Meeting, MeetingAdmin)
 
 
 class ActivityAdmin(admin.ModelAdmin):
