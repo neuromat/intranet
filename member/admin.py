@@ -1,6 +1,7 @@
 from django.contrib import admin
 from member.models import *
 from django.utils.translation import ugettext_lazy as _
+import copy
 
 admin.site.register(Role)
 admin.site.register(Institution)
@@ -38,7 +39,7 @@ admin.site.register(Investigator, InvestigatorAdmin)
 
 
 class BibliographicCitationAdmin(admin.ModelAdmin):
-    fields = ['investigator', 'name']
+    fields = ['name']
 
     list_display = ('investigator', 'name')
 
@@ -46,21 +47,24 @@ class BibliographicCitationAdmin(admin.ModelAdmin):
 
     # Shows the investigators according to the user permission
     def get_queryset(self, request):
+        qs = super(BibliographicCitationAdmin, self).get_queryset(request)
+        # If super-user, show all
         if request.user.is_superuser:
-            return BibliographicCitation.objects.all()
-        return BibliographicCitation.objects.filter(investigator=request.user)
+            return qs
+        return qs.filter(investigator=request.user)
 
-    # Auto select current user
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(BibliographicCitationAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['investigator'].initial = request.user
-        return form
+    # If not superuser, do not show the investigator field
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = copy.deepcopy(super(BibliographicCitationAdmin, self).get_fieldsets(request, obj))
+        if request.user.is_superuser:
+            fieldsets[0][1]['fields'].insert(0, 'investigator')
+        return fieldsets
 
-    # If not superuser, do not allow user switching
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'investigator':
-            if not request.user.is_superuser:
-                kwargs["queryset"] = Investigator.objects.filter(user=request.user)
-        return super(BibliographicCitationAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    # If not superuser, set the investigator as the current user
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            if not change:
+                obj.investigator = Investigator.objects.get(user=request.user)
+        obj.save()
 
 admin.site.register(BibliographicCitation, BibliographicCitationAdmin)
