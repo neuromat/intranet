@@ -112,7 +112,7 @@ class Investigator(models.Model):
 
 
 class BibliographicCitation(models.Model):
-    name = models.CharField(_('Name'), max_length=50)
+    name = models.CharField(_('Name'), max_length=50, help_text='E.g.: Silva, J.')
     investigator = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
 
     # Returns the name
