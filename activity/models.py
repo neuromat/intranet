@@ -2,6 +2,51 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from member.models import Investigator, Institution
 
+# Defining the duration of a Training Program
+ONE_HOUR = '1h'
+ONE_AND_A_HALF_HOUR = '1h30'
+TWO_HOURS = '2h'
+TWO_AND_A_HALF_HOURS = '2h30'
+THREE_HOURS = '3h'
+THREE_AND_A_HALF_HOURS = '3h30'
+FOUR_HOURS = '4h'
+FOUR_AND_A_HALF_HOURS = '4h30'
+FIVE_HOURS = '5h'
+FIVE_AND_A_HALF_HOURS = '5h30'
+SIX_HOURS = '6h'
+SIX_AND_A_HALF_HOURS = '6h30'
+SEVEN_HOURS = '7h'
+SEVEN_AND_A_HALF_HOURS = '7h30'
+EIGHT_HOURS = '8h'
+EIGHT_AND_A_HALF_HOURS = '8h30'
+NINE_HOURS = '9h'
+NINE_AND_A_HALF_HOURS = '9h30'
+TEN_HOURS = '10h'
+OTHER = 'Other'
+
+DURATION = (
+    (ONE_HOUR, '1h'),
+    (ONE_AND_A_HALF_HOUR, '1h30'),
+    (TWO_HOURS, '2h'),
+    (TWO_AND_A_HALF_HOURS, '2h30'),
+    (THREE_HOURS, '3h'),
+    (THREE_AND_A_HALF_HOURS, '3h30'),
+    (FOUR_HOURS, '4h'),
+    (FOUR_AND_A_HALF_HOURS, '4h30'),
+    (FIVE_HOURS, '5h'),
+    (FIVE_AND_A_HALF_HOURS, '5h30'),
+    (SIX_HOURS, '6h'),
+    (SIX_AND_A_HALF_HOURS, '6h30'),
+    (SEVEN_HOURS, '7h'),
+    (SEVEN_AND_A_HALF_HOURS, '7h30'),
+    (EIGHT_HOURS, '8h'),
+    (EIGHT_AND_A_HALF_HOURS, '8h30'),
+    (NINE_HOURS, '9h'),
+    (NINE_AND_A_HALF_HOURS, '9h30'),
+    (TEN_HOURS, '10h'),
+    (OTHER, _('Other duration time'))
+)
+
 
 class TrainingProgram(models.Model):
     """
@@ -14,7 +59,8 @@ class TrainingProgram(models.Model):
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
     local = models.ForeignKey(Institution, verbose_name=_('Local'), blank=True, null=True)
-    duration = models.CharField(_('Duration'), max_length=20)
+    duration = models.CharField(_('Duration'), max_length=5, choices=DURATION)
+    other_duration = models.CharField(_('Other duration time'), max_length=5, help_text='E.g.: 11h or 11h30')
 
     def __unicode__(self):
         return u'%s' % self.investigator
