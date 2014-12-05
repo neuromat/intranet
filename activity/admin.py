@@ -1,18 +1,21 @@
 from django.contrib import admin
 from activity.models import *
 import copy
+from forms import *
 #from django.utils.translation import ugettext_lazy as _
 
 
 class GeneralEventAdmin(admin.ModelAdmin):
     list_display = ('title', 'start_date', 'end_date', 'url')
     list_display_links = ('title', 'start_date', 'end_date', 'url')
+
 admin.site.register(GeneralEvent, GeneralEventAdmin)
 
 
 class MeetingAdmin(admin.ModelAdmin):
     list_display = ('title', 'start_date', 'end_date', 'url')
     list_display_links = ('title', 'start_date', 'end_date', 'url')
+
 admin.site.register(Meeting, MeetingAdmin)
 
 
@@ -43,12 +46,13 @@ class ActivityAdmin(admin.ModelAdmin):
 class TrainingProgramAdmin(ActivityAdmin):
     fieldsets = (
         (None, {
-            'fields': ['title', 'description', 'date', 'duration']
+            'fields': ['title', 'description', 'start_date', 'end_date', 'local', 'duration', 'other_duration']
         }),
     )
 
-    list_display = ('investigator', 'title', 'date', 'duration')
-    list_display_links = ('investigator', 'title', 'date', 'duration')
+    list_display = ('investigator', 'title', 'start_date', 'end_date', 'local', 'duration', 'other_duration')
+    list_display_links = ('investigator', 'title', 'start_date', 'end_date', 'local', 'duration', 'other_duration')
+    form = TrainingProgramForm
 
 admin.site.register(TrainingProgram, TrainingProgramAdmin)
 
