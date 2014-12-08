@@ -44,7 +44,7 @@ class SuperOrder(admin.ModelAdmin):
             subject, from_email, to = 'NIRA - Novo pedido', 'neuromatematica@gmail.com', 'admin-nira@numec.prp.usp.br'
             text_content = 'Um novo pedido foi gerado no sistema NIRA.'
             html_content = '<p>Um novo pedido foi gerado no sistema NIRA. ' \
-                           '<a href="http://localhost:8000/admin/order/order/">Ver pedidos.</a></p>'
+                           '<a href="http://sistema.numec.prp.usp.br/admin/order/order/">Ver pedidos.</a></p>'
             msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
