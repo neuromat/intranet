@@ -3,7 +3,6 @@ from order.models import *
 from forms import *
 from django.utils.translation import ugettext_lazy as _
 import copy
-from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 
 # Register your models here.
@@ -59,7 +58,6 @@ admin.site.register(Order, OrderAdmin)
 
 
 class EventAdmin(SuperOrder):
-
     fieldsets = (
         (None, {
             'fields': ['status']
@@ -80,7 +78,6 @@ admin.site.register(Event, EventAdmin)
 
 
 class HardwareSoftwareAdmin(SuperOrder):
-
     fieldsets = (
         (None, {
             'fields': ['status']
@@ -101,7 +98,6 @@ admin.site.register(HardwareSoftware, HardwareSoftwareAdmin)
 
 
 class ServiceAdmin(SuperOrder):
-
     fieldsets = (
         (None, {
             'fields': ['status']
@@ -122,7 +118,6 @@ admin.site.register(Service, ServiceAdmin)
 
 
 class TicketAdmin(SuperOrder):
-
     fieldsets = (
         (None, {
             'fields': ['status']
@@ -148,7 +143,6 @@ admin.site.register(Ticket, TicketAdmin)
 
 
 class DailyStipendAdmin(SuperOrder):
-
     fieldsets = (
         (None, {
             'fields': ['status']
@@ -169,7 +163,6 @@ admin.site.register(DailyStipend, DailyStipendAdmin)
 
 
 class ReimbursementAdmin(SuperOrder):
-
     fieldsets = (
         (None, {
             'fields': ['status']
