@@ -81,7 +81,7 @@ class Seminar(models.Model):
     title = models.CharField(_('Title'), max_length=200)
     abstract = models.TextField(_('Abstract'), max_length=500, blank=True, null=True)
     date = models.DateField(_('Date'))
-    attachment = models.FileField(_('Attachment'))
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.investigator

@@ -60,7 +60,7 @@ admin.site.register(TrainingProgram, TrainingProgramAdmin)
 class SeminarAdmin(ActivityAdmin):
     fieldsets = (
         (None, {
-            'fields': ['title', 'date', 'abstract']
+            'fields': ['title', 'date', 'abstract', 'attachment']
         }),
     )
 
