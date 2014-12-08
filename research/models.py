@@ -99,8 +99,8 @@ class AcademicWork(Document):
     """
     type = models.ForeignKey(TypeAcademicWork, verbose_name=_('Type of academic work'))
     author = models.ForeignKey(Investigator, verbose_name=_('Author'))
-    supervisor = models.ForeignKey(Investigator, verbose_name=_('Supervisor'), related_name='supervisor_academic_work')
-    co_supervisor = models.ManyToManyField(Investigator, verbose_name=_('Co-Supervisor'),
+    advisor = models.ForeignKey(Investigator, verbose_name=_('Advisor'), related_name='advisor_academic_work')
+    co_advisor = models.ManyToManyField(Investigator, verbose_name=_('Co-Advisor'),
                                            related_name='co_supervisor_academic_work', blank=True, null=True)
     status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER)
 
