@@ -106,8 +106,8 @@ class Investigator(models.Model):
 
     # Description of the model / Sort by user
     class Meta:
-        verbose_name = _('Investigator')
-        verbose_name_plural = _('Investigators')
+        verbose_name = _('Personal info')
+        verbose_name_plural = _('Personal info')
         ordering = ('user', )
 
 
