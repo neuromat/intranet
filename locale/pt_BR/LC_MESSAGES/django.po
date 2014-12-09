@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-09 10:11-0200\n"
+"POT-Creation-Date: 2014-12-09 10:21-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,8 +88,7 @@ msgstr "Seminário"
 msgid "Seminars"
 msgstr "Seminários"
 
-#: activity/models.py:100 member/models.py:109 member/models.py:116
-#: order/models.py:46
+#: activity/models.py:100 member/models.py:116 order/models.py:46
 msgid "Investigator"
 msgstr "Pesquisador"
 
@@ -236,9 +235,11 @@ msgstr "Estado"
 msgid "Country"
 msgstr "País"
 
-#: member/models.py:110
-msgid "Investigators"
-msgstr "Pesquisadores"
+#: member/models.py:109 member/models.py:110
+#, fuzzy
+#| msgid "Personal Info"
+msgid "Personal info"
+msgstr "Informações pessoais"
 
 #: member/models.py:123
 msgid "Bibliographic citation"
