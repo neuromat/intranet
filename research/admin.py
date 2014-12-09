@@ -20,7 +20,7 @@ admin.site.register(Paper, PaperAdmin)
 
 class AcademicWorkAdmin(admin.ModelAdmin):
 
-    fields = ['type', 'status', 'title', 'author', 'supervisor', 'co_supervisor', 'reference']
+    fields = ['type', 'status', 'title', 'author', 'advisor', 'co_advisor', 'reference']
 
     list_display = ('author', 'type', 'status', 'title',)
 
