@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-19 16:34-0200\n"
+"POT-Creation-Date: 2014-12-09 09:57-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,109 +18,123 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: activity/apps.py:9
-msgid "Activity"
-msgstr "Atividade"
+msgid "Project activities"
+msgstr "Atividades do projeto"
 
-#: activity/models.py:11 activity/models.py:31 activity/models.py:90
+#: activity/models.py:47 activity/models.py:63
+msgid "Other duration time"
+msgstr "Outro tempo de duração"
+
+#: activity/models.py:56 activity/models.py:80 activity/models.py:120
+#: activity/models.py:143
 msgid "Speaker"
 msgstr "Palestrante"
 
-#: activity/models.py:12 activity/models.py:32 activity/models.py:70
-#: activity/models.py:91 research/models.py:16
+#: activity/models.py:57 activity/models.py:81 activity/models.py:123
+#: activity/models.py:145 research/models.py:23
 msgid "Title"
 msgstr "Título"
 
-#: activity/models.py:13 activity/models.py:73 activity/models.py:94
+#: activity/models.py:58 activity/models.py:126 activity/models.py:148
 #: order/models.py:106 order/models.py:124 order/models.py:186
-#: research/models.py:114
+#: research/models.py:125
 msgid "Description"
 msgstr "Descrição"
 
-#: activity/models.py:14 activity/models.py:34
-msgid "Date"
-msgstr "Data"
+#: activity/models.py:59 activity/models.py:102 activity/models.py:124
+#: activity/models.py:146 order/models.py:87
+msgid "Start date"
+msgstr "Início"
 
-#: activity/models.py:15
+#: activity/models.py:60 activity/models.py:103 activity/models.py:125
+#: activity/models.py:147 order/models.py:88
+msgid "End date"
+msgstr "Término"
+
+#: activity/models.py:61 activity/models.py:119 activity/models.py:144
+#: research/models.py:63
+msgid "Local"
+msgstr "Local"
+
+#: activity/models.py:62
 msgid "Duration"
 msgstr "Duração"
 
-#: activity/models.py:21
+#: activity/models.py:70
 msgid "Training Program"
 msgstr "Programa de treinamento"
 
-#: activity/models.py:22
+#: activity/models.py:71
 msgid "Training Programs"
 msgstr "Programas de treinamento"
 
-#: activity/models.py:33
+#: activity/models.py:82
 msgid "Abstract"
 msgstr "Resumo"
 
-#: activity/models.py:40
+#: activity/models.py:83
+msgid "Date"
+msgstr "Data"
+
+#: activity/models.py:84
+msgid "Attachment"
+msgstr "Anexo"
+
+#: activity/models.py:90
 msgid "Seminar"
 msgstr "Seminário"
 
-#: activity/models.py:41
+#: activity/models.py:91
 msgid "Seminars"
 msgstr "Seminários"
 
-#: activity/models.py:50 member/models.py:109 member/models.py:116
+#: activity/models.py:100 member/models.py:109 member/models.py:116
 #: order/models.py:46
 msgid "Investigator"
 msgstr "Pesquisador"
 
-#: activity/models.py:51
+#: activity/models.py:101
 msgid "Mission"
 msgstr "Missão"
 
-#: activity/models.py:52 activity/models.py:71 activity/models.py:92
-#: order/models.py:87
-msgid "Start date"
-msgstr "Início"
-
-#: activity/models.py:53 activity/models.py:72 activity/models.py:93
-#: order/models.py:88
-msgid "End date"
-msgstr "Término"
-
-#: activity/models.py:59
+#: activity/models.py:109
 msgid "Scientific mission"
 msgstr "Missão científica"
 
-#: activity/models.py:60
+#: activity/models.py:110
 msgid "Scientific missions"
 msgstr "Missões científicas"
 
-#: activity/models.py:69 member/models.py:43 member/models.py:61
-msgid "Institution"
-msgstr "Instituição"
+#: activity/models.py:122
+msgid "Participant"
+msgstr "Participante"
 
-#: activity/models.py:74 activity/models.py:95 order/models.py:85
-#: research/models.py:58
+#: activity/models.py:127 activity/models.py:149 order/models.py:85
+#: research/models.py:69
 msgid "URL"
 msgstr "URL"
 
-#: activity/models.py:80
+#: activity/models.py:133
 msgid "Meeting"
 msgstr "Reunião"
 
-#: activity/models.py:81
+#: activity/models.py:134
 msgid "Meetings"
 msgstr "Reuniões"
 
-#: activity/models.py:101
+#: activity/models.py:155
 msgid "General event"
 msgstr "Evento"
 
-#: activity/models.py:102
+#: activity/models.py:156
 msgid "General events"
 msgstr "Eventos"
 
-#: member/admin.py:15
+#: member/admin.py:16
 msgid "Personal Info"
 msgstr "Informações pessoais"
 
-#: member/admin.py:18
+#: member/admin.py:19
 msgid "Contact Info"
 msgstr "Informações de Contato"
 
@@ -134,21 +148,25 @@ msgid "%s is not a valid CPF"
 msgstr "%s não é um CPF válido"
 
 #: member/models.py:22 member/models.py:35 member/models.py:115
-#: order/models.py:84 research/models.py:31 research/models.py:72
+#: order/models.py:84 research/models.py:42 research/models.py:83
 msgid "Name"
 msgstr "Nome"
 
 #: member/models.py:29 member/models.py:60
 msgid "Role"
-msgstr "Papel"
+msgstr "Perfil"
 
 #: member/models.py:30
 msgid "Roles"
-msgstr "Papéis"
+msgstr "Perfis"
 
 #: member/models.py:36
 msgid "Acronym"
 msgstr "Sigla"
+
+#: member/models.py:43 member/models.py:61
+msgid "Institution"
+msgstr "Instituição"
 
 #: member/models.py:44
 msgid "Institutions"
@@ -230,36 +248,36 @@ msgstr "Nome em citação bibliográfica"
 msgid "Bibliographic citations"
 msgstr "Nome em citações bibliográficas"
 
-#: order/admin.py:55
+#: order/admin.py:65
 msgid "Event Info"
 msgstr "Informações do Evento"
 
-#: order/admin.py:58 order/admin.py:79 order/admin.py:100 order/admin.py:147
-#: order/admin.py:168
+#: order/admin.py:68 order/admin.py:88 order/admin.py:108 order/admin.py:153
+#: order/admin.py:173
 msgid "Purpose"
 msgstr "Finalidade"
 
-#: order/admin.py:76
+#: order/admin.py:85
 msgid "Hardware or Software Info"
 msgstr "Informações sobre o hardware ou software"
 
-#: order/admin.py:97
+#: order/admin.py:105
 msgid "Service Info"
 msgstr "Informações sobre o serviço "
 
-#: order/admin.py:118
+#: order/admin.py:125
 msgid "Ticket Info"
 msgstr "Informações sobre a passagem"
 
-#: order/admin.py:122
+#: order/admin.py:129
 msgid "Purpose of the trip"
 msgstr "Finalidade da viagem"
 
-#: order/admin.py:144
+#: order/admin.py:150
 msgid "Daily stipend Info"
 msgstr "Informações sobre a diária"
 
-#: order/admin.py:165
+#: order/admin.py:170
 msgid "Reimbursement Info"
 msgstr "Informações sobre o reembolso"
 
@@ -384,7 +402,7 @@ msgid "Scientific events"
 msgstr "Eventos"
 
 #: order/models.py:107
-msgid "Amount"
+msgid "Quantity"
 msgstr "Quantidade"
 
 #: order/models.py:111
@@ -452,102 +470,98 @@ msgid "Reimbursements"
 msgstr "Reembolsos"
 
 #: research/apps.py:9
-msgid "Research"
-msgstr "Pesquisa"
+msgid "Research results"
+msgstr "Resultados da pesquisa"
 
-#: research/forms.py:8
+#: research/models.py:11
 msgid "In Progress"
 msgstr "Em andamento"
 
-#: research/forms.py:9
+#: research/models.py:12
 msgid "Concluded"
 msgstr "Concluído"
 
-#: research/models.py:17
+#: research/models.py:24
 msgid "Reference to NeuroMat"
 msgstr "Referência ao NeuroMat"
 
-#: research/models.py:38
+#: research/models.py:49
 msgid "Paper status"
 msgstr "Status do artigo"
 
-#: research/models.py:39
+#: research/models.py:50
 msgid "Papers status"
 msgstr "Status dos artigos"
 
-#: research/models.py:48 research/models.py:90 research/models.py:113
+#: research/models.py:59 research/models.py:101 research/models.py:124
 msgid "Author"
 msgstr "Autor"
 
-#: research/models.py:49 research/models.py:94 research/models.py:115
+#: research/models.py:60 research/models.py:105 research/models.py:126
 msgid "Status"
 msgstr "Status"
 
-#: research/models.py:50
+#: research/models.py:61
 msgid "DOI"
 msgstr "DOI"
 
-#: research/models.py:51
+#: research/models.py:62
 msgid "ISSN"
 msgstr "ISSN"
 
-#: research/models.py:52
-msgid "Local"
-msgstr "Local"
-
-#: research/models.py:53
+#: research/models.py:64
 msgid "Volume"
 msgstr "Volume"
 
-#: research/models.py:54
+#: research/models.py:65
 msgid "Issue"
 msgstr "Edição"
 
-#: research/models.py:55
+#: research/models.py:66
 msgid "Start page"
 msgstr "Página inicial"
 
-#: research/models.py:56
+#: research/models.py:67
 msgid "End page"
 msgstr "Página final"
 
-#: research/models.py:57
+#: research/models.py:68
 msgid "Year"
 msgstr "Ano"
 
-#: research/models.py:61
+#: research/models.py:72
 msgid "Paper"
 msgstr "Artigo"
 
-#: research/models.py:79 research/models.py:89
+#: research/models.py:90 research/models.py:100
 msgid "Type of academic work"
 msgstr "Tipo de trabalho acadêmico"
 
-#: research/models.py:80
+#: research/models.py:91
 msgid "Types of academic work"
 msgstr "Tipos de trabalho acadêmico"
 
-#: research/models.py:91
-msgid "Supervisor"
+#: research/models.py:102
+msgid "Advisor"
 msgstr "Orientador"
 
-#: research/models.py:92
-msgid "Co-Supervisor"
+#: research/models.py:103
+msgid "Co-Advisor"
 msgstr "Co-Orientador"
 
-#: research/models.py:97
+#: research/models.py:108
 msgid "Academic Work"
 msgstr "Trabalho acadêmico"
 
-#: research/models.py:98
+#: research/models.py:109
 msgid "Academic Works"
 msgstr "Trabalhos acadêmicos"
 
-#: research/models.py:123
+#: research/models.py:134
 msgid "Work in Progress"
 msgstr "Trabalho em andamento"
 
-#: research/models.py:124
+#: research/models.py:135
 msgid "Works in Progress"
 msgstr "Trabalhos em andamento"
 
@@ -567,11 +581,24 @@ msgstr "Administração"
 msgid "Home"
 msgstr "Início"
 
-#: templates/admin/index.html:42
+#: templates/admin/index.html:22
+#, python-format
+msgid "Models available in the %(name)s application."
+msgstr ""
+
+#: templates/admin/index.html:36
+msgid "Add"
+msgstr "Adicionar"
+
+#: templates/admin/index.html:40
+msgid "Change"
+msgstr "Alterar"
+
+#: templates/admin/index.html:59
 msgid "About NIRA"
 msgstr "Sobre o NIRA"
 
-#: templates/admin/index.html:43
+#: templates/admin/index.html:60
 msgid ""
 "Main goals of the NeuroMat Individual Report of Activities (NIRA) are "
 "twofold. Firstly, it will automatically feed NeuroMat's annual Report of "
@@ -589,11 +616,11 @@ msgstr ""
 "administrativo do NeuroMat, especialmente na identificação e no tratamento "
 "das necessidades para o curso das atividades relacionadas com o NeuroMat."
 
-#: templates/admin/index.html:48
+#: templates/admin/index.html:65
 msgid "See your orders"
 msgstr "Veja seus pedidos"
 
-#: templates/admin/index.html:49
+#: templates/admin/index.html:66
 msgid ""
 "Track the status of your order, if you have any questions, please contact us "
 "at (11) 3091-1716 or via e-mail at ti@numec.prp.usp.br."
@@ -602,13 +629,10 @@ msgstr ""
 "entre em contato conosco pelo telefone (11) 3091-1716 ou pelo e-mail "
 "ti@numec.prp.usp.br."
 
-#: templates/admin/index.html:50
+#: templates/admin/index.html:67
 msgid "Check"
 msgstr "Verificar"
 
-#: templates/admin/index.html:54
+#: templates/admin/index.html:71
 msgid "NIRA version:"
 msgstr "Versão do NIRA:"
-
-#~ msgid "Name in citation"
-#~ msgstr "Nome em citações"
