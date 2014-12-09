@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-09 09:57-0200\n"
+"POT-Creation-Date: 2014-12-09 10:11-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -471,7 +471,7 @@ msgstr "Reembolsos"
 
 #: research/apps.py:9
 msgid "Research results"
-msgstr "Resultados da pesquisa"
+msgstr "Resultados de pesquisa"
 
 #: research/models.py:11
 msgid "In Progress"
@@ -623,11 +623,10 @@ msgstr "Veja seus pedidos"
 #: templates/admin/index.html:66
 msgid ""
 "Track the status of your order, if you have any questions, please contact us "
-"at (11) 3091-1716 or via e-mail at ti@numec.prp.usp.br."
+"at nira@numec.prp.usp.br."
 msgstr ""
 "Acompanhe o status do seu pedido, se você tiver alguma dúvida, por favor, "
-"entre em contato conosco pelo telefone (11) 3091-1716 ou pelo e-mail "
-"ti@numec.prp.usp.br."
+"entre em contato conosco pelo email nira@numec.prp.usp.br."
 
 #: templates/admin/index.html:67
 msgid "Check"
