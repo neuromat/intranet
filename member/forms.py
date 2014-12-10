@@ -3,6 +3,7 @@ from order.models import Investigator
 from django.forms import Select
 from cep.widgets import CEPInput
 
+
 class InvestigatorForm(forms.ModelForm):
 
     class Meta:
@@ -12,8 +13,7 @@ class InvestigatorForm(forms.ModelForm):
 
         widgets = {
             'zipcode': CEPInput(address={'street': 'id_street', 'district': 'id_district', 'city': 'id_city',
-                                         'state': 'id_state'},
-                                       attrs={'pattern': '\d{5}-?\d{3}'}),
+                                         'state': 'id_state'}, attrs={'pattern': '\d{5}-?\d{3}'}),
             'country': Select(attrs={'class': 'bfh-countries', 'data-country': 'BR'}),
             'state': Select(attrs={'class': 'bfh-states', 'data-country': 'id_country'}),
         }
