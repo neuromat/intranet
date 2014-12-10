@@ -19,7 +19,7 @@ class InvestigatorForm(forms.ModelForm):
         }
 
     class Media:
-        js = ('/static/BootstrapFormHelpers/dist/js/bootstrap-formhelpers.min.js',)
+        js = ('/static/bootstrap_form_helpers/dist/js/bootstrap-formhelpers.min.js',)
         css = {
-            'all': ('/static/BootstrapFormHelpers/dist/css/bootstrap-formhelpers.min.css',)
+            'all': ('/static/bootstrap_form_helpers/dist/css/bootstrap-formhelpers.min.css',)
         }
