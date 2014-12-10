@@ -2,6 +2,7 @@ from django.contrib import admin
 from member.models import *
 from django.utils.translation import ugettext_lazy as _
 import copy
+from forms import *
 
 admin.site.register(Role)
 admin.site.register(Institution)
@@ -34,6 +35,8 @@ class InvestigatorAdmin(admin.ModelAdmin):
             return super(InvestigatorAdmin, self).get_readonly_fields(request, obj)
         else:
             return 'user', 'force_password_change', 'role'
+
+    form = InvestigatorForm
 
 admin.site.register(Investigator, InvestigatorAdmin)
 
