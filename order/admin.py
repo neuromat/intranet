@@ -54,6 +54,12 @@ class OrderAdmin(SuperOrder):
     list_per_page = 15
     list_filter = ('status', 'type_of_order', 'requester',)
 
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 admin.site.register(Order, OrderAdmin)
 
 
