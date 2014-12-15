@@ -55,7 +55,11 @@ class Investigator(models.Model):
     'create_user_profile_signal' and 'password_change_signal' force password change on first login.
     """
     user = models.OneToOneField(User, verbose_name=_('User'))
-    force_password_change = models.BooleanField(_('Force password change'), default=True)
+    force_password_change = models.BooleanField(_('Force password change'), default=True,
+                                                help_text=_('Force the user to change their password at next login.'))
+    is_almost_superuser = models.BooleanField(_('NIRA superuser'), default=False,
+                                              help_text=_('Designates whether the user can create content on behalf of'
+                                                          ' another user.'))
     nickname = models.CharField(_('Nickname'), max_length=20, blank=True, null=True)
     role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
