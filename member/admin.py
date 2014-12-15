@@ -12,7 +12,7 @@ class InvestigatorAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('force_password_change', 'user', 'nickname', 'role', 'institution',)
+            'fields': ['user', 'nickname', 'role', 'institution', ]
         }),
         (_('Personal Info'), {
             'fields': ('rg', 'cpf', 'passport')
@@ -29,12 +29,20 @@ class InvestigatorAdmin(admin.ModelAdmin):
             return Investigator.objects.all()
         return Investigator.objects.filter(user=request.user)
 
-    # If not superuser, do not show force_password_change, user and role fields
+    # If not superuser, do not show user and role fields
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
             return super(InvestigatorAdmin, self).get_readonly_fields(request, obj)
         else:
-            return 'user', 'force_password_change', 'role'
+            return 'user', 'role'
+
+    # If superuser, display the is_almost_superuser and force_password_change fields
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = copy.deepcopy(super(InvestigatorAdmin, self).get_fieldsets(request, obj))
+        if request.user.is_superuser:
+            fieldsets[0][1]['fields'].append('is_almost_superuser')
+            fieldsets[0][1]['fields'].append('force_password_change')
+        return fieldsets
 
     form = InvestigatorForm
 
