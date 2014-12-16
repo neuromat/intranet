@@ -2,7 +2,11 @@ from django.contrib import admin
 from activity.models import *
 import copy
 from forms import *
-#from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
+
+
+def nira_admin():
+    return User.objects.filter(investigator__is_nira_admin=True)
 
 
 class GeneralEventAdmin(admin.ModelAdmin):
@@ -23,21 +27,21 @@ class ActivityAdmin(admin.ModelAdmin):
     # Shows the activities according to the user permission
     def get_queryset(self, request):
         qs = super(ActivityAdmin, self).get_queryset(request)
-        # If super-user, show all
-        if request.user.is_superuser:
+        # If NIRA Admin, show all
+        if request.user in nira_admin():
             return qs
         return qs.filter(investigator=request.user)
 
-    # If not superuser, do not show the investigator field
+    # If not NIRA Admin, do not show the investigator field
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(ActivityAdmin, self).get_fieldsets(request, obj))
-        if request.user.is_superuser:
+        if request.user in nira_admin():
             fieldsets[0][1]['fields'].insert(0, 'investigator')
         return fieldsets
 
-    # If not superuser, set the investigator as the current user
+    # If not NIRA Admin, set the investigator as the current user
     def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser:
+        if request.user not in nira_admin():
             if not change:
                 obj.investigator = Investigator.objects.get(user=request.user)
         obj.save()
@@ -77,7 +81,7 @@ class ScientificMissionAdmin(ActivityAdmin):
         }),
     )
 
-    list_display = ('investigator','mission', 'start_date', 'end_date')
+    list_display = ('investigator', 'mission', 'start_date', 'end_date')
     list_display_links = ('investigator', 'start_date', 'end_date')
 
 admin.site.register(ScientificMission, ScientificMissionAdmin)
