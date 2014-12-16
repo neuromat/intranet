@@ -25,7 +25,7 @@ class InvestigatorAdmin(admin.ModelAdmin):
 
     # Shows the investigators according to the user permission
     def get_queryset(self, request):
-        if request.user.is_superuser:
+        if request.user.is_superuser or request.user in User.objects.filter(investigator__is_nira_admin=True):
             return Investigator.objects.all()
         return Investigator.objects.filter(user=request.user)
 
@@ -36,11 +36,11 @@ class InvestigatorAdmin(admin.ModelAdmin):
         else:
             return 'user', 'role'
 
-    # If superuser, display the is_almost_superuser and force_password_change fields
+    # If superuser, display the is_nira_admin and force_password_change fields
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(InvestigatorAdmin, self).get_fieldsets(request, obj))
         if request.user.is_superuser:
-            fieldsets[0][1]['fields'].append('is_almost_superuser')
+            fieldsets[0][1]['fields'].append('is_nira_admin')
             fieldsets[0][1]['fields'].append('force_password_change')
         return fieldsets
 
