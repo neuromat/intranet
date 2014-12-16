@@ -29,7 +29,7 @@ class InvestigatorAdmin(admin.ModelAdmin):
             return Investigator.objects.all()
         return Investigator.objects.filter(user=request.user)
 
-    # If not superuser, do not show user and role fields
+    # If not superuser, do not enable user and role fields
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
             return super(InvestigatorAdmin, self).get_readonly_fields(request, obj)
@@ -64,7 +64,7 @@ class BibliographicCitationAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(investigator=request.user)
 
-    # If not superuser, do not show the investigator field
+    # If superuser, display the investigator field
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(BibliographicCitationAdmin, self).get_fieldsets(request, obj))
         if request.user.is_superuser:
