@@ -10,32 +10,32 @@ from django.contrib.auth.models import User
 
 
 def nira_admin():
-    return User.objects.filter(investigator__is_almost_superuser=True)
+    return User.objects.filter(investigator__is_nira_admin=True)
 
 
 class SuperOrder(admin.ModelAdmin):
-    # Shows the requests according to the user permission. Users defined as is_almost_superuser can see all orders
+    # Shows the requests according to the user permission. Users defined as NIRA Admin can see all orders
     def get_queryset(self, request):
         qs = super(SuperOrder, self).get_queryset(request)
         if request.user in nira_admin():
             return qs
         return qs.filter(requester=request.user)
 
-    # If the user has the is_almost_superuser field disabled, do not show the status field
+    # If not NIRA Admin, do not show the status field
     def get_readonly_fields(self, request, obj=None):
         ro_fields = super(SuperOrder, self).get_readonly_fields(request, obj)
         if request.user not in nira_admin():
             ro_fields = list(ro_fields) + ['status']
         return ro_fields
 
-    # If the user has the is_almost_superuser field disabled, do not show the requester field
+    # If not NIRA Admin, do not show the requester field
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
         if request.user in nira_admin():
             fieldsets[0][1]['fields'].append('requester')
         return fieldsets
 
-    # If the user has the is_almost_superuser field disabled, set the requester as the current user and status as Open
+    # If not NIRA Admin, set the requester as the current user and status as Open
     def save_model(self, request, obj, form, change):
         if request.user not in nira_admin():
             if not change:
