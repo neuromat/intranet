@@ -8,21 +8,22 @@ import copy
 
 
 class SuperOrder(admin.ModelAdmin):
-    # Shows the requests according to the user permission. Users defined as NIRA Admin can see all orders
+    # Shows the requests according to the user permission.
+    # Users defined as superuser or NIRA Admin can see all orders
     def get_queryset(self, request):
         qs = super(SuperOrder, self).get_queryset(request)
         if request.user.investigator.is_nira_admin or request.user.is_superuser:
             return qs
         return qs.filter(requester=request.user)
 
-    # If not NIRA Admin, do not show the status field
+    # If not superuser or NIRA Admin, do not show the status field
     def get_readonly_fields(self, request, obj=None):
         ro_fields = super(SuperOrder, self).get_readonly_fields(request, obj)
         if not request.user.investigator.is_nira_admin or not request.user.is_superuser:
             ro_fields = list(ro_fields) + ['status']
         return ro_fields
 
-    # If not NIRA Admin, do not show the requester field
+    # If not superuser or NIRA Admin, do not show the requester and protocol fields
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
         if request.user.investigator.is_nira_admin or request.user.is_superuser:
@@ -32,7 +33,7 @@ class SuperOrder(admin.ModelAdmin):
                             }),)
         return fieldsets
 
-    # If not NIRA Admin, set the requester as the current user and status as Open
+    # If not superuser or NIRA Admin, set the requester as the current user and status as Open
     def save_model(self, request, obj, form, change):
         if not request.user.investigator.is_nira_admin or not request.user.is_superuser:
             if not change:
@@ -46,12 +47,15 @@ class OrderAdmin(SuperOrder):
     list_per_page = 15
     list_filter = ('status', 'type_of_order', 'requester',)
 
+    # Disable the option to add order
     def has_add_permission(self, request, obj=None):
         return False
 
+    # Disable the option to delete order
     def has_delete_permission(self, request, obj=None):
         return False
 
+    # Hide the order link on the main menu
     def get_model_perms(self, request):
         perms = super(OrderAdmin, self).get_model_perms(request)
         perms['list_hide'] = True
