@@ -49,6 +49,7 @@ class Order(models.Model):
     date_modified = models.DateTimeField(_('Modified'), auto_now=True, blank=True)
     type_of_order = models.CharField(_('Type of order'), max_length=1, choices=ORDER_TYPE, blank=True)
     status = models.CharField(max_length=1, default=OPEN, choices=ORDER_STATUS, blank=True)
+    protocol = models.IntegerField(_('Protocol'), blank=True, null=True)
     objects = InheritanceManager()
 
     def __unicode__(self):
