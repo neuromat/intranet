@@ -21,6 +21,7 @@
         <ul class="dropdown-menu">
             <table summary="{% blocktrans with name=app.name %}Models available in the {{ name }} application.{% endblocktrans %}" class="table table-striped table-bordered" style="width: 400px;">
                 {% for model in app.models %}
+                    {% if not model.perms.list_hide %}
                     <tr>
                         <th scope="row">
                             {% if model.admin_url %}
@@ -43,6 +44,7 @@
                             {% endif %}
                         </th>
                     </tr>
+                    {%  endif %}
                 {% endfor %}
             </table>
         </ul>
