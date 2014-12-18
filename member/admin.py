@@ -25,7 +25,7 @@ class InvestigatorAdmin(admin.ModelAdmin):
 
     # Shows the investigators according to the user permission
     def get_queryset(self, request):
-        if request.user.is_superuser or request.user in User.objects.filter(investigator__is_nira_admin=True):
+        if request.user.investigator.is_nira_admin or request.user.is_superuser:
             return Investigator.objects.all()
         return Investigator.objects.filter(user=request.user)
 
