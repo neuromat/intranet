@@ -2,11 +2,6 @@ from django.contrib import admin
 from activity.models import *
 import copy
 from forms import *
-from django.contrib.auth.models import User
-
-
-def nira_admin():
-    return User.objects.filter(investigator__is_nira_admin=True)
 
 
 class GeneralEventAdmin(admin.ModelAdmin):
@@ -25,23 +20,23 @@ admin.site.register(Meeting, MeetingAdmin)
 
 class ActivityAdmin(admin.ModelAdmin):
     # Shows the activities according to the user permission
+    # Users defined as superuser or NIRA Admin can see all activities
     def get_queryset(self, request):
         qs = super(ActivityAdmin, self).get_queryset(request)
-        # If NIRA Admin, show all
-        if request.user in nira_admin():
+        if request.user.investigator.is_nira_admin or request.user.is_superuser:
             return qs
         return qs.filter(investigator=request.user)
 
-    # If not NIRA Admin, do not show the investigator field
+    # If superuser or NIRA Admin, enable the investigator field
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(ActivityAdmin, self).get_fieldsets(request, obj))
-        if request.user in nira_admin():
+        if request.user.investigator.is_nira_admin or request.user.is_superuser:
             fieldsets[0][1]['fields'].insert(0, 'investigator')
         return fieldsets
 
-    # If not NIRA Admin, set the investigator as the current user
+    # If not superuser or NIRA Admin, set the investigator as the current user
     def save_model(self, request, obj, form, change):
-        if request.user not in nira_admin():
+        if not request.user.investigator.is_nira_admin or not request.user.is_superuser:
             if not change:
                 obj.investigator = Investigator.objects.get(user=request.user)
         obj.save()
