@@ -105,7 +105,7 @@ class HardwareSoftware(Order):
 
     """
     type = models.TextField(_('Description'), max_length=500)
-    quantity = models.IntegerField(_('Quantity'), max_length=5)
+    quantity = models.IntegerField(_('Quantity'))
 
     class Meta:
         verbose_name = _('Hardware and software')
