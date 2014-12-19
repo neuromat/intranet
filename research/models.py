@@ -60,12 +60,12 @@ class Paper(Document):
     status = models.ForeignKey(PaperStatus, verbose_name=_('Status'))
     doi = models.CharField(_('DOI'), max_length=50, blank=True, null=True)
     issn = models.CharField(_('ISSN'), max_length=50, blank=True, null=True)
-    local = models.CharField(_('Local'), max_length=50, blank=True, null=True)
+    local = models.CharField(_('Local'), max_length=100, blank=True, null=True)
     volume = models.CharField(_('Volume'), max_length=50, blank=True, null=True)
     issue = models.CharField(_('Issue'), max_length=50, blank=True, null=True)
-    start_page = models.IntegerField(_('Start page'), max_length=6, blank=True, null=True)
-    end_page = models.IntegerField(_('End page'), max_length=6, blank=True, null=True)
-    year = models.IntegerField(_('Year'), max_length=4, blank=True, null=True)
+    start_page = models.IntegerField(_('Start page'), blank=True, null=True)
+    end_page = models.IntegerField(_('End page'), blank=True, null=True)
+    year = models.IntegerField(_('Year'), blank=True, null=True)
     url = models.URLField(_('URL'), max_length=50, blank=True, null=True)
 
     class Meta:
@@ -101,7 +101,7 @@ class AcademicWork(Document):
     author = models.ForeignKey(Investigator, verbose_name=_('Author'))
     advisor = models.ForeignKey(Investigator, verbose_name=_('Advisor'), related_name='advisor_academic_work')
     co_advisor = models.ManyToManyField(Investigator, verbose_name=_('Co-Advisor'),
-                                           related_name='co_supervisor_academic_work', blank=True, null=True)
+                                        related_name='co_supervisor_academic_work', blank=True, null=True)
     status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER)
 
     class Meta:
@@ -141,3 +141,25 @@ class WorkInProgress(models.Model):
             if orig.status != self.status:
                 self.modified = datetime.datetime.now()
         super(WorkInProgress, self).save(*args, **kwargs)
+
+
+class Book(models.Model):
+    """
+    An instance of this class is a book or a chapter of a book.
+
+    """
+    author = models.ManyToManyField(Investigator, verbose_name=_('Author'))
+    doi = models.CharField(_('DOI'), max_length=50, blank=True, null=True)
+    isbn = models.CharField(_('ISBN'), max_length=50, blank=True, null=True)
+    volume = models.CharField(_('Volume'), max_length=50, blank=True, null=True)
+    issue = models.CharField(_('Issue'), max_length=50, blank=True, null=True)
+    serie = models.CharField(_('Serie'), max_length=50, blank=True, null=True)
+    start_page = models.IntegerField(_('Start page'), blank=True, null=True)
+    end_page = models.IntegerField(_('End page'), blank=True, null=True)
+    publisher = models.CharField(_('Publisher'), max_length=100, blank=True, null=True)
+    year = models.IntegerField(_('Year'), blank=True, null=True)
+    url = models.URLField(_('URL'), max_length=50, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('Book')
+        verbose_name_plural = _('Books')
