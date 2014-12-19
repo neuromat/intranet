@@ -3,6 +3,7 @@ from order.models import *
 from forms import *
 from django.utils.translation import ugettext_lazy as _
 import copy
+from django.core.mail import EmailMultiAlternatives
 
 # Register your models here.
 
@@ -38,6 +39,15 @@ class SuperOrder(admin.ModelAdmin):
                 obj.requester = Investigator.objects.get(user=request.user)
                 obj.status = 'o'
         obj.save()
+
+        if not change:
+            subject, from_email, to = 'NIRA - Novo pedido', 'neuromatematica@gmail.com', 'admin-nira@numec.prp.usp.br'
+            text_content = 'Um novo pedido foi gerado no sistema NIRA.'
+            html_content = '<p>Um novo pedido foi gerado no sistema NIRA. ' \
+                           '<a href="http://sistema.numec.prp.usp.br/admin/order/order/">Ver pedidos.</a></p>'
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
 
 
 class OrderAdmin(SuperOrder):
