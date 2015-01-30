@@ -17,7 +17,7 @@ class SuperOrder(admin.ModelAdmin):
             return qs
         return qs.filter(requester=request.user)
 
-    # If not superuser or NIRA Admin, do not show the status field
+    # If not superuser and not NIRA Admin, do not show the status field
     def get_readonly_fields(self, request, obj=None):
         ro_fields = super(SuperOrder, self).get_readonly_fields(request, obj)
         if not request.user.is_superuser and not request.user.investigator.is_nira_admin:
