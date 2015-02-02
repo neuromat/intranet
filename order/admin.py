@@ -97,7 +97,7 @@ class HardwareSoftwareAdmin(SuperOrder):
         (None, {
             'fields': ['status']
         }),
-        (_('Hardware or Software Info'), {
+        (_('Info about the permanent material or the consumption item'), {
             'fields': ('type', 'quantity')
         }),
         (_('Purpose'), {
