@@ -435,7 +435,7 @@ msgstr "Material permanente ou de consumo"
 
 #: order/models.py:112
 msgid "Permanent material or consumption items"
-msgstr ""
+msgstr "Materiais permanentes ou de consumo"
 
 #: order/models.py:129
 msgid "Services"
