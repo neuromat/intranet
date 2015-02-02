@@ -108,8 +108,8 @@ class HardwareSoftware(Order):
     quantity = models.IntegerField(_('Quantity'))
 
     class Meta:
-        verbose_name = _('Hardware and software')
-        verbose_name_plural = _('Hardwares and softwares')
+        verbose_name = _('Permanent material or consumption item')
+        verbose_name_plural = _('Permanent material or consumption items')
 
     # Sets the type of order
     def save(self, *args, **kwargs):
