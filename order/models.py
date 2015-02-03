@@ -101,15 +101,15 @@ class Event(Order):
 
 class HardwareSoftware(Order):
     """
-    An instance of this class is a solicitation for a new equipment or a new software.
+    An instance of this class is a solicitation for a new permanent material or consumption item.
 
     """
     type = models.TextField(_('Description'), max_length=500)
     quantity = models.IntegerField(_('Quantity'))
 
     class Meta:
-        verbose_name = _('Permanent material or consumption item')
-        verbose_name_plural = _('Permanent material or consumption items')
+        verbose_name = _('Equipment / Supplies / Miscellaneous')
+        verbose_name_plural = _('Equipment / Supplies / Miscellaneous')
 
     # Sets the type of order
     def save(self, *args, **kwargs):
