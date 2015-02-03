@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-02 15:12-0200\n"
+"POT-Creation-Date: 2015-02-03 11:16-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,7 +181,7 @@ msgstr "Forçar mudança de senha"
 
 #: member/models.py:59
 msgid "Force the user to change their password at next login."
-msgstr ""
+msgstr "Obrigar o usuário a alterar a senha no próximo login"
 
 #: member/models.py:60 sistema/urls.py:14 templates/admin/base_site.html:4
 msgid "NIRA admin"
@@ -190,7 +190,7 @@ msgstr ""
 #: member/models.py:61
 msgid ""
 "Designates whether the user can create content on behalf of another user."
-msgstr ""
+msgstr "Indica se o usuário pode criar conteúdo em nome de outro usuário."
 
 #: member/models.py:63
 msgid "Nickname"
@@ -278,9 +278,8 @@ msgid "Purpose"
 msgstr "Finalidade"
 
 #: order/admin.py:100
-#| msgid "Permanent material or consumption item"
-msgid "Info about the permanent material or the consumption item"
-msgstr "Informações sobre o material permanente ou de consumo"
+msgid "Info about the equipment, supplies or miscellaneous"
+msgstr "Informações sobre os equipamentos ou bens de consumo"
 
 #: order/admin.py:120
 msgid "Service Info"
@@ -346,9 +345,9 @@ msgstr "Madrugada (00:00 - 06:00)"
 msgid "Scientific event"
 msgstr "Evento"
 
-#: order/models.py:18 order/models.py:111
-msgid "Permanent material or consumption item"
-msgstr "Material permanente ou de consumo"
+#: order/models.py:18 order/models.py:111 order/models.py:112
+msgid "Equipment / Supplies / Miscellaneous"
+msgstr "Equipamentos e bens de consumo"
 
 #: order/models.py:19 order/models.py:128
 msgid "Service"
@@ -429,10 +428,6 @@ msgstr "Eventos"
 #: order/models.py:108
 msgid "Quantity"
 msgstr "Quantidade"
-
-#: order/models.py:112
-msgid "Permanent material or consumption items"
-msgstr "Materiais permanentes ou de consumo"
 
 #: order/models.py:129
 msgid "Services"
@@ -677,6 +672,3 @@ msgstr "Verificar"
 #: templates/admin/index.html:73
 msgid "NIRA version:"
 msgstr "Versão do NIRA:"
-
-#~ msgid "Hardware or Software Info"
-#~ msgstr "Informações sobre o hardware ou software"
