@@ -15,7 +15,7 @@ DAILY_STIPEND = 'd'
 REIMBURSEMENT = 'r'
 ORDER_TYPE = (
     (EVENT, _('Scientific event')),
-    (HARDWARE_SOFTWARE, _('Permanent material or consumption item')),
+    (HARDWARE_SOFTWARE, _('Equipment / Supplies / Miscellaneous')),
     (SERVICE, _('Service')),
     (TICKET, _('Ticket')),
     (DAILY_STIPEND, _('Daily stipend')),
