@@ -60,3 +60,14 @@ class WorkInProgressAdmin(admin.ModelAdmin):
         obj.save()
 
 admin.site.register(WorkInProgress, WorkInProgressAdmin)
+
+
+class BookAdmin(admin.ModelAdmin):
+
+    fields = ['author', 'doi', 'isbn', 'volume', 'issue', 'serie', 'start_page', 'end_page', 'publisher', 'year', 'url']
+
+    list_display = ('title', 'doi', 'publisher', 'year',)
+
+    list_display_links = ('title', 'doi', 'publisher', 'year',)
+
+admin.site.register(Book, BookAdmin)

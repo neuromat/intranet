@@ -143,7 +143,7 @@ class WorkInProgress(models.Model):
         super(WorkInProgress, self).save(*args, **kwargs)
 
 
-class Book(models.Model):
+class Book(Document):
     """
     An instance of this class is a book or a chapter of a book.
 
