@@ -64,7 +64,8 @@ admin.site.register(WorkInProgress, WorkInProgressAdmin)
 
 class BookAdmin(admin.ModelAdmin):
 
-    fields = ['author', 'doi', 'isbn', 'volume', 'issue', 'serie', 'start_page', 'end_page', 'publisher', 'year', 'url']
+    fields = ['author', 'title', 'doi', 'isbn', 'volume', 'issue', 'serie', 'start_page', 'end_page', 'publisher',
+              'year', 'url', 'reference']
 
     list_display = ('title', 'doi', 'publisher', 'year',)
 
