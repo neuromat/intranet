@@ -109,6 +109,17 @@ class HardwareSoftwareAdmin(SuperOrder):
 
     list_display_links = ('order_number', 'status', 'type', 'order_date')
 
+    form = HardwareSoftwareAdminForm
+
+    # If not superuser or NIRA admin, do not show the origin and category fields
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
+        if request.user.is_superuser:
+            fieldsets[0][1]['fields'].append('origin')
+            fieldsets[0][1]['fields'].append('category')
+        return fieldsets
+
+
 admin.site.register(HardwareSoftware, HardwareSoftwareAdmin)
 
 

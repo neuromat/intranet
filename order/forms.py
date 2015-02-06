@@ -1,5 +1,5 @@
 from django import forms
-from order.models import Ticket
+from order.models import Ticket, HardwareSoftware
 from django.forms import RadioSelect, Select
 from django.utils.translation import ugettext_lazy as _
 
@@ -22,6 +22,16 @@ TIME = (
     ('4', _('Night (12am - 6am)')),
 )
 
+ORIGIN = (
+    ('0', _('National')),
+    ('1', _('International'))
+)
+
+CATEGORY = (
+    ('0', _('Permanent material')),
+    ('1', _('Consumption items'))
+)
+
 
 class TicketAdminForm(forms.ModelForm):
 
@@ -39,6 +49,24 @@ class TicketAdminForm(forms.ModelForm):
 
     class Media:
         js = ('/static/js/order.js',)
+        css = {
+            'all': ('/static/css/customization.css',)
+        }
+
+
+class HardwareSoftwareAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = HardwareSoftware
+
+        fields = ['origin', 'category']
+
+        widgets = {
+            'origin': RadioSelect(choices=ORIGIN),
+            'category': RadioSelect(choices=CATEGORY),
+        }
+
+    class Media:
         css = {
             'all': ('/static/css/customization.css',)
         }

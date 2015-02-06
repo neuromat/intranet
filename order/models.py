@@ -106,6 +106,11 @@ class HardwareSoftware(Order):
     """
     type = models.TextField(_('Description'), max_length=500)
     quantity = models.IntegerField(_('Quantity'))
+    url = models.URLField(_('URL'), max_length=50, blank=True, null=True, help_text='Put here as an example a link from'
+                                                                                    ' any store selling the product you'
+                                                                                    ' want.')
+    origin = models.CharField(_('Origin'), max_length=1, blank=True, null=True)
+    category = models.CharField(_('Category'), max_length=1, blank=True, null=True)
 
     class Meta:
         verbose_name = _('Equipment / Supplies / Miscellaneous')
@@ -123,6 +128,7 @@ class Service(Order):
 
     """
     type = models.TextField(_('Description'), max_length=500)
+    origin = models.CharField(_('Origin'), max_length=1, blank=True, null=True)
 
     class Meta:
         verbose_name = _('Service')
