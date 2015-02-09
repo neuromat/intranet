@@ -89,6 +89,8 @@ class EventAdmin(SuperOrder):
 
     list_display_links = ('order_number', 'status', 'name', 'order_date')
 
+    form = EventAdminForm
+
 admin.site.register(Event, EventAdmin)
 
 

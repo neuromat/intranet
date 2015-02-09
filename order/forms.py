@@ -1,5 +1,5 @@
 from django import forms
-from order.models import Ticket, HardwareSoftware, Service
+from order.models import Ticket, HardwareSoftware, Service, Event
 from django.forms import RadioSelect, Select, TextInput
 from django.utils.translation import ugettext_lazy as _
 
@@ -87,4 +87,16 @@ class ServiceAdminForm(forms.ModelForm):
     class Media:
         css = {
             'all': ('/static/css/customization.css',)
+        }
+
+
+class EventAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = Event
+
+        fields = ['url']
+
+        widgets = {
+            'url': TextInput(attrs={'size': 80, 'placeholder': 'http://event.com'}),
         }
