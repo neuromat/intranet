@@ -46,8 +46,8 @@ class PaperStatus(models.Model):
         return u'%s' % self.name
 
     class Meta:
-        verbose_name = _('Paper status')
-        verbose_name_plural = _('Papers status')
+        verbose_name = _('Paper Status')
+        verbose_name_plural = _('Papers Status')
         ordering = ('name', )
 
 
@@ -87,8 +87,8 @@ class TypeAcademicWork(models.Model):
         return u'%s' % self.name
 
     class Meta:
-        verbose_name = _('Type of academic work')
-        verbose_name_plural = _('Types of academic work')
+        verbose_name = _('Type of Academic Work')
+        verbose_name_plural = _('Types of Academic Work')
         ordering = ('name', )
 
 
@@ -161,5 +161,5 @@ class Book(Document):
     url = models.URLField(_('URL'), max_length=50, blank=True, null=True)
 
     class Meta:
-        verbose_name = _('Book')
-        verbose_name_plural = _('Books')
+        verbose_name = _('Book / Book Chapters')
+        verbose_name_plural = _('Book / Book Chapters')
