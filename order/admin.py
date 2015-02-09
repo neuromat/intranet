@@ -140,6 +140,15 @@ class ServiceAdmin(SuperOrder):
 
     list_display_links = ('order_number', 'status', 'type', 'order_date')
 
+    form = ServiceAdminForm
+
+    # If not superuser or NIRA admin, not show the origin field.
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
+        if request.user.is_superuser:
+            fieldsets[0][1]['fields'].append('origin')
+        return fieldsets
+
 admin.site.register(Service, ServiceAdmin)
 
 

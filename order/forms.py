@@ -1,5 +1,5 @@
 from django import forms
-from order.models import Ticket, HardwareSoftware
+from order.models import Ticket, HardwareSoftware, Service
 from django.forms import RadioSelect, Select, TextInput
 from django.utils.translation import ugettext_lazy as _
 
@@ -65,6 +65,23 @@ class HardwareSoftwareAdminForm(forms.ModelForm):
             'origin': RadioSelect(choices=ORIGIN),
             'category': RadioSelect(choices=CATEGORY),
             'url': TextInput(attrs={'size': 80, 'placeholder': 'http://myproduct.example.com/product01'}),
+        }
+
+    class Media:
+        css = {
+            'all': ('/static/css/customization.css',)
+        }
+
+
+class ServiceAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = Service
+
+        fields = ['origin']
+
+        widgets = {
+            'origin': RadioSelect(choices=ORIGIN),
         }
 
     class Media:
