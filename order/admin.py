@@ -98,7 +98,7 @@ class HardwareSoftwareAdmin(SuperOrder):
             'fields': ['status']
         }),
         (_('Info about the equipment, supplies or miscellaneous'), {
-            'fields': ('type', 'quantity')
+            'fields': ('type', 'quantity', 'url')
         }),
         (_('Purpose'), {
             'fields': ('justification',)
@@ -111,7 +111,7 @@ class HardwareSoftwareAdmin(SuperOrder):
 
     form = HardwareSoftwareAdminForm
 
-    # If not superuser or NIRA admin, do not show the origin and category fields
+    # If not superuser or NIRA admin, not show the origin and category fields.
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
         if request.user.is_superuser:

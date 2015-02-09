@@ -1,6 +1,6 @@
 from django import forms
 from order.models import Ticket, HardwareSoftware
-from django.forms import RadioSelect, Select
+from django.forms import RadioSelect, Select, TextInput
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -59,11 +59,12 @@ class HardwareSoftwareAdminForm(forms.ModelForm):
     class Meta:
         model = HardwareSoftware
 
-        fields = ['origin', 'category']
+        fields = ['origin', 'category', 'url']
 
         widgets = {
             'origin': RadioSelect(choices=ORIGIN),
             'category': RadioSelect(choices=CATEGORY),
+            'url': TextInput(attrs={'size': 80, 'placeholder': 'http://myproduct.example.com/product01'}),
         }
 
     class Media:
