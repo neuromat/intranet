@@ -4,6 +4,8 @@ from forms import *
 from django.utils.translation import ugettext_lazy as _
 import copy
 from django.core.mail import EmailMultiAlternatives
+from django.core.mail import BadHeaderError
+from django.http import HttpResponse
 
 # Register your models here.
 
@@ -34,20 +36,43 @@ class SuperOrder(admin.ModelAdmin):
 
     # If not superuser or NIRA Admin, set the requester as the current user and status as Open
     def save_model(self, request, obj, form, change):
-        if not request.user.investigator.is_nira_admin or not request.user.is_superuser:
+        if not request.user.is_superuser and not request.user.investigator.is_nira_admin:
             if not change:
                 obj.requester = Investigator.objects.get(user=request.user)
                 obj.status = 'o'
         obj.save()
 
+        # Check the type of request. It will be used in the email that is sent to the admins of the NIRA.
+        type_of_order = obj.type_of_order
+        if type_of_order == 'e':
+            type_of_order = 'event'
+        elif type_of_order == 'h':
+            type_of_order = 'hardwaresoftware'
+        elif type_of_order == 's':
+            type_of_order = 'service'
+        elif type_of_order == 't':
+            type_of_order = 'ticket'
+        elif type_of_order == 'd':
+            type_of_order = 'dailystipend'
+        else:
+            type_of_order = 'reimbursement'
+
+        requester = obj.requester
+        id_number = obj.id
+
         if not change:
             subject, from_email, to = 'NIRA - Novo pedido', 'neuromatematica@gmail.com', 'admin-nira@numec.prp.usp.br'
             text_content = 'Um novo pedido foi gerado no sistema NIRA.'
-            html_content = '<p>Um novo pedido foi gerado no sistema NIRA. ' \
-                           '<a href="http://sistema.numec.prp.usp.br/admin/order/order/">Ver pedidos.</a></p>'
-            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-            msg.attach_alternative(html_content, "text/html")
-            msg.send()
+            html_content = '<p></p><p>O pesquisador %s fez um novo pedido no sistema NIRA. ' \
+                           '<a href="http://localhost:8000/admin/order/%s/%s">Clique aqui</a> para ver este pedido</p>'\
+                           % (requester, type_of_order, id_number)
+            if subject and from_email and to:
+                try:
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
+                except BadHeaderError:
+                    return HttpResponse('Invalid header found.')
 
 
 class OrderAdmin(SuperOrder):
