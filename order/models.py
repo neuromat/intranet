@@ -3,6 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 from member.models import Investigator
 from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
+from django.core.mail import EmailMultiAlternatives
+from django.core.mail import BadHeaderError
+from django.http import HttpResponse
 
 # Create your models here.
 
@@ -75,6 +78,44 @@ class Order(models.Model):
         return self.id
     order_number.short_description = _('Order number')
     order_number.admin_order_field = '-id'
+
+    def save(self, *args, **kw):
+        if self.pk is not None:
+            check_order = Order.objects.get(pk=self.pk)
+            requester_email = check_order.requester.user.email
+            order_type = check_order.type_of_order
+
+            # Check the type of request. It will be used in the email that will be sent.
+            if order_type == 'e':
+                order_type = 'event'
+            elif order_type == 'h':
+                order_type = 'hardwaresoftware'
+            elif order_type == 's':
+                order_type = 'service'
+            elif order_type == 't':
+                order_type = 'ticket'
+            elif order_type == 'd':
+                order_type = 'dailystipend'
+            else:
+                order_type = 'reimbursement'
+
+            if check_order.status != self.status:
+                subject = 'NIRA - O status do seu pedido foi alterado'
+                from_email = 'neuromatematica@gmail.com'
+                to = requester_email
+                text_content = 'O status do seu pedido foi alterado. Acesse http://nira.numec.prp.usp.br e confira.'
+                html_content = '<p></p><p>O status do seu pedido foi alterado. ' \
+                               '<a href="http://localhost:8000/admin/order/%s/%s">Clique aqui</a> ' \
+                               'para ver o pedido</p>' % (order_type, check_order.id)
+                if subject and from_email and to:
+                    try:
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send()
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+
+        super(Order, self).save(*args, **kw)
 
 
 class Event(Order):
