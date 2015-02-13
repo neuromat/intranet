@@ -67,7 +67,7 @@ class Order(models.Model):
     def id_order(self):
         orders = Order.objects.filter(id=self.id).select_subclasses()
         order = orders[0]
-        return '<a href="%s">%s</a>' % (reverse('admin:%s_%s_change' % (order._meta.app_label, order._meta.module_name),
+        return '<a href="%s">%s</a>' % (reverse('admin:%s_%s_change' % (order._meta.app_label, order._meta.model_name),
                                                 args=(order.id,)), order.id)
     id_order.allow_tags = True
     id_order.short_description = _('Order number')
