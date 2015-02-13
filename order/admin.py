@@ -26,7 +26,7 @@ class SuperOrder(admin.ModelAdmin):
             ro_fields = list(ro_fields) + ['status']
         return ro_fields
 
-    # If not superuser or NIRA Admin, do not show the requester and protocol fields
+    # If superuser or NIRA Admin, show the requester and protocol fields
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
         if request.user.investigator.is_nira_admin or request.user.is_superuser:
@@ -138,14 +138,15 @@ class HardwareSoftwareAdmin(SuperOrder):
 
     form = HardwareSoftwareAdminForm
 
-    # If not superuser or NIRA admin, not show the origin and category fields.
+    # If superuser or NIRA admin, show requester, origin, category and protocol fields.
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
-        if request.user.is_superuser:
+        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+            fieldsets[0][1]['fields'].append('requester')
             fieldsets[0][1]['fields'].append('origin')
             fieldsets[0][1]['fields'].append('category')
+            fieldsets.append((_('Administrative system'), {'fields': ('protocol',)}),)
         return fieldsets
-
 
 admin.site.register(HardwareSoftware, HardwareSoftwareAdmin)
 
@@ -169,10 +170,11 @@ class ServiceAdmin(SuperOrder):
 
     form = ServiceAdminForm
 
-    # If not superuser or NIRA admin, not show the origin field.
+    # If superuser or NIRA admin, show requester and origin fields.
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
-        if request.user.is_superuser:
+        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+            fieldsets[0][1]['fields'].append('requester')
             fieldsets[0][1]['fields'].append('origin')
         return fieldsets
 
