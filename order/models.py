@@ -87,7 +87,7 @@ class Order(models.Model):
             requester_email = check_order.requester.user.email
             order_type = check_order.type_of_order
 
-            # Check the type of request. It will be used in the email that will be sent.
+            # Check the type of request. It will be used to create the URL in the email that will be sent.
             if order_type == 'e':
                 order_type = 'event'
             elif order_type == 'h':
