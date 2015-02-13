@@ -45,6 +45,9 @@ class Order(models.Model):
 
     '__unicode__'		Returns the requester.
     'class Meta'		Ordering of data by date modification.
+    'id_order'          Shows the IDs as a link to the order.
+    'order_number'      Get ID and shows as order number
+    'save'              Send email to the requestor if the order status is changed
     """
     requester = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
     justification = models.TextField(_('Justification'), max_length=500)
@@ -58,7 +61,6 @@ class Order(models.Model):
     def __unicode__(self):
         return u'%s' % self.requester
 
-    # Description of the model / Sort by title
     class Meta:
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
@@ -73,7 +75,6 @@ class Order(models.Model):
     id_order.short_description = _('Order number')
     id_order.admin_order_field = '-id'
 
-    # Getting the ID and showing as order number
     def order_number(self):
         return self.id
     order_number.short_description = _('Order number')
