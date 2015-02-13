@@ -83,6 +83,7 @@ class Order(models.Model):
     def save(self, *args, **kw):
         if self.pk is not None:
             check_order = Order.objects.get(pk=self.pk)
+            requester_name = check_order.requester
             requester_email = check_order.requester.user.email
             order_type = check_order.type_of_order
 
@@ -101,13 +102,19 @@ class Order(models.Model):
                 order_type = 'reimbursement'
 
             if check_order.status != self.status:
-                subject = 'NIRA - O status do seu pedido foi alterado'
+                new_status = self.get_status_display()
+                subject = 'NIRA - The status of your order has changed'
                 from_email = 'neuromatematica@gmail.com'
                 to = requester_email
-                text_content = 'O status do seu pedido foi alterado. Acesse http://nira.numec.prp.usp.br e confira.'
-                html_content = '<p></p><p>O status do seu pedido foi alterado. ' \
-                               '<a href="http://localhost:8000/admin/order/%s/%s">Clique aqui</a> ' \
-                               'para ver o pedido</p>' % (order_type, check_order.id)
+                text_content = 'Hello %s. The status of your order has changed to "%s". See your order by accessing ' \
+                               'nira.numec.prp.usp.br. Please feel free to contact us at 55 (11) 3091-1717 or ' \
+                               'nira@numec.prp.usp.br if you have any questions. With kind regards, the NIRA team.' \
+                               % (requester_name, new_status)
+                html_content = '<p>Hello %s,</p><p>The status of your order has changed to "%s". Click ' \
+                               '<a href="http://localhost:8000/admin/order/%s/%s">here</a> to see your request.</p> ' \
+                               '<p>Please feel free to contact us at 55 (11) 3091-1717 or nira@numec.prp.usp.br if ' \
+                               'you have any questions.</p> <p>With kind regards,</p> <p>the NIRA team.</p>' \
+                               % (requester_name, new_status, order_type, check_order.id)
                 if subject and from_email and to:
                     try:
                         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
