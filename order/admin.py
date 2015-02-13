@@ -170,12 +170,13 @@ class ServiceAdmin(SuperOrder):
 
     form = ServiceAdminForm
 
-    # If superuser or NIRA admin, show requester and origin fields.
+    # If superuser or NIRA admin, show requester, origin and protocol fields.
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
         if request.user.investigator.is_nira_admin or request.user.is_superuser:
             fieldsets[0][1]['fields'].append('requester')
             fieldsets[0][1]['fields'].append('origin')
+            fieldsets.append((_('Administrative system'), {'fields': ('protocol',)}),)
         return fieldsets
 
 admin.site.register(Service, ServiceAdmin)
