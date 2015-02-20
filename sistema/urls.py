@@ -8,6 +8,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^cep/', include('cep.urls')),
+    url(r'^order/', include('order.urls')),
 )
 
 admin.site.site_header = _('NeuroMat Individual Report of Activities')

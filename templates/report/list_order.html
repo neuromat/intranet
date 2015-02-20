@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h3>Orders report</h3>
+{% if latest_order_list %}
+    <table border="1" repeat="1" cellpadding="5">
+        <tr><th>Requester</th><th>Order date</th></tr>
+        {% for order in latest_order_list %}
+        <tr>
+            <td>{{ order.requester }}</td>
+            <td>{{ order.order_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No orders are available.</p>
+{% endif %}
+{% endblock %}
