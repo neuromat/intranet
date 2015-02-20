@@ -64,8 +64,22 @@ class SuperOrder(admin.ModelAdmin):
             subject, from_email, to = 'NIRA - Novo pedido', 'neuromatematica@gmail.com', 'admin-nira@numec.prp.usp.br'
             text_content = 'Um novo pedido foi gerado no sistema NIRA.'
             html_content = '<p></p><p>O pesquisador %s fez um novo pedido no sistema NIRA. ' \
-                           '<a href="http://localhost:8000/admin/order/%s/%s">Clique aqui</a> para ver este pedido</p>'\
+                           'Clique <a href="http://localhost:8000/admin/order/%s/%s">aqui</a> para ver este pedido</p>'\
                            % (requester, type_of_order, id_number)
+            if subject and from_email and to:
+                try:
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
+                except BadHeaderError:
+                    return HttpResponse('Invalid header found.')
+
+        else:
+            subject, from_email, to = 'NIRA - Pedido alterado', 'neuromatematica@gmail.com', 'admin-nira@numec.prp.usp.br'
+            text_content = 'Um pedido foi alterado no sistema NIRA.'
+            html_content = '<p></p><p>O pesquisador %s alterou o pedido n&uacute;mero %s do NIRA. ' \
+                           'Clique <a href="http://localhost:8000/admin/order/%s/%s">aqui</a> para ver este pedido</p>'\
+                           % (requester, id_number, type_of_order, id_number)
             if subject and from_email and to:
                 try:
                     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
