@@ -48,6 +48,8 @@ class Order(models.Model):
     'id_order'          Show the IDs as a link to the order.
     'order_number'      Get ID and shows as order number.
     'save'              Send email to the requestor if the order status is changed.
+                        Send email to users (NIRA Admin) informing that an order has changed.
+                        Send email to users (NIRA Admin) informing that a new order was created.
     """
     requester = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
     justification = models.TextField(_('Justification'), max_length=500)
@@ -126,7 +128,34 @@ class Order(models.Model):
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
 
-        super(Order, self).save(*args, **kw)
+            else:
+                subject, from_email, to = 'NIRA - Pedido alterado', 'neuromatematica@gmail.com', 'caduribas@gmail.com'
+                text_content = 'Um pedido foi alterado no sistema NIRA.'
+                html_content = '<p></p><p>O pesquisador %s alterou o pedido de n&uacute;mero %s do NIRA. Clique ' \
+                               '<a href="http://localhost:8000/admin/order/%s/%s">aqui</a> para ver este pedido.</p>' \
+                               % (requester_name, check_order.id, order_type, check_order.id)
+                if subject and from_email and to:
+                    try:
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send()
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+
+        else:
+            subject, from_email, to = 'NIRA - Novo pedido', 'neuromatematica@gmail.com', 'caduribas@gmail.com'
+            text_content = 'Um novo pedido foi gerado no sistema NIRA.'
+            html_content = '<p></p><p>Um novo pedido foi gerado no sistema NIRA. ' \
+                           'Clique <a href="http://localhost:8000/admin/order/order">aqui</a> para ver o pedido.</p>'
+            if subject and from_email and to:
+                try:
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
+                except BadHeaderError:
+                    return HttpResponse('Invalid header found.')
+
+        super(Order, self).save(*args, **kwargs)
 
 
 class Event(Order):
@@ -193,7 +222,7 @@ class Service(Order):
 
 class Ticket(Order):
     """
-    An instance of this class is a solicitation for a new passage.
+    An instance of this class is a solicitation for a new ticket.
 
     """
     origin = models.CharField(_('Origin'), max_length=200)
