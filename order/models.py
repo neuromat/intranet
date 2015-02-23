@@ -45,9 +45,9 @@ class Order(models.Model):
 
     '__unicode__'		Returns the requester.
     'class Meta'		Ordering of data by date modification.
-    'id_order'          Shows the IDs as a link to the order.
-    'order_number'      Get ID and shows as order number
-    'save'              Send email to the requestor if the order status is changed
+    'id_order'          Show the IDs as a link to the order.
+    'order_number'      Get ID and shows as order number.
+    'save'              Send email to the requestor if the order status is changed.
     """
     requester = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
     justification = models.TextField(_('Justification'), max_length=500)
@@ -80,7 +80,7 @@ class Order(models.Model):
     order_number.short_description = _('Order number')
     order_number.admin_order_field = '-id'
 
-    def save(self, *args, **kw):
+    def save(self, *args, **kwargs):
         if self.pk is not None:
             check_order = Order.objects.get(pk=self.pk)
             requester_name = check_order.requester
@@ -88,18 +88,21 @@ class Order(models.Model):
             order_type = check_order.type_of_order
 
             # Check the type of request. It will be used to create the URL in the email that will be sent.
-            if order_type == 'e':
-                order_type = 'event'
-            elif order_type == 'h':
-                order_type = 'hardwaresoftware'
-            elif order_type == 's':
-                order_type = 'service'
-            elif order_type == 't':
-                order_type = 'ticket'
-            elif order_type == 'd':
-                order_type = 'dailystipend'
-            else:
-                order_type = 'reimbursement'
+            try:
+                if order_type == 'e':
+                    order_type = 'event'
+                elif order_type == 'h':
+                    order_type = 'hardwaresoftware'
+                elif order_type == 's':
+                    order_type = 'service'
+                elif order_type == 't':
+                    order_type = 'ticket'
+                elif order_type == 'd':
+                    order_type = 'dailystipend'
+                elif order_type == 'r':
+                    order_type = 'reimbursement'
+            except NameError:
+                return HttpResponse('Invalid order type found.')
 
             if check_order.status != self.status:
                 new_status = self.get_status_display()
@@ -142,7 +145,7 @@ class Event(Order):
         verbose_name = _('Scientific event')
         verbose_name_plural = _('Scientific events')
 
-    # Sets the type of order
+    # Sets the type of order as event.
     def save(self, *args, **kwargs):
         self.type_of_order = EVENT
         super(Event, self).save(*args, **kwargs)
@@ -150,7 +153,7 @@ class Event(Order):
 
 class HardwareSoftware(Order):
     """
-    An instance of this class is a solicitation for a new permanent material or consumption item.
+    An instance of this class is a purchase request for a new permanent material or a consumable item.
 
     """
     type = models.TextField(_('Description'), max_length=500)
@@ -164,7 +167,7 @@ class HardwareSoftware(Order):
         verbose_name = _('Equipment / Supplies / Miscellaneous')
         verbose_name_plural = _('Equipment / Supplies / Miscellaneous')
 
-    # Sets the type of order
+    # Sets the type of order as equipment / supplies / miscellaneous
     def save(self, *args, **kwargs):
         self.type_of_order = HARDWARE_SOFTWARE
         super(HardwareSoftware, self).save(*args, **kwargs)
@@ -182,7 +185,7 @@ class Service(Order):
         verbose_name = _('Service')
         verbose_name_plural = _('Services')
 
-    # Sets the type of order
+    # Sets the type of order as service.
     def save(self, *args, **kwargs):
         self.type_of_order = SERVICE
         super(Service, self).save(*args, **kwargs)
@@ -207,7 +210,7 @@ class Ticket(Order):
         verbose_name = _('Ticket')
         verbose_name_plural = _('Tickets')
 
-    # Sets the type of order
+    # Sets the type of order as ticket.
     def save(self, *args, **kwargs):
         self.type_of_order = TICKET
         super(Ticket, self).save(*args, **kwargs)
@@ -227,7 +230,7 @@ class DailyStipend(Order):
         verbose_name = _('Daily stipend')
         verbose_name_plural = _('Daily stipends')
 
-    # Sets the type of order
+    # Sets the type of order as daily stipend.
     def save(self, *args, **kwargs):
         self.type_of_order = DAILY_STIPEND
         super(DailyStipend, self).save(*args, **kwargs)
@@ -244,7 +247,7 @@ class Reimbursement(Order):
         verbose_name = _('Reimbursement')
         verbose_name_plural = _('Reimbursements')
 
-    # Sets the type of order
+    # Sets the type of order as reimbursement.
     def save(self, *args, **kwargs):
         self.type_of_order = REIMBURSEMENT
         super(Reimbursement, self).save(*args, **kwargs)

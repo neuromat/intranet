@@ -12,21 +12,21 @@ from django.http import HttpResponse
 
 class SuperOrder(admin.ModelAdmin):
     # Shows the requests according to the user permission.
-    # Users defined as superuser or NIRA Admin can see all orders
+    # Users defined as superuser or NIRA Admin can see all orders.
     def get_queryset(self, request):
         qs = super(SuperOrder, self).get_queryset(request)
         if request.user.investigator.is_nira_admin or request.user.is_superuser:
             return qs
         return qs.filter(requester=request.user)
 
-    # If not superuser and not NIRA Admin, do not show the status field
+    # If not superuser or NIRA Admin, the status field becomes read-only.
     def get_readonly_fields(self, request, obj=None):
         ro_fields = super(SuperOrder, self).get_readonly_fields(request, obj)
         if not request.user.is_superuser and not request.user.investigator.is_nira_admin:
             ro_fields = list(ro_fields) + ['status']
         return ro_fields
 
-    # If superuser or NIRA Admin, show the requester and protocol fields
+    # If superuser or NIRA Admin, show the requester and protocol fields.
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
         if request.user.investigator.is_nira_admin or request.user.is_superuser:
@@ -34,7 +34,7 @@ class SuperOrder(admin.ModelAdmin):
             fieldsets.append((_('Administrative system'), {'fields': ('protocol',)}),)
         return fieldsets
 
-    # If not superuser or NIRA Admin, set the requester as the current user and status as Open
+    # If not superuser or NIRA Admin, set the requester as the current user and the status as Open.
     def save_model(self, request, obj, form, change):
         if not request.user.is_superuser and not request.user.investigator.is_nira_admin:
             if not change:
@@ -42,20 +42,23 @@ class SuperOrder(admin.ModelAdmin):
                 obj.status = 'o'
         obj.save()
 
-        # Check the type of request. It will be used in the email that is sent to the admins of the NIRA.
+        # Check the type of request. It will be used to create the URL in the email that will be sent.
         type_of_order = obj.type_of_order
-        if type_of_order == 'e':
-            type_of_order = 'event'
-        elif type_of_order == 'h':
-            type_of_order = 'hardwaresoftware'
-        elif type_of_order == 's':
-            type_of_order = 'service'
-        elif type_of_order == 't':
-            type_of_order = 'ticket'
-        elif type_of_order == 'd':
-            type_of_order = 'dailystipend'
-        else:
-            type_of_order = 'reimbursement'
+        try:
+            if type_of_order == 'e':
+                type_of_order = 'event'
+            elif type_of_order == 'h':
+                type_of_order = 'hardwaresoftware'
+            elif type_of_order == 's':
+                type_of_order = 'service'
+            elif type_of_order == 't':
+                type_of_order = 'ticket'
+            elif type_of_order == 'd':
+                type_of_order = 'dailystipend'
+            elif type_of_order == 'r':
+                type_of_order = 'reimbursement'
+        except NameError:
+            return HttpResponse('Invalid order type found.')
 
         requester = obj.requester
         id_number = obj.id
@@ -94,15 +97,15 @@ class OrderAdmin(SuperOrder):
     list_per_page = 15
     list_filter = ('status', 'type_of_order', 'requester',)
 
-    # Disable the option to add order
+    # Disable the option to add order.
     def has_add_permission(self, request, obj=None):
         return False
 
-    # Disable the option to delete order
+    # Disable the option to delete order.
     def has_delete_permission(self, request, obj=None):
         return False
 
-    # Hide the order link on the main menu
+    # Hide the order link on the main menu.
     def get_model_perms(self, request):
         perms = super(OrderAdmin, self).get_model_perms(request)
         perms['list_hide'] = True
