@@ -6,6 +6,7 @@ from model_utils.managers import InheritanceManager
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import BadHeaderError
 from django.http import HttpResponse
+from django.conf import settings
 
 # Create your models here.
 
@@ -83,7 +84,15 @@ class Order(models.Model):
     order_number.admin_order_field = '-id'
 
     def save(self, *args, **kwargs):
+        # Info from settings_local file
+        email_host_user = settings.EMAIL_HOST_USER
+        nira_admin_email = settings.NIRA_ADMIN_EMAIL
+        nira_website = settings.NIRA_WEBSITE
+        contact_phone = settings.CONTACT_PHONE
+        contact_email = settings.CONTACT_EMAIL
+
         if self.pk is not None:
+            # Info about the order
             check_order = Order.objects.get(pk=self.pk)
             requester_name = check_order.requester
             requester_email = check_order.requester.user.email
@@ -109,17 +118,18 @@ class Order(models.Model):
             if check_order.status != self.status:
                 new_status = self.get_status_display()
                 subject = 'NIRA - The status of your order has changed'
-                from_email = 'neuromatematica@gmail.com'
+                from_email = email_host_user
                 to = requester_email
                 text_content = 'Hello %s. The status of your order has changed to "%s". See your order by accessing ' \
-                               'nira.numec.prp.usp.br. Please feel free to contact us at 55 (11) 3091-1717 or ' \
-                               'nira@numec.prp.usp.br if you have any questions. With kind regards, the NIRA team.' \
-                               % (requester_name, new_status)
+                               '%s. Please feel free to contact us at %s or %s if you have any questions. ' \
+                               'With kind regards, the NIRA team.' \
+                               % (requester_name, new_status, nira_website, contact_phone, contact_email)
                 html_content = '<p>Hello %s,</p><p>The status of your order has changed to "%s". Click ' \
-                               '<a href="http://localhost:8000/admin/order/%s/%s">here</a> to see your request.</p> ' \
-                               '<p>Please feel free to contact us at 55 (11) 3091-1717 or nira@numec.prp.usp.br if ' \
-                               'you have any questions.</p> <p>With kind regards,</p> <p>the NIRA team.</p>' \
-                               % (requester_name, new_status, order_type, check_order.id)
+                               '<a href="%s/admin/order/%s/%s">here</a> to see your request.</p> ' \
+                               '<p>Please feel free to contact us at %s or %s if you have any questions.</p> ' \
+                               '<p>With kind regards,</p> <p>the NIRA team.</p>' \
+                               % (requester_name, new_status, nira_website, order_type, check_order.id, contact_phone,
+                                  contact_email)
                 if subject and from_email and to:
                     try:
                         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
@@ -129,11 +139,11 @@ class Order(models.Model):
                         return HttpResponse('Invalid header found.')
 
             else:
-                subject, from_email, to = 'NIRA - Pedido alterado', 'neuromatematica@gmail.com', 'caduribas@gmail.com'
+                subject, from_email, to = 'NIRA - Pedido alterado', email_host_user, nira_admin_email
                 text_content = 'Um pedido foi alterado no sistema NIRA.'
                 html_content = '<p></p><p>O pesquisador %s alterou o pedido de n&uacute;mero %s do NIRA. Clique ' \
-                               '<a href="http://localhost:8000/admin/order/%s/%s">aqui</a> para ver este pedido.</p>' \
-                               % (requester_name, check_order.id, order_type, check_order.id)
+                               '<a href="%s/admin/order/%s/%s">aqui</a> para ver este pedido.</p>' \
+                               % (requester_name, check_order.id, nira_website, order_type, check_order.id)
                 if subject and from_email and to:
                     try:
                         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
@@ -143,10 +153,10 @@ class Order(models.Model):
                         return HttpResponse('Invalid header found.')
 
         else:
-            subject, from_email, to = 'NIRA - Novo pedido', 'neuromatematica@gmail.com', 'caduribas@gmail.com'
+            subject, from_email, to = 'NIRA - Novo pedido', email_host_user, nira_admin_email
             text_content = 'Um novo pedido foi gerado no sistema NIRA.'
             html_content = '<p></p><p>Um novo pedido foi gerado no sistema NIRA. ' \
-                           'Clique <a href="http://localhost:8000/admin/order/order">aqui</a> para ver o pedido.</p>'
+                           'Clique <a href="%s/admin/order/order">aqui</a> para ver o pedido.</p>' % nira_website
             if subject and from_email and to:
                 try:
                     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
