@@ -13,26 +13,36 @@ $(document).ready(function () {
     }
 });
 
-function ajax_select_categories(id_order_type)
+function ajax_select_additional_options(id_order_type)
 {
    $("#id_category").html('<option value="">Carregando...</option>');
+   $("#id_origin").html('<option value="">Carregando...</option>');
    $.ajax({
        type: "GET",
-       url: "/order/categories",
+       url: "/order/additional_options",
        dataType: "json",
        data: {'order_type':id_order_type},
        success: function(retorno) {
            $("#id_category").empty();
+           $("#id_origin").empty();
            $("#id_category").append('<option value="">--------</option>');
-           $.each(retorno, function(i, item){
+           $("#id_origin").append('<option value="">--------</option>');
+           $.each(retorno[0], function(i, item){
                $("#id_category").append('<option value="'+ item.value+'">'+item.display+'</option>');
            });
-           if (retorno.length == 0){
+           if (retorno[0].length == 0){
             $("#id_category").hide();
            }else{
             $("#id_category").show();
            }
-
+           $.each(retorno[1], function(i, item){
+               $("#id_origin").append('<option value="'+ item.value+'">'+item.display+'</option>');
+           });
+           if (retorno[1].length == 0){
+            $("#id_origin").hide();
+           }else{
+            $("#id_origin").show();
+           }
        },
        error: function(erro) {
            alert('Erro: Sem retorno de requisição.');

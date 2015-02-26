@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from order.models import *
-from order.forms import CATEGORY
+from order.forms import CATEGORY, ORIGIN
 from django.http import HttpResponse
 import json
 
@@ -13,11 +13,15 @@ def list_order_by_type(request):
     return render(request, 'report/list_order.html', context)
 
 
-def selected_categories(request):
+def select_additional_options(request):
     orders = request.GET.get('order_type')
     if orders == 'h':
         categories = [{'value': category[0], 'display': category[1].encode('utf-8')} for category in CATEGORY]
+        origin = [{'value': orig[0], 'display': orig[1].encode('utf-8')} for orig in ORIGIN]
+    elif orders == 's':
+        origin = [{'value': orig[0], 'display': orig[1].encode('utf-8')} for orig in ORIGIN]
+        categories = []
     else:
         categories = []
-    return HttpResponse(json.dumps(categories), content_type="application/json")
-
+        origin = []
+    return HttpResponse(json.dumps([categories,origin]), content_type="application/json")
