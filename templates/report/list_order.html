@@ -1,12 +1,20 @@
 {% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrahead %}
+<script src="{% static 'js/order.js' %}"></script>
+{% endblock extrahead%}
 {% block content %}
 <h3>Orders report</h3>
 <form method="GET">
-<select name="order_type" id="id_order_type">
+<select name="order_type" id="id_order_type" onchange="ajax_select_categories(this.value)">
   {% for order in orders %}
-     <option value="{{ order.id }}">{{ order.id }}</option>
+     <option value="{{ order.value }}">{{ order.display }}</option>
   {% endfor %}
 </select>
-<input type="submit" value="Send">
+<select name="category" id="id_category" style="display: none">
+  {% for category in categories %}
+     <option value="{{ category.value }}">{{ category.display }}</option>
+  {% endfor %}
+</select>
 </form>
 {% endblock %}
