@@ -9,7 +9,8 @@ import json
 
 def list_order_by_type(request):
     orders = [{'value': order[0], 'display': order[1].encode('utf-8')} for order in ORDER_TYPE]
-    context = {'orders': orders}
+    status = [{'value': status[0], 'display': status[1].encode('utf-8')} for status in ORDER_STATUS]
+    context = {'orders': orders, 'status': status}
     return render(request, 'report/list_order.html', context)
 
 
@@ -24,4 +25,4 @@ def select_additional_options(request):
     else:
         categories = []
         origin = []
-    return HttpResponse(json.dumps([categories,origin]), content_type="application/json")
+    return HttpResponse(json.dumps([categories, origin]), content_type="application/json")
