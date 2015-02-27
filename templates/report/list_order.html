@@ -1,4 +1,5 @@
 {% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
 {% load static %}
 {% block extrahead %}
     <script src="{% static 'js/order.js' %}"></script>
@@ -9,7 +10,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-6 col-sm-6">
-            <label>Order type: </label>
+            <label>{% trans "Order type" %}</label>
             <select class="form-control" name="order_type" id="id_order_type" onchange="ajax_select_additional_options(this.value)">
             {% for order in orders %}
                 <option value="{{ order.value }}">{{ order.display }}</option>
@@ -18,7 +19,7 @@
         </div>
 
         <div class="col-xs-6 col-sm-6">
-            <label>Status: </label>
+            <label>{% trans "Status" %}</label>
             <select class="form-control" name="status" id="id_status">
             {% for type_of_status in status %}
                 <option value="{{ type_of_status.value }}">{{ type_of_status.display }}</option>
@@ -29,7 +30,7 @@
     <br>
     <div class="row">
         <div class="col-xs-6 col-sm-6">
-            <label>Category: </label>
+            <label>{% trans "Category" %}</label>
             <select class="form-control" name="category" id="id_category" disabled>
             {% for category in categories %}
                 <option value="{{ category.value }}">{{ category.display }}</option>
@@ -38,13 +39,17 @@
         </div>
 
         <div class="col-xs-6 col-sm-6">
-            <label>Origin: </label>
+            <label>{% trans "Origin" %}</label>
             <select class="form-control" name="origin" id="id_origin" disabled>
             {% for orig in origin %}
                 <option value="{{ orig.value }}">{{ orig.display }}</option>
             {% endfor %}
             </select>
         </div>
+    </div>
+    <br>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get report" %}</button>
     </div>
 </div>
 </form>
