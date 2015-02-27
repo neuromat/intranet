@@ -1,25 +1,41 @@
 {% extends "admin/base_site.html" %}
 {% load static %}
 {% block extrahead %}
-<script src="{% static 'js/order.js' %}"></script>
+    <script src="{% static 'js/order.js' %}"></script>
 {% endblock extrahead%}
+
 {% block content %}
-<h3>Orders report</h3>
 <form method="GET">
-<select name="order_type" id="id_order_type" onchange="ajax_select_additional_options(this.value)">
-  {% for order in orders %}
-     <option value="{{ order.value }}">{{ order.display }}</option>
-  {% endfor %}
-</select>
-<select name="category" id="id_category" style="display: none">
-  {% for category in categories %}
-     <option value="{{ category.value }}">{{ category.display }}</option>
-  {% endfor %}
-</select>
-<select name="origin" id="id_origin" style="display: none">
-  {% for orig in origin %}
-     <option value="{{ orig.value }}">{{ orig.display }}</option>
-  {% endfor %}
-</select>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4">
+            <label>Order type: </label>
+            <select class="form-control" name="order_type" id="id_order_type" onchange="ajax_select_additional_options(this.value)">
+            {% for order in orders %}
+                <option value="{{ order.value }}">{{ order.display }}</option>
+            {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-xs-4 col-sm-4">
+            <label>Category: </label>
+            <select class="form-control" name="category" id="id_category" disabled>
+            {% for category in categories %}
+                <option value="{{ category.value }}">{{ category.display }}</option>
+            {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-xs-4 col-sm-4">
+            <label>Origin: </label>
+            <select class="form-control" name="origin" id="id_origin" disabled>
+            {% for orig in origin %}
+                <option value="{{ orig.value }}">{{ orig.display }}</option>
+            {% endfor %}
+            </select>
+        </div>
+    </div>
+
+</div>
 </form>
 {% endblock %}
