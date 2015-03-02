@@ -262,7 +262,6 @@ msgid "Bibliographic citations"
 msgstr "Nome em citações bibliográficas"
 
 #: order/admin.py:31
-#, fuzzy
 msgid "Administrative system"
 msgstr "Sistema Administrativo"
 
