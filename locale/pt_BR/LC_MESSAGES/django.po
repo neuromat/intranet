@@ -340,14 +340,12 @@ msgid "Night (12am - 6am)"
 msgstr "Madrugada (00:00 - 06:00)"
 
 #: order/forms.py:26
-#, fuzzy
 msgid "National"
-msgstr "Duração"
+msgstr "Nacional"
 
 #: order/forms.py:27
-#, fuzzy
 msgid "International"
-msgstr "Convite"
+msgstr "Internacional"
 
 #: order/forms.py:31
 msgid "Permanent material"
@@ -527,12 +525,10 @@ msgid "Reference to NeuroMat"
 msgstr "Referência ao NeuroMat"
 
 #: research/models.py:49
-#, fuzzy
 msgid "Paper Status"
 msgstr "Status do artigo"
 
 #: research/models.py:50
-#, fuzzy
 msgid "Papers Status"
 msgstr "Status dos artigos"
 
@@ -579,12 +575,10 @@ msgid "Paper"
 msgstr "Artigo"
 
 #: research/models.py:90
-#, fuzzy
 msgid "Type of Academic Work"
 msgstr "Tipo de trabalho acadêmico"
 
 #: research/models.py:91
-#, fuzzy
 msgid "Types of Academic Work"
 msgstr "Tipos de trabalho acadêmico"
 
@@ -700,9 +694,8 @@ msgid "NIRA version:"
 msgstr "Versão do NIRA:"
 
 #: templates/report/list_order.html:13
-#, fuzzy
 msgid "Order type"
-msgstr "Data/hora do pedido"
+msgstr "Tipo de pedido"
 
 #: templates/report/list_order.html:52
 msgid "Get report"
