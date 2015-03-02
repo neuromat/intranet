@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-02 16:08-0300\n"
+"POT-Creation-Date: 2015-03-02 16:30-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -264,7 +264,7 @@ msgstr "Nome em citações bibliográficas"
 #: order/admin.py:31
 #, fuzzy
 msgid "Administrative system"
-msgstr "Administração"
+msgstr "Sistema Administrativo"
 
 #: order/admin.py:70
 msgid "Event Info"
@@ -344,8 +344,8 @@ msgid "National"
 msgstr "Nacional"
 
 #: order/forms.py:27
-msgid "International"
-msgstr "Internacional"
+msgid "Imported"
+msgstr "Importado"
 
 #: order/forms.py:31
 msgid "Permanent material"
@@ -700,3 +700,4 @@ msgstr "Tipo de pedido"
 #: templates/report/list_order.html:52
 msgid "Get report"
 msgstr "Obter relatório"
+
