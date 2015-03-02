@@ -53,7 +53,7 @@ class Order(models.Model):
                         Send email to users (NIRA Admin) informing that a new order was created.
     """
     requester = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
-    justification = models.TextField(_('Justification'), max_length=500)
+    justification = models.TextField(_('Justification'), max_length=1000)
     order_date = models.DateTimeField(_('Order date'), auto_now_add=True, blank=True)
     date_modified = models.DateTimeField(_('Modified'), auto_now=True, blank=True)
     type_of_order = models.CharField(_('Type of order'), max_length=1, choices=ORDER_TYPE, blank=True)
