@@ -24,7 +24,7 @@ TIME = (
 
 ORIGIN = (
     ('0', _('National')),
-    ('1', _('International'))
+    ('1', _('Imported'))
 )
 
 CATEGORY = (
