@@ -3,6 +3,7 @@
 {% block content %}
 
 <table class="table table-striped table-bordered">
+{% if orders %}
     <tr><th>Nr</th><th>Requester</th><th>Order date</th><th>Origin</th><th>Destination</th><th>Outbound Date</th><th>Inbound Date</th><th>Justification</th></tr>
     {% for order in orders %}
         <tr>
@@ -16,6 +17,9 @@
             <td>{{ order.justification }}</td>
         </tr>
     {% endfor %}
+{%  else %}
+    No tickets found!
+{% endif %}
 </table>
 
 {% endblock %}
