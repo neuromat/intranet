@@ -10,9 +10,50 @@ import json
 
 @login_required
 def list_order_by_type(request):
-    orders = [{'value': order[0], 'display': order[1].encode('utf-8')} for order in ORDER_TYPE]
+    types = [{'value': order_type[0], 'display': order_type[1].encode('utf-8')} for order_type in ORDER_TYPE]
     status = [{'value': status[0], 'display': status[1].encode('utf-8')} for status in ORDER_STATUS]
-    context = {'orders': orders, 'status': status}
+    if request.method == 'POST':
+        if request.POST['order_type'] == "h":
+            status = request.POST.get('status')
+            category = request.POST.get('category')
+            origin = request.POST.get('origin')
+            orders = Order.objects.filter(type_of_order='h', status=status, hardwaresoftware__category=category,
+                                          hardwaresoftware__origin=origin)
+            context = {'orders': orders}
+            return render(request, 'report/list_equipment_supplies_msc.html', context)
+
+        elif request.POST['order_type'] == "s":
+            status = request.POST.get('status')
+            origin = request.POST.get('origin')
+            orders = Order.objects.filter(type_of_order='s', status=status, service__origin=origin)
+            context = {'orders': orders}
+            return render(request, 'report/list_services.html', context)
+
+        elif request.POST['order_type'] == "e":
+            status = request.POST.get('status')
+            orders = Order.objects.filter(type_of_order='e', status=status)
+            context = {'orders': orders}
+            return render(request, 'report/list_events.html', context)
+
+        elif request.POST['order_type'] == "t":
+            status = request.POST.get('status')
+            orders = Order.objects.filter(type_of_order='t', status=status)
+            context = {'orders': orders}
+            return render(request, 'report/list_tickets.html', context)
+
+        elif request.POST['order_type'] == "d":
+            status = request.POST.get('status')
+            orders = Order.objects.filter(type_of_order='d', status=status)
+            context = {'orders': orders}
+            return render(request, 'report/list_daily_stipend.html', context)
+
+        elif request.POST['order_type'] == "r":
+            status = request.POST.get('status')
+            orders = Order.objects.filter(type_of_order='r', status=status)
+            context = {'orders': orders}
+            return render(request, 'report/list_reimbursement.html', context)
+
+    context = {'types': types, 'status': status}
     return render(request, 'report/list_order.html', context)
 
 
