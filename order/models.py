@@ -141,7 +141,7 @@ class Order(models.Model):
             else:
                 subject, from_email, to = 'NIRA - Pedido alterado', email_host_user, nira_admin_email
                 text_content = 'Um pedido foi alterado no sistema NIRA.'
-                html_content = '<p></p><p>O pesquisador %s alterou o pedido de n&uacute;mero %s do NIRA. Clique ' \
+                html_content = '<p>O(a) pesquisador(a) %s alterou o pedido de n&uacute;mero %s do NIRA. Clique ' \
                                '<a href="%s/admin/order/%s/%s">aqui</a> para ver este pedido.</p>' \
                                % (requester_name, check_order.id, nira_website, order_type, check_order.id)
                 if subject and from_email and to:
