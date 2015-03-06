@@ -199,7 +199,8 @@ class HardwareSoftware(Order):
     type = models.TextField(_('Description'), max_length=500)
     quantity = models.IntegerField(_('Quantity'))
     url = models.URLField(_('URL'), max_length=255, blank=True, null=True,
-                          help_text='URL address from any store selling the product you want.')
+                          help_text='Link to the product details. You may suggest an URL address of the manufacturer of'
+                                    ' the product or any store that sells this product.')
     origin = models.CharField(_('Origin'), max_length=1, blank=True, null=True)
     category = models.CharField(_('Category'), max_length=1, blank=True, null=True)
 
