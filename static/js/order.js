@@ -15,6 +15,7 @@ $(document).ready(function () {
 
 function ajax_select_additional_options(id_order_type)
 {
+   $("#id_status").html('<option value="">Carregando...</option>');
    $("#id_category").html('<option value="">Carregando...</option>');
    $("#id_origin").html('<option value="">Carregando...</option>');
    $.ajax({
@@ -23,11 +24,18 @@ function ajax_select_additional_options(id_order_type)
        dataType: "json",
        data: {'order_type':id_order_type},
        success: function(retorno) {
+           $("#id_status").empty();
            $("#id_category").empty();
            $("#id_origin").empty();
+           $("#id_status").append('<option value="">--------</option>');
            $("#id_category").append('<option value="">--------</option>');
            $("#id_origin").append('<option value="">--------</option>');
+
            $.each(retorno[0], function(i, item){
+               $("#id_status").append('<option value="'+ item.value+'">'+item.display+'</option>');
+           });
+
+           $.each(retorno[1], function(i, item){
                $("#id_category").append('<option value="'+ item.value+'">'+item.display+'</option>');
            });
            if ($("#id_order_type").val() == 'h') {
@@ -36,7 +44,7 @@ function ajax_select_additional_options(id_order_type)
                $("#id_category").prop( "disabled", true );
            }
 
-           $.each(retorno[1], function(i, item){
+           $.each(retorno[2], function(i, item){
                $("#id_origin").append('<option value="'+ item.value+'">'+item.display+'</option>');
            });
            if ($("#id_order_type").val() == 'h' || $("#id_order_type").val() == 's') {
@@ -44,9 +52,11 @@ function ajax_select_additional_options(id_order_type)
            } else{
                $("#id_origin").prop( "disabled", true );
            }
+
        },
        error: function(erro) {
            alert('Erro: Sem retorno de requisição.');
        }
    });
 }
+

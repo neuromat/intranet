@@ -11,56 +11,91 @@ import json
 @login_required
 def list_order_by_type(request):
     types = [{'value': order_type[0], 'display': order_type[1].encode('utf-8')} for order_type in ORDER_TYPE]
-    status = [{'value': status[0], 'display': status[1].encode('utf-8')} for status in ORDER_STATUS]
+
     if request.method == 'POST':
+
         if request.POST['order_type'] == "h":
             status = request.POST.get('status')
             category = request.POST.get('category')
             origin = request.POST.get('origin')
-            if category == '' and origin == '':
+            if status == '' and category == '' and origin == '':
+                orders = Order.objects.filter(type_of_order='h')
+            elif status == '' and category == '':
+                orders = Order.objects.filter(type_of_order='h', hardwaresoftware__origin=origin)
+            elif status == '' and origin == '':
+                orders = Order.objects.filter(type_of_order='h', hardwaresoftware__category=category)
+            elif category == '' and origin == '':
                 orders = Order.objects.filter(type_of_order='h', status=status)
+            elif status == '':
+                orders = Order.objects.filter(type_of_order='h', hardwaresoftware__origin=origin,
+                                              hardwaresoftware__category=category)
             elif category == '':
                 orders = Order.objects.filter(type_of_order='h', status=status, hardwaresoftware__origin=origin)
             elif origin == '':
                 orders = Order.objects.filter(type_of_order='h', status=status, hardwaresoftware__category=category)
             else:
                 orders = Order.objects.filter(type_of_order='h', status=status, hardwaresoftware__category=category,
-                                          hardwaresoftware__origin=origin)
+                                              hardwaresoftware__origin=origin)
+
             context = {'orders': orders, 'status': status, 'category': category, 'origin': origin}
             return render(request, 'report/list_equipment_supplies_msc.html', context)
 
         elif request.POST['order_type'] == "s":
             status = request.POST.get('status')
             origin = request.POST.get('origin')
-            orders = Order.objects.filter(type_of_order='s', status=status, service__origin=origin)
+            if status == '' and origin == '':
+                orders = Order.objects.filter(type_of_order='s')
+            elif status == '':
+                orders = Order.objects.filter(type_of_order='s', service__origin=origin)
+            elif origin == '':
+                orders = Order.objects.filter(type_of_order='s', status=status)
+            else:
+                orders = Order.objects.filter(type_of_order='s', status=status, service__origin=origin)
+
             context = {'orders': orders}
             return render(request, 'report/list_services.html', context)
 
         elif request.POST['order_type'] == "e":
             status = request.POST.get('status')
-            orders = Order.objects.filter(type_of_order='e', status=status)
+            if status == '':
+                orders = Order.objects.filter(type_of_order='e')
+            else:
+                orders = Order.objects.filter(type_of_order='e', status=status)
+
             context = {'orders': orders}
             return render(request, 'report/list_events.html', context)
 
         elif request.POST['order_type'] == "t":
             status = request.POST.get('status')
-            orders = Order.objects.filter(type_of_order='t', status=status)
+            if status == '':
+                orders = Order.objects.filter(type_of_order='t')
+            else:
+                orders = Order.objects.filter(type_of_order='t', status=status)
+
             context = {'orders': orders}
             return render(request, 'report/list_tickets.html', context)
 
         elif request.POST['order_type'] == "d":
             status = request.POST.get('status')
-            orders = Order.objects.filter(type_of_order='d', status=status)
+            if status == '':
+                orders = Order.objects.filter(type_of_order='d')
+            else:
+                orders = Order.objects.filter(type_of_order='d', status=status)
+
             context = {'orders': orders}
             return render(request, 'report/list_daily_stipend.html', context)
 
         elif request.POST['order_type'] == "r":
             status = request.POST.get('status')
-            orders = Order.objects.filter(type_of_order='r', status=status)
+            if status == '':
+                orders = Order.objects.filter(type_of_order='r')
+            else:
+                orders = Order.objects.filter(type_of_order='r', status=status)
+
             context = {'orders': orders}
             return render(request, 'report/list_reimbursement.html', context)
 
-    context = {'types': types, 'status': status}
+    context = {'types': types}
     return render(request, 'report/list_order.html', context)
 
 
@@ -68,12 +103,15 @@ def list_order_by_type(request):
 def select_additional_options(request):
     orders = request.GET.get('order_type')
     if orders == 'h':
+        status = [{'value': status[0], 'display': status[1].encode('utf-8')} for status in ORDER_STATUS]
         categories = [{'value': category[0], 'display': category[1].encode('utf-8')} for category in CATEGORY]
         origin = [{'value': orig[0], 'display': orig[1].encode('utf-8')} for orig in ORIGIN]
     elif orders == 's':
+        status = [{'value': status[0], 'display': status[1].encode('utf-8')} for status in ORDER_STATUS]
         origin = [{'value': orig[0], 'display': orig[1].encode('utf-8')} for orig in ORIGIN]
         categories = []
     else:
+        status = [{'value': status[0], 'display': status[1].encode('utf-8')} for status in ORDER_STATUS]
         categories = []
         origin = []
-    return HttpResponse(json.dumps([categories, origin]), content_type="application/json")
+    return HttpResponse(json.dumps([status, categories, origin]), content_type="application/json")

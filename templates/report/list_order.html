@@ -6,6 +6,7 @@
 {% endblock extrahead%}
 
 {% block content %}
+<body onload="ajax_select_additional_options()">
 <form role="form" method="post">{% csrf_token %}
 <div class="container-fluid">
     <div class="row">
