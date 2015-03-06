@@ -1,27 +1,48 @@
 {% extends "admin/base_site.html" %}
+{% load i18n %}
 
 {% block content %}
 
 <table class="table table-striped table-bordered">
 {% if orders %}
-    <p><strong>Order type: </strong> Equipment / Supplies / Miscellaneous</p>
-    <p><strong>Status: </strong>
+    <p><strong>{% trans 'Order type' %}: </strong> {% trans 'Equipment / Supplies / Miscellaneous' %}</p>
+    <p><strong>{% trans 'Status' %}: </strong>
     {% if status == 'o' %}
-        Open
+        {% trans 'Open' %}
     {% elif status == 'p' %}
-        Pending
+        {% trans 'Pending' %}
     {% elif status == 'c' %}
-        Canceled
+        {% trans 'Canceled' %}
     {% elif status == 'a' %}
-        Approved
+        {% trans 'Approved' %}
     {% elif status == 'd' %}
-        Denied
+        {% trans 'Denied' %}
+    {% elif status == '' %}
+        {% trans 'All' %}
     {% endif %}
     </p>
-    <tr><th>Nr</th><th>Requester</th><th>Order date</th><th>Description</th><th>Quantity</th><th>Justification</th></tr>
+    <p><strong>{% trans 'Category' %}: </strong>
+    {% if category == '' %}
+        {% trans 'All' %}
+    {% elif category == '0' %}
+        {% trans 'Permanent material' %}
+    {% elif category == '1' %}
+        {% trans 'Consumption items' %}
+    {% endif %}
+    </p>
+    <p><strong>{% trans 'Origin' %}: </strong>
+    {% if origin == '' %}
+        {% trans 'All' %}
+    {% elif origin == '0' %}
+        {% trans 'National' %}
+    {% elif origin == '1' %}
+        {% trans 'Imported' %}
+    {% endif %}
+    </p>
+    <tr><th>{% trans 'Requester' %}</th><th>{% trans 'Order date' %}</th><th>{% trans 'Description' %}</th>
+        <th>{% trans 'Quantity' %}</th><th>{% trans 'Justification' %}</th></tr>
     {% for order in orders %}
         <tr>
-            <td>{{ order.id }}</td>
             <td>{{ order.requester }}</td>
             <td>{{ order.order_date|date:"d/m/Y" }}</td>
             <td>{{ order.hardwaresoftware.type }}</td>
@@ -30,7 +51,7 @@
         </tr>
     {% endfor %}
 {%  else %}
-    No equipment / supplies / miscellaneous found!
+    {% trans 'No equipment / supplies / miscellaneous found!' %}
 {% endif %}
 </table>
 

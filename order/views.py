@@ -17,9 +17,16 @@ def list_order_by_type(request):
             status = request.POST.get('status')
             category = request.POST.get('category')
             origin = request.POST.get('origin')
-            orders = Order.objects.filter(type_of_order='h', status=status, hardwaresoftware__category=category,
+            if category == '' and origin == '':
+                orders = Order.objects.filter(type_of_order='h', status=status)
+            elif category == '':
+                orders = Order.objects.filter(type_of_order='h', status=status, hardwaresoftware__origin=origin)
+            elif origin == '':
+                orders = Order.objects.filter(type_of_order='h', status=status, hardwaresoftware__category=category)
+            else:
+                orders = Order.objects.filter(type_of_order='h', status=status, hardwaresoftware__category=category,
                                           hardwaresoftware__origin=origin)
-            context = {'orders': orders, 'status': status}
+            context = {'orders': orders, 'status': status, 'category': category, 'origin': origin}
             return render(request, 'report/list_equipment_supplies_msc.html', context)
 
         elif request.POST['order_type'] == "s":
