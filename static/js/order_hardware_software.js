@@ -11,6 +11,10 @@ $(document).ready(function () {
         $("#id_institution").parents('.row').hide();
         $("#id_department").parents('.row').hide();
     });
+    if (id_category_1.checked){
+        $("#id_institution").parents('.row').hide();
+        $("#id_department").parents('.row').hide();
+    }
 });
 
 function ajax_filter_departments(institution_id)
