@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from member.models import Investigator
+from member.models import Investigator, Institution, Department
 from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
 from django.core.mail import EmailMultiAlternatives
@@ -33,12 +33,14 @@ PENDING = 'p'
 CANCELED = 'c'
 APPROVED = 'a'
 DENIED = 'd'
+FINISHED = 'f'
 ORDER_STATUS = (
     (OPEN, _('Open')),
     (PENDING, _('Pending')),
     (CANCELED, _('Canceled')),
     (APPROVED, _('Approved')),
-    (DENIED, _('Denied'))
+    (DENIED, _('Denied')),
+    (FINISHED, _('Finished'))
 )
 
 
@@ -203,6 +205,8 @@ class HardwareSoftware(Order):
                                     ' the product or any store that sells this product.')
     origin = models.CharField(_('Origin'), max_length=1, blank=True, null=True)
     category = models.CharField(_('Category'), max_length=1, blank=True, null=True)
+    used_in_the_institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
+    department_of_the_institution = models.ForeignKey(Department, verbose_name=_('Department'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Equipment / Supplies / Miscellaneous')
