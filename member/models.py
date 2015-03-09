@@ -19,6 +19,12 @@ def validate_cpf(value):
 
 
 class Role(models.Model):
+    """
+    An instance of this class is the role of a user
+
+    '__unicode__'		Returns the name.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    """
     name = models.CharField(_('Name'), max_length=50)
 
     # Returns the name
@@ -32,6 +38,12 @@ class Role(models.Model):
 
 
 class Institution(models.Model):
+    """
+    An instance of this class represents an University
+
+    '__unicode__'		Returns the name.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    """
     name = models.CharField(_('Name'), max_length=100)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
 
@@ -42,6 +54,27 @@ class Institution(models.Model):
     class Meta:
         verbose_name = _('Institution')
         verbose_name_plural = _('Institutions')
+        ordering = ('name', )
+
+
+class Department(models.Model):
+    """
+    An instance of this class represents a department from an University
+
+    '__unicode__'		Returns the name.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    """
+    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
+    name = models.CharField(_('Name'), max_length=100)
+    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
+
+    # Returns the name
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Department')
+        verbose_name_plural = _('Departments')
         ordering = ('name', )
 
 
