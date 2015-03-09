@@ -205,7 +205,9 @@ class HardwareSoftware(Order):
                                     ' the product or any store that sells this product.')
     origin = models.CharField(_('Origin'), max_length=1, blank=True, null=True)
     category = models.CharField(_('Category'), max_length=1, blank=True, null=True)
-    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
+    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True,
+                                    help_text='Institution that will receive the equipment, supplies or miscellaneous '
+                                              'requested in this order')
     department = models.ForeignKey(Department, verbose_name=_('Department'), blank=True, null=True)
 
     class Meta:
