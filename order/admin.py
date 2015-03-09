@@ -109,6 +109,8 @@ class HardwareSoftwareAdmin(SuperOrder):
         if request.user.investigator.is_nira_admin or request.user.is_superuser:
             fieldsets[0][1]['fields'].append('origin')
             fieldsets[0][1]['fields'].append('category')
+            fieldsets[0][1]['fields'].append('institution')
+            fieldsets[0][1]['fields'].append('department')
         return fieldsets
 
 admin.site.register(HardwareSoftware, HardwareSoftwareAdmin)
