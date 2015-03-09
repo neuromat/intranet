@@ -1,11 +1,28 @@
 from django.shortcuts import render
 from order.models import *
+from member.models import Institution
 from order.forms import CATEGORY, ORIGIN
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+import json as simplejson
 import json
 
 # Create your views here.
+
+
+def show_department(request):
+    if request.method == 'GET':
+        institution_id = request.GET.get('institution')
+        institution = get_object_or_404(Institution, id=institution_id)
+
+        select = Department.objects.filter(institution=institution)
+        department = []
+        for dep in select:
+            department.append({'pk': dep.id, 'valor': dep.__unicode__()})
+
+        json = simplejson.dumps(department)
+        return HttpResponse(json, content_type="application/json")
 
 
 @login_required
