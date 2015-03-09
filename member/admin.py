@@ -6,6 +6,7 @@ from forms import *
 
 admin.site.register(Role)
 admin.site.register(Institution)
+admin.site.register(Department)
 
 
 class InvestigatorAdmin(admin.ModelAdmin):
