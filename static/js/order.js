@@ -13,6 +13,27 @@ $(document).ready(function () {
     }
 });
 
+function ajax_filter_departments(institution_id)
+{
+   $("#id_department").html('<option value="">Loading...</option>');
+   $.ajax({
+       type: "GET",
+       url: "/order/show_department",
+       dataType: "json",
+       data: {'institution':institution_id},
+       success: function(retorno) {
+           $("#id_department").empty();
+           $("#id_department").append('<option value="">--------</option>');
+           $.each(retorno, function(i, item){
+               $("#id_department").append('<option value="'+item.pk+'">'+item.valor+'</option>');
+           });
+       },
+       error: function(error) {
+           alert('Error: No request return.');
+       }
+   });
+}
+
 function ajax_select_additional_options(id_order_type)
 {
    $("#id_status").html('<option value="">Carregando...</option>');
