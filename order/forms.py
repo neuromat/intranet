@@ -48,7 +48,7 @@ class TicketAdminForm(forms.ModelForm):
         }
 
     class Media:
-        js = ('/static/js/order.js',)
+        js = ('/static/js/order_ticket.js',)
         css = {
             'all': ('/static/css/customization.css',)
         }
@@ -69,7 +69,7 @@ class HardwareSoftwareAdminForm(forms.ModelForm):
         }
 
     class Media:
-        js = ('/static/js/order.js',)
+        js = ('/static/js/order_hardware_software.js',)
         css = {
             'all': ('/static/css/customization.css',)
         }
