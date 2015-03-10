@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from member.models import Investigator, Institution, Department
+from member.models import Investigator, University, Institute, Department
 from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
 from django.core.mail import EmailMultiAlternatives
@@ -205,9 +205,10 @@ class HardwareSoftware(Order):
                                     ' the product or any store that sells this product.')
     origin = models.CharField(_('Origin'), max_length=1, blank=True, null=True)
     category = models.CharField(_('Category'), max_length=1, blank=True, null=True)
-    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True,
-                                    help_text='Institution that will receive the equipment, supplies or miscellaneous '
-                                              'requested in this order')
+    university = models.ForeignKey(University, verbose_name=_('University'), blank=True, null=True,
+                                   help_text='Institution that will receive the equipment, supplies or miscellaneous '
+                                             'requested in this order')
+    institute = models.ForeignKey(Institute, verbose_name=_('Institute / School'), blank=True, null=True)
     department = models.ForeignKey(Department, verbose_name=_('Department'), blank=True, null=True)
 
     class Meta:
