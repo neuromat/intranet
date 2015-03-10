@@ -5,7 +5,8 @@ import copy
 from forms import *
 
 admin.site.register(Role)
-admin.site.register(Institution)
+admin.site.register(University)
+admin.site.register(Institute)
 admin.site.register(Department)
 
 
