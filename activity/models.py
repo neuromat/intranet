@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from member.models import Investigator, Institution
+from member.models import Investigator, University
 
 # Defining the duration of a Training Program
 ONE_HOUR = '1h'
@@ -58,7 +58,7 @@ class TrainingProgram(models.Model):
     description = models.TextField(_('Description'), max_length=500, blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
-    local = models.ForeignKey(Institution, verbose_name=_('Local'), blank=True, null=True)
+    local = models.ForeignKey(University, verbose_name=_('Local'), blank=True, null=True)
     duration = models.CharField(_('Duration'), max_length=5, choices=DURATION)
     other_duration = models.CharField(_('Other duration time'), max_length=5, blank=True, null=True,
                                       help_text='E.g.: 11h or 11h30')
@@ -116,7 +116,7 @@ class Meeting(models.Model):
     An instance of this class is a meeting.
 
     """
-    local = models.ManyToManyField(Institution, verbose_name=_('Local'), blank=True, null=True)
+    local = models.ManyToManyField(University, verbose_name=_('Local'), blank=True, null=True)
     speaker = models.ManyToManyField(Investigator, verbose_name=_('Speaker'), related_name='speaker',
                                      blank=True, null=True)
     participant = models.ManyToManyField(Investigator, verbose_name=_('Participant'), blank=True, null=True)
@@ -141,7 +141,7 @@ class GeneralEvent(models.Model):
 
     """
     speaker = models.ManyToManyField(Investigator, verbose_name=_('Speaker'))
-    local = models.ForeignKey(Institution, verbose_name=_('Local'), blank=True, null=True)
+    local = models.ForeignKey(University, verbose_name=_('Local'), blank=True, null=True)
     title = models.CharField(_('Title'), max_length=200)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
