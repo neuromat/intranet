@@ -181,7 +181,7 @@ class Event(Order):
     value = models.CharField(_('Value'), max_length=15, blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'))
-    invitation = models.FileField(_('Invitation'))
+    invitation = models.FileField(_('Invitation'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Scientific event')
