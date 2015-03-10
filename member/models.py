@@ -20,7 +20,7 @@ def validate_cpf(value):
 
 class Role(models.Model):
     """
-    An instance of this class is the role of a user
+    An instance of this class is the role of a user.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
@@ -37,9 +37,9 @@ class Role(models.Model):
         ordering = ('name', )
 
 
-class Institution(models.Model):
+class University(models.Model):
     """
-    An instance of this class represents an University
+    An instance of this class represents a University.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
@@ -52,19 +52,40 @@ class Institution(models.Model):
         return u'%s' % self.name
 
     class Meta:
-        verbose_name = _('Institution')
-        verbose_name_plural = _('Institutions')
+        verbose_name = _('University')
+        verbose_name_plural = _('Universities')
+        ordering = ('name', )
+
+
+class Institute(models.Model):
+    """
+    An instance of this class represents an institute or a school from a University.
+
+    '__unicode__'		Returns the name.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    """
+    university = models.ForeignKey(University, verbose_name=_('University'), blank=True, null=True)
+    name = models.CharField(_('Name'), max_length=100)
+    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
+
+    # Returns the name
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Institute / School')
+        verbose_name_plural = _('Institutes / Schools')
         ordering = ('name', )
 
 
 class Department(models.Model):
     """
-    An instance of this class represents a department from an University
+    An instance of this class represents a department from an institute or a school.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
     """
-    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
+    institute = models.ForeignKey(Institute, verbose_name=_('Institute / School'), blank=True, null=True)
     name = models.CharField(_('Name'), max_length=100)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
 
@@ -95,7 +116,7 @@ class Investigator(models.Model):
                                                     'another user.'))
     nickname = models.CharField(_('Nickname'), max_length=20, blank=True, null=True)
     role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
-    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
+    university = models.ForeignKey(University, verbose_name=_('University'), blank=True, null=True)
     rg = models.CharField(_('RG'), max_length=12, blank=True, null=True)
     cpf = models.CharField(_('CPF'), blank=True, null=True, max_length=15, validators=[validate_cpf])
     passport = models.CharField(_('Passport'), max_length=12, blank=True, null=True)
