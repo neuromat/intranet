@@ -149,6 +149,12 @@ class Investigator(models.Model):
 
 
 class BibliographicCitation(models.Model):
+    """
+    An instance of this class represents a name used in a bibliographic citation
+
+    '__unicode__'		Returns the name.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    """
     name = models.CharField(_('Name'), max_length=50, help_text='E.g.: Silva, J.')
     investigator = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
 
