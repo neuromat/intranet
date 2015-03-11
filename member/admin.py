@@ -16,6 +16,9 @@ class DepartmentAdmin(admin.ModelAdmin):
         }),
     )
 
+    list_display = ('institute', 'name', 'acronym')
+    list_display_links = ('name',)
+
     form = DepartmentForm
 
 admin.site.register(Department, DepartmentAdmin)
