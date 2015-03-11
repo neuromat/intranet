@@ -14,7 +14,7 @@ function ajax_filter_institutes(university_id)
            });
        },
        error: function(erro) {
-           alert('Erro: Sem retorno de requisição.');
+           alert('Error: No request return.');
        }
    });
 }
