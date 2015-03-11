@@ -59,7 +59,7 @@ class University(models.Model):
 
 class Institute(models.Model):
     """
-    An instance of this class represents an institute or a school from a University.
+    An instance of this class represents an institute, school or administrative organization from a University.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
@@ -80,12 +80,13 @@ class Institute(models.Model):
 
 class Department(models.Model):
     """
-    An instance of this class represents a department from an institute or a school.
+    An instance of this class represents a department or a research project from an institute / school / administrative.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
     """
-    institute = models.ForeignKey(Institute, verbose_name=_('Institute / School'), blank=True, null=True)
+    institute = models.ForeignKey(Institute, verbose_name=_('Institute / School / Administrative'),
+                                  blank=True, null=True)
     name = models.CharField(_('Name'), max_length=100)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
 
