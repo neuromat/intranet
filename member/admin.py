@@ -25,7 +25,7 @@ class InvestigatorAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ['user', 'nickname', 'role', 'institution', ]
+            'fields': ['user', 'nickname', 'role', 'university', ]
         }),
         (_('Personal Info'), {
             'fields': ('rg', 'cpf', 'passport')
