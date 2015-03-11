@@ -73,8 +73,8 @@ class Institute(models.Model):
         return u'%s' % self.name
 
     class Meta:
-        verbose_name = _('Institute / School')
-        verbose_name_plural = _('Institutes / Schools')
+        verbose_name = _('Institute / School / Administrative')
+        verbose_name_plural = _('Institutes / Schools / Administrative')
         ordering = ('name', )
 
 
@@ -94,8 +94,8 @@ class Department(models.Model):
         return u'%s' % self.name
 
     class Meta:
-        verbose_name = _('Department')
-        verbose_name_plural = _('Departments')
+        verbose_name = _('Department / Research project')
+        verbose_name_plural = _('Departments / Research projects')
         ordering = ('name', )
 
 

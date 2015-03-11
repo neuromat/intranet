@@ -208,8 +208,9 @@ class HardwareSoftware(Order):
     university = models.ForeignKey(University, verbose_name=_('University'), blank=True, null=True,
                                    help_text='Institution that will receive the equipment, supplies or miscellaneous '
                                              'requested in this order')
-    institute = models.ForeignKey(Institute, verbose_name=_('Institute / School'), blank=True, null=True)
-    department = models.ForeignKey(Department, verbose_name=_('Department'), blank=True, null=True)
+    institute = models.ForeignKey(Institute, verbose_name=_('Institute / School / Administrative'),
+                                  blank=True, null=True)
+    department = models.ForeignKey(Department, verbose_name=_('Department / Research project'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Equipment / Supplies / Miscellaneous')
