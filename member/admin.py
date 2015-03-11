@@ -7,7 +7,18 @@ from forms import *
 admin.site.register(Role)
 admin.site.register(University)
 admin.site.register(Institute)
-admin.site.register(Department)
+
+
+class DepartmentAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ['university', 'institute', 'name', 'acronym', ]
+        }),
+    )
+
+    form = DepartmentForm
+
+admin.site.register(Department, DepartmentAdmin)
 
 
 class InvestigatorAdmin(admin.ModelAdmin):
