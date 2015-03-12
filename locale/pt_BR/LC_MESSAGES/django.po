@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-12 16:14-0300\n"
+"POT-Creation-Date: 2015-03-12 16:41-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -468,7 +468,9 @@ msgstr "Quantidade"
 msgid ""
 "Link to the product details. You may suggest an URL address of the "
 "manufacturer of the product or any store that sells this product."
-msgstr "Link para detalhes do produto. Você pode sugerir o endereço de alguma página WEB que descreva o material ou que comercializa o material solicitado."
+msgstr ""
+"Link para detalhes do produto. Você pode sugerir o endereço de alguma página "
+"WEB que descreva o material ou que comercializa o material solicitado."
 
 #: order/models.py:206 order/models.py:231 order/models.py:248
 #: order/models.py:273 templates/report/list_equipment_supplies_msc.html:33
@@ -482,7 +484,6 @@ msgid "Category"
 msgstr "Categoria"
 
 #: order/models.py:209
-#| msgid "Info about the equipment, supplies or miscellaneous"
 msgid ""
 "Institution that will receive the equipment, supplies or miscellaneous "
 "requested in this order"
@@ -746,7 +747,6 @@ msgid "Requester"
 msgstr "Pesquisador"
 
 #: templates/report/list_equipment_supplies_msc.html:54
-#| msgid "Equipment / Supplies / Miscellaneous"
 msgid "No equipment / supplies / miscellaneous found!"
 msgstr "Nenhum Equipamento ou bem de consumo encontrado"
 
