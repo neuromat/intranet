@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-02 16:30-0300\n"
+"POT-Creation-Date: 2015-03-12 15:56-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,18 +36,18 @@ msgid "Title"
 msgstr "Título"
 
 #: activity/models.py:58 activity/models.py:126 activity/models.py:148
-#: order/models.py:198 order/models.py:220 order/models.py:283
-#: research/models.py:125
+#: order/models.py:201 order/models.py:230 order/models.py:293
+#: research/models.py:125 templates/report/list_equipment_supplies_msc.html:42
 msgid "Description"
 msgstr "Descrição"
 
 #: activity/models.py:59 activity/models.py:102 activity/models.py:124
-#: activity/models.py:146 order/models.py:179
+#: activity/models.py:146 order/models.py:182
 msgid "Start date"
 msgstr "Início"
 
 #: activity/models.py:60 activity/models.py:103 activity/models.py:125
-#: activity/models.py:147 order/models.py:180
+#: activity/models.py:147 order/models.py:183
 msgid "End date"
 msgstr "Término"
 
@@ -88,7 +88,7 @@ msgstr "Seminário"
 msgid "Seminars"
 msgstr "Seminários"
 
-#: activity/models.py:100 member/models.py:120 order/models.py:55
+#: activity/models.py:100 member/models.py:181 order/models.py:58
 msgid "Investigator"
 msgstr "Pesquisador"
 
@@ -108,8 +108,8 @@ msgstr "Missões científicas"
 msgid "Participant"
 msgstr "Participante"
 
-#: activity/models.py:127 activity/models.py:149 order/models.py:177
-#: order/models.py:200 research/models.py:69 research/models.py:161
+#: activity/models.py:127 activity/models.py:149 order/models.py:180
+#: order/models.py:203 research/models.py:69 research/models.py:161
 msgid "URL"
 msgstr "URL"
 
@@ -129,11 +129,11 @@ msgstr "Evento"
 msgid "General events"
 msgstr "Eventos"
 
-#: member/admin.py:17
+#: member/admin.py:33
 msgid "Personal Info"
 msgstr "Informações pessoais"
 
-#: member/admin.py:20
+#: member/admin.py:36
 msgid "Contact Info"
 msgstr "Informações de Contato"
 
@@ -141,123 +141,141 @@ msgstr "Informações de Contato"
 msgid "Account"
 msgstr "Dados do usuário"
 
+#: member/forms.py:30 member/models.py:55 member/models.py:67
+#: member/models.py:120 order/models.py:208
+msgid "University"
+msgstr "Universidade"
+
 #: member/models.py:18
 #, python-format
 msgid "%s is not a valid CPF"
 msgstr "%s não é um CPF válido"
 
-#: member/models.py:22 member/models.py:35 member/models.py:119
-#: order/models.py:176 research/models.py:42 research/models.py:83
+#: member/models.py:28 member/models.py:47 member/models.py:68
+#: member/models.py:90 member/models.py:180 order/models.py:179
+#: research/models.py:42 research/models.py:83
 msgid "Name"
 msgstr "Nome"
 
-#: member/models.py:29 member/models.py:64
+#: member/models.py:35 member/models.py:119
 msgid "Role"
 msgstr "Perfil"
 
-#: member/models.py:30
+#: member/models.py:36
 msgid "Roles"
 msgstr "Perfis"
 
-#: member/models.py:36
+#: member/models.py:48 member/models.py:69 member/models.py:91
 msgid "Acronym"
 msgstr "Sigla"
 
-#: member/models.py:43 member/models.py:65
-msgid "Institution"
-msgstr "Instituição"
+#: member/models.py:56
+msgid "Universities"
+msgstr "Universidades"
 
-#: member/models.py:44
-msgid "Institutions"
-msgstr "Instituições"
+#: member/models.py:76 member/models.py:88 order/models.py:211
+msgid "Institute / School / Administrative"
+msgstr "Instituto / Faculdade / Administrativo"
 
-#: member/models.py:57
+#: member/models.py:77
+msgid "Institutes / Schools / Administrative"
+msgstr "Institutos / Faculdades / Administrativos"
+
+#: member/models.py:98 order/models.py:213
+msgid "Department / Research project"
+msgstr "Departamento / Projeto de pesquisa"
+
+#: member/models.py:99
+msgid "Departments / Research projects"
+msgstr "Departamentos / Projetos de pesquisa"
+
+#: member/models.py:112
 msgid "User"
 msgstr "Usuário"
 
-#: member/models.py:58
+#: member/models.py:113
 msgid "Force password change"
 msgstr "Forçar mudança de senha"
 
-#: member/models.py:59
+#: member/models.py:114
 msgid "Force the user to change their password at next login."
 msgstr "Obrigar o usuário a alterar a senha no próximo login"
 
-#: member/models.py:60 sistema/urls.py:15 templates/admin/base_site.html:4
+#: member/models.py:115 sistema/urls.py:18 templates/admin/base_site.html:4
 msgid "NIRA admin"
 msgstr ""
 
-#: member/models.py:61
+#: member/models.py:116
 msgid ""
 "Designates whether the user can create content on behalf of another user."
 msgstr "Indica se o usuário pode criar conteúdo em nome de outro usuário."
 
-#: member/models.py:63
+#: member/models.py:118
 msgid "Nickname"
 msgstr "Apelido"
 
-#: member/models.py:66
+#: member/models.py:121
 msgid "RG"
 msgstr "RG"
 
-#: member/models.py:67
+#: member/models.py:122
 msgid "CPF"
 msgstr "CPF"
 
-#: member/models.py:68
+#: member/models.py:123
 msgid "Passport"
 msgstr "Passaporte"
 
-#: member/models.py:69
+#: member/models.py:124
 msgid "Phone"
 msgstr "Telefone"
 
-#: member/models.py:70
+#: member/models.py:125
 msgid "Cell Phone"
 msgstr "Celular"
 
-#: member/models.py:71
+#: member/models.py:126
 msgid "Zip Code"
 msgstr "CEP"
 
-#: member/models.py:72
+#: member/models.py:127
 msgid "Address"
 msgstr "Endereço"
 
-#: member/models.py:73
+#: member/models.py:128
 msgid "Complement"
 msgstr "Complemento"
 
-#: member/models.py:74
+#: member/models.py:129
 msgid "Number"
 msgstr "Número"
 
-#: member/models.py:75
+#: member/models.py:130
 msgid "District"
 msgstr "Bairro"
 
-#: member/models.py:76
+#: member/models.py:131
 msgid "City"
 msgstr "Cidade"
 
-#: member/models.py:77
+#: member/models.py:132
 msgid "State"
 msgstr "Estado"
 
-#: member/models.py:78
+#: member/models.py:133
 msgid "Country"
 msgstr "País"
 
-#: member/models.py:113 member/models.py:114
+#: member/models.py:168 member/models.py:169
 #, fuzzy
 msgid "Personal info"
 msgstr "Informações pessoais"
 
-#: member/models.py:127
+#: member/models.py:188
 msgid "Bibliographic citation"
 msgstr "Nome em citação bibliográfica"
 
-#: member/models.py:128
+#: member/models.py:189
 msgid "Bibliographic citations"
 msgstr "Nome em citações bibliográficas"
 
@@ -269,8 +287,8 @@ msgstr "Sistema Administrativo"
 msgid "Event Info"
 msgstr "Informações do Evento"
 
-#: order/admin.py:73 order/admin.py:95 order/admin.py:125 order/admin.py:179
-#: order/admin.py:199
+#: order/admin.py:73 order/admin.py:95 order/admin.py:128 order/admin.py:182
+#: order/admin.py:202
 msgid "Purpose"
 msgstr "Finalidade"
 
@@ -278,27 +296,27 @@ msgstr "Finalidade"
 msgid "Info about the equipment, supplies or miscellaneous"
 msgstr "Informações sobre os equipamentos ou bens de consumo"
 
-#: order/admin.py:122
+#: order/admin.py:125
 msgid "Service Info"
 msgstr "Informações sobre o serviço "
 
-#: order/admin.py:151
+#: order/admin.py:154
 msgid "Ticket Info"
 msgstr "Informações sobre a passagem"
 
-#: order/admin.py:155
+#: order/admin.py:158
 msgid "Purpose of the trip"
 msgstr "Finalidade da viagem"
 
-#: order/admin.py:176
+#: order/admin.py:179
 msgid "Daily stipend Info"
 msgstr "Informações sobre a diária"
 
-#: order/admin.py:196
+#: order/admin.py:199
 msgid "Reimbursement Info"
 msgstr "Informações sobre o reembolso"
 
-#: order/apps.py:9 order/models.py:68
+#: order/apps.py:9 order/models.py:71
 msgid "Order"
 msgstr "Pedido"
 
@@ -338,172 +356,179 @@ msgstr "Noite (18:00 - 00:00)"
 msgid "Night (12am - 6am)"
 msgstr "Madrugada (00:00 - 06:00)"
 
-#: order/forms.py:26
+#: order/forms.py:26 templates/report/list_equipment_supplies_msc.html:37
 msgid "National"
 msgstr "Nacional"
 
-#: order/forms.py:27
+#: order/forms.py:27 templates/report/list_equipment_supplies_msc.html:39
 msgid "Imported"
 msgstr "Importado"
 
-#: order/forms.py:31
+#: order/forms.py:31 templates/report/list_equipment_supplies_msc.html:28
 msgid "Permanent material"
 msgstr "Material permanente"
 
-#: order/forms.py:32
+#: order/forms.py:32 templates/report/list_equipment_supplies_msc.html:30
 msgid "Consumption items"
 msgstr "Material de consumo"
 
-#: order/models.py:21 order/models.py:184
+#: order/models.py:22 order/models.py:187
 msgid "Scientific event"
 msgstr "Evento"
 
-#: order/models.py:22 order/models.py:206 order/models.py:207
+#: order/models.py:23 order/models.py:216 order/models.py:217
+#: templates/report/list_equipment_supplies_msc.html:8
 msgid "Equipment / Supplies / Miscellaneous"
 msgstr "Equipamentos e bens de consumo"
 
-#: order/models.py:23 order/models.py:224
+#: order/models.py:24 order/models.py:234
 msgid "Service"
 msgstr "Serviço"
 
-#: order/models.py:24 order/models.py:249
+#: order/models.py:25 order/models.py:259
 msgid "Ticket"
 msgstr "Passagem"
 
-#: order/models.py:25 order/models.py:269
+#: order/models.py:26 order/models.py:279
 msgid "Daily stipend"
 msgstr "Diária"
 
-#: order/models.py:26 order/models.py:286
+#: order/models.py:27 order/models.py:296
 msgid "Reimbursement"
 msgstr "Reembolso"
 
-#: order/models.py:36
+#: order/models.py:38 templates/report/list_equipment_supplies_msc.html:11
 msgid "Open"
 msgstr "Aberto"
 
-#: order/models.py:37
+#: order/models.py:39 templates/report/list_equipment_supplies_msc.html:13
 msgid "Pending"
 msgstr "Pendente"
 
-#: order/models.py:38
+#: order/models.py:40 templates/report/list_equipment_supplies_msc.html:15
 msgid "Canceled"
 msgstr "Cancelado"
 
-#: order/models.py:39
+#: order/models.py:41 templates/report/list_equipment_supplies_msc.html:17
 msgid "Approved"
 msgstr "Aprovado"
 
-#: order/models.py:40
+#: order/models.py:42 templates/report/list_equipment_supplies_msc.html:19
 msgid "Denied"
 msgstr "Negado"
 
-#: order/models.py:56
+#: order/models.py:43
+msgid "Finished"
+msgstr "Finalizado"
+
+#: order/models.py:59 templates/report/list_equipment_supplies_msc.html:43
 msgid "Justification"
 msgstr "Justificativa"
 
-#: order/models.py:57
+#: order/models.py:60 templates/report/list_equipment_supplies_msc.html:42
 msgid "Order date"
 msgstr "Data/hora do pedido"
 
-#: order/models.py:58
+#: order/models.py:61
 msgid "Modified"
 msgstr "Alterado em"
 
-#: order/models.py:59
+#: order/models.py:62
 msgid "Type of order"
 msgstr "Tipo de pedido"
 
-#: order/models.py:61
+#: order/models.py:64
 msgid "Protocol"
 msgstr "Protocolo"
 
-#: order/models.py:69
+#: order/models.py:72
 msgid "Orders"
 msgstr "Pedidos"
 
-#: order/models.py:78 order/models.py:83
+#: order/models.py:81 order/models.py:86
 msgid "Order number"
 msgstr "Nr do pedido"
 
-#: order/models.py:178
+#: order/models.py:181
 msgid "Value"
 msgstr "Valor"
 
-#: order/models.py:181
+#: order/models.py:184
 msgid "Invitation"
 msgstr "Convite"
 
-#: order/models.py:185
+#: order/models.py:188
 msgid "Scientific events"
 msgstr "Eventos"
 
-#: order/models.py:199
+#: order/models.py:202 templates/report/list_equipment_supplies_msc.html:43
 msgid "Quantity"
 msgstr "Quantidade"
 
-#: order/models.py:202 order/models.py:221 order/models.py:238
-#: order/models.py:263 templates/report/list_order.html:42
+#: order/models.py:206 order/models.py:231 order/models.py:248
+#: order/models.py:273 templates/report/list_equipment_supplies_msc.html:33
+#: templates/report/list_order.html:43
 msgid "Origin"
 msgstr "Origem"
 
-#: order/models.py:203 templates/report/list_order.html:33
+#: order/models.py:207 templates/report/list_equipment_supplies_msc.html:24
+#: templates/report/list_order.html:34
 msgid "Category"
 msgstr "Categoria"
 
-#: order/models.py:225
+#: order/models.py:235
 msgid "Services"
 msgstr "Serviços"
 
-#: order/models.py:239 order/models.py:264
+#: order/models.py:249 order/models.py:274
 msgid "Destination"
 msgstr "Destino"
 
-#: order/models.py:240
+#: order/models.py:250
 msgid "Outbound Date"
 msgstr "Data de saída"
 
-#: order/models.py:241
+#: order/models.py:251
 msgid "Outbound Preferred time"
 msgstr "Período de preferência"
 
-#: order/models.py:242
+#: order/models.py:252
 msgid "Inbound Date"
 msgstr "Data de retorno"
 
-#: order/models.py:243
+#: order/models.py:253
 msgid "Inbound Preferred time"
 msgstr "Período de preferência"
 
-#: order/models.py:244
+#: order/models.py:254
 msgid "Type of Trip"
 msgstr "Tipo de viagem"
 
-#: order/models.py:245
+#: order/models.py:255
 msgid "Type of transportation"
 msgstr "Tipo de transporte"
 
-#: order/models.py:246
+#: order/models.py:256
 msgid "Note"
 msgstr "Observação"
 
-#: order/models.py:250
+#: order/models.py:260
 msgid "Tickets"
 msgstr "Passagens"
 
-#: order/models.py:265
+#: order/models.py:275
 msgid "Departure"
 msgstr "Partida"
 
-#: order/models.py:266
+#: order/models.py:276
 msgid "Arrival"
 msgstr "Chegada"
 
-#: order/models.py:270
+#: order/models.py:280
 msgid "Daily stipends"
 msgstr "Diárias"
 
-#: order/models.py:287
+#: order/models.py:297
 msgid "Reimbursements"
 msgstr "Reembolsos"
 
@@ -537,7 +562,8 @@ msgid "Author"
 msgstr "Autor"
 
 #: research/models.py:60 research/models.py:105 research/models.py:126
-#: templates/report/list_order.html:22
+#: templates/report/list_equipment_supplies_msc.html:9
+#: templates/report/list_order.html:23
 msgid "Status"
 msgstr "Status"
 
@@ -625,11 +651,11 @@ msgstr "Editor"
 msgid "Book / Book Chapters"
 msgstr "Livro / Capítulos de Livro"
 
-#: sistema/urls.py:14
+#: sistema/urls.py:17
 msgid "NeuroMat Individual Report of Activities"
 msgstr ""
 
-#: sistema/urls.py:16
+#: sistema/urls.py:19
 msgid "Administration"
 msgstr "Administração"
 
@@ -692,11 +718,27 @@ msgstr "Verificar"
 msgid "NIRA version:"
 msgstr "Versão do NIRA:"
 
-#: templates/report/list_order.html:13
+#: templates/report/list_equipment_supplies_msc.html:8
+#: templates/report/list_order.html:14
 msgid "Order type"
 msgstr "Tipo de pedido"
 
-#: templates/report/list_order.html:52
+#: templates/report/list_equipment_supplies_msc.html:21
+#: templates/report/list_equipment_supplies_msc.html:26
+#: templates/report/list_equipment_supplies_msc.html:35
+msgid "All"
+msgstr "Todos"
+
+#: templates/report/list_equipment_supplies_msc.html:42
+msgid "Requester"
+msgstr "Pesquisador"
+
+#: templates/report/list_equipment_supplies_msc.html:54
+#, fuzzy
+#| msgid "Equipment / Supplies / Miscellaneous"
+msgid "No equipment / supplies / miscellaneous found!"
+msgstr "Equipamentos e bens de consumo"
+
+#: templates/report/list_order.html:53
 msgid "Get report"
 msgstr "Obter relatório"
-
