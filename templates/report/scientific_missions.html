@@ -1,0 +1,20 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<table class="table table-striped table-bordered">
+{% if orders %}
+    <tr><th>Scientific mission</th><th>Start date</th><th>End date</th></tr>
+    {% for order in orders %}
+        <tr>
+            <td>{{ order.justification }}</td>
+            <td>{{ order.dailystipend.departure|date:"d/m/Y" }}</td>
+            <td>{{ order.dailystipend.arrival|date:"d/m/Y" }}</td>
+        </tr>
+    {% endfor %}
+{%  else %}
+    No scientific missions found!
+{% endif %}
+</table>
+
+{% endblock %}
