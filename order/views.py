@@ -11,6 +11,7 @@ import json
 # Create your views here.
 
 
+@login_required
 def show_institute(request):
     if request.method == 'GET':
         university_id = request.GET.get('university')
@@ -25,6 +26,7 @@ def show_institute(request):
         return HttpResponse(json, content_type="application/json")
 
 
+@login_required
 def show_department(request):
     if request.method == 'GET':
         institute_id = request.GET.get('institute')
