@@ -6,6 +6,15 @@ import copy
 
 # Register your models here.
 
+class ScientificMissionAdmin(admin.ModelAdmin):
+    # Hide this link on the main menu.
+    def get_model_perms(self, request):
+        perms = super(ScientificMissionAdmin, self).get_model_perms(request)
+        perms['list_hide'] = True
+        return perms
+
+admin.site.register(ScientificMission, ScientificMissionAdmin)
+
 
 class SuperOrder(admin.ModelAdmin):
     # Shows the requests according to the user permission.
@@ -187,6 +196,14 @@ class DailyStipendAdmin(SuperOrder):
     list_display = ('order_number', 'status', 'requester', 'origin', 'destination', 'order_date')
 
     list_display_links = ('order_number', 'status', 'origin', 'destination', 'order_date')
+
+    # If superuser or NIRA admin, show receiver and mission fields.
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = copy.deepcopy(super(DailyStipendAdmin, self).get_fieldsets(request, obj))
+        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+            fieldsets[0][1]['fields'].append('receiver')
+            fieldsets[0][1]['fields'].append('mission')
+        return fieldsets
 
 admin.site.register(DailyStipend, DailyStipendAdmin)
 
