@@ -40,6 +40,13 @@ def show_department(request):
 
 
 @login_required
+def scientific_missions_report(request):
+    orders = Order.objects.filter(type_of_order='d', status='f')
+    context = {'orders': orders}
+    return render(request, 'report/scientific_missions.html', context)
+
+
+@login_required
 def list_order_by_type(request):
     types = [{'value': order_type[0], 'display': order_type[1].encode('utf-8')} for order_type in ORDER_TYPE]
 
