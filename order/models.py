@@ -44,6 +44,24 @@ ORDER_STATUS = (
 )
 
 
+class ScientificMission(models.Model):
+    """
+    An instance of this class is a of scientific mission.
+
+    '__unicode__'		Returns the mission.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by mission.
+    """
+    mission = models.CharField(_('Scientific Mission'), max_length=255, blank=True, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.mission
+
+    class Meta:
+        verbose_name = _('Scientific Mission')
+        verbose_name_plural = _('Scientific Missions')
+        ordering = ('mission', )
+
+
 class Order(models.Model):
     """
 
@@ -274,6 +292,8 @@ class DailyStipend(Order):
     destination = models.CharField(_('Destination'), max_length=200)
     departure = models.DateTimeField(_('Departure'))
     arrival = models.DateTimeField(_('Arrival'))
+    receiver = models.CharField(_('Who received?'), max_length=200, blank=True, null=True)
+    mission = models.ForeignKey(ScientificMission, verbose_name=_('Mission'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Daily stipend')
