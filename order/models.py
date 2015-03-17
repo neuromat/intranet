@@ -46,7 +46,7 @@ ORDER_STATUS = (
 
 class ScientificMission(models.Model):
     """
-    An instance of this class is a scientific mission.
+    An instance of this class is a type of scientific mission.
 
     '__unicode__'		Returns the mission.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by mission.
