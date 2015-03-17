@@ -297,7 +297,7 @@ class DailyStipend(Order):
     destination = models.CharField(_('Destination'), max_length=200)
     departure = models.DateTimeField(_('Departure'))
     arrival = models.DateTimeField(_('Arrival'))
-    receiver = models.CharField(_('Who received?'), max_length=200, blank=True, null=True)
+    receiver = models.CharField(_('Who will receive?'), max_length=200, blank=True, null=True)
     mission = models.ForeignKey(ScientificMission, verbose_name=_('Mission'), blank=True, null=True)
 
     class Meta:
