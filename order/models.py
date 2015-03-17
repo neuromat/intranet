@@ -65,13 +65,14 @@ class ScientificMission(models.Model):
 class Order(models.Model):
     """
 
-    '__unicode__'		Returns the requester.
-    'class Meta'		Ordering of data by date modification.
-    'id_order'          Show the IDs as a link to the order.
-    'order_number'      Get ID and shows as order number.
-    'save'              Send email to the requestor if the order status is changed.
-                        Send email to users (NIRA Admin) informing that an order has changed.
-                        Send email to users (NIRA Admin) informing that a new order was created.
+    '__unicode__'		    Returns the requester.
+    'class Meta'		    Ordering of data by date modification.
+    'id_order'              Show the IDs as a link to the order.
+    'order_number'          Get ID and shows as order number.
+    'requester_university'  Returns the University acronym that the requester belongs.
+    'save'                  Send email to the requestor if the order status is changed.
+                            Send email to users (NIRA Admin) informing that an order has changed.
+                            Send email to users (NIRA Admin) informing that a new order was created.
     """
     requester = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
     justification = models.TextField(_('Justification'), max_length=1000)
@@ -103,6 +104,10 @@ class Order(models.Model):
         return self.id
     order_number.short_description = _('Order number')
     order_number.admin_order_field = '-id'
+
+    # Used in scientific mission report.
+    def requester_university(self):
+        return u'%s' % self.requester.university.acronym
 
     def save(self, *args, **kwargs):
         # Info from settings_local file
