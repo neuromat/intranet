@@ -1,4 +1,4 @@
-Django==1.7.1
+Django==1.7.4
 django-admin-bootstrapped==2.0.5
 django-cep==1.0.9
 django-model-utils==2.2
