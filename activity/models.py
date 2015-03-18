@@ -92,25 +92,6 @@ class Seminar(models.Model):
         ordering = ('investigator', )
 
 
-class ScientificMission(models.Model):
-    """
-    An instance of this class is a scientific mission.
-
-    """
-    investigator = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
-    mission = models.TextField(_('Mission'), max_length=500)
-    start_date = models.DateField(_('Start date'))
-    end_date = models.DateField(_('End date'))
-
-    def __unicode__(self):
-        return u'%s' % self.investigator
-
-    class Meta:
-        verbose_name = _('Scientific mission')
-        verbose_name_plural = _('Scientific missions')
-        ordering = ('investigator', )
-
-
 class Meeting(models.Model):
     """
     An instance of this class is a meeting.

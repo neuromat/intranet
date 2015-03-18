@@ -67,16 +67,3 @@ class SeminarAdmin(ActivityAdmin):
     list_display_links = ('investigator', 'title', 'date')
 
 admin.site.register(Seminar, SeminarAdmin)
-
-
-class ScientificMissionAdmin(ActivityAdmin):
-    fieldsets = (
-        (None, {
-            'fields': ['mission', 'start_date', 'end_date']
-        }),
-    )
-
-    list_display = ('investigator', 'mission', 'start_date', 'end_date')
-    list_display_links = ('investigator', 'start_date', 'end_date')
-
-admin.site.register(ScientificMission, ScientificMissionAdmin)
