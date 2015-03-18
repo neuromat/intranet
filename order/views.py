@@ -2,7 +2,7 @@ from django.shortcuts import render
 from order.models import *
 from member.models import University
 from order.forms import CATEGORY, ORIGIN
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 import json as simplejson
@@ -42,6 +42,7 @@ def show_department(request):
 
 
 @login_required
+#@permission_required('is_superuser', raise_exception=True)
 def scientific_missions_report(request):
     orders = Order.objects.filter(type_of_order='d', status='f')
     context = {'orders': orders}
