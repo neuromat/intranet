@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 import json as simplejson
 import json
+import datetime
 
 # Create your views here.
 
@@ -44,9 +45,40 @@ def show_department(request):
 @login_required
 #@permission_required('is_superuser', raise_exception=True)
 def scientific_missions_report(request):
-    orders = Order.objects.filter(type_of_order='d', status='f')
-    context = {'orders': orders}
-    return render(request, 'report/scientific_missions.html', context)
+
+    if request.method == 'POST':
+        time = " 00:00:00"
+        start_date = request.POST['start_date']
+        if start_date:
+            start_day = start_date[0:2]
+            start_month = start_date[2:4]
+            start_year = start_date[4:8]
+            start_date = start_year+start_month+start_day+time
+            start_date = datetime.datetime.strptime(start_date, "%Y%m%d %H:%M:%S").date()
+            start_date -= datetime.timedelta(days=1)
+        else:
+            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+
+        end_date = request.POST['end_date']
+        if end_date:
+            end_day = end_date[0:2]
+            end_month = end_date[2:4]
+            end_year = end_date[4:8]
+            end_date = end_year+end_month+end_day+time
+            end_date = datetime.datetime.strptime(end_date, "%Y%m%d %H:%M:%S").date()
+            end_date += datetime.timedelta(days=1)
+        else:
+            now_plus_30 = datetime.datetime.now() + datetime.timedelta(days=30)
+            now_plus_30 = now_plus_30.strftime("%Y%m%d %H:%M:%S")
+            end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
+
+        orders = Order.objects.filter(type_of_order='d', status='f', dailystipend__departure__gt=start_date,
+                                      dailystipend__arrival__lt=end_date)
+
+        context = {'orders': orders}
+        return render(request, 'report/scientific_missions_report.html', context)
+
+    return render(request, 'report/scientific_missions.html')
 
 
 @login_required
