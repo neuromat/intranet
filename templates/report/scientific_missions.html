@@ -1,8 +1,12 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_static bootstrapped_goodies_tags %}
 
-{% block content %}
+{% block extrahead %}
+<script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
+<script src="{% static 'js/scientific_mission_report.js' %}"></script>
+{% endblock %}
 
+{% block content %}
 <form role="form" method="post">{% csrf_token %}
 <div class="container-fluid">
     <div class="row">
