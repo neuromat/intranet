@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 import json as simplejson
 import json
 import datetime
+from django.contrib import messages
 
 # Create your views here.
 
@@ -76,7 +77,12 @@ def scientific_missions_report(request):
                                       dailystipend__arrival__lt=end_date)
 
         context = {'orders': orders}
-        return render(request, 'report/scientific_missions_report.html', context)
+
+        if end_date >= start_date:
+            return render(request, 'report/scientific_missions_report.html', context)
+        else:
+            messages.error(request, 'End date should be equal or greater than Start date.')
+            return render(request, 'report/scientific_missions.html')
 
     return render(request, 'report/scientific_missions.html')
 
