@@ -1,34 +1,19 @@
 from django.contrib import admin
 from member.models import *
-from django.utils.translation import ugettext_lazy as _
+#from django.utils.translation import ugettext_lazy as _
 import copy
 from forms import *
 
 admin.site.register(Role)
-admin.site.register(University)
 admin.site.register(Institute)
+admin.site.register(Other)
 
 
-class DepartmentAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (None, {
-            'fields': ['university', 'institute', 'name', 'acronym', ]
-        }),
-    )
-
-    list_display = ('institute', 'name', 'acronym')
-    list_display_links = ('name',)
-
-    form = DepartmentForm
-
-admin.site.register(Department, DepartmentAdmin)
-
-
-class InvestigatorAdmin(admin.ModelAdmin):
+class ProjectMemberAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ['user', 'nickname', 'role', 'university', ]
+            'fields': ['user', 'role', 'institute', ]
         }),
         (_('Personal Info'), {
             'fields': ('rg', 'cpf', 'passport')
@@ -41,36 +26,36 @@ class InvestigatorAdmin(admin.ModelAdmin):
 
     # Shows the investigators according to the user permission
     def get_queryset(self, request):
-        if request.user.investigator.is_nira_admin or request.user.is_superuser:
-            return Investigator.objects.all()
-        return Investigator.objects.filter(user=request.user)
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
+            return ProjectMember.objects.all()
+        return ProjectMember.objects.filter(user=request.user)
 
     # If not superuser, do not enable user and role fields
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
-            return super(InvestigatorAdmin, self).get_readonly_fields(request, obj)
+            return super(ProjectMemberAdmin, self).get_readonly_fields(request, obj)
         else:
             return 'user', 'role'
 
     # If superuser, display the is_nira_admin and force_password_change fields
     def get_fieldsets(self, request, obj=None):
-        fieldsets = copy.deepcopy(super(InvestigatorAdmin, self).get_fieldsets(request, obj))
+        fieldsets = copy.deepcopy(super(ProjectMemberAdmin, self).get_fieldsets(request, obj))
         if request.user.is_superuser:
             fieldsets[0][1]['fields'].append('is_nira_admin')
             fieldsets[0][1]['fields'].append('force_password_change')
         return fieldsets
 
-    form = InvestigatorForm
+    form = ProjectMemberForm
 
-admin.site.register(Investigator, InvestigatorAdmin)
+admin.site.register(ProjectMember, ProjectMemberAdmin)
 
 
 class BibliographicCitationAdmin(admin.ModelAdmin):
-    fields = ['name']
+    fields = ['citation_name']
 
-    list_display = ('investigator', 'name')
+    list_display = ('person_name', 'citation_name')
 
-    list_display_links = ('investigator',)
+    list_display_links = ('person_name',)
 
     # Shows the investigators according to the user permission
     def get_queryset(self, request):
@@ -84,14 +69,14 @@ class BibliographicCitationAdmin(admin.ModelAdmin):
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(BibliographicCitationAdmin, self).get_fieldsets(request, obj))
         if request.user.is_superuser:
-            fieldsets[0][1]['fields'].insert(0, 'investigator')
+            fieldsets[0][1]['fields'].insert(0, 'person_name')
         return fieldsets
 
     # If not superuser, set the investigator as the current user
     def save_model(self, request, obj, form, change):
         if not request.user.is_superuser:
             if not change:
-                obj.investigator = Investigator.objects.get(user=request.user)
+                obj.person_name = Person.objects.get(user=request.user)
         obj.save()
 
 admin.site.register(BibliographicCitation, BibliographicCitationAdmin)

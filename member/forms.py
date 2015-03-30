@@ -1,14 +1,15 @@
 from django import forms
-from order.models import Investigator, University
+from order.models import Institute
+from member.models import ProjectMember
 from django.forms import Select
 from cep.widgets import CEPInput
 from django.utils.translation import ugettext_lazy as _
 
 
-class InvestigatorForm(forms.ModelForm):
+class ProjectMemberForm(forms.ModelForm):
 
     class Meta:
-        model = Investigator
+        model = ProjectMember
 
         fields = ['zipcode', 'street', 'district', 'city', 'state', 'country']
 
@@ -26,8 +27,8 @@ class InvestigatorForm(forms.ModelForm):
         }
 
 
-class DepartmentForm(forms.ModelForm):
-    university = forms.ModelChoiceField(University.objects.all(), label=_('University'),
+class InstituteForm(forms.ModelForm):
+    university = forms.ModelChoiceField(Institute.objects.all(), label=_('Institute'),
                                     widget=Select(attrs={'onchange': 'ajax_filter_institutes(this.value);'}))
 
     def __init__(self, *args, **kwargs):
@@ -37,7 +38,7 @@ class DepartmentForm(forms.ModelForm):
                 kwargs['initial'].update(initial)
             else:
                 kwargs['initial'] = initial
-        super(DepartmentForm, self).__init__(*args, **kwargs)
+        super(InstituteForm, self).__init__(*args, **kwargs)
 
     class Media:
         js = ('/static/js/member_department.js',)

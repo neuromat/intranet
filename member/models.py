@@ -37,87 +37,49 @@ class Role(models.Model):
         ordering = ('name', )
 
 
-class University(models.Model):
+class InstituteType(models.Model):
     """
-    An instance of this class represents a University.
+    An instance of this class is the type of institute.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
     """
-    name = models.CharField(_('Name'), max_length=100)
-    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
+    name = models.CharField(_('Name'), max_length=255)
 
     # Returns the name
     def __unicode__(self):
         return u'%s' % self.name
 
     class Meta:
-        verbose_name = _('University')
-        verbose_name_plural = _('Universities')
+        verbose_name = _('Type of institute')
+        verbose_name_plural = _('Types of institute')
         ordering = ('name', )
 
 
 class Institute(models.Model):
     """
-    An instance of this class represents an institute, school or administrative organization from a University.
+    An instance of this class represents an Institute.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
     """
-    university = models.ForeignKey(University, verbose_name=_('University'), blank=True, null=True)
     name = models.CharField(_('Name'), max_length=100)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
+    type = models.ForeignKey(InstituteType, verbose_name=_('Type'))
+    belongs_to = models.ForeignKey('self', verbose_name=_('Belongs to'), blank=True, null=True)
 
     # Returns the name
     def __unicode__(self):
         return u'%s' % self.name
 
     class Meta:
-        verbose_name = _('Institute / School / Administrative')
-        verbose_name_plural = _('Institutes / Schools / Administrative')
+        verbose_name = _('Institute')
+        verbose_name_plural = _('Institutes')
         ordering = ('name', )
 
 
-class Department(models.Model):
-    """
-    An instance of this class represents a department or a research project from an institute / school / administrative.
-
-    '__unicode__'		Returns the name.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
-    """
-    institute = models.ForeignKey(Institute, verbose_name=_('Institute / School / Administrative'),
-                                  blank=True, null=True)
-    name = models.CharField(_('Name'), max_length=100)
-    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
-
-    # Returns the name
-    def __unicode__(self):
-        return u'%s' % self.name
-
-    class Meta:
-        verbose_name = _('Department / Research project')
-        verbose_name_plural = _('Departments / Research projects')
-        ordering = ('name', )
-
-
-class Investigator(models.Model):
-
-    """
-    An instance of this class represents an investigator.
-
-    '__unicode__'		Returns the full name from User class.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
-    'create_user_profile_signal' and 'password_change_signal' force password change on first login.
-    """
-    user = models.OneToOneField(User, verbose_name=_('User'))
-    force_password_change = models.BooleanField(_('Force password change'), default=True,
-                                                help_text=_('Force the user to change their password at next login.'))
-    is_nira_admin = models.BooleanField(_('NIRA admin'), default=False,
-                                        help_text=_('Designates whether the user can create content on behalf of '
-                                                    'another user.'))
-    nickname = models.CharField(_('Nickname'), max_length=20, blank=True, null=True)
-    role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
-    university = models.ForeignKey(University, verbose_name=_('University'), blank=True, null=True)
+class Person(models.Model):
+    institute = models.ForeignKey(Institute, verbose_name=_('Institute'), blank=True, null=True)
     rg = models.CharField(_('RG'), max_length=12, blank=True, null=True)
     cpf = models.CharField(_('CPF'), blank=True, null=True, max_length=15, validators=[validate_cpf])
     passport = models.CharField(_('Passport'), max_length=12, blank=True, null=True)
@@ -132,6 +94,51 @@ class Investigator(models.Model):
     state = models.CharField(_('State'), max_length=50, blank=True, null=True)
     country = models.CharField(_('Country'), max_length=50, blank=True, null=True)
 
+     # Returns the name
+    def __unicode__(self):
+        if ProjectMember:
+            return u'%s %s' % (self.projectmember.user.first_name, self.projectmember.user.last_name)
+        else:
+            return u'%s' % self.other.full_name
+
+
+class Other(Person):
+    """
+    An instance of this class represents a person who has developed some work for the project.
+
+    '__unicode__'		Returns the full name.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    """
+    full_name = models.CharField(_('Full name'), max_length=255)
+    email = models.EmailField()
+
+    # Returns the name
+    def __unicode__(self):
+        return u'%s' % self.full_name
+
+    class Meta:
+        verbose_name = _('Other person - Info')
+        verbose_name_plural = _('Other persons - Info')
+        ordering = ('full_name', )
+
+
+
+class ProjectMember(Person):
+    """
+    An instance of this class represents a person that is member of the project.
+
+    '__unicode__'		Returns the full name from User class.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    'create_user_profile_signal' and 'password_change_signal' force password change on first login.
+    """
+    user = models.OneToOneField(User, verbose_name=_('User'))
+    force_password_change = models.BooleanField(_('Force password change'), default=True,
+                                                help_text=_('Force the user to change their password at next login.'))
+    is_nira_admin = models.BooleanField(_('NIRA admin'), default=False,
+                                        help_text=_('Designates whether the user can create content on behalf of '
+                                                    'another user.'))
+    role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
+
     # Returns the full name from User class
     def __unicode__(self):
         return u'%s %s' % (self.user.first_name, self.user.last_name)
@@ -139,7 +146,7 @@ class Investigator(models.Model):
     # Post_save signal that will create an Investigator every time a User is created.
     def create_user_profile_signal(sender, instance, created, **kwargs):
         if created:
-            Investigator.objects.create(user=instance)
+            ProjectMember.objects.create(user=instance)
 
     # If user exists and he is not superuser, checks if the password was changed to modify
     # force_password_change to False.
@@ -154,7 +161,7 @@ class Investigator(models.Model):
                 return
 
             if not user.password == instance.password:
-                profile, created = Investigator.objects.get_or_create(user=user)
+                profile, created = ProjectMember.objects.get_or_create(user=user)
                 profile.force_password_change = False
                 profile.save()
         except User.DoesNotExist:
@@ -165,8 +172,8 @@ class Investigator(models.Model):
 
     # Description of the model / Sort by user
     class Meta:
-        verbose_name = _('Personal info')
-        verbose_name_plural = _('Personal info')
+        verbose_name = _('Member - Info')
+        verbose_name_plural = _('Members - Info')
         ordering = ('user', )
 
 
@@ -177,14 +184,14 @@ class BibliographicCitation(models.Model):
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
     """
-    name = models.CharField(_('Name'), max_length=50, help_text='E.g.: Silva, J.')
-    investigator = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
+    citation_name = models.CharField(_('Name in bibliographic citation'), max_length=50, help_text='E.g.: Silva, J.')
+    person_name = models.ForeignKey(Person, verbose_name=_('Name'))
 
     # Returns the name
     def __unicode__(self):
-        return u'%s' % self.name
+        return u'%s' % self.citation_name
 
     class Meta:
         verbose_name = _('Bibliographic citation')
         verbose_name_plural = _('Bibliographic citations')
-        ordering = ('name', )
+        ordering = ('citation_name', )
