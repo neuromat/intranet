@@ -90,26 +90,27 @@ class BibliographicCitationAdmin(admin.ModelAdmin):
     list_display = ('person_name', 'citation_name')
     list_display_links = ('person_name',)
 
-    # Shows the investigators according to the user permission
+    # Shows the persons according to the user permission
     def get_queryset(self, request):
         qs = super(BibliographicCitationAdmin, self).get_queryset(request)
         # If super-user, show all
         if request.user.is_superuser:
             return qs
-        return qs.filter(investigator=request.user)
+        return qs.filter(person_name=request.user)
 
-    # If superuser, display the investigator field
+    # If superuser, display the person_name field
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(BibliographicCitationAdmin, self).get_fieldsets(request, obj))
-        if request.user.is_superuser:
+        if request.user.is_superuser or request.user.projectmember.is_nira_admin:
             fieldsets[0][1]['fields'].insert(0, 'person_name')
         return fieldsets
 
-    # If not superuser, set the investigator as the current user
+    # If not superuser, set the person as the current user
     def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser:
+        if not request.user.is_superuser and not request.user.projectmember.is_nira_admin:
             if not change:
-                obj.person_name = Person.objects.get(user=request.user)
+                if BibliographicCitation.person_name.type_of_person == 'm':
+                    obj.person_name = ProjectMember.objects.get(user=request.user)
         obj.save()
 
 admin.site.register(BibliographicCitation, BibliographicCitationAdmin)

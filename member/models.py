@@ -7,6 +7,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+# Defining types of person
+PROJECT_MEMBER = 'm'
+OTHER = 'o'
+PERSON = (
+    (PROJECT_MEMBER, _('Member')),
+    (OTHER, _('Other')),
+)
+
 
 def validate_cpf(value):
     """
@@ -96,10 +104,12 @@ class Person(models.Model):
     city = models.CharField(_('City'), max_length=50, blank=True, null=True)
     state = models.CharField(_('State'), max_length=50, blank=True, null=True)
     country = models.CharField(_('Country'), max_length=50, blank=True, null=True)
+    type_of_person = models.CharField(_('Type of person'), max_length=1, choices=PERSON, blank=True)
 
      # Returns the name
     def __unicode__(self):
-        if ProjectMember:
+        #if ProjectMember:
+        if self.type_of_person == 'm':
             return u'%s %s' % (self.projectmember.user.first_name, self.projectmember.user.last_name)
         else:
             return u'%s' % self.other.full_name
@@ -158,6 +168,11 @@ class ProjectMember(Person):
         verbose_name_plural = _('Members - Info')
         ordering = ('user', )
 
+    # Sets the type of person as member
+    def save(self, *args, **kwargs):
+        self.type_of_person = PROJECT_MEMBER
+        super(ProjectMember, self).save(*args, **kwargs)
+
 
 class Other(Person):
     """
@@ -177,6 +192,11 @@ class Other(Person):
         verbose_name = _('Other person - Info')
         verbose_name_plural = _('Other persons - Info')
         ordering = ('full_name', )
+
+    # Sets the type of person as other
+    def save(self, *args, **kwargs):
+        self.type_of_person = OTHER
+        super(Other, self).save(*args, **kwargs)
 
 
 class BibliographicCitation(models.Model):
