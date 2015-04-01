@@ -1,19 +1,18 @@
 from django.contrib import admin
 from member.models import *
-#from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 import copy
 from forms import *
 
 admin.site.register(Role)
-admin.site.register(Institute)
-admin.site.register(Other)
+admin.site.register(InstitutionType)
 
 
 class ProjectMemberAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ['user', 'role', 'institute', ]
+            'fields': ['__unicode__', 'role', 'institution']
         }),
         (_('Personal Info'), {
             'fields': ('rg', 'cpf', 'passport')
@@ -24,18 +23,24 @@ class ProjectMemberAdmin(admin.ModelAdmin):
         }),
     )
 
+    list_display = ('__unicode__', 'role', 'institution')
+    list_display_links = ('__unicode__', )
+
     # Shows the investigators according to the user permission
     def get_queryset(self, request):
         if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             return ProjectMember.objects.all()
         return ProjectMember.objects.filter(user=request.user)
 
-    # If not superuser, do not enable user and role fields
+    # If not superuser, do not enable role and institution fields
+    # __unicode__ is used to show the name of the user, but it can't be changed here
     def get_readonly_fields(self, request, obj=None):
+        ro_fields = super(ProjectMemberAdmin, self).get_readonly_fields(request, obj)
         if request.user.is_superuser:
-            return super(ProjectMemberAdmin, self).get_readonly_fields(request, obj)
+            ro_fields = list(ro_fields) + ['__unicode__',]
         else:
-            return 'user', 'role'
+            ro_fields = list(ro_fields) + ['__unicode__', 'role', 'institution']
+        return ro_fields
 
     # If superuser, display the is_nira_admin and force_password_change fields
     def get_fieldsets(self, request, obj=None):
@@ -50,11 +55,39 @@ class ProjectMemberAdmin(admin.ModelAdmin):
 admin.site.register(ProjectMember, ProjectMemberAdmin)
 
 
+class OtherAdmin(admin.ModelAdmin):
+
+    fieldsets = (
+        (None, {
+            'fields': ['full_name', 'email', 'institution', ]
+        }),
+        (_('Personal Info'), {
+            'fields': ('rg', 'cpf', 'passport')
+        }),
+        (_('Contact Info'), {
+            'fields': ('phone', 'cellphone', 'zipcode', 'street', 'street_complement', 'number', 'district', 'city',
+                       'state', 'country')
+        }),
+    )
+
+    list_display = ('full_name', 'email', 'institution')
+    list_display_links = ('full_name', 'email', 'institution')
+
+admin.site.register(Other, OtherAdmin)
+
+
+class InstitutionAdmin(admin.ModelAdmin):
+
+    fields = ['type', 'name', 'acronym', 'belongs_to']
+    list_display = ('type', 'name', 'acronym', 'belongs_to')
+    list_display_links = ('name',)
+
+admin.site.register(Institution, InstitutionAdmin)
+
+
 class BibliographicCitationAdmin(admin.ModelAdmin):
     fields = ['citation_name']
-
     list_display = ('person_name', 'citation_name')
-
     list_display_links = ('person_name',)
 
     # Shows the investigators according to the user permission

@@ -1,5 +1,5 @@
 from django import forms
-from order.models import Institute
+from order.models import Institution
 from member.models import ProjectMember
 from django.forms import Select
 from cep.widgets import CEPInput
@@ -28,7 +28,7 @@ class ProjectMemberForm(forms.ModelForm):
 
 
 class InstituteForm(forms.ModelForm):
-    university = forms.ModelChoiceField(Institute.objects.all(), label=_('Institute'),
+    university = forms.ModelChoiceField(Institution.objects.all(), label=_('Institute'),
                                     widget=Select(attrs={'onchange': 'ajax_filter_institutes(this.value);'}))
 
     def __init__(self, *args, **kwargs):

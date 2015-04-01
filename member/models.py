@@ -37,9 +37,9 @@ class Role(models.Model):
         ordering = ('name', )
 
 
-class InstituteType(models.Model):
+class InstitutionType(models.Model):
     """
-    An instance of this class is the type of institute.
+    An instance of this class is the type of institution.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
@@ -51,35 +51,38 @@ class InstituteType(models.Model):
         return u'%s' % self.name
 
     class Meta:
-        verbose_name = _('Type of institute')
-        verbose_name_plural = _('Types of institute')
+        verbose_name = _('Type of institution')
+        verbose_name_plural = _('Types of institution')
         ordering = ('name', )
 
 
-class Institute(models.Model):
+class Institution(models.Model):
     """
-    An instance of this class represents an Institute.
+    An instance of this class represents an institution.
 
-    '__unicode__'		Returns the name.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    '__unicode__'		Returns the acronym.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by acronym.
     """
-    name = models.CharField(_('Name'), max_length=100)
+    name = models.CharField(_('Name'), max_length=255)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
-    type = models.ForeignKey(InstituteType, verbose_name=_('Type'))
+    type = models.ForeignKey(InstitutionType, verbose_name=_('Type'))
     belongs_to = models.ForeignKey('self', verbose_name=_('Belongs to'), blank=True, null=True)
 
-    # Returns the name
+    # Returns the acronym
     def __unicode__(self):
-        return u'%s' % self.name
+        if self.belongs_to is None:
+            return u'%s' % (self.acronym)
+        else:
+            return u'%s - %s' % (self.belongs_to, self.acronym)
 
     class Meta:
-        verbose_name = _('Institute')
-        verbose_name_plural = _('Institutes')
-        ordering = ('name', )
+        verbose_name = _('Institution')
+        verbose_name_plural = _('Institutions')
+        ordering = ('-acronym',)
 
 
 class Person(models.Model):
-    institute = models.ForeignKey(Institute, verbose_name=_('Institute'), blank=True, null=True)
+    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
     rg = models.CharField(_('RG'), max_length=12, blank=True, null=True)
     cpf = models.CharField(_('CPF'), blank=True, null=True, max_length=15, validators=[validate_cpf])
     passport = models.CharField(_('Passport'), max_length=12, blank=True, null=True)
@@ -100,27 +103,6 @@ class Person(models.Model):
             return u'%s %s' % (self.projectmember.user.first_name, self.projectmember.user.last_name)
         else:
             return u'%s' % self.other.full_name
-
-
-class Other(Person):
-    """
-    An instance of this class represents a person who has developed some work for the project.
-
-    '__unicode__'		Returns the full name.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
-    """
-    full_name = models.CharField(_('Full name'), max_length=255)
-    email = models.EmailField()
-
-    # Returns the name
-    def __unicode__(self):
-        return u'%s' % self.full_name
-
-    class Meta:
-        verbose_name = _('Other person - Info')
-        verbose_name_plural = _('Other persons - Info')
-        ordering = ('full_name', )
-
 
 
 class ProjectMember(Person):
@@ -175,6 +157,26 @@ class ProjectMember(Person):
         verbose_name = _('Member - Info')
         verbose_name_plural = _('Members - Info')
         ordering = ('user', )
+
+
+class Other(Person):
+    """
+    An instance of this class represents a person who has developed some work for the project.
+
+    '__unicode__'		Returns the full name.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    """
+    full_name = models.CharField(_('Full name'), max_length=255)
+    email = models.EmailField(_('Email'), blank=True, null=True)
+
+    # Returns the name
+    def __unicode__(self):
+        return u'%s' % self.full_name
+
+    class Meta:
+        verbose_name = _('Other person - Info')
+        verbose_name_plural = _('Other persons - Info')
+        ordering = ('full_name', )
 
 
 class BibliographicCitation(models.Model):
