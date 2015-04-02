@@ -12,9 +12,9 @@
     {% for order in orders %}
         <tr>
             {% if order.dailystipend.receiver %}
-                <td>{{ order.dailystipend.receiver }}</td>
+                <td>{{ order.dailystipend.receiver }} / {{ order.dailystipend.receiver.institution }}</td>
             {% else %}
-                <td>{{ order.requester }} / {{ order.requester_university }}</td>
+                <td>{{ order.requester }} / {{ order.requester.institution }}</td>
             {% endif %}
             <td>{{ order.dailystipend.mission }}</td>
             <td>{{ order.dailystipend.destination }}</td>
