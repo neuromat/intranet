@@ -105,10 +105,6 @@ class Order(models.Model):
     order_number.short_description = _('Order number')
     order_number.admin_order_field = '-id'
 
-    # Used in scientific mission report.
-    def requester_university(self):
-        return u'%s' % self.requester.university.acronym
-
     def save(self, *args, **kwargs):
         # Info from settings_local file
         email_host_user = settings.EMAIL_HOST_USER
