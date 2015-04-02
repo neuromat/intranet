@@ -33,7 +33,7 @@ class Role(models.Model):
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
     """
-    name = models.CharField(_('Name'), max_length=50)
+    name = models.CharField(_('Name'), max_length=255)
 
     # Returns the name
     def __unicode__(self):
@@ -76,12 +76,18 @@ class Institution(models.Model):
     type = models.ForeignKey(InstitutionType, verbose_name=_('Type'))
     belongs_to = models.ForeignKey('self', verbose_name=_('Belongs to'), blank=True, null=True)
 
-    # Returns the acronym
+    # If exists, returns the acronym, if not returns the name
     def __unicode__(self):
         if self.belongs_to is None:
-            return u'%s' % (self.acronym)
+            if self.acronym:
+                return u'%s' % (self.acronym)
+            else:
+                return u'%s' % (self.name)
         else:
-            return u'%s - %s' % (self.belongs_to, self.acronym)
+            if self.acronym:
+                return u'%s - %s' % (self.belongs_to, self.acronym)
+            else:
+                return u'%s - %s' % (self.belongs_to, self.name)
 
     class Meta:
         verbose_name = _('Institution')
@@ -97,18 +103,17 @@ class Person(models.Model):
     phone = models.CharField(_('Phone'), max_length=15, blank=True, null=True)
     cellphone = models.CharField(_('Cell Phone'), max_length=15, blank=True, null=True)
     zipcode = models.CharField(_('Zip Code'), max_length=9, blank=True, null=True)
-    street = models.CharField(_('Address'), max_length=100, blank=True, null=True)
-    street_complement = models.CharField(_('Complement'), max_length=100, blank=True, null=True)
+    street = models.CharField(_('Address'), max_length=255, blank=True, null=True)
+    street_complement = models.CharField(_('Complement'), max_length=255, blank=True, null=True)
     number = models.CharField(_('Number'), max_length=10, blank=True, null=True)
-    district = models.CharField(_('District'), max_length=100, blank=True, null=True)
-    city = models.CharField(_('City'), max_length=50, blank=True, null=True)
-    state = models.CharField(_('State'), max_length=50, blank=True, null=True)
-    country = models.CharField(_('Country'), max_length=50, blank=True, null=True)
+    district = models.CharField(_('District'), max_length=255, blank=True, null=True)
+    city = models.CharField(_('City'), max_length=255, blank=True, null=True)
+    state = models.CharField(_('State'), max_length=255, blank=True, null=True)
+    country = models.CharField(_('Country'), max_length=255, blank=True, null=True)
     type_of_person = models.CharField(_('Type of person'), max_length=1, choices=PERSON, blank=True)
 
      # Returns the name
     def __unicode__(self):
-        #if ProjectMember:
         if self.type_of_person == 'm':
             return u'%s %s' % (self.projectmember.user.first_name, self.projectmember.user.last_name)
         else:
@@ -120,7 +125,7 @@ class ProjectMember(Person):
     An instance of this class represents a person that is member of the project.
 
     '__unicode__'		Returns the full name from User class.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by user.
     'create_user_profile_signal' and 'password_change_signal' force password change on first login.
     """
     user = models.OneToOneField(User, verbose_name=_('User'))
@@ -203,10 +208,10 @@ class BibliographicCitation(models.Model):
     """
     An instance of this class represents a name used in a bibliographic citation
 
-    '__unicode__'		Returns the name.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    '__unicode__'		Returns the citation name.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by citation name.
     """
-    citation_name = models.CharField(_('Name in bibliographic citation'), max_length=50, help_text='E.g.: Silva, J.')
+    citation_name = models.CharField(_('Name in bibliographic citation'), max_length=100, help_text='E.g.: Silva, J.')
     person_name = models.ForeignKey(Person, verbose_name=_('Name'))
 
     # Returns the name

@@ -26,17 +26,17 @@ class ProjectMemberAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'role', 'institution')
     list_display_links = ('__unicode__', )
 
-    # Shows the investigators according to the user permission
+    # Shows the members according to the user permission
     def get_queryset(self, request):
         if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             return ProjectMember.objects.all()
         return ProjectMember.objects.filter(user=request.user)
 
-    # If not superuser, do not enable role and institution fields
+    # If not superuser or nira_admin, do not enable role and institution fields
     # __unicode__ is used to show the name of the user, but it can't be changed here
     def get_readonly_fields(self, request, obj=None):
         ro_fields = super(ProjectMemberAdmin, self).get_readonly_fields(request, obj)
-        if request.user.is_superuser:
+        if request.user.is_superuser or request.user.projectmember.is_nira_admin:
             ro_fields = list(ro_fields) + ['__unicode__',]
         else:
             ro_fields = list(ro_fields) + ['__unicode__', 'role', 'institution']
@@ -73,6 +73,8 @@ class OtherAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'email', 'institution')
     list_display_links = ('full_name', 'email', 'institution')
 
+    form = OtherForm
+
 admin.site.register(Other, OtherAdmin)
 
 
@@ -90,27 +92,26 @@ class BibliographicCitationAdmin(admin.ModelAdmin):
     list_display = ('person_name', 'citation_name')
     list_display_links = ('person_name',)
 
-    # Shows the persons according to the user permission
+    # Shows the person in accordance with the user's permission
     def get_queryset(self, request):
         qs = super(BibliographicCitationAdmin, self).get_queryset(request)
         # If super-user, show all
-        if request.user.is_superuser:
+        if request.user.is_superuser or request.user.projectmember.is_nira_admin:
             return qs
         return qs.filter(person_name=request.user)
 
-    # If superuser, display the person_name field
+    # If superuser or nira_admin, display the person_name field
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(BibliographicCitationAdmin, self).get_fieldsets(request, obj))
         if request.user.is_superuser or request.user.projectmember.is_nira_admin:
             fieldsets[0][1]['fields'].insert(0, 'person_name')
         return fieldsets
 
-    # If not superuser, set the person as the current user
+    # If not superuser and not nira_admin, set the person as the current user
     def save_model(self, request, obj, form, change):
         if not request.user.is_superuser and not request.user.projectmember.is_nira_admin:
             if not change:
-                if BibliographicCitation.person_name.type_of_person == 'm':
-                    obj.person_name = ProjectMember.objects.get(user=request.user)
+                obj.person_name = ProjectMember.objects.get(user=request.user)
         obj.save()
 
 admin.site.register(BibliographicCitation, BibliographicCitationAdmin)
