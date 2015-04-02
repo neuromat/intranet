@@ -59,18 +59,15 @@ class HardwareSoftwareAdminForm(forms.ModelForm):
     class Meta:
         model = HardwareSoftware
 
-        fields = ['origin', 'category', 'url', 'university', 'institute']
+        fields = ['origin', 'category', 'url']
 
         widgets = {
             'origin': RadioSelect(choices=ORIGIN),
             'category': RadioSelect(choices=CATEGORY),
             'url': TextInput(attrs={'size': 80, 'placeholder': 'http://myproduct.example.com/product01'}),
-            'university': Select(attrs={'onchange': 'ajax_filter_institutes(this.value);'}),
-            'institute': Select(attrs={'onchange': 'ajax_filter_departments(this.value);'}),
         }
 
     class Media:
-        js = ('/static/js/order_hardware_software.js',)
         css = {
             'all': ('/static/css/customization.css',)
         }

@@ -21,30 +21,30 @@ class SuperOrder(admin.ModelAdmin):
     # Users defined as superuser or NIRA Admin can see all orders.
     def get_queryset(self, request):
         qs = super(SuperOrder, self).get_queryset(request)
-        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             return qs
         return qs.filter(requester=request.user)
 
     # If not superuser or NIRA Admin, the status field becomes read-only.
     def get_readonly_fields(self, request, obj=None):
         ro_fields = super(SuperOrder, self).get_readonly_fields(request, obj)
-        if not request.user.is_superuser and not request.user.investigator.is_nira_admin:
+        if not request.user.is_superuser and not request.user.projectmember.is_nira_admin:
             ro_fields = list(ro_fields) + ['status']
         return ro_fields
 
     # If superuser or NIRA Admin, show the requester and protocol fields.
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(SuperOrder, self).get_fieldsets(request, obj))
-        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             fieldsets[0][1]['fields'].append('requester')
             fieldsets.append((_('Administrative system'), {'fields': ('protocol',)}),)
         return fieldsets
 
     # If not superuser or NIRA Admin, set the requester as the current user and the status as Open.
     def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser and not request.user.investigator.is_nira_admin:
+        if not request.user.is_superuser and not request.user.projectmember.is_nira_admin:
             if not change:
-                obj.requester = Investigator.objects.get(user=request.user)
+                obj.requester = ProjectMember.objects.get(user=request.user)
                 obj.status = 'o'
         obj.save()
 
@@ -115,12 +115,10 @@ class HardwareSoftwareAdmin(SuperOrder):
     # If superuser or NIRA admin, show origin and category fields.
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(HardwareSoftwareAdmin, self).get_fieldsets(request, obj))
-        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             fieldsets[0][1]['fields'].append('origin')
             fieldsets[0][1]['fields'].append('category')
-            fieldsets[0][1]['fields'].append('university')
-            fieldsets[0][1]['fields'].append('institute')
-            fieldsets[0][1]['fields'].append('department')
+            fieldsets[0][1]['fields'].append('institution')
         return fieldsets
 
 admin.site.register(HardwareSoftware, HardwareSoftwareAdmin)
@@ -148,7 +146,7 @@ class ServiceAdmin(SuperOrder):
     # If superuser or NIRA admin, show origin field.
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(ServiceAdmin, self).get_fieldsets(request, obj))
-        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             fieldsets[0][1]['fields'].append('origin')
         return fieldsets
 
@@ -200,7 +198,7 @@ class DailyStipendAdmin(SuperOrder):
     # If superuser or NIRA admin, show receiver and mission fields.
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(DailyStipendAdmin, self).get_fieldsets(request, obj))
-        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             fieldsets[0][1]['fields'].append('receiver')
             fieldsets[0][1]['fields'].append('mission')
         return fieldsets

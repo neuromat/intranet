@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from member.models import Investigator, University, Institute, Department
+from member.models import ProjectMember, Institution, Person
 from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
 from django.core.mail import EmailMultiAlternatives
@@ -74,7 +74,7 @@ class Order(models.Model):
                             Send email to users (NIRA Admin) informing that an order has changed.
                             Send email to users (NIRA Admin) informing that a new order was created.
     """
-    requester = models.ForeignKey(Investigator, verbose_name=_('Investigator'))
+    requester = models.ForeignKey(ProjectMember, verbose_name=_('NeuroMat member'))
     justification = models.TextField(_('Justification'), max_length=1000)
     order_date = models.DateTimeField(_('Order date'), auto_now_add=True, blank=True)
     date_modified = models.DateTimeField(_('Modified'), auto_now=True, blank=True)
@@ -199,8 +199,8 @@ class Event(Order):
     An instance of this class is a solicitation for inscription in an event.
 
     """
-    name = models.CharField(_('Name'), max_length=200)
-    url = models.URLField(_('URL'), max_length=50, blank=True, null=True)
+    name = models.CharField(_('Name'), max_length=255)
+    url = models.URLField(_('URL'), max_length=255, blank=True, null=True)
     value = models.CharField(_('Value'), max_length=15, blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'))
@@ -228,12 +228,7 @@ class HardwareSoftware(Order):
                                       'of the product or any store that sells this product.'))
     origin = models.CharField(_('Origin'), max_length=1, blank=True, null=True)
     category = models.CharField(_('Category'), max_length=1, blank=True, null=True)
-    university = models.ForeignKey(University, verbose_name=_('University'), blank=True, null=True,
-                                   help_text=_('Institution that will receive the equipment, supplies or miscellaneous '
-                                               'requested in this order'))
-    institute = models.ForeignKey(Institute, verbose_name=_('Institute / School / Administrative'),
-                                  blank=True, null=True)
-    department = models.ForeignKey(Department, verbose_name=_('Department / Research project'), blank=True, null=True)
+    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Equipment / Supplies / Miscellaneous')
@@ -297,7 +292,7 @@ class DailyStipend(Order):
     destination = models.CharField(_('Destination'), max_length=200)
     departure = models.DateTimeField(_('Departure'))
     arrival = models.DateTimeField(_('Arrival'))
-    receiver = models.CharField(_('Who will receive?'), max_length=200, blank=True, null=True)
+    receiver = models.ForeignKey(Person, verbose_name=_('Who will receive?'), blank=True, null=True)
     mission = models.ForeignKey(ScientificMission, verbose_name=_('Mission'), blank=True, null=True)
 
     class Meta:
