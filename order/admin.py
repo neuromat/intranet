@@ -23,7 +23,7 @@ class SuperOrder(admin.ModelAdmin):
         qs = super(SuperOrder, self).get_queryset(request)
         if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             return qs
-        return qs.filter(requester=request.user)
+        return qs.filter(requester=request.user.projectmember)
 
     # If not superuser or NIRA Admin, the status field becomes read-only.
     def get_readonly_fields(self, request, obj=None):
