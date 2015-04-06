@@ -2,29 +2,40 @@ from django.contrib import admin
 from research.models import *
 import copy
 
-admin.site.register(PaperStatus)
 admin.site.register(TypeAcademicWork)
 
 
 class PaperAdmin(admin.ModelAdmin):
 
-    fields = ['title', 'status', 'author', 'doi', 'issn', 'local', 'volume', 'issue', 'start_page', 'end_page', 'year',
-              'url', 'reference']
+    fields = ['title', 'status', 'author', 'doi', 'issn', 'serie', 'volume', 'issue', 'publisher', 'start_page',
+              'end_page', 'year', 'url', 'reference']
 
     list_display = ('title', 'status', 'created', 'modified',)
 
-    list_display_links = ('title', 'status', 'created', 'modified',)
+    list_display_links = ('title',)
 
 admin.site.register(Paper, PaperAdmin)
+
+
+class BookAdmin(admin.ModelAdmin):
+
+    fields = ['book_or_chapter', 'title', 'status', 'author', 'doi', 'isbn', 'serie', 'volume', 'issue', 'publisher',
+              'start_page', 'end_page', 'year', 'url', 'reference']
+
+    list_display = ('book_or_chapter', 'title', 'status', 'created', 'modified',)
+
+    list_display_links = ('title',)
+
+admin.site.register(Book, BookAdmin)
 
 
 class AcademicWorkAdmin(admin.ModelAdmin):
 
     fields = ['type', 'status', 'title', 'author', 'advisor', 'co_advisor', 'reference']
 
-    list_display = ('author', 'type', 'status', 'title',)
+    list_display = ('title', 'author', 'advisor', 'type', 'status')
 
-    list_display_links = ('author', 'type', 'status', 'title',)
+    list_display_links = ('title',)
 
 admin.site.register(AcademicWork, AcademicWorkAdmin)
 
@@ -35,40 +46,28 @@ class WorkInProgressAdmin(admin.ModelAdmin):
 
     list_display = ('author', 'status', 'description',)
 
-    list_display_links = ('author', 'status', 'description',)
+    list_display_links = ('author',)
 
-    # Shows the research according to the user permission
-    # Users defined as superuser or NIRA Admin can see all research
+    # Shows the WorkInProgress according to the user permission
+    # Users defined as superuser or NIRA Admin can see all the WorkInProgress
     def get_queryset(self, request):
         qs = super(WorkInProgressAdmin, self).get_queryset(request)
-        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             return qs
-        return qs.filter(author=request.user)
+        return qs.filter(author=request.user.projectmember)
 
     # If superuser or NIRA Admin, enable the author field
     def get_fieldsets(self, request, obj=None):
         fieldsets = copy.deepcopy(super(WorkInProgressAdmin, self).get_fieldsets(request, obj))
-        if request.user.investigator.is_nira_admin or request.user.is_superuser:
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             fieldsets[0][1]['fields'].insert(0, 'author')
         return fieldsets
 
     # If not superuser or NIRA Admin, set the author as the current user
     def save_model(self, request, obj, form, change):
-        if not request.user.investigator.is_nira_admin or not request.user.is_superuser:
+        if not request.user.projectmember.is_nira_admin and not request.user.is_superuser:
             if not change:
-                obj.author = Investigator.objects.get(user=request.user)
+                obj.author = ProjectMember.objects.get(user=request.user)
         obj.save()
 
 admin.site.register(WorkInProgress, WorkInProgressAdmin)
-
-
-class BookAdmin(admin.ModelAdmin):
-
-    fields = ['author', 'title', 'doi', 'isbn', 'volume', 'issue', 'serie', 'start_page', 'end_page', 'publisher',
-              'year', 'url', 'reference']
-
-    list_display = ('title', 'doi', 'publisher', 'year',)
-
-    list_display_links = ('title', 'doi', 'publisher', 'year',)
-
-admin.site.register(Book, BookAdmin)
