@@ -20,7 +20,44 @@
             {% elif order.requester and order.requester.institution != None %}
                 <td>{{ order.requester }} / {{ order.requester.institution }}</td>
             {% endif %}
-            <td>{{ order.dailystipend.mission }}</td>
+
+            {% if order.dailystipend.mission != None and order.dailystipend.project_activity != None %}
+                {% if order.dailystipend.project_activity.type_of_activity == 't' %}
+                    <td>
+                        {{ order.dailystipend.mission }}<br>
+                        {% trans "Participation in the training program entitled:" %} {{ order.dailystipend.project_activity }}
+                    </td>
+                {% elif order.dailystipend.project_activity.type_of_activity == 'm' %}
+                    <td>
+                        {{ order.dailystipend.mission }}<br>
+                        {% trans "Participation in the meeting entitled:" %} {{ order.dailystipend.project_activity }}
+                    </td>
+                {% elif order.dailystipend.project_activity.type_of_activity == 's' %}
+                    <td>
+                        {{ order.dailystipend.mission }}<br>
+                        {% trans "Participation in the seminar entitled:" %} {{ order.dailystipend.project_activity }}
+                    </td>
+                {% endif %}
+            {% elif order.dailystipend.mission != None %}
+                <td>{{ order.dailystipend.mission }} </td>
+            {% elif order.dailystipend.project_activity != None %}
+                {% if order.dailystipend.project_activity.type_of_activity == 't' %}
+                    <td>
+                        {% trans "Participation in the training program entitled:" %} {{ order.dailystipend.project_activity }}
+                    </td>
+                {% elif order.dailystipend.project_activity.type_of_activity == 'm' %}
+                    <td>
+                        {% trans "Participation in the meeting entitled:" %} {{ order.dailystipend.project_activity }}
+                    </td>
+                {% elif order.dailystipend.project_activity.type_of_activity == 's' %}
+                    <td>
+                        {% trans "Participation in the seminar entitled:" %} {{ order.dailystipend.project_activity }}
+                    </td>
+                {% endif %}
+            {% else %}
+                <td>{% trans "No scientific missions found!" %}</td>
+            {% endif %}
+
             <td>{{ order.dailystipend.destination }}</td>
             <td>{{ order.dailystipend.departure|date:"d/m/Y" }}</td>
             <td>{{ order.dailystipend.arrival|date:"d/m/Y" }}</td>
