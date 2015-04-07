@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from member.models import Investigator, University
+from member.models import Person, Institution
 
 # Defining the duration of a Training Program
 ONE_HOUR = '1h'
@@ -23,7 +23,6 @@ NINE_HOURS = '9h'
 NINE_AND_A_HALF_HOURS = '9h30'
 TEN_HOURS = '10h'
 OTHER = 'Other'
-
 DURATION = (
     (ONE_HOUR, '1h'),
     (ONE_AND_A_HALF_HOUR, '1h30'),
@@ -47,92 +46,99 @@ DURATION = (
     (OTHER, _('Other duration time'))
 )
 
+# Defining types of activities
+TRAINING_PROGRAM = 't'
+MEETING = 'm'
+SEMINAR = 's'
+TYPE_OF_ACTIVITY = (
+    (TRAINING_PROGRAM, _('Training Program')),
+    (MEETING, _('Meeting')),
+    (SEMINAR, _('Seminar')),
+)
 
-class TrainingProgram(models.Model):
+
+class ProjectActivities(models.Model):
+    speaker = models.ManyToManyField(Person, verbose_name=_('Speaker'))
+    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
+    type_of_activity = models.CharField(_('Type of activity'), max_length=1, choices=TYPE_OF_ACTIVITY, blank=True)
+
+
+class TrainingProgram(ProjectActivities):
     """
     An instance of this class is a training program.
 
     """
-    investigator = models.ForeignKey(Investigator, verbose_name=_('Speaker'))
-    title = models.CharField(_('Title'), max_length=200)
-    description = models.TextField(_('Description'), max_length=500, blank=True, null=True)
+    title = models.CharField(_('Title'), max_length=255)
+    description = models.TextField(_('Description'), blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
-    local = models.ForeignKey(University, verbose_name=_('Local'), blank=True, null=True)
     duration = models.CharField(_('Duration'), max_length=5, choices=DURATION)
     other_duration = models.CharField(_('Other duration time'), max_length=5, blank=True, null=True,
                                       help_text='E.g.: 11h or 11h30')
 
     def __unicode__(self):
-        return u'%s' % self.investigator
+        return u'%s' % self.title
 
     class Meta:
         verbose_name = _('Training Program')
         verbose_name_plural = _('Training Programs')
-        ordering = ('investigator', )
+        ordering = ('-start_date', )
+
+    # Sets the type of activity as Training Program
+    def save(self, *args, **kwargs):
+        self.type_of_activity = TRAINING_PROGRAM
+        super(TrainingProgram, self).save(*args, **kwargs)
 
 
-class Seminar(models.Model):
+class Seminar(ProjectActivities):
     """
     An instance of this class is a seminar.
 
     """
-    investigator = models.ForeignKey(Investigator, verbose_name=_('Speaker'))
-    title = models.CharField(_('Title'), max_length=200)
-    abstract = models.TextField(_('Abstract'), max_length=500, blank=True, null=True)
+    title = models.CharField(_('Title'), max_length=255)
+    abstract = models.TextField(_('Abstract'), blank=True, null=True)
     date = models.DateField(_('Date'))
     attachment = models.FileField(_('Attachment'), blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s' % self.investigator
+        return u'%s' % self.title
 
     class Meta:
         verbose_name = _('Seminar')
         verbose_name_plural = _('Seminars')
-        ordering = ('investigator', )
+        ordering = ('-date', )
+
+    # Sets the type of activity as Seminar
+    def save(self, *args, **kwargs):
+        self.type_of_activity = SEMINAR
+        super(Seminar, self).save(*args, **kwargs)
 
 
-class Meeting(models.Model):
+class Meeting(ProjectActivities):
     """
     An instance of this class is a meeting.
 
     """
-    local = models.ManyToManyField(University, verbose_name=_('Local'), blank=True, null=True)
-    speaker = models.ManyToManyField(Investigator, verbose_name=_('Speaker'), related_name='speaker',
-                                     blank=True, null=True)
-    participant = models.ManyToManyField(Investigator, verbose_name=_('Participant'), blank=True, null=True)
-    title = models.CharField(_('Title'), max_length=200)
+    event_name = models.CharField(_('Event name'), max_length=255)
+    cepid_event = models.BooleanField(_('CEPID event?'), default=False)
+    participant = models.ManyToManyField(Person, verbose_name=_('Participant'), blank=True, null=True)
+    description = models.TextField(_('Description'))
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'))
-    description = models.TextField(_('Description'), max_length=500)
     url = models.URLField(_('URL'), blank=True, null=True)
+    seminar = models.ManyToManyField(Seminar, verbose_name=_('Seminars'), blank=True, null=True)
+    training_program = models.ManyToManyField(TrainingProgram, verbose_name=_('Training Programs'), blank=True,
+                                              null=True)
 
     def __unicode__(self):
-        return u'%s' % self.title
+        return u'%s' % self.event_name
 
     class Meta:
         verbose_name = _('Meeting')
         verbose_name_plural = _('Meetings')
-        ordering = ('start_date', )
+        ordering = ('-start_date', )
 
-
-class GeneralEvent(models.Model):
-    """
-    An instance of this class is a general event.
-
-    """
-    speaker = models.ManyToManyField(Investigator, verbose_name=_('Speaker'))
-    local = models.ForeignKey(University, verbose_name=_('Local'), blank=True, null=True)
-    title = models.CharField(_('Title'), max_length=200)
-    start_date = models.DateField(_('Start date'))
-    end_date = models.DateField(_('End date'), blank=True, null=True)
-    description = models.TextField(_('Description'), max_length=500, blank=True, null=True)
-    url = models.URLField(_('URL'), blank=True, null=True)
-
-    def __unicode__(self):
-        return u'%s' % self.title
-
-    class Meta:
-        verbose_name = _('General event')
-        verbose_name_plural = _('General events')
-        ordering = ('start_date', )
+    # Sets the type of activity as Meeting
+    def save(self, *args, **kwargs):
+        self.type_of_activity = MEETING
+        super(Meeting, self).save(*args, **kwargs)
