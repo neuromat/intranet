@@ -62,6 +62,14 @@ class ProjectActivities(models.Model):
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
     type_of_activity = models.CharField(_('Type of activity'), max_length=1, choices=TYPE_OF_ACTIVITY, blank=True)
 
+    def __unicode__(self):
+        if self.type_of_activity == 't':
+            return u'%s' % TrainingProgram.objects.get(pk=self.pk)
+        elif self.type_of_activity == 'm':
+            return u'%s' % Meeting.objects.get(pk=self.pk)
+        elif self.type_of_activity == 's':
+            return u'%s' % Seminar.objects.get(pk=self.pk)
+
 
 class TrainingProgram(ProjectActivities):
     """
