@@ -201,6 +201,7 @@ class DailyStipendAdmin(SuperOrder):
         if request.user.projectmember.is_nira_admin or request.user.is_superuser:
             fieldsets[0][1]['fields'].append('receiver')
             fieldsets[0][1]['fields'].append('mission')
+            fieldsets[0][1]['fields'].append('project_activity')
         return fieldsets
 
 admin.site.register(DailyStipend, DailyStipendAdmin)

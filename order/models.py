@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from member.models import ProjectMember, Institution, Person
+from activity.models import ProjectActivities
 from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
 from django.core.mail import EmailMultiAlternatives
@@ -290,6 +291,7 @@ class DailyStipend(Order):
     arrival = models.DateTimeField(_('Arrival'))
     receiver = models.ForeignKey(Person, verbose_name=_('Who will receive?'), blank=True, null=True)
     mission = models.ForeignKey(ScientificMission, verbose_name=_('Mission'), blank=True, null=True)
+    project_activity = models.ForeignKey(ProjectActivities, verbose_name=_('Project activity'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Daily stipend')
