@@ -95,10 +95,10 @@ class BibliographicCitationAdmin(admin.ModelAdmin):
     # Shows the person in accordance with the user's permission
     def get_queryset(self, request):
         qs = super(BibliographicCitationAdmin, self).get_queryset(request)
-        # If super-user, show all
+        # If super-user or nira_admin, show all
         if request.user.is_superuser or request.user.projectmember.is_nira_admin:
             return qs
-        return qs.filter(person_name=request.user)
+        return qs.filter(person_name=request.user.projectmember)
 
     # If superuser or nira_admin, display the person_name field
     def get_fieldsets(self, request, obj=None):
