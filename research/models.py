@@ -83,8 +83,9 @@ class Paper(ResearchResult):
     # Sets the type of research result.
     # Check if the status has changed to update the modified date.
     def save(self, *args, **kwargs):
-        self.research_result_type = PAPER
-        if self.pk is not None:
+        if self.pk is None:
+            self.research_result_type = PAPER
+        else:
             orig = Paper.objects.get(pk=self.pk)
             if orig.status != self.status:
                 self.modified = datetime.datetime.now()
@@ -107,8 +108,9 @@ class Book(ResearchResult):
     # Sets the type of research result.
     # Check if the status has changed to update the modified date.
     def save(self, *args, **kwargs):
-        self.research_result_type = BOOK
-        if self.pk is not None:
+        if self.pk is None:
+            self.research_result_type = BOOK
+        else:
             orig = Book.objects.get(pk=self.pk)
             if orig.status != self.status:
                 self.modified = datetime.datetime.now()
