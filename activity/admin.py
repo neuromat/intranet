@@ -7,7 +7,7 @@ class MeetingAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ['event_name', 'cepid_event', 'speaker', 'institution', 'description', 'start_date', 'end_date',
-                       'url', 'participant', 'seminar', 'training_program']
+                       'url', 'participant']
         }),
     )
 
@@ -20,7 +20,7 @@ admin.site.register(Meeting, MeetingAdmin)
 class TrainingProgramAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['speaker', 'title', 'institution', 'description', 'start_date', 'end_date', 'duration',
+            'fields': ['meeting', 'speaker', 'title', 'institution', 'description', 'start_date', 'end_date', 'duration',
                        'other_duration']
         }),
     )
@@ -35,11 +35,11 @@ admin.site.register(TrainingProgram, TrainingProgramAdmin)
 class SeminarAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['speaker', 'title', 'institution', 'date', 'abstract', 'attachment']
+            'fields': ['meeting', 'speaker', 'title', 'institution', 'date', 'abstract', 'attachment']
         }),
     )
 
-    list_display = ('title', 'date')
+    list_display = ('title', 'date', 'meeting')
     list_display_links = ('title',)
 
 admin.site.register(Seminar, SeminarAdmin)

@@ -71,6 +71,33 @@ class ProjectActivities(models.Model):
             return u'%s' % Seminar.objects.get(pk=self.pk)
 
 
+class Meeting(ProjectActivities):
+    """
+    An instance of this class is a meeting.
+
+    """
+    event_name = models.CharField(_('Event name'), max_length=255)
+    cepid_event = models.BooleanField(_('CEPID event?'), default=False)
+    participant = models.ManyToManyField(Person, verbose_name=_('Participant'), blank=True, null=True)
+    description = models.TextField(_('Description'))
+    start_date = models.DateField(_('Start date'))
+    end_date = models.DateField(_('End date'))
+    url = models.URLField(_('URL'), blank=True, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.event_name
+
+    class Meta:
+        verbose_name = _('Meeting')
+        verbose_name_plural = _('Meetings')
+        ordering = ('-start_date', )
+
+    # Sets the type of activity as Meeting
+    def save(self, *args, **kwargs):
+        self.type_of_activity = MEETING
+        super(Meeting, self).save(*args, **kwargs)
+
+
 class TrainingProgram(ProjectActivities):
     """
     An instance of this class is a training program.
@@ -83,6 +110,7 @@ class TrainingProgram(ProjectActivities):
     duration = models.CharField(_('Duration'), max_length=5, choices=DURATION)
     other_duration = models.CharField(_('Other duration time'), max_length=5, blank=True, null=True,
                                       help_text='E.g.: 11h or 11h30')
+    meeting = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -107,6 +135,7 @@ class Seminar(ProjectActivities):
     abstract = models.TextField(_('Abstract'), blank=True, null=True)
     date = models.DateField(_('Date'))
     attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    meeting = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -120,33 +149,3 @@ class Seminar(ProjectActivities):
     def save(self, *args, **kwargs):
         self.type_of_activity = SEMINAR
         super(Seminar, self).save(*args, **kwargs)
-
-
-class Meeting(ProjectActivities):
-    """
-    An instance of this class is a meeting.
-
-    """
-    event_name = models.CharField(_('Event name'), max_length=255)
-    cepid_event = models.BooleanField(_('CEPID event?'), default=False)
-    participant = models.ManyToManyField(Person, verbose_name=_('Participant'), blank=True, null=True)
-    description = models.TextField(_('Description'))
-    start_date = models.DateField(_('Start date'))
-    end_date = models.DateField(_('End date'))
-    url = models.URLField(_('URL'), blank=True, null=True)
-    seminar = models.ManyToManyField(Seminar, verbose_name=_('Seminars'), blank=True, null=True)
-    training_program = models.ManyToManyField(TrainingProgram, verbose_name=_('Training Programs'), blank=True,
-                                              null=True)
-
-    def __unicode__(self):
-        return u'%s' % self.event_name
-
-    class Meta:
-        verbose_name = _('Meeting')
-        verbose_name_plural = _('Meetings')
-        ordering = ('-start_date', )
-
-    # Sets the type of activity as Meeting
-    def save(self, *args, **kwargs):
-        self.type_of_activity = MEETING
-        super(Meeting, self).save(*args, **kwargs)
