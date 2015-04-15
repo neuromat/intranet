@@ -3,30 +3,54 @@ from research.models import *
 import copy
 
 admin.site.register(TypeAcademicWork)
+admin.site.register(InBook)
 
 
-class PaperAdmin(admin.ModelAdmin):
+class InProceedingAdmin(admin.ModelAdmin):
 
-    fields = ['title', 'status', 'author', 'doi', 'issn', 'serie', 'volume', 'issue', 'publisher', 'start_page',
-              'end_page', 'year', 'url', 'reference']
+    fields = ['title', 'author', 'book_title', 'year', 'month', 'doi', 'editor', 'volume', 'number', 'serie',
+              'start_page', 'end_page', 'publisher', 'organization', 'key', 'url', 'note', 'reference']
 
-    list_display = ('title', 'status', 'created', 'modified',)
+    list_display = ('title', 'created', 'modified',)
 
     list_display_links = ('title',)
 
-admin.site.register(Paper, PaperAdmin)
+admin.site.register(InProceeding, InProceedingAdmin)
+
+
+class ArticleAdmin(admin.ModelAdmin):
+
+    fields = ['title', 'author', 'journal', 'year', 'month', 'volume', 'number', 'doi', 'start_page', 'end_page', 'key',
+              'url', 'note', 'reference']
+
+    list_display = ('title', 'created', 'modified',)
+
+    list_display_links = ('title',)
+
+admin.site.register(Article, ArticleAdmin)
 
 
 class BookAdmin(admin.ModelAdmin):
 
-    fields = ['book_or_chapter', 'title', 'status', 'author', 'doi', 'isbn', 'serie', 'volume', 'issue', 'publisher',
-              'start_page', 'end_page', 'year', 'url', 'reference']
+    fields = ['author', 'title', 'publisher', 'editor', 'year', 'month', 'doi', 'volume', 'serie', 'edition', 'url',
+              'key', 'note', 'reference']
 
-    list_display = ('book_or_chapter', 'title', 'status', 'created', 'modified',)
+    list_display = ('title', 'created', 'modified',)
 
     list_display_links = ('title',)
 
 admin.site.register(Book, BookAdmin)
+
+
+class TechReportAdmin(admin.ModelAdmin):
+
+    fields = ['author', 'title', 'institution', 'year', 'month', 'url', 'number', 'type', 'key', 'note', 'reference']
+
+    list_display = ('title', 'created', 'modified',)
+
+    list_display_links = ('title',)
+
+admin.site.register(TechReport, TechReportAdmin)
 
 
 class AcademicWorkAdmin(admin.ModelAdmin):
