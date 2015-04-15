@@ -6,6 +6,17 @@ admin.site.register(TypeAcademicWork)
 admin.site.register(InBook)
 
 
+class UnpublishedAdmin(admin.ModelAdmin):
+
+    fields = ['status', 'title', 'author', 'type', 'paper_status', 'year', 'month', 'key', 'url', 'note']
+
+    list_display = ('title', 'type', 'status', 'created', 'modified',)
+
+    list_display_links = ('title',)
+
+admin.site.register(Unpublished, UnpublishedAdmin)
+
+
 class InProceedingAdmin(admin.ModelAdmin):
 
     fields = ['title', 'author', 'book_title', 'year', 'month', 'doi', 'editor', 'volume', 'number', 'serie',

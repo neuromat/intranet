@@ -11,16 +11,6 @@ STATUS_ANSWER = (
     (CONCLUDED, _('Concluded')),
 )
 
-# Defining types of paper status
-DRAFT = 'd'
-SUBMITTED = 's'
-PUBLISHED = 'p'
-PAPER_STATUS = (
-    (DRAFT, _('Draft')),
-    (SUBMITTED, _('Submitted')),
-    (PUBLISHED, _('Published')),
-)
-
 # Defining types of research results
 UNPUBLISHED = 'u'
 PUBLISHED = 'p'
@@ -29,16 +19,27 @@ RESEARCH_RESULT_TYPE = (
     (PUBLISHED, _('Published')),
 )
 
+# Defining types of paper status
+DRAFT = 'd'
+SUBMITTED = 's'
+PAPER_STATUS = (
+    (DRAFT, _('Draft')),
+    (SUBMITTED, _('Submitted')),
+    (PUBLISHED, _('Published')),
+)
+
 # Defining types of research results
 TECHREPORT = 't'
 ARTICLE = 'a'
 IN_PROCEEDINGS = 'i'
 BOOK = 'b'
+IN_BOOK = 'c'#chapter or pages
 TYPE = (
     (TECHREPORT, _('Tech report')),
     (ARTICLE, _('Article')),
     (IN_PROCEEDINGS, _('In proceedings')),
     (BOOK, _('Book')),
+    (IN_BOOK, _('In book')),
 )
 
 
@@ -74,15 +75,37 @@ class Published(ResearchResult):
                                            'S.Paulo Research Foundation)".')
     published_type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
 
+    # Sets the type of research result as published.
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.research_result_type = PUBLISHED
+        super(Published, self).save(*args, **kwargs)
+
 
 class Unpublished(ResearchResult):
+    """
+    An instance of this class is a document having an author and title, but not formally published.
+
+    """
     type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
-    status = models.CharField(_('Status'), max_length=1, blank=True, null=True)
+    status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER, default=IN_PROGRESS,
+                              blank=True, null=True)
+    paper_status = models.CharField(_('Paper status'), max_length=1, choices=PAPER_STATUS, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('Unpublished')
+        verbose_name_plural = _('Unpublished')
+
+    # Sets the type of research result as unpublished.
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.research_result_type = UNPUBLISHED
+        super(Unpublished, self).save(*args, **kwargs)
 
 
 class InProceeding(Published):
     """
-    An instance of this class is a paper.
+    An instance of this class is an article in a conference proceedings.
 
     """
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
@@ -105,7 +128,6 @@ class InProceeding(Published):
     # Sets the type of research result.
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.research_result_type = PUBLISHED
             self.published_type = IN_PROCEEDINGS
         super(InProceeding, self).save(*args, **kwargs)
 
@@ -129,7 +151,6 @@ class Article(Published):
     # Sets the type of research result.
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.research_result_type = PUBLISHED
             self.published_type = ARTICLE
         super(Article, self).save(*args, **kwargs)
 
@@ -150,7 +171,6 @@ class TechReport(Published):
     # Sets the type of research result.
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.research_result_type = PUBLISHED
             self.published_type = TECHREPORT
         super(TechReport, self).save(*args, **kwargs)
 
@@ -174,7 +194,6 @@ class Book(Published):
     # Sets the type of research result.
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.research_result_type = PUBLISHED
             self.published_type = BOOK
         super(Book, self).save(*args, **kwargs)
 
