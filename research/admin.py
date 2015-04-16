@@ -4,7 +4,6 @@ from forms import UnpublishedAdminForm
 import copy
 
 admin.site.register(TypeAcademicWork)
-admin.site.register(InBook)
 
 
 class UnpublishedAdmin(admin.ModelAdmin):
@@ -54,6 +53,17 @@ class BookAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
 
 admin.site.register(Book, BookAdmin)
+
+
+class InBookAdmin(admin.ModelAdmin):
+
+    fields = ['book', 'chapter', 'start_page', 'end_page']
+
+    list_display = ('book', 'chapter', 'start_page', 'end_page')
+
+    list_display_links = ('book',)
+
+admin.site.register(InBook, InBookAdmin)
 
 
 class TechReportAdmin(admin.ModelAdmin):
