@@ -2,6 +2,8 @@ from django.contrib import admin
 from activity.models import *
 from forms import *
 
+admin.site.register(SeminarType)
+
 
 class MeetingAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -35,11 +37,11 @@ admin.site.register(TrainingProgram, TrainingProgramAdmin)
 class SeminarAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['meeting', 'speaker', 'title', 'institution', 'date', 'abstract', 'attachment']
+            'fields': ['meeting', 'category', 'speaker', 'title', 'institution', 'date', 'abstract', 'attachment']
         }),
     )
 
-    list_display = ('title', 'date', 'meeting')
+    list_display = ('category', 'title', 'date')
     list_display_links = ('title',)
 
 admin.site.register(Seminar, SeminarAdmin)

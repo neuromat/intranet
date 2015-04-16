@@ -126,11 +126,29 @@ class TrainingProgram(ProjectActivities):
         super(TrainingProgram, self).save(*args, **kwargs)
 
 
+class SeminarType(models.Model):
+    """
+    An instance of this class is a type of seminar.
+
+    """
+    name = models.CharField(_('Name'), max_length=255)
+
+    # Returns the name
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Type of seminar')
+        verbose_name_plural = _('Types of seminar')
+        ordering = ('name', )
+
+
 class Seminar(ProjectActivities):
     """
     An instance of this class is a seminar.
 
     """
+    category = models.ForeignKey(SeminarType, verbose_name=_('Category'))
     title = models.CharField(_('Title'), max_length=255)
     abstract = models.TextField(_('Abstract'), blank=True, null=True)
     date = models.DateField(_('Date'))
