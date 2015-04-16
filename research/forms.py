@@ -6,8 +6,5 @@ from django.utils.translation import ugettext_lazy as _
 
 class UnpublishedAdminForm(forms.ModelForm):
 
-    class Meta:
-        model = Unpublished
-
     class Media:
         js = ('/static/js/research_unpublished.js',)
