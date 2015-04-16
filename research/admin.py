@@ -1,5 +1,6 @@
 from django.contrib import admin
 from research.models import *
+from forms import UnpublishedAdminForm
 import copy
 
 admin.site.register(TypeAcademicWork)
@@ -13,6 +14,8 @@ class UnpublishedAdmin(admin.ModelAdmin):
     list_display = ('title', 'type', 'status', 'created', 'modified',)
 
     list_display_links = ('title',)
+
+    form = UnpublishedAdminForm
 
 admin.site.register(Unpublished, UnpublishedAdmin)
 
