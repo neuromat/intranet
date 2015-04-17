@@ -98,21 +98,13 @@ class AcademicWorkAdmin(admin.ModelAdmin):
 admin.site.register(AcademicWork, AcademicWorkAdmin)
 
 
-class WorkInProgressAdmin(admin.ModelAdmin):
+class WorkInProgressAdmin(SuperResearchResult):
 
     fields = ['status', 'description']
 
     list_display = ('author', 'status', 'description',)
 
     list_display_links = ('author',)
-
-    # Shows the WorkInProgress according to the user permission
-    # Users defined as superuser or NIRA Admin can see all the WorkInProgress
-    def get_queryset(self, request):
-        qs = super(WorkInProgressAdmin, self).get_queryset(request)
-        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
-            return qs
-        return qs.filter(author=request.user.projectmember)
 
     # If superuser or NIRA Admin, enable the author field
     def get_fieldsets(self, request, obj=None):
