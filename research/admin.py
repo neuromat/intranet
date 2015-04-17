@@ -10,7 +10,7 @@ class UnpublishedAdmin(admin.ModelAdmin):
 
     fields = ['status', 'title', 'author', 'type', 'paper_status', 'year', 'month', 'key', 'url', 'note']
 
-    list_display = ('title', 'type', 'status', 'created', 'modified',)
+    list_display = ('authors', 'title', 'type', 'status', 'created')
 
     list_display_links = ('title',)
 
@@ -24,7 +24,7 @@ class InProceedingAdmin(admin.ModelAdmin):
     fields = ['title', 'author', 'book_title', 'year', 'month', 'doi', 'editor', 'volume', 'number', 'serie',
               'start_page', 'end_page', 'publisher', 'organization', 'key', 'url', 'note', 'reference']
 
-    list_display = ('title', 'created', 'modified',)
+    list_display = ('authors', 'title', 'created')
 
     list_display_links = ('title',)
 
@@ -36,7 +36,7 @@ class ArticleAdmin(admin.ModelAdmin):
     fields = ['title', 'author', 'journal', 'year', 'month', 'volume', 'number', 'doi', 'start_page', 'end_page', 'key',
               'url', 'note', 'reference']
 
-    list_display = ('title', 'created', 'modified',)
+    list_display = ('authors', 'title', 'journal', 'created')
 
     list_display_links = ('title',)
 
@@ -48,7 +48,7 @@ class BookAdmin(admin.ModelAdmin):
     fields = ['author', 'title', 'publisher', 'editor', 'year', 'month', 'doi', 'volume', 'serie', 'edition', 'url',
               'key', 'note', 'reference']
 
-    list_display = ('title', 'created', 'modified',)
+    list_display = ('authors', 'title', 'created')
 
     list_display_links = ('title',)
 
@@ -70,7 +70,7 @@ class TechReportAdmin(admin.ModelAdmin):
 
     fields = ['author', 'title', 'institution', 'year', 'month', 'url', 'number', 'type', 'key', 'note', 'reference']
 
-    list_display = ('title', 'created', 'modified',)
+    list_display = ('authors', 'title', 'institution', 'created')
 
     list_display_links = ('title',)
 

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from member.models import Person, ProjectMember, Institution
 import datetime
+from django.utils.html import format_html
 
 # Defining types of status
 IN_PROGRESS = 'i'
@@ -61,6 +62,11 @@ class ResearchResult(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.title
+
+    def authors(self):
+        return format_html("<br>".join([str(author) for author in self.author.all()]))
+
+    authors.allow_tags = True
 
     # Description of the model / Sort by title
     class Meta:
