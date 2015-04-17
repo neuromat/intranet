@@ -6,7 +6,17 @@ import copy
 admin.site.register(TypeAcademicWork)
 
 
-class UnpublishedAdmin(admin.ModelAdmin):
+class SuperResearchResult(admin.ModelAdmin):
+    # Shows the research result according to the user permission
+    # Users defined as superuser or NIRA Admin can see all the research result
+    def get_queryset(self, request):
+        qs = super(SuperResearchResult, self).get_queryset(request)
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
+            return qs
+        return qs.filter(author=request.user.projectmember)
+
+
+class UnpublishedAdmin(SuperResearchResult):
 
     fields = ['status', 'title', 'author', 'type', 'paper_status', 'year', 'month', 'key', 'url', 'note']
 
@@ -19,7 +29,7 @@ class UnpublishedAdmin(admin.ModelAdmin):
 admin.site.register(Unpublished, UnpublishedAdmin)
 
 
-class InProceedingAdmin(admin.ModelAdmin):
+class InProceedingAdmin(SuperResearchResult):
 
     fields = ['title', 'author', 'book_title', 'year', 'month', 'doi', 'editor', 'volume', 'number', 'serie',
               'start_page', 'end_page', 'publisher', 'organization', 'key', 'url', 'note', 'reference']
@@ -31,7 +41,7 @@ class InProceedingAdmin(admin.ModelAdmin):
 admin.site.register(InProceeding, InProceedingAdmin)
 
 
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(SuperResearchResult):
 
     fields = ['title', 'author', 'journal', 'year', 'month', 'volume', 'number', 'doi', 'start_page', 'end_page', 'key',
               'url', 'note', 'reference']
@@ -43,7 +53,7 @@ class ArticleAdmin(admin.ModelAdmin):
 admin.site.register(Article, ArticleAdmin)
 
 
-class BookAdmin(admin.ModelAdmin):
+class BookAdmin(SuperResearchResult):
 
     fields = ['author', 'title', 'publisher', 'editor', 'year', 'month', 'doi', 'volume', 'serie', 'edition', 'url',
               'key', 'note', 'reference']
@@ -66,7 +76,7 @@ class InBookAdmin(admin.ModelAdmin):
 admin.site.register(InBook, InBookAdmin)
 
 
-class TechReportAdmin(admin.ModelAdmin):
+class TechReportAdmin(SuperResearchResult):
 
     fields = ['author', 'title', 'institution', 'year', 'month', 'url', 'number', 'type', 'key', 'note', 'reference']
 
