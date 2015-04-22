@@ -59,7 +59,7 @@ TYPE_OF_ACTIVITY = (
 
 class ProjectActivities(models.Model):
     speaker = models.ManyToManyField(Person, verbose_name=_('Speaker'))
-    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
+    local = models.ForeignKey(Institution, verbose_name=_('Local'), blank=True, null=True)
     type_of_activity = models.CharField(_('Type of activity'), max_length=1, choices=TYPE_OF_ACTIVITY, blank=True)
 
     def __unicode__(self):
