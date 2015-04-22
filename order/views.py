@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from order.models import *
 from order.forms import CATEGORY, ORIGIN
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-import json as simplejson
+#from django.shortcuts import get_object_or_404
+#import json as simplejson
 import json
 import datetime
 from django.contrib import messages
@@ -45,12 +45,11 @@ def scientific_missions_report(request):
         orders = Order.objects.filter(type_of_order='d', status='f', dailystipend__departure__gt=start_date,
                                       dailystipend__arrival__lt=end_date)
 
-        context = {'orders': orders}
-
         if end_date >= start_date:
+            context = {'orders': orders}
             return render(request, 'report/scientific_missions_report.html', context)
         else:
-            messages.error(request, 'End date should be equal or greater than Start date.')
+            messages.error(request, 'End date should be equal or greater than start date.')
             return render(request, 'report/scientific_missions.html')
 
     return render(request, 'report/scientific_missions.html')
