@@ -2,6 +2,7 @@ from django.contrib import admin
 from research.models import *
 from forms import UnpublishedAdminForm
 import copy
+from django.db.models import Q
 
 admin.site.register(TypeAcademicWork)
 
@@ -94,6 +95,15 @@ class AcademicWorkAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'advisor', 'type', 'status')
 
     list_display_links = ('title',)
+
+    # Shows the academic work according to the user permission
+    # Users defined as superuser or NIRA Admin can see all the academic work
+    def get_queryset(self, request):
+        qs = super(AcademicWorkAdmin, self).get_queryset(request)
+        if request.user.projectmember.is_nira_admin or request.user.is_superuser:
+            return qs
+        # To see the academic work, the user should be the author or the advisor
+        return qs.filter(Q(author=request.user.projectmember) | Q(advisor=request.user.projectmember))
 
 admin.site.register(AcademicWork, AcademicWorkAdmin)
 
