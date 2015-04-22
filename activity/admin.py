@@ -27,7 +27,7 @@ class TrainingProgramAdmin(admin.ModelAdmin):
         }),
     )
 
-    list_display = ('title', 'institution', 'start_date', 'end_date')
+    list_display = ('title', 'local', 'start_date', 'end_date')
     list_display_links = ('title',)
     form = TrainingProgramForm
 
