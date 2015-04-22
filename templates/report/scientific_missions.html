@@ -6,6 +6,13 @@
 <script src="{% static 'js/scientific_mission_report.js' %}"></script>
 {% endblock %}
 
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li>{% trans 'Scientific mission report' %}</li>
+</ul>
+{% endblock %}
+
 {% block content %}
 <form role="form" method="post">{% csrf_token %}
 <div class="container-fluid">

@@ -1,8 +1,15 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_static bootstrapped_goodies_tags %}
 
-{% block content %}
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li><a href="/order/scientific_missions">{% trans 'Scientific mission report' %}</a></li>
+<li>{% trans 'Results' %}</li>
+</ul>
+{% endblock %}
 
+{% block content %}
 <table class="table table-striped table-bordered">
 {% if orders %}
     <tr>
