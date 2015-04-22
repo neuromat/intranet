@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from member.models import Person, Institution
+from django.utils.html import format_html
 
 # Defining the duration of a Training Program
 ONE_HOUR = '1h'
@@ -69,6 +70,11 @@ class ProjectActivities(models.Model):
             return u'%s' % Meeting.objects.get(pk=self.pk)
         elif self.type_of_activity == 's':
             return u'%s' % Seminar.objects.get(pk=self.pk)
+
+    def speakers(self):
+        return format_html("<br>".join([str(speaker) for speaker in self.speaker.all()]))
+
+    speakers.allow_tags = True
 
 
 class Meeting(ProjectActivities):
