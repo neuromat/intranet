@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from activity.models import ProjectActivities, SeminarType
 import datetime
 from django.contrib import messages
+from django.db.models import Q
 
 TIME = " 00:00:00"
 
@@ -62,3 +63,37 @@ def seminars_report(request):
     context = {'categories': categories}
 
     return render(request, 'report/seminars.html', context)
+
+
+@login_required
+def training_programs_report(request):
+
+    if request.method == 'POST':
+        start_date = request.POST['start_date']
+        if start_date:
+            start_date = start_date_typed(start_date)
+        else:
+            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+
+        end_date = request.POST['end_date']
+        if end_date:
+            end_date = end_date_typed(end_date)
+        else:
+            now_plus_30 = datetime.datetime.now() + datetime.timedelta(days=30)
+            now_plus_30 = now_plus_30.strftime("%Y%m%d %H:%M:%S")
+            end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
+
+        training_programs = ProjectActivities.objects.filter(type_of_activity='t',
+                                                             trainingprogram__start_date__gt=start_date)
+
+        training_programs = training_programs.filter(Q(trainingprogram__end_date__lt=end_date) |
+                                                     Q(trainingprogram__end_date=''))
+
+        if end_date >= start_date:
+            context = {'training_programs': training_programs}
+            return render(request, 'report/training_programs_report.html', context)
+        else:
+            messages.error(request, 'End date should be equal or greater than start date.')
+            return render(request, 'report/training_programs.html')
+
+    return render(request, 'report/training_programs.html')
