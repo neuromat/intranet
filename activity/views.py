@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from activity.models import ProjectActivities
+from activity.models import ProjectActivities, SeminarType
 import datetime
 from django.contrib import messages
 
 
 @login_required
 def seminars_report(request):
+
+    categories = SeminarType.objects.all()
 
     if request.method == 'POST':
         time = " 00:00:00"
@@ -34,8 +36,10 @@ def seminars_report(request):
             now_plus_30 = now_plus_30.strftime("%Y%m%d %H:%M:%S")
             end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
 
-        seminars = ProjectActivities.objects.filter(type_of_activity='s', seminar__date__gt=start_date,
-                                                    seminar__date__lt=end_date)
+        category = request.POST['category']
+
+        seminars = ProjectActivities.objects.filter(type_of_activity='s', seminar__category=category,
+                                                    seminar__date__gt=start_date, seminar__date__lt=end_date)
 
         if end_date >= start_date:
             context = {'seminars': seminars}
@@ -44,4 +48,6 @@ def seminars_report(request):
             messages.error(request, 'End date should be equal or greater than start date.')
             return render(request, 'report/seminars.html')
 
-    return render(request, 'report/seminars.html')
+    context = {'categories': categories}
+
+    return render(request, 'report/seminars.html', context)
