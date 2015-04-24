@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from activity.models import ProjectActivities, SeminarType
+from activity.models import ProjectActivities, SeminarType, Meeting
 import datetime
 from django.contrib import messages
 
@@ -114,8 +114,23 @@ def meetings_report(request):
             now_plus_30 = now_plus_30.strftime("%Y%m%d %H:%M:%S")
             end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
 
-        meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__start_date__gt=start_date,
-                                                    meeting__start_date__lt=end_date)
+        cepid_event = request.POST['cepid_event']
+
+        meetings = []
+
+        if cepid_event == '0':
+            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__start_date__gt=start_date,
+                                                        meeting__start_date__lt=end_date)
+
+        elif cepid_event == '1':
+            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event='1',
+                                                        meeting__start_date__gt=start_date,
+                                                        meeting__start_date__lt=end_date)
+
+        elif cepid_event == '2':
+            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event='0',
+                                                        meeting__start_date__gt=start_date,
+                                                        meeting__start_date__lt=end_date)
 
         if end_date >= start_date:
             context = {'meetings': meetings}
