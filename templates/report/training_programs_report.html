@@ -30,7 +30,11 @@
                     {{ training.trainingprogram.start_date|date:"d/m/Y" }}
                 </td>
             {% endif %}
-            <td>{{ training.trainingprogram.duration }}</td>
+            {% if training.trainingprogram.duration == 'Other' %}
+                <td>{{ training.trainingprogram.other_duration }}</td>
+            {% else %}
+                <td>{{ training.trainingprogram.duration }}</td>
+            {% endif %}
         </tr>
     {% endfor %}
 {%  else %}
