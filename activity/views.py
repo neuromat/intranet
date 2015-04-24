@@ -94,3 +94,34 @@ def training_programs_report(request):
             return render(request, 'report/training_programs.html')
 
     return render(request, 'report/training_programs.html')
+
+
+@login_required
+def meetings_report(request):
+
+    if request.method == 'POST':
+        start_date = request.POST['start_date']
+        if start_date:
+            start_date = start_date_typed(start_date)
+        else:
+            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+
+        end_date = request.POST['end_date']
+        if end_date:
+            end_date = end_date_typed(end_date)
+        else:
+            now_plus_30 = datetime.datetime.now() + datetime.timedelta(days=30)
+            now_plus_30 = now_plus_30.strftime("%Y%m%d %H:%M:%S")
+            end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
+
+        meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__start_date__gt=start_date,
+                                                    meeting__start_date__lt=end_date)
+
+        if end_date >= start_date:
+            context = {'meetings': meetings}
+            return render(request, 'report/meetings_report.html', context)
+        else:
+            messages.error(request, 'End date should be equal or greater than start date.')
+            return render(request, 'report/meetings.html')
+
+    return render(request, 'report/meetings.html')

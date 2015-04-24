@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li><a href="/activity/meetings">{% trans 'Meetings report' %}</a></li>
+<li>{% trans 'Results' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+{% if meetings %}
+    {% for meeting in meetings %}
+        <table class="table table-striped table-bordered">
+        <tr><th>{% trans "Title" %}</th><td>{{ meeting.meeting.event_name }}</td></tr>
+        <tr><th>{% trans "Speaker" %}</th><td>{{ meeting.speakers }}</td></tr>
+        <tr><th>{% trans "Description" %}</th><td>{{ meeting.meeting.description }}</td></tr>
+        <tr><th>{% trans "Period" %}</th><td>{{ meeting.meeting.start_date }} - {{ meeting.meeting.end_date }}</td></tr>
+        {%  if meeting.meeting.participant.count > 0 %}
+            <tr><th>{% trans "Number of participants" %}</th><td>{{ meeting.meeting.participant.count }}</td></tr>
+        {% endif %}
+        {%  if meeting.meeting.url %}
+            <tr>
+                <th>{% trans "URL" %}</th>
+                <td><a href="{{ meeting.meeting.url }}" target="_blank">{{ meeting.meeting.url }}</a></td>
+            </tr>
+        {% endif %}
+        </table>
+        <br>
+    {% endfor %}
+{%  else %}
+    {% trans "No meetings found!" %}
+{% endif %}
+
+{% endblock %}
