@@ -27,6 +27,13 @@ def end_date_typed(end_date):
     return end_date
 
 
+def now_plus_thirty():
+    date = datetime.datetime.now() + datetime.timedelta(days=30)
+    date = date.strftime("%Y%m%d %H:%M:%S")
+    date = datetime.datetime.strptime(date, '%Y%m%d %H:%M:%S').date()
+    return date
+
+
 @login_required
 def seminars_report(request):
 
@@ -43,14 +50,18 @@ def seminars_report(request):
         if end_date:
             end_date = end_date_typed(end_date)
         else:
-            now_plus_30 = datetime.datetime.now() + datetime.timedelta(days=30)
-            now_plus_30 = now_plus_30.strftime("%Y%m%d %H:%M:%S")
-            end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
+            end_date = now_plus_thirty()
 
         category = request.POST['category']
 
-        seminars = ProjectActivities.objects.filter(type_of_activity='s', seminar__category=category,
-                                                    seminar__date__gt=start_date, seminar__date__lt=end_date)
+        if category == '0':
+            seminars = ProjectActivities.objects.filter(type_of_activity='s',
+                                                        seminar__date__gt=start_date,
+                                                        seminar__date__lt=end_date).order_by('seminar__date')
+        else:
+            seminars = ProjectActivities.objects.filter(type_of_activity='s', seminar__category=category,
+                                                        seminar__date__gt=start_date,
+                                                        seminar__date__lt=end_date).order_by('seminar__date')
 
         if end_date >= start_date:
             context = {'seminars': seminars}
@@ -78,13 +89,11 @@ def training_programs_report(request):
         if end_date:
             end_date = end_date_typed(end_date)
         else:
-            now_plus_30 = datetime.datetime.now() + datetime.timedelta(days=30)
-            now_plus_30 = now_plus_30.strftime("%Y%m%d %H:%M:%S")
-            end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
+            end_date = now_plus_thirty()
 
         training_programs = ProjectActivities.objects.filter(type_of_activity='t',
                                                              trainingprogram__start_date__gt=start_date,
-                                                             trainingprogram__start_date__lt=end_date)
+                                                             trainingprogram__start_date__lt=end_date).order_by('trainingprogram__start_date')
 
         if end_date >= start_date:
             context = {'training_programs': training_programs}
@@ -110,9 +119,7 @@ def meetings_report(request):
         if end_date:
             end_date = end_date_typed(end_date)
         else:
-            now_plus_30 = datetime.datetime.now() + datetime.timedelta(days=30)
-            now_plus_30 = now_plus_30.strftime("%Y%m%d %H:%M:%S")
-            end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
+            end_date = now_plus_thirty()
 
         cepid_event = request.POST['cepid_event']
 
@@ -120,17 +127,17 @@ def meetings_report(request):
 
         if cepid_event == '0':
             meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__start_date__gt=start_date,
-                                                        meeting__start_date__lt=end_date)
+                                                        meeting__start_date__lt=end_date).order_by('meeting__start_date')
 
         elif cepid_event == '1':
             meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event='1',
                                                         meeting__start_date__gt=start_date,
-                                                        meeting__start_date__lt=end_date)
+                                                        meeting__start_date__lt=end_date).order_by('meeting__start_date')
 
         elif cepid_event == '2':
             meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event='0',
                                                         meeting__start_date__gt=start_date,
-                                                        meeting__start_date__lt=end_date)
+                                                        meeting__start_date__lt=end_date).order_by('meeting__start_date')
 
         if end_date >= start_date:
             context = {'meetings': meetings}
