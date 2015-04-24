@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from activity.models import ProjectActivities, SeminarType
 import datetime
 from django.contrib import messages
-from django.db.models import Q
 
 TIME = " 00:00:00"
 
@@ -84,10 +83,8 @@ def training_programs_report(request):
             end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
 
         training_programs = ProjectActivities.objects.filter(type_of_activity='t',
-                                                             trainingprogram__start_date__gt=start_date)
-
-        training_programs = training_programs.filter(Q(trainingprogram__end_date__lt=end_date) |
-                                                     Q(trainingprogram__end_date=''))
+                                                             trainingprogram__start_date__gt=start_date,
+                                                             trainingprogram__start_date__lt=end_date)
 
         if end_date >= start_date:
             context = {'training_programs': training_programs}
