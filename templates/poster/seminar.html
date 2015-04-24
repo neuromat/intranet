@@ -1,0 +1,48 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+{% load static %}
+{% block extrahead %}
+    <script src="{% static 'js/poster.js' %}"></script>
+{% endblock extrahead%}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li>{% trans 'Seminar poster' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+{% if speakers %}
+<form role="form" method="post">{% csrf_token %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6 col-sm-6">
+            <label>{% trans "Speaker" %}</label>
+            <select class="form-control" name="speaker" id="id_speaker" onchange="ajax_select_seminar(this.value)">
+                <option value=""></option>
+                {% for speaker in speakers %}
+                    <option value={{ speaker.id }}>{{ speaker }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-xs-6 col-sm-6">
+            <label>{% trans "Title" %}</label>
+            <select class="form-control" name="title" id="id_title">
+                <option value=""></option>
+                {% for seminar in seminars %}
+                    <option value={{ seminar.id }}>{{ seminar }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <br>
+    <div class="btn-group">
+        <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get poster" %}</button>
+    </div>
+</div>
+</form>
+{% endif %}
+
+{% endblock %}

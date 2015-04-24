@@ -1,8 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from activity.models import ProjectActivities, SeminarType, Meeting
+from activity.models import ProjectActivities, SeminarType
+from member.models import Person
 import datetime
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+import json as simplejson
 
 TIME = " 00:00:00"
 
@@ -73,6 +77,31 @@ def seminars_report(request):
     context = {'categories': categories}
 
     return render(request, 'report/seminars.html', context)
+
+
+@login_required
+def seminar_poster(request):
+
+    speakers = Person.objects.all()
+    seminars = ProjectActivities.objects.filter(type_of_activity='s')
+    context = {'speakers': speakers, 'seminars': seminars}
+
+    return render(request, 'poster/seminar.html', context)
+
+
+@login_required
+def seminar_show_titles(request):
+    if request.method == 'GET':
+        speaker_id = request.GET.get('speaker')
+        speaker = get_object_or_404(Person, id=speaker_id)
+
+        select = Person.objects.filter(speaker=speaker)
+        title = []
+        for p in select:
+            title.append({'pk': p.id, 'valor': p.__unicode__()})
+
+        json = simplejson.dumps(title)
+        return HttpResponse(json, content_type="application/json")
 
 
 @login_required
