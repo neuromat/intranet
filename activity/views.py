@@ -95,12 +95,12 @@ def seminar_show_titles(request):
         speaker_id = request.GET.get('speaker')
         speaker = get_object_or_404(Person, id=speaker_id)
 
-        select = Person.objects.filter(speaker=speaker)
-        title = []
-        for p in select:
-            title.append({'pk': p.id, 'valor': p.__unicode__()})
+        select = ProjectActivities.objects.filter(type_of_activity='s', speaker=speaker)
+        titles = []
+        for title in select:
+            titles.append({'pk': title.id, 'valor': title.__unicode__()})
 
-        json = simplejson.dumps(title)
+        json = simplejson.dumps(titles)
         return HttpResponse(json, content_type="application/json")
 
 

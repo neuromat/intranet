@@ -11,7 +11,7 @@ function ajax_select_seminar(id_speaker)
            $("#id_title").append('<option value="">--------</option>');
 
            $.each(retorno, function(i, item){
-               $("#id_title").append('<option value="'+ item.value+'">'+item.display+'</option>');
+               $("#id_title").append('<option value="'+item.pk+'">'+item.valor+'</option>');
            });
        },
        error: function(erro) {
