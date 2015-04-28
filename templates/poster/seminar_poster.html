@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li><a href="/activity/seminar_poster">{% trans 'Seminar poster' %}</a></li>
+<li>{% trans 'Poster' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+{% if seminar %}
+    <h1 align="center">Seminário</h1>
+    <h3 align="center">{{ seminar.category }}</h3>
+    <br><br>
+    <h3 align="center"><strong>Speaker:</strong> {{ seminar.speakers }}</h3>
+    <br><br>
+    <h2 align="center">{{ seminar.title }}</h2>
+    <br><br>
+    <p align="center"><strong>Date:</strong> {{ seminar.date }}</p>
+    <br>
+    <p align="center"><strong>Local:</strong> Numec´s multipurpose room</p>
+{%  else %}
+    {% trans "No seminar found!" %}
+{% endif %}
+
+{% endblock %}

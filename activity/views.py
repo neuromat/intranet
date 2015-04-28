@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from activity.models import ProjectActivities, SeminarType
+from activity.models import ProjectActivities, Seminar, SeminarType
 from member.models import Person
+from django.utils.translation import ugettext_lazy as _
 import datetime
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 from django.http import HttpResponse
 import json as simplejson
 
@@ -71,7 +73,7 @@ def seminars_report(request):
             context = {'seminars': seminars}
             return render(request, 'report/seminars_report.html', context)
         else:
-            messages.error(request, 'End date should be equal or greater than start date.')
+            messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/seminars.html')
 
     context = {'categories': categories}
@@ -84,8 +86,24 @@ def seminar_poster(request):
 
     speakers = Person.objects.all()
     seminars = ProjectActivities.objects.filter(type_of_activity='s')
-    context = {'speakers': speakers, 'seminars': seminars}
 
+    if request.method == 'POST':
+        title_id = request.POST['title']
+
+        if title_id is None or title_id == '':
+            messages.error(request, _('You have to choose a seminar!'))
+            context = {'speakers': speakers, 'seminars': seminars}
+            return render(request, 'poster/seminar.html', context)
+        else:
+            try:
+                seminar = Seminar.objects.get(id=title_id)
+            except Seminar.DoesNotExist:
+                raise Http404(_('No seminar matches the given query.'))
+
+            context = {'seminar': seminar}
+            return render(request, 'poster/seminar_poster.html', context)
+
+    context = {'speakers': speakers, 'seminars': seminars}
     return render(request, 'poster/seminar.html', context)
 
 
@@ -128,7 +146,7 @@ def training_programs_report(request):
             context = {'training_programs': training_programs}
             return render(request, 'report/training_programs_report.html', context)
         else:
-            messages.error(request, 'End date should be equal or greater than start date.')
+            messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/training_programs.html')
 
     return render(request, 'report/training_programs.html')
@@ -172,7 +190,7 @@ def meetings_report(request):
             context = {'meetings': meetings}
             return render(request, 'report/meetings_report.html', context)
         else:
-            messages.error(request, 'End date should be equal or greater than start date.')
+            messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/meetings.html')
 
     return render(request, 'report/meetings.html')
