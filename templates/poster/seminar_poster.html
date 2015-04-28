@@ -11,16 +11,18 @@
 
 {% block content %}
 {% if seminar %}
+    <hr style="height: 1px; border:1px solid #000000;">
     <h1 align="center">Seminário</h1>
     <h3 align="center">{{ seminar.category }}</h3>
     <br><br>
-    <h3 align="center"><strong>Speaker:</strong> {{ seminar.speakers }}</h3>
-    <br><br>
     <h2 align="center">{{ seminar.title }}</h2>
     <br><br>
-    <p align="center"><strong>Date:</strong> {{ seminar.date }}</p>
+    <h3 align="center"><strong>Speaker:</strong> {{ seminar.speakers }}</h3>
+    <br><br>
+    <p align="center"><strong>Date/Time:</strong> {{ seminar.date }} - {{ seminar.time }}</p>
     <br>
     <p align="center"><strong>Local:</strong> Numec´s multipurpose room</p>
+    <hr style="height: 1px; border:1px solid #000000;">
 {%  else %}
     {% trans "No seminar found!" %}
 {% endif %}
