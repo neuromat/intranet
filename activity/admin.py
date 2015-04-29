@@ -45,7 +45,8 @@ admin.site.register(TrainingProgram, TrainingProgramAdmin)
 class SeminarAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['meeting', 'category', 'speaker', 'title', 'local', 'date', 'time', 'abstract', 'attachment']
+            'fields': ['meeting', 'category', 'speaker', 'title', 'local', 'room', 'date', 'time', 'abstract',
+                       'attachment']
         }),
     )
 

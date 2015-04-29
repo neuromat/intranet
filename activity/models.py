@@ -154,13 +154,14 @@ class Seminar(ProjectActivities):
     An instance of this class is a seminar.
 
     """
+    meeting = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
     category = models.ForeignKey(SeminarType, verbose_name=_('Category'))
     title = models.CharField(_('Title'), max_length=255)
     abstract = models.TextField(_('Abstract'), blank=True, null=True)
     date = models.DateField(_('Date'))
     time = models.TimeField(_('Time'), blank=True, null=True)
     attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    meeting = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
+    room = models.CharField(_('Room'), max_length=255, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.title
