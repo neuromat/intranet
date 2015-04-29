@@ -16,12 +16,23 @@
     <h3 align="center">{{ seminar.category }}</h3>
     <br><br>
     <h2 align="center">{{ seminar.title }}</h2>
-    <br><br>
-    <h3 align="center"><strong>Speaker:</strong> {{ seminar.speakers }}</h3>
-    <br><br>
-    <p align="center"><strong>Date/Time:</strong> {{ seminar.date }} - {{ seminar.time }}</p>
     <br>
-    <p align="center"><strong>Local:</strong> Numec´s multipurpose room</p>
+    <h3 align="center">{{ seminar.speakers }}</h3>
+    <br><br>
+    {% if seminar.time %}
+        <p align="center"><strong>Date:</strong> {{ seminar.date }} - {{ seminar.time }}</p>
+    {% else %}
+        <p align="center"><strong>Date:</strong> {{ seminar.date }}</p>
+    {% endif %}
+    {% if seminar.local.acronym == 'NUMEC' %}
+        <p align="center"><strong>Local:</strong> Numec´s multipurpose room</p>
+    {% elif seminar.local and seminar.room %}
+        <p align="center"><strong>Local:</strong> {{ seminar.local }} / {{ seminar.room }}</p>
+    {% elif seminar.local %}
+        <p align="center"><strong>Local:</strong> {{ seminar.local }}</p>
+    {% else %}
+        <p align="center"><strong>Local:</strong> To be confirmed</p>
+    {% endif %}
     <hr style="height: 1px; border:1px solid #000000;">
 {%  else %}
     {% trans "No seminar found!" %}
