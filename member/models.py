@@ -68,7 +68,7 @@ class Institution(models.Model):
     """
     An instance of this class represents an institution.
 
-    '__unicode__'		Returns the acronym.
+    '__unicode__'		Returns the acronym or the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by acronym.
     """
     name = models.CharField(_('Name'), max_length=255)
