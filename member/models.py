@@ -78,16 +78,17 @@ class Institution(models.Model):
 
     # If exists, returns the acronym, if not returns the name
     def __unicode__(self):
-        if self.belongs_to is None:
-            if self.acronym:
-                return u'%s' % (self.acronym)
-            else:
-                return u'%s' % (self.name)
-        else:
+        if self.belongs_to:
             if self.acronym:
                 return u'%s - %s' % (self.belongs_to, self.acronym)
             else:
                 return u'%s - %s' % (self.belongs_to, self.name)
+        else:
+            if self.acronym:
+                return u'%s' % (self.acronym)
+            else:
+                return u'%s' % (self.name)
+
 
     class Meta:
         verbose_name = _('Institution')
