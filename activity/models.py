@@ -157,6 +157,7 @@ class Seminar(ProjectActivities):
     meeting = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
     category = models.ForeignKey(SeminarType, verbose_name=_('Category'))
     title = models.CharField(_('Title'), max_length=255)
+    international_guest_lecturer = models.BooleanField(_('International guest lecturer?'), default=False)
     abstract = models.TextField(_('Abstract'), blank=True, null=True)
     date = models.DateField(_('Date'))
     time = models.TimeField(_('Time'), blank=True, null=True)
