@@ -1,0 +1,85 @@
+{% load i18n admin_static bootstrapped_goodies_tags %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>My Title</title>
+        <style type="text/css">
+            @page {
+                size: a4 landscape;
+                margin: 1cm 2cm;
+                padding:0;
+                @frame footer {
+                   -pdf-frame-content: footer-content;
+                   bottom: 0.5cm;
+                   margin-left: 2cm;
+                   margin-right: 2cm;
+                   height: 0.5cm;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            {% block content %}
+                {% if seminar %}
+                    <hr style="height: 1px; border:1px solid #000000;">
+                    {% if seminar.category.id != 1 %}
+                        <table style="width:100%; height:100%;">
+                        <tr>
+                            <img alt="" src="static/images/logo-numec.jpg" style="float:left; margin-bottom:-100px; margin-top:10px;">
+                            <td>
+                                <h1 style="text-align:center">Seminar</h1>
+                                <p style="font-size: X-large; text-align:center">{{ seminar.category }}</p>
+                                <p style="font-size: large; text-align:center">Activity of MaCLinC project</p>
+                            </td>
+                        </tr>
+                        </table>
+                    {% else %}
+                        <table style="width:100%; height:100%; margin: 0px auto;">
+                            <tr>
+                                <td>
+                                    <spam>{% trans "Supported by" %}</spam><br>
+                                    <img alt="Logo FAPESP" src="static/images/logo-fapesp.png" style="float:left;">
+                                </td>
+                                <td align="center"><h1 style="text-align:center; font-size:350%;">Seminar</h1></td>
+                                <td>
+                                    <spam style="float:right; margin-right:115px;">{% trans "Organized by" %}</spam><br>
+                                    <img alt="Logo NeuroMat" src="static/images/logo-neuromat-poster.jpg" style="float:right;">
+                                </td>
+                            </tr>
+                        </table>
+                    {% endif %}
+                    {% if seminar.international_guest_lecturer %}
+                        <br><p align="center" style="font-size: x-large">International guest lecturer</p>
+                    {% endif %}
+                    <br><br><br>
+                    <h2 align="center">{{ seminar.title }}</h2>
+                    <br>
+                    {% if seminar.abstract %}
+                        <p align="justify"><strong>Abstract: </strong>{{ seminar.abstract }}</p>
+                    {% endif %}
+                    <br>
+                    <h3 align="center">{{ seminar.speakers }}</h3>
+                    <br><br>
+                    {% if seminar.time %}
+                        <p align="center"><strong>Date:</strong> {{ seminar.date }} - {{ seminar.time }}</p>
+                    {% else %}
+                        <p align="center"><strong>Date:</strong> {{ seminar.date }}</p>
+                    {% endif %}
+                    {% if seminar.local.acronym == 'NUMEC' %}
+                        <p align="center"><strong>Local:</strong> Numec´s multipurpose room</p>
+                    {% elif seminar.local and seminar.room %}
+                        <p align="center"><strong>Local:</strong> {{ seminar.local }} / {{ seminar.room }}</p>
+                    {% elif seminar.local %}
+                        <p align="center"><strong>Local:</strong> {{ seminar.local }}</p>
+                    {% else %}
+                        <p align="center"><strong>Local:</strong> To be confirmed</p>
+                    {% endif %}
+                    <hr style="height: 1px; border:1px solid #000000;">
+                {%  else %}
+                    {% trans "No seminar found!" %}
+                {% endif %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
