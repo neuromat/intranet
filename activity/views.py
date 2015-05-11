@@ -21,20 +21,14 @@ from django.conf import settings
 TIME = " 00:00:00"
 
 
-def fetch_resources(uri, rel):
-    path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ""))
-    return path
-
-
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
     context = Context(context_dict)
     html  = template.render(context)
     result = StringIO.StringIO()
-    links = lambda uri, rel: os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
+    path = lambda uri, rel: os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
 
-    pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), dest=result, encoding='UTF-8',
-                            link_callback=links)
+    pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), dest=result, encoding='UTF-8', link_callback=path)
 
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
