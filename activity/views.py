@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.http import HttpResponse
 import json as simplejson
-## Imports to generete PDF file ##
+## Imports to generate the PDF file ##
 import StringIO
 from cgi import escape
 from xhtml2pdf import pisa
