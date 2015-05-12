@@ -72,7 +72,10 @@ class ProjectActivities(models.Model):
             return u'%s' % Seminar.objects.get(pk=self.pk)
 
     def speakers(self):
-        return format_html("<br>".join([str(speaker) for speaker in self.speaker.all()]))
+        # return format_html("<br>".join([str(speaker) for speaker in self.speaker.all()]))
+        return format_html("<br>".join([
+            str(speaker) + (" / " + speaker.institution.__unicode__() if speaker.institution else "")
+            for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True
 
