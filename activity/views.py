@@ -93,7 +93,7 @@ def seminars_report(request):
                                                         seminar__date__lt=end_date).order_by('seminar__date')
 
         if end_date >= start_date:
-            context = {'seminars': seminars}
+            context = {'seminars': seminars, 'category': category}
             return render(request, 'report/seminars_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
