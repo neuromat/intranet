@@ -10,23 +10,35 @@
 {% endblock %}
 
 {% block content %}
-<table class="table table-striped table-bordered">
 {% if seminars %}
+    <table class="table table-striped table-bordered">
     <tr>
-        <th width="25%">{% trans "Category" %}</th><th width="40%">{% trans "Title" %}</th>
-        <th width="25%">{% trans "Speaker" %}</th><th width="10%">{% trans "Date" %}</th>
+        {% if category != '0' %}
+            <th width="40%">{% trans "Title" %}</th><th width="25%">{% trans "Speaker" %}</th>
+            <th width="10%">{% trans "Date" %}</th>
+        {% else %}
+            <th width="25%">{% trans "Category" %}</th><th width="40%">{% trans "Title" %}</th>
+            <th width="25%">{% trans "Speaker" %}</th><th width="10%">{% trans "Date" %}</th>
+        {% endif %}
     </tr>
     {% for seminar in seminars %}
         <tr>
-            <td>{{ seminar.seminar.category }}</td>
-            <td>{{ seminar.seminar.title }}</td>
-            <td>{{ seminar.speakers }}</td>
-            <td>{{ seminar.seminar.date|date:"d/m/Y" }}</td>
+            {% if category != '0' %}
+                <td>{{ seminar.seminar.title }}</td>
+                <td>{{ seminar.speakers }}</td>
+                <td>{{ seminar.seminar.date|date:"d/m/Y" }}</td>
+            {% else %}
+                <td>{{ seminar.seminar.category }}</td>
+                <td>{{ seminar.seminar.title }}</td>
+                <td>{{ seminar.speakers }}</td>
+                <td>{{ seminar.seminar.date|date:"d/m/Y" }}</td>
+            {% endif %}
         </tr>
     {% endfor %}
+    </table>
 {%  else %}
     {% trans "No seminars found!" %}
 {% endif %}
-</table>
+
 
 {% endblock %}
