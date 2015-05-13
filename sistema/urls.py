@@ -12,6 +12,7 @@ urlpatterns = patterns(
     url(r'^cep/', include('cep.urls')),
     url(r'^order/', include('order.urls')),
     url(r'^activity/', include('activity.urls')),
+    url(r'^research/', include('research.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = _('NeuroMat Individual Report of Activities')
