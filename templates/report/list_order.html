@@ -5,6 +5,13 @@
     <script src="{% static 'js/reports.js' %}"></script>
 {% endblock extrahead%}
 
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li>{% trans 'Orders report' %}</li>
+</ul>
+{% endblock %}
+
 {% block content %}
 <body onload="ajax_select_additional_options()">
 <form role="form" method="post">{% csrf_token %}
