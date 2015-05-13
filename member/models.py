@@ -97,6 +97,8 @@ class Institution(models.Model):
 
 class Person(models.Model):
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
+    citation_name = models.CharField(_('Name in bibliographic citation'), max_length=255, blank=True, null=True,
+                                     help_text='E.g.: Silva, J.')
     rg = models.CharField(_('RG'), max_length=12, blank=True, null=True)
     cpf = models.CharField(_('CPF'), blank=True, null=True, max_length=15, validators=[validate_cpf])
     passport = models.CharField(_('Passport'), max_length=12, blank=True, null=True)
@@ -202,23 +204,3 @@ class Other(Person):
     def save(self, *args, **kwargs):
         self.type_of_person = OTHER
         super(Other, self).save(*args, **kwargs)
-
-
-class BibliographicCitation(models.Model):
-    """
-    An instance of this class represents a name used in a bibliographic citation
-
-    '__unicode__'		Returns the citation name.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by citation name.
-    """
-    citation_name = models.CharField(_('Name in bibliographic citation'), max_length=100, help_text='E.g.: Silva, J.')
-    person_name = models.ForeignKey(Person, verbose_name=_('Name'))
-
-    # Returns the name
-    def __unicode__(self):
-        return u'%s' % self.citation_name
-
-    class Meta:
-        verbose_name = _('Bibliographic citation')
-        verbose_name_plural = _('Bibliographic citations')
-        ordering = ('citation_name', )
