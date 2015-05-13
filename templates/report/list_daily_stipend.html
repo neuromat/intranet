@@ -1,4 +1,13 @@
 {% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li><a href="/order/list_order">{% trans 'Orders report' %}</a></li>
+<li>{% trans 'Results' %}</li>
+</ul>
+{% endblock %}
 
 {% block content %}
 
