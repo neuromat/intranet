@@ -12,12 +12,26 @@
 {% block content %}
 
 {% if published %}
-    <strong>Published</strong>
+    <p><strong>Published</strong></p>
     <ol type="1">
         {% for article in published %}
-            <li><strong>{{ article.title }}</strong>. {{ article.authors }}; {{ article.article.journal }}. Vol.
-                {{ article.article.volume }}, pp {{ article.article.start_page }}-{{ article.article.end_page }},
-                {{ article.year }}.</li>
+            <li style="text-align: justify">
+                <strong>{{ article.title }}</strong>. {{ article.authors }} {{ article.published.article.journal }}.
+                Vol. {{ article.published.article.volume }},
+                {% if article.published.article.number %}
+                    ISSN: {{ article.published.article.number }},
+                {% endif %}
+                {% if article.published.article.start_page and article.published.article.end_page %}
+                    Page(s): {{ article.published.article.start_page }}-{{ article.published.article.end_page }},
+                {% endif %}
+                {% if article.published.article.doi %}
+                    DOI: {{ article.published.article.doi }},
+                {% endif %}
+                {% if article.url %}
+                    Available at: <a href="{{ article.url }}" target="_blank">{{ article.url }}</a>,
+                {% endif %}
+                {{ article.year }}.
+            </li><br>
         {% endfor %}
     </ol>
 {%  else %}
