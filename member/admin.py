@@ -12,7 +12,7 @@ class ProjectMemberAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ['__unicode__', 'role', 'institution']
+            'fields': ['__unicode__', 'role', 'institution', 'citation_name']
         }),
         (_('Personal Info'), {
             'fields': ('rg', 'cpf', 'passport')
@@ -59,7 +59,7 @@ class OtherAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ['full_name', 'email', 'institution', ]
+            'fields': ['full_name', 'citation_name', 'email', 'institution', ]
         }),
         (_('Personal Info'), {
             'fields': ('rg', 'cpf', 'passport')
@@ -85,33 +85,3 @@ class InstitutionAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
 
 admin.site.register(Institution, InstitutionAdmin)
-
-
-class BibliographicCitationAdmin(admin.ModelAdmin):
-    fields = ['citation_name']
-    list_display = ('person_name', 'citation_name')
-    list_display_links = ('person_name',)
-
-    # Shows the person in accordance with the user's permission
-    def get_queryset(self, request):
-        qs = super(BibliographicCitationAdmin, self).get_queryset(request)
-        # If super-user or nira_admin, show all
-        if request.user.is_superuser or request.user.projectmember.is_nira_admin:
-            return qs
-        return qs.filter(person_name=request.user.projectmember)
-
-    # If superuser or nira_admin, display the person_name field
-    def get_fieldsets(self, request, obj=None):
-        fieldsets = copy.deepcopy(super(BibliographicCitationAdmin, self).get_fieldsets(request, obj))
-        if request.user.is_superuser or request.user.projectmember.is_nira_admin:
-            fieldsets[0][1]['fields'].insert(0, 'person_name')
-        return fieldsets
-
-    # If not superuser and not nira_admin, set the person as the current user
-    def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser and not request.user.projectmember.is_nira_admin:
-            if not change:
-                obj.person_name = ProjectMember.objects.get(user=request.user)
-        obj.save()
-
-admin.site.register(BibliographicCitation, BibliographicCitationAdmin)
