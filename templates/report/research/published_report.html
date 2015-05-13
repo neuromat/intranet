@@ -12,7 +12,14 @@
 {% block content %}
 
 {% if published %}
-    <p>Achei!</p>
+    <strong>Published</strong>
+    <ol type="1">
+        {% for article in published %}
+            <li><strong>{{ article.title }}</strong>. {{ article.authors }}; {{ article.article.journal }}. Vol.
+                {{ article.article.volume }}, pp {{ article.article.start_page }}-{{ article.article.end_page }},
+                {{ article.year }}.</li>
+        {% endfor %}
+    </ol>
 {%  else %}
     {% trans "No published articles found!" %}
 {% endif %}
