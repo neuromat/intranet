@@ -64,7 +64,7 @@ class ResearchResult(models.Model):
         return u'%s' % self.title
 
     def authors(self):
-        return format_html("<br>".join([str(author) for author in self.author.all()]))
+        return format_html("; ".join([str(author.citation_name) for author in self.author.all()]))
 
     authors.allow_tags = True
 
