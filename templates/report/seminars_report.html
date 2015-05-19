@@ -25,12 +25,12 @@
         <tr>
             {% if category != '0' %}
                 <td>{{ seminar.seminar.title }}</td>
-                <td>{{ seminar.speakers }}</td>
+                <td>{{ seminar.seminar.speakers }}</td>
                 <td>{{ seminar.seminar.date|date:"d/m/Y" }}</td>
             {% else %}
                 <td>{{ seminar.seminar.category }}</td>
                 <td>{{ seminar.seminar.title }}</td>
-                <td>{{ seminar.speakers }}</td>
+                <td>{{ seminar.seminar.speakers }}</td>
                 <td>{{ seminar.seminar.date|date:"d/m/Y" }}</td>
             {% endif %}
         </tr>
