@@ -94,7 +94,7 @@ class News(models.Model):
 
     """
     activity = models.ForeignKey(ProjectActivities)
-    category = models.CharField(_('Type of new'), max_length=2, choices=TYPE_OF_NEW)
+    category = models.CharField(_('Category'), max_length=2, choices=TYPE_OF_NEW)
     url = models.URLField(_('URL'))
 
     def __unicode__(self):
