@@ -19,7 +19,7 @@
     {% for training in training_programs %}
         <tr>
             <td>{{ training.trainingprogram.title }}</td>
-            <td>{{ training.speakers }}</td>
+            <td>{{ training.trainingprogram.speakers }}</td>
             {% if training.trainingprogram.end_date %}
                 <td>
                     {{ training.trainingprogram.start_date|date:"d/m/Y" }} -
