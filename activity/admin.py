@@ -1,20 +1,26 @@
 from django.contrib import admin
 from activity.models import *
 from forms import *
+from django.utils.translation import ugettext_lazy as _
 
 admin.site.register(SeminarType)
+
+class NewsInline(admin.TabularInline):
+    model = News
+    extra = 1
+    verbose_name = _('Link')
 
 
 class MeetingAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['event_name', 'cepid_event', 'speaker', 'local', 'description', 'start_date', 'end_date',
-                       'url', 'participant']
+            'fields': ['title', 'broad_audience', 'cepid_event', 'local', 'description', 'start_date', 'end_date', 'url',
+                       'participant']
         }),
     )
-
-    list_display = ('event_name', 'cepid_event', 'start_date', 'end_date')
-    list_display_links = ('event_name', )
+    inlines = [NewsInline]
+    list_display = ('title', 'cepid_event', 'start_date', 'end_date')
+    list_display_links = ('title', )
 
 admin.site.register(Meeting, MeetingAdmin)
 
@@ -22,11 +28,11 @@ admin.site.register(Meeting, MeetingAdmin)
 class TrainingProgramAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['meeting', 'speaker', 'title', 'local', 'description', 'start_date', 'end_date', 'duration',
-                       'other_duration']
+            'fields': ['meeting', 'speaker', 'title', 'local', 'description', 'number_of_participants', 'start_date',
+                       'end_date', 'duration', 'other_duration']
         }),
     )
-
+    inlines = [NewsInline]
     list_display = ('speakers', 'title', 'local', 'start_date', 'end_date')
     list_display_links = ('title',)
     form = TrainingProgramForm
@@ -49,7 +55,7 @@ class SeminarAdmin(admin.ModelAdmin):
                        'date', 'time', 'abstract', 'attachment']
         }),
     )
-
+    inlines = [NewsInline]
     list_display = ('category', 'speakers', 'title', 'date')
     list_display_links = ('title',)
 
