@@ -5,10 +5,11 @@ from django.utils.translation import ugettext_lazy as _
 
 admin.site.register(SeminarType)
 
-class NewsInline(admin.TabularInline):
+class NewsInline(admin.StackedInline):
     model = News
     extra = 1
     verbose_name = _('Link')
+    form = NewsForm
 
 
 class MeetingAdmin(admin.ModelAdmin):
@@ -19,7 +20,7 @@ class MeetingAdmin(admin.ModelAdmin):
         }),
     )
     inlines = [NewsInline]
-    list_display = ('title', 'cepid_event', 'start_date', 'end_date')
+    list_display = ('title', 'broad_audience', 'cepid_event', 'local', 'start_date', 'end_date')
     list_display_links = ('title', )
 
 admin.site.register(Meeting, MeetingAdmin)
@@ -28,7 +29,7 @@ admin.site.register(Meeting, MeetingAdmin)
 class TrainingProgramAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['meeting', 'speaker', 'title', 'local', 'description', 'number_of_participants', 'start_date',
+            'fields': ['meeting',  'speaker', 'title', 'local', 'description', 'number_of_participants', 'start_date',
                        'end_date', 'duration', 'other_duration']
         }),
     )

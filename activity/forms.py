@@ -1,5 +1,6 @@
 from django import forms
-from activity.models import TrainingProgram
+from django.forms import TextInput
+from activity.models import TrainingProgram, News
 
 
 class TrainingProgramForm(forms.ModelForm):
@@ -10,3 +11,13 @@ class TrainingProgramForm(forms.ModelForm):
 
     class Media:
         js = ('/static/js/activity.js',)
+
+
+class NewsForm(forms.ModelForm):
+
+    class Meta:
+        model = News
+        fields = ['category', 'url']
+        widgets = {
+            'url': TextInput(attrs={'size': 90, 'placeholder': 'http://example.com'}),
+        }
