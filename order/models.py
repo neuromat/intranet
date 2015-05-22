@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from member.models import ProjectMember, Institution, Person
+from custom_user.models import Institution, Person
 from activity.models import ProjectActivities
 from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
@@ -75,7 +75,11 @@ class Order(models.Model):
                             Send email to users (NIRA Admin) informing that an order has changed.
                             Send email to users (NIRA Admin) informing that a new order was created.
     """
-    requester = models.ForeignKey(ProjectMember, verbose_name=_('NeuroMat member'))
+    # import CEPID name
+    cepid_name = settings.CEPID_NAME
+
+    # fields
+    requester = models.ForeignKey(Person, verbose_name=_(cepid_name+' member'))
     justification = models.TextField(_('Justification'), max_length=1000)
     order_date = models.DateTimeField(_('Order date'), auto_now_add=True, blank=True)
     date_modified = models.DateTimeField(_('Modified'), auto_now=True, blank=True)
