@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from activity.models import ProjectActivities, Seminar, SeminarType
-from member.models import Person
+from custom_user.models import Person
 from django.utils.translation import ugettext_lazy as _
 import datetime
 from django.contrib import messages
@@ -24,7 +24,7 @@ TIME = " 00:00:00"
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
     context = Context(context_dict)
-    html  = template.render(context)
+    html = template.render(context)
     result = StringIO.StringIO()
     path = lambda uri, rel: os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
 
@@ -128,7 +128,7 @@ def seminar_poster(request):
             return render_to_pdf(
                 'poster/seminar_poster_pdf.html',
                 {
-                    'pagesize':'A4',
+                    'pagesize': 'A4',
                     'seminar': seminar,
                 }
             )
