@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from member.models import Person, ProjectMember, Institution
+from custom_user.models import Person, Institution
 import datetime
 from django.utils.html import format_html
 
@@ -34,7 +34,7 @@ TECHREPORT = 't'
 ARTICLE = 'a'
 IN_PROCEEDINGS = 'i'
 BOOK = 'b'
-IN_BOOK = 'c'#chapter or pages
+IN_BOOK = 'c'
 TYPE = (
     (TECHREPORT, _('Tech report')),
     (ARTICLE, _('Article')),
@@ -270,7 +270,7 @@ class WorkInProgress(models.Model):
     An instance of this class is a work in progress.
 
     """
-    author = models.ForeignKey(ProjectMember, verbose_name=_('Author'))
+    author = models.ForeignKey(Person, verbose_name=_('Author'))
     description = models.TextField(_('Description'))
     status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER)
     created = models.DateTimeField(auto_now_add=True)
