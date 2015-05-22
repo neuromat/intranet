@@ -7,14 +7,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-# Defining types of person
-PROJECT_MEMBER = 'm'
-OTHER = 'o'
-PERSON = (
-    (PROJECT_MEMBER, _('Member')),
-    (OTHER, _('Other')),
-)
-
 
 def validate_cpf(value):
     """
@@ -96,6 +88,20 @@ class Institution(models.Model):
 
 
 class Person(models.Model):
+    """
+    An instance of this class represents a person that is a custom_user or a visitor.
+
+    '__unicode__'		Returns the full name from User class.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by user.
+    'create_user_profile_signal' and 'password_change_signal' force password change on first login.
+    """
+    user = models.OneToOneField(User, verbose_name=_('User'))
+    force_password_change = models.BooleanField(_('Force password change'), default=True,
+                                                help_text=_('Force the user to change their password at next login.'))
+    is_nira_admin = models.BooleanField(_('NIRA admin'), default=False,
+                                        help_text=_('Designates whether the user can create content on behalf of '
+                                                    'another user.'))
+    role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
     citation_name = models.CharField(_('Name in bibliographic citation'), max_length=255, blank=True, null=True,
                                      help_text='E.g.: Silva, J.')
@@ -112,40 +118,15 @@ class Person(models.Model):
     city = models.CharField(_('City'), max_length=255, blank=True, null=True)
     state = models.CharField(_('State'), max_length=255, blank=True, null=True)
     country = models.CharField(_('Country'), max_length=255, blank=True, null=True)
-    type_of_person = models.CharField(_('Type of person'), max_length=1, choices=PERSON, blank=True)
-
-     # Returns the name
-    def __unicode__(self):
-        if self.type_of_person == 'm':
-            return u'%s %s' % (self.projectmember.user.first_name, self.projectmember.user.last_name)
-        else:
-            return u'%s' % self.other.full_name
-
-
-class ProjectMember(Person):
-    """
-    An instance of this class represents a person that is member of the project.
-
-    '__unicode__'		Returns the full name from User class.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by user.
-    'create_user_profile_signal' and 'password_change_signal' force password change on first login.
-    """
-    user = models.OneToOneField(User, verbose_name=_('User'))
-    force_password_change = models.BooleanField(_('Force password change'), default=True,
-                                                help_text=_('Force the user to change their password at next login.'))
-    is_nira_admin = models.BooleanField(_('NIRA admin'), default=False,
-                                        help_text=_('Designates whether the user can create content on behalf of '
-                                                    'another user.'))
-    role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
 
     # Returns the full name from User class
     def __unicode__(self):
         return u'%s %s' % (self.user.first_name, self.user.last_name)
 
-    # Post_save signal that will create an Investigator every time a User is created.
+    # Post_save signal that will create a Person every time a User is created.
     def create_user_profile_signal(sender, instance, created, **kwargs):
         if created:
-            ProjectMember.objects.create(user=instance)
+            Person.objects.create(user=instance)
 
     # If user exists and he is not superuser, checks if the password was changed to modify
     # force_password_change to False.
@@ -160,7 +141,7 @@ class ProjectMember(Person):
                 return
 
             if not user.password == instance.password:
-                profile, created = ProjectMember.objects.get_or_create(user=user)
+                profile, created = Person.objects.get_or_create(user=user)
                 profile.force_password_change = False
                 profile.save()
         except User.DoesNotExist:
@@ -169,38 +150,17 @@ class ProjectMember(Person):
     signals.pre_save.connect(password_change_signal, sender=User, dispatch_uid='accounts.models')
     signals.post_save.connect(create_user_profile_signal, sender=User, dispatch_uid='accounts.models')
 
+    # Force every insert that points to the same user as an existing object to become an update
+    def save(self, *args, **kwargs):
+        try:
+            existing = Person.objects.get(user=self.user)
+            self.id = existing.id
+        except Person.DoesNotExist:
+            pass
+        models.Model.save(self, *args, **kwargs)
+
     # Description of the model / Sort by user
     class Meta:
-        verbose_name = _('Member - Info')
-        verbose_name_plural = _('Members - Info')
+        verbose_name = _('Personal info')
+        verbose_name_plural = _('Personal info')
         ordering = ('user', )
-
-    # Sets the type of person as member
-    def save(self, *args, **kwargs):
-        self.type_of_person = PROJECT_MEMBER
-        super(ProjectMember, self).save(*args, **kwargs)
-
-
-class Other(Person):
-    """
-    An instance of this class represents a person who has developed some work for the project.
-
-    '__unicode__'		Returns the full name.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
-    """
-    full_name = models.CharField(_('Full name'), max_length=255)
-    email = models.EmailField(_('Email'), blank=True, null=True)
-
-    # Returns the name
-    def __unicode__(self):
-        return u'%s' % self.full_name
-
-    class Meta:
-        verbose_name = _('Other person - Info')
-        verbose_name_plural = _('Other persons - Info')
-        ordering = ('full_name', )
-
-    # Sets the type of person as other
-    def save(self, *args, **kwargs):
-        self.type_of_person = OTHER
-        super(Other, self).save(*args, **kwargs)

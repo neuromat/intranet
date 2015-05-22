@@ -5,5 +5,5 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class MemberConfig(AppConfig):
-    name = 'member'
-    verbose_name = _('Account')
+    name = 'custom_user'
+    verbose_name = _('Institution and roles')

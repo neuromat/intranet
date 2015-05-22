@@ -46,10 +46,10 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
+    'custom_user',
     'order',
-    'research',
-    'member',
     'activity',
+    'research',
 )
 
 INSTALLED_APPS += PROJECT_APPS
@@ -63,7 +63,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'member.middleware.PasswordChangeMiddleware',
+    'custom_user.middleware.PasswordChangeMiddleware',
 )
 
 ROOT_URLCONF = 'sistema.urls'
