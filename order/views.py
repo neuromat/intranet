@@ -3,8 +3,6 @@ from order.models import *
 from order.forms import CATEGORY, ORIGIN
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-#from django.shortcuts import get_object_or_404
-#import json as simplejson
 import json
 import datetime
 from django.contrib import messages
@@ -85,7 +83,7 @@ def list_order_by_type(request):
                                               hardwaresoftware__origin=origin)
 
             context = {'orders': orders, 'status': status, 'category': category, 'origin': origin}
-            return render(request, 'report/list_equipment_supplies_msc.html', context)
+            return render(request, 'report/order/list_equipment_supplies_msc.html', context)
 
         elif request.POST['order_type'] == "s":
             status = request.POST.get('status')
@@ -100,7 +98,7 @@ def list_order_by_type(request):
                 orders = Order.objects.filter(type_of_order='s', status=status, service__origin=origin)
 
             context = {'orders': orders}
-            return render(request, 'report/list_services.html', context)
+            return render(request, 'report/order/list_services.html', context)
 
         elif request.POST['order_type'] == "e":
             status = request.POST.get('status')
@@ -110,7 +108,7 @@ def list_order_by_type(request):
                 orders = Order.objects.filter(type_of_order='e', status=status)
 
             context = {'orders': orders}
-            return render(request, 'report/list_events.html', context)
+            return render(request, 'report/order/list_events.html', context)
 
         elif request.POST['order_type'] == "t":
             status = request.POST.get('status')
@@ -120,7 +118,7 @@ def list_order_by_type(request):
                 orders = Order.objects.filter(type_of_order='t', status=status)
 
             context = {'orders': orders}
-            return render(request, 'report/list_tickets.html', context)
+            return render(request, 'report/order/list_tickets.html', context)
 
         elif request.POST['order_type'] == "d":
             status = request.POST.get('status')
@@ -130,7 +128,7 @@ def list_order_by_type(request):
                 orders = Order.objects.filter(type_of_order='d', status=status)
 
             context = {'orders': orders}
-            return render(request, 'report/list_daily_stipend.html', context)
+            return render(request, 'report/order/list_daily_stipend.html', context)
 
         elif request.POST['order_type'] == "r":
             status = request.POST.get('status')
@@ -140,10 +138,10 @@ def list_order_by_type(request):
                 orders = Order.objects.filter(type_of_order='r', status=status)
 
             context = {'orders': orders}
-            return render(request, 'report/list_reimbursement.html', context)
+            return render(request, 'report/order/list_reimbursement.html', context)
 
     context = {'types': types}
-    return render(request, 'report/list_order.html', context)
+    return render(request, 'report/order/list_order.html', context)
 
 
 @login_required
