@@ -89,7 +89,7 @@ class Institution(models.Model):
 
 class Person(models.Model):
     """
-    An instance of this class represents a person that is a custom_user or a visitor.
+    An instance of this class represents a person that is a member or a visitor.
 
     '__unicode__'		Returns the full name from User class.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by user.
