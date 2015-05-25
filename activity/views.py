@@ -94,14 +94,14 @@ def seminars_report(request):
 
         if end_date >= start_date:
             context = {'seminars': seminars, 'category': category}
-            return render(request, 'report/seminars_report.html', context)
+            return render(request, 'report/activity/seminars_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
-            return render(request, 'report/seminars.html')
+            return render(request, 'report/activity/seminars.html')
 
     context = {'categories': categories}
 
-    return render(request, 'report/seminars.html', context)
+    return render(request, 'report/activity/seminars.html', context)
 
 
 @login_required
@@ -174,12 +174,12 @@ def training_programs_report(request):
 
         if end_date >= start_date:
             context = {'training_programs': training_programs}
-            return render(request, 'report/training_programs_report.html', context)
+            return render(request, 'report/activity/training_programs_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
-            return render(request, 'report/training_programs.html')
+            return render(request, 'report/activity/training_programs.html')
 
-    return render(request, 'report/training_programs.html')
+    return render(request, 'report/activity/training_programs.html')
 
 
 @login_required
@@ -202,6 +202,8 @@ def meetings_report(request):
 
         meetings = []
 
+        #seminars = ProjectActivities.objects.filter(type_of_activity='s',
+
         if cepid_event == '0':
             meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__start_date__gt=start_date,
                                                         meeting__start_date__lt=end_date).order_by('meeting__start_date')
@@ -218,9 +220,9 @@ def meetings_report(request):
 
         if end_date >= start_date:
             context = {'meetings': meetings}
-            return render(request, 'report/meetings_report.html', context)
+            return render(request, 'report/activity/meetings_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
-            return render(request, 'report/meetings.html')
+            return render(request, 'report/activity/meetings.html')
 
-    return render(request, 'report/meetings.html')
+    return render(request, 'report/activity/meetings.html')

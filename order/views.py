@@ -47,12 +47,12 @@ def scientific_missions_report(request):
 
         if end_date >= start_date:
             context = {'orders': orders}
-            return render(request, 'report/scientific_missions_report.html', context)
+            return render(request, 'report/activity/scientific_missions_report.html', context)
         else:
             messages.error(request, 'End date should be equal or greater than start date.')
-            return render(request, 'report/scientific_missions.html')
+            return render(request, 'report/activity/scientific_missions.html')
 
-    return render(request, 'report/scientific_missions.html')
+    return render(request, 'report/activity/scientific_missions.html')
 
 
 @login_required
