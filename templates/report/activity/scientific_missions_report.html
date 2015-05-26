@@ -10,8 +10,9 @@
 {% endblock %}
 
 {% block content %}
-<table class="table table-striped table-bordered">
+
 {% if orders %}
+    <table class="table table-striped table-bordered">
     <tr>
         <th>{% trans "Researcher" %}</th><th>{% trans "Scientific mission" %}</th><th>{% trans "Local" %}</th>
         <th>{% trans "Start date" %}</th><th>{% trans "End date" %}</th>
@@ -69,10 +70,66 @@
             <td>{{ order.dailystipend.departure|date:"d/m/Y" }}</td>
             <td>{{ order.dailystipend.arrival|date:"d/m/Y" }}</td>
         </tr>
+
     {% endfor %}
+    </table>
+
+    <br>
+
+    <h3>{% trans "Latex version:" %}</h3>
+    <br>
+    <p>\begin{table}[h]</p>
+    <p>\begin{tabular}{r|r|r|r|r}</p>
+    <p>Researcher & Scientific mission & Local & Start date & End date \\</p>
+    <p>\hline</p>
+
+    {% for order in orders %}
+        {% if order.dailystipend.receiver and order.dailystipend.receiver.institution == None %}
+            <p>{{ order.dailystipend.receiver }} &
+        {% elif order.dailystipend.receiver and order.dailystipend.receiver.institution != None %}
+            <p>{{ order.dailystipend.receiver }} / {{ order.dailystipend.receiver.institution }} &
+        {% elif order.requester and order.requester.institution == None %}
+            <p>{{ order.requester }} &
+        {% elif order.requester and order.requester.institution != None %}
+            <p>{{ order.requester }} / {{ order.requester.institution }} &
+        {% endif %}
+
+        {% if order.dailystipend.mission != None and order.dailystipend.project_activity != None %}
+            {% if order.dailystipend.project_activity.type_of_activity == 't' %}
+                {{ order.dailystipend.mission }} {% trans "and" %}
+                {% trans "Participation in the training program entitled:" %} {{ order.dailystipend.project_activity }} &
+            {% elif order.dailystipend.project_activity.type_of_activity == 'm' %}
+                {{ order.dailystipend.mission }} {% trans "and" %}
+                {% trans "Participation in the meeting entitled:" %} {{ order.dailystipend.project_activity }} &
+            {% elif order.dailystipend.project_activity.type_of_activity == 's' %}
+                {{ order.dailystipend.mission }} {% trans "and" %}
+                {% trans "Participation in the seminar entitled:" %} {{ order.dailystipend.project_activity }} &
+            {% endif %}
+        {% elif order.dailystipend.mission != None %}
+            {{ order.dailystipend.mission }} &
+        {% elif order.dailystipend.project_activity != None %}
+            {% if order.dailystipend.project_activity.type_of_activity == 't' %}
+                {% trans "Participation in the training program entitled:" %} {{ order.dailystipend.project_activity }} &
+            {% elif order.dailystipend.project_activity.type_of_activity == 'm' %}
+                {% trans "Participation in the meeting entitled:" %} {{ order.dailystipend.project_activity }} &
+            {% elif order.dailystipend.project_activity.type_of_activity == 's' %}
+                {% trans "Participation in the seminar entitled:" %} {{ order.dailystipend.project_activity }} &
+            {% endif %}
+        {% else %}
+            {% trans "No scientific missions found!" %} &
+        {% endif %}
+
+        {{ order.dailystipend.destination }} &
+        {{ order.dailystipend.departure|date:"d/m/Y" }} &
+        {{ order.dailystipend.arrival|date:"d/m/Y" }}
+            </p>
+    {% endfor %}
+
+    <p>\end{tabular}</p>
+    <p>\end{table}</p>
+
 {%  else %}
     {% trans "No scientific missions found!" %}
 {% endif %}
-</table>
 
 {% endblock %}
