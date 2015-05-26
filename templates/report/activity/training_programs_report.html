@@ -10,36 +10,65 @@
 {% endblock %}
 
 {% block content %}
-<table class="table table-striped table-bordered">
+
 {% if training_programs %}
-    <tr>
-        <th>{% trans "Title" %}</th><th>{% trans "Speaker" %}</th><th>{% trans "Date" %}</th>
-        <th>{% trans "Duration" %}</th>
-    </tr>
-    {% for training in training_programs %}
+    <table class="table table-striped table-bordered">
         <tr>
-            <td>{{ training.trainingprogram.title }}</td>
-            <td>{{ training.trainingprogram.speakers }}</td>
+            <th>{% trans "Title" %}</th><th>{% trans "Speaker" %}</th><th>{% trans "Date" %}</th>
+            <th>{% trans "Duration" %}</th>
+        </tr>
+        {% for training in training_programs %}
+            <tr>
+                <td>{{ training.trainingprogram.title }}</td>
+                <td>{{ training.trainingprogram.speakers }}</td>
+                {% if training.trainingprogram.end_date %}
+                    <td>
+                        {{ training.trainingprogram.start_date|date:"d/m/Y" }} -
+                        {{ training.trainingprogram.end_date|date:"d/m/Y" }}
+                    </td>
+                {% else %}
+                    <td>
+                        {{ training.trainingprogram.start_date|date:"d/m/Y" }}
+                    </td>
+                {% endif %}
+                {% if training.trainingprogram.duration == 'Other' %}
+                    <td>{{ training.trainingprogram.other_duration }}</td>
+                {% else %}
+                    <td>{{ training.trainingprogram.duration }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+
+    <h3>{% trans "Latex version:" %}</h3>
+    <br>
+    <p>\begin{table}[h]</p>
+    <p>\begin{tabular}{r|r|r|r}</p>
+    <p>{% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} & {% trans "Duration" %} \\</p>
+    <p>\hline</p>
+    {% for training in training_programs %}
+        <p>
+            {{ training.trainingprogram.title }} & {{ training.trainingprogram.speakers }} &
             {% if training.trainingprogram.end_date %}
-                <td>
-                    {{ training.trainingprogram.start_date|date:"d/m/Y" }} -
-                    {{ training.trainingprogram.end_date|date:"d/m/Y" }}
-                </td>
+                {{ training.trainingprogram.start_date|date:"d/m/Y" }} -
+                {{ training.trainingprogram.end_date|date:"d/m/Y" }} &
             {% else %}
-                <td>
-                    {{ training.trainingprogram.start_date|date:"d/m/Y" }}
-                </td>
+                {{ training.trainingprogram.start_date|date:"d/m/Y" }} &
             {% endif %}
             {% if training.trainingprogram.duration == 'Other' %}
-                <td>{{ training.trainingprogram.other_duration }}</td>
+                {{ training.trainingprogram.other_duration }}
             {% else %}
-                <td>{{ training.trainingprogram.duration }}</td>
+                {{ training.trainingprogram.duration }}
             {% endif %}
-        </tr>
     {% endfor %}
+    <p>\end{tabular}</p>
+    <p>\end{table}</p>
+
 {%  else %}
     {% trans "No training programs found!" %}
 {% endif %}
-</table>
+
 
 {% endblock %}
