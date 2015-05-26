@@ -36,9 +36,37 @@
         </tr>
     {% endfor %}
     </table>
+
+    <br>
+
+    <h3>{% trans "Latex version:" %}</h3>
+    <br>
+    <p>\begin{table}[h]</p>
+    {% if category != '0' %}
+        <p>\begin{tabular}{r|r|r}</p>
+        <p>{% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} \\</p>
+        <p>\hline</p>
+        {% for seminar in seminars %}
+            <p>
+                {{ seminar.seminar.title }} & {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"d/m/Y" }}
+            </p>
+        {% endfor %}
+    {% else %}
+        <p>\begin{tabular}{r|r|r|r}</p>
+        <p>{% trans "Category" %} & {% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} \\</p>
+        <p>\hline</p>
+        {% for seminar in seminars %}
+            <p>
+                {{ seminar.seminar.category }} & {{ seminar.seminar.title }} &
+                {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"d/m/Y" }}
+            </p>
+        {% endfor %}
+    {% endif %}
+    <p>\end{tabular}</p>
+    <p>\end{table}</p>
+
 {%  else %}
     {% trans "No seminars found!" %}
 {% endif %}
-
 
 {% endblock %}
