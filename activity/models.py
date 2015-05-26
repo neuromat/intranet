@@ -58,26 +58,6 @@ TYPE_OF_ACTIVITY = (
     (SEMINAR, _('Seminar')),
 )
 
-# Defining types of news
-LECTURES = 'le'
-STREAMING = 'st'
-TOOLS = 'to'
-NEWS = 'ne'
-NEWSLETTER = 'nl'
-OPPORTUNITIES = 'op'
-PUBLICATIONS = 'pu'
-EVENTS = 'ev'
-TYPE_OF_NEW = (
-    (LECTURES, _('Lectures')),
-    (STREAMING, _('Streaming')),
-    (TOOLS, _('Tools')),
-    (NEWS, _('News')),
-    (NEWSLETTER, _('Newsletter')),
-    (OPPORTUNITIES, _('Opportunities')),
-    (PUBLICATIONS, _('Publications')),
-    (EVENTS, _('Events')),
-)
-
 
 class ProjectActivities(models.Model):
     title = models.CharField(_('Title'), max_length=255)
@@ -90,19 +70,18 @@ class ProjectActivities(models.Model):
 
 class News(models.Model):
     """
-    An instance of this class is a link to a publication of a project activity.
+    An instance of this class is a link to a publication related to a project activity.
 
     """
     activity = models.ForeignKey(ProjectActivities)
-    category = models.CharField(_('Category'), max_length=2, choices=TYPE_OF_NEW)
     url = models.URLField(_('URL'))
 
     def __unicode__(self):
         return u'%s' % self.url
 
     class Meta:
-        verbose_name = _('News about this activity')
-        verbose_name_plural = _('News about this activity')
+        verbose_name = _('Link')
+        verbose_name_plural = _('Links')
         ordering = ('url', )
 
 
@@ -121,7 +100,6 @@ class Meeting(ProjectActivities):
     description = models.TextField(_('Description'))
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'))
-    url = models.URLField(_('URL'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Meeting')

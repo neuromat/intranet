@@ -17,7 +17,7 @@ class NewsForm(forms.ModelForm):
 
     class Meta:
         model = News
-        fields = ['category', 'url']
+        fields = ['url']
         widgets = {
             'url': TextInput(attrs={'size': 90, 'placeholder': 'http://example.com'}),
         }
