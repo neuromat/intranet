@@ -21,8 +21,17 @@
             <label>{% trans "Organized by " %}{{ cepid_name }}?</label>
             <select class="form-control" name="cepid_event" id="id_cepid_event">
                 <option value="0">----------</option>
-                <option value="1">Sim</option>
-                <option value="2">Não</option>
+                <option value="1">{% trans "Yes" %}</option>
+                <option value="2">{% trans "No" %}</option>
+            </select>
+        </div>
+
+        <div class="col-xs-2 col-sm-2">
+            <label>{% trans "Broad audience?" %}</label>
+            <select class="form-control" name="broad_audience" id="id_broad_audience">
+                <option value="0">----------</option>
+                <option value="1">{% trans "Yes" %}</option>
+                <option value="2">{% trans "No" %}</option>
             </select>
         </div>
 
