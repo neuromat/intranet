@@ -13,6 +13,7 @@ admin.site.register(InstitutionType)
 class PersonAdmin(admin.StackedInline):
 
     model = Person
+    can_delete = False
 
     fieldsets = (
         (None, {
