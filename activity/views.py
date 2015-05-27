@@ -225,4 +225,5 @@ def meetings_report(request):
             messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/activity/meetings.html')
 
-    return render(request, 'report/activity/meetings.html')
+    context = {'cepid_name': settings.CEPID_NAME}
+    return render(request, 'report/activity/meetings.html', context)
