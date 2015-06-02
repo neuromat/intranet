@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from activity.models import ProjectActivities, Seminar, SeminarType
-from custom_user.models import Person
+from person.models import Person
 from django.utils.translation import ugettext_lazy as _
 import datetime
 from django.contrib import messages
@@ -198,24 +198,31 @@ def meetings_report(request):
         else:
             end_date = now_plus_thirty()
 
-        cepid_event = request.POST['cepid_event']
+        cepid_event = request.POST.get('cepid_event', False)
+        broad_audience = request.POST.get('broad_audience', False)
 
         meetings = []
 
         #seminars = ProjectActivities.objects.filter(type_of_activity='s',
 
-        if cepid_event == '0':
-            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__start_date__gt=start_date,
+        if cepid_event == False and broad_audience == False:
+            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event=0,
+                                                        meeting__broad_audience=0, meeting__start_date__gt=start_date,
                                                         meeting__start_date__lt=end_date).order_by('meeting__start_date')
 
-        elif cepid_event == '1':
-            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event='1',
-                                                        meeting__start_date__gt=start_date,
+        elif cepid_event != False and broad_audience == False:
+            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event=1,
+                                                        meeting__broad_audience=0, meeting__start_date__gt=start_date,
                                                         meeting__start_date__lt=end_date).order_by('meeting__start_date')
 
-        elif cepid_event == '2':
-            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event='0',
-                                                        meeting__start_date__gt=start_date,
+        elif cepid_event == False and broad_audience != False:
+            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event=0,
+                                                        meeting__broad_audience=1, meeting__start_date__gt=start_date,
+                                                        meeting__start_date__lt=end_date).order_by('meeting__start_date')
+
+        elif cepid_event != False and broad_audience != False:
+            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__cepid_event=1,
+                                                        meeting__broad_audience=1, meeting__start_date__gt=start_date,
                                                         meeting__start_date__lt=end_date).order_by('meeting__start_date')
 
         if end_date >= start_date:

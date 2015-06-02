@@ -31,6 +31,8 @@ SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 
+AUTH_USER_MODEL = 'custom_auth.User'
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -46,7 +48,8 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
-    'custom_user',
+    'custom_auth',
+    'person',
     'order',
     'activity',
     'research',
@@ -63,7 +66,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'custom_user.middleware.PasswordChangeMiddleware',
+    #'person.middleware.PasswordChangeMiddleware',
 )
 
 ROOT_URLCONF = 'sistema.urls'

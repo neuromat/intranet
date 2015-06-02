@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from custom_user.models import Person, Institution
+from person.models import Person, Institution
 from django.utils.html import format_html
 from django.conf import settings
 

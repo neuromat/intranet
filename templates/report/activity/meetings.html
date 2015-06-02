@@ -19,32 +19,20 @@
     <div class="row">
         <div class="col-xs-3 col-sm-3">
             <label>{% trans "Organized by " %}{{ cepid_name }}?</label>
-            <select class="form-control" name="cepid_event" id="id_cepid_event">
-                <option value="0">----------</option>
-                <option value="1">{% trans "Yes" %}</option>
-                <option value="2">{% trans "No" %}</option>
-            </select>
+            <input type="checkbox" class="checkbox" name="cepid_event" id="id_cepid_event">
         </div>
-
         <div class="col-xs-2 col-sm-2">
             <label>{% trans "Broad audience?" %}</label>
-            <select class="form-control" name="broad_audience" id="id_broad_audience">
-                <option value="0">----------</option>
-                <option value="1">{% trans "Yes" %}</option>
-                <option value="2">{% trans "No" %}</option>
-            </select>
+            <input type="checkbox" class="checkbox" name="broad_audience" id="id_broad_audience">
         </div>
-
         <div class="col-xs-2 col-sm-2">
             <label>{% trans "Start date" %}</label>
             <input class="form-control" name="start_date" id="id_start_date">
         </div>
-
         <div class="col-xs-2 col-sm-2">
             <label>{% trans "End date" %}</label>
             <input class="form-control" name="end_date" id="id_end_date">
         </div>
-
         <div class="col-xs-2 col-sm-2">
             <br>
             <div class="btn-group">

@@ -1,5 +1,5 @@
 from django import forms
-from custom_user.models import Person
+from person.models import Person
 from cep.widgets import CEPInput
 
 

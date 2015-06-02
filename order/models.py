@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from custom_user.models import Institution, Person
+from person.models import Institution, Person
 from activity.models import ProjectActivities
 from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
