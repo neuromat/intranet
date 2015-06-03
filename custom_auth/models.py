@@ -64,7 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Used at welcome message.
     def get_short_name(self):
-        return self.username
+        return self.user_profile.first_name
 
     class Meta:
         verbose_name = _('User')
