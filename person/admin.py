@@ -2,6 +2,7 @@ from django.contrib import admin
 from person.models import *
 from django.utils.translation import ugettext_lazy as _
 from forms import *
+from custom_auth.models import User
 
 admin.site.register(Role)
 admin.site.register(InstitutionType)
@@ -20,6 +21,13 @@ class PersonAdmin(admin.ModelAdmin):
                        'state', 'country')
         }),
     )
+
+    # If not superuser, show the current user
+    def get_queryset(self, request):
+        qs = super(PersonAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(user=request.user)
 
     # If not superuser or nira_admin, do not enable role and institution fields
     def get_readonly_fields(self, request, obj=None):
