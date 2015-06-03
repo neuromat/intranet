@@ -122,7 +122,7 @@ class Order(models.Model):
             # Info about the order
             check_order = Order.objects.get(pk=self.pk)
             requester_name = check_order.requester
-            requester_email = check_order.requester.user.email
+            requester_email = check_order.requester.email
             order_type = check_order.type_of_order
 
             # Check the type of request. It will be used to create the URL in the email that will be sent.
