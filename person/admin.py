@@ -2,7 +2,6 @@ from django.contrib import admin
 from person.models import *
 from django.utils.translation import ugettext_lazy as _
 from forms import *
-from custom_auth.models import User
 
 admin.site.register(Role)
 admin.site.register(InstitutionType)
