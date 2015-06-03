@@ -42,7 +42,7 @@ class TrainingProgramAdmin(admin.ModelAdmin):
     # Users defined as superuser or NIRA Admin can see all Training Programs.
     def get_queryset(self, request):
         qs = super(TrainingProgramAdmin, self).get_queryset(request)
-        if request.user.person.is_nira_admin or request.user.is_superuser:
+        if request.user.is_nira_admin or request.user.is_superuser:
             return qs
         return qs.filter(speaker=request.user.projectmember)
 
