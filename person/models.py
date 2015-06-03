@@ -117,6 +117,6 @@ class Person(models.Model):
 
     # Description of the model / Sort by user
     class Meta:
-        verbose_name = _('Person')
-        verbose_name_plural = _('People')
+        verbose_name = _('My personal info')
+        verbose_name_plural = _('My personal info')
         ordering = ('first_name', 'last_name')
