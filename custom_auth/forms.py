@@ -51,8 +51,8 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'is_active', 'is_staff', 'is_nira_admin', 'force_password_change',
-                  'date_joined', 'user_profile', 'user_permissions', 'groups')
+        fields = ('username', 'password', 'is_active', 'is_staff', 'is_nira_admin', 'date_joined', 'user_profile',
+                  'user_permissions', 'groups')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value. This is done here, rather than on the field,

@@ -15,8 +15,8 @@ class CustomUserAdmin(UserAdmin):
 
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Permissions'), {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_nira_admin',
-                                       'force_password_change', 'user_profile', 'user_permissions', 'groups')}),
+        (_('Permissions'), {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_nira_admin', 'user_profile',
+                                       'user_permissions', 'groups')}),
     )
 
     restricted_fieldsets = (

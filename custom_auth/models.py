@@ -49,8 +49,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_nira_admin = models.BooleanField(_('NIRA admin'), default=False,
                                         help_text=_('Designates whether the user can create content on behalf of '
                                                     'another user.'))
-    force_password_change = models.BooleanField(_('Force password change'), default=True,
-                                                help_text=_('Force the user to change their password at next login.'))
     date_joined = models.DateTimeField(_('Date joined'), default=timezone.now)
     user_profile = models.OneToOneField(Person, verbose_name=_('User profile'), blank=True, null=True)
 
