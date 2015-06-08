@@ -143,7 +143,7 @@ def seminar_show_titles(request):
         speaker_id = request.GET.get('speaker')
         speaker = get_object_or_404(Person, id=speaker_id)
 
-        select = ProjectActivities.objects.filter(type_of_activity='s', speaker=speaker)
+        select = ProjectActivities.objects.filter(type_of_activity='s', seminar__speaker=speaker)
         titles = []
         for title in select:
             titles.append({'pk': title.id, 'valor': title.__unicode__()})
