@@ -6,8 +6,7 @@ from validation import CPF
 
 def validate_cpf(value):
     """
-    Checks if the CPF is valid
-
+    Check if the CPF is valid
     """
     validation = CPF(value)
     if not validation.isValid():
@@ -16,7 +15,7 @@ def validate_cpf(value):
 
 class Role(models.Model):
     """
-    An instance of this class is the role of a person.
+    An instance of this class is a role of a person.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
@@ -35,7 +34,7 @@ class Role(models.Model):
 
 class InstitutionType(models.Model):
     """
-    An instance of this class is the type of institution.
+    An instance of this class is a type of institution.
 
     '__unicode__'		Returns the name.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
@@ -92,8 +91,7 @@ class Person(models.Model):
     """
     role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
-    first_name = models.CharField(_('Fisrt name'), max_length=255)
-    last_name = models.CharField(_('Last name'), max_length=255)
+    full_name = models.CharField(_('Full name'), max_length=255)
     email = models.EmailField(_('Email'), blank=True, null=True)
     citation_name = models.CharField(_('Name in bibliographic citation'), max_length=255, blank=True, null=True,
                                      help_text='E.g.: Silva, J.')
@@ -111,9 +109,9 @@ class Person(models.Model):
     state = models.CharField(_('State'), max_length=255, blank=True, null=True)
     country = models.CharField(_('Country'), max_length=255, blank=True, null=True)
 
-    # Returns the full name
+    # Returns the name
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        return u'%s' % self.full_name
 
     # Description of the model / Sort by user
     class Meta:
