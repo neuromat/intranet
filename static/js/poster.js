@@ -1,6 +1,6 @@
 function ajax_select_seminar(id_speaker)
 {
-   $("#id_title").html('<option value="">Carregando...</option>');
+   $("#id_title").html('<option value="">Loading...</option>');
    $.ajax({
        type: "GET",
        url: "/activity/seminar_show_titles",
@@ -15,7 +15,7 @@ function ajax_select_seminar(id_speaker)
            });
        },
        error: function(erro) {
-           alert('Erro: Sem retorno de requisição.');
+           alert('Error: No request return.');
        }
    });
 }
