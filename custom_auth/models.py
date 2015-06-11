@@ -36,11 +36,20 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """
+    An instance of this class represents a user of the system. The email field of this class is not editable,
+    it is a copy from the email field of the User class (to be used at "Forgotten your password or username?").
+
+    '__unicode__'		Returns the username.
+    'get_short_name'    Used at welcome message.
+    'class Meta'		Sets the description model (singular and plural).
+    """
     username = models.CharField(_('Username'), max_length=30, unique=True,
                                 help_text=_('Required. 30 characters or fewer. '
                                             'Letters, numbers and @/./+/-/_ characters'),
                                 validators=[validators.RegexValidator(re.compile('^[\w.@+-]+$'),
                                                                       _('Enter a valid username.'), _('invalid'))])
+    email = models.EmailField(_('Email'), blank=True, null=True)
     is_staff = models.BooleanField(_('Staff status'), default=False,
                                    help_text=_('Designates whether the user can log into this admin site.'))
     is_active = models.BooleanField(_('Active'), default=False,

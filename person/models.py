@@ -87,6 +87,9 @@ class Person(models.Model):
     An instance of this class represents a person that is a member or a visitor.
 
     '__unicode__'		Returns the full name.
+    'save'              Copy the value of the email and save this value in the email field of the User class (from
+                        custom_auth app). This is used because of the function "Forgotten your password or username?"
+                        at the login page. This function looks for an email field in the User class.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by user.
     """
     role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
@@ -112,6 +115,17 @@ class Person(models.Model):
     # Returns the name
     def __unicode__(self):
         return u'%s' % self.full_name
+
+    # Get the value of the email and put it in the email field of the User class.
+    def save(self, *args, **kw):
+        if self.pk is not None:
+            orig = Person.objects.get(pk=self.pk)
+            if orig.email != self.email:
+                from custom_auth.models import User
+                user = User.objects.get(user_profile=orig.pk)
+                user.email = self.email
+                user.save()
+        super(Person, self).save(*args, **kw)
 
     # Description of the model / Sort by user
     class Meta:
