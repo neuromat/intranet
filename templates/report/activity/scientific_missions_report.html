@@ -22,11 +22,11 @@
             {% if order.dailystipend.receiver and order.dailystipend.receiver.institution == None %}
                 <td>{{ order.dailystipend.receiver }}</td>
             {% elif order.dailystipend.receiver and order.dailystipend.receiver.institution != None %}
-                <td>{{ order.dailystipend.receiver }} / {{ order.dailystipend.receiver.institution }}</td>
+                <td>{{ order.dailystipend.receiver }} / {{ order.dailystipend.receiver.institution.get_person_institution }}</td>
             {% elif order.requester and order.requester.institution == None %}
                 <td>{{ order.requester }} </td>
             {% elif order.requester and order.requester.institution != None %}
-                <td>{{ order.requester }} / {{ order.requester.institution }}</td>
+                <td>{{ order.requester }} / {{ order.requester.institution.get_person_institution }}</td>
             {% endif %}
 
             {% if order.dailystipend.mission != None and order.dailystipend.project_activity != None %}
@@ -87,11 +87,11 @@
         {% if order.dailystipend.receiver and order.dailystipend.receiver.institution == None %}
             <p>{{ order.dailystipend.receiver }} &
         {% elif order.dailystipend.receiver and order.dailystipend.receiver.institution != None %}
-            <p>{{ order.dailystipend.receiver }} / {{ order.dailystipend.receiver.institution }} &
+            <p>{{ order.dailystipend.receiver }} / {{ order.dailystipend.receiver.institution.get_person_institution }} &
         {% elif order.requester and order.requester.institution == None %}
             <p>{{ order.requester }} &
         {% elif order.requester and order.requester.institution != None %}
-            <p>{{ order.requester }} / {{ order.requester.institution }} &
+            <p>{{ order.requester }} / {{ order.requester.institution.get_person_institution }} &
         {% endif %}
 
         {% if order.dailystipend.mission != None and order.dailystipend.project_activity != None %}
