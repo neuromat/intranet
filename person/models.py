@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
@@ -18,11 +19,10 @@ class Role(models.Model):
     An instance of this class is a role of a person.
 
     '__unicode__'		Returns the name.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    'class Meta'		Sets the description model (singular and plural) and define ordering of data by name.
     """
     name = models.CharField(_('Name'), max_length=255)
 
-    # Returns the name
     def __unicode__(self):
         return u'%s' % self.name
 
@@ -37,11 +37,10 @@ class InstitutionType(models.Model):
     An instance of this class is a type of institution.
 
     '__unicode__'		Returns the name.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by name.
+    'class Meta'		Sets the description model (singular and plural) and define ordering of data by name.
     """
     name = models.CharField(_('Name'), max_length=255)
 
-    # Returns the name
     def __unicode__(self):
         return u'%s' % self.name
 
@@ -55,21 +54,56 @@ class Institution(models.Model):
     """
     An instance of this class represents an institution.
 
-    '__unicode__'		Returns the acronym or the name.
-    'class Meta'		Sets the description (singular and plural) model and the ordering of data by acronym.
+    '__unicode__'		        Returns the name. If the institution belongs to another institution, then show the
+                                acronym or the name of this institution.
+    'get_speaker_institution'   Used at the reports. The system tries to show only the acronym of the institution.
+                                If there is not an acronym, then it shows the name.
+    'class Meta'		        Sets the description model (singular and plural) and and define ordering of data by name.
     """
     name = models.CharField(_('Name'), max_length=255)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
     type = models.ForeignKey(InstitutionType, verbose_name=_('Type'))
     belongs_to = models.ForeignKey('self', verbose_name=_('Belongs to'), blank=True, null=True)
 
-    # If exists, returns the acronym, if not returns the name
     def __unicode__(self):
         if self.belongs_to:
-            if self.acronym:
-                return u'%s-%s' % (self.acronym, self.belongs_to)
+            if self.belongs_to.belongs_to:
+                if self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
+                    return u'%s - %s/%s' % (self.name, self.belongs_to.acronym, self.belongs_to.belongs_to.acronym)
+                elif self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
+                    return u'%s - %s/%s' % (self.name, self.belongs_to.acronym, self.belongs_to.belongs_to.name)
+                elif not self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
+                    return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.acronym)
+                elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
+                    return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.name)
             else:
-                return u'%s-%s' % (self.name, self.belongs_to)
+                if self.belongs_to.acronym:
+                    return u'%s / %s' % (self.name, self.belongs_to.acronym)
+                else:
+                    return u'%s / %s' % (self.name, self.belongs_to.name)
+        else:
+            return u'%s' % self.name
+
+    def get_speaker_institution(self):
+        if self.belongs_to:
+            if self.belongs_to.belongs_to:
+                if self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
+                    return u'%s - %s/%s' % (self.name, self.belongs_to.acronym, self.belongs_to.belongs_to.acronym)
+                elif self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
+                    return u'%s - %s/%s' % (self.name, self.belongs_to.acronym, self.belongs_to.belongs_to.name)
+                elif not self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
+                    return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.acronym)
+                elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
+                    return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.name)
+            else:
+                if self.acronym and self.belongs_to.acronym:
+                    return u'%s-%s' % (self.acronym, self.belongs_to.acronym)
+                elif not self.acronym and self.belongs_to.acronym:
+                    return u'%s-%s' % (self.name, self.belongs_to.acronym)
+                elif self.acronym and not self.belongs_to.acronym:
+                    return u'%s-%s' % (self.acronym, self.belongs_to.name)
+                elif not self.acronym and not self.belongs_to.acronym:
+                    return u'%s-%s' % (self.name, self.belongs_to.name)
         else:
             if self.acronym:
                 return u'%s' % self.acronym
@@ -79,7 +113,7 @@ class Institution(models.Model):
     class Meta:
         verbose_name = _('Institution')
         verbose_name_plural = _('Institutions')
-        ordering = ('-acronym',)
+        ordering = ('name',)
 
 
 class Person(models.Model):
@@ -112,7 +146,6 @@ class Person(models.Model):
     state = models.CharField(_('State'), max_length=255, blank=True, null=True)
     country = models.CharField(_('Country'), max_length=255, blank=True, null=True)
 
-    # Returns the name
     def __unicode__(self):
         return u'%s' % self.full_name
 
@@ -127,7 +160,6 @@ class Person(models.Model):
                 user.save()
         super(Person, self).save(*args, **kw)
 
-    # Description of the model / Sort by user
     class Meta:
         verbose_name = _('Person')
         verbose_name_plural = _('Person')
