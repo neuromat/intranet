@@ -56,8 +56,8 @@ class Institution(models.Model):
 
     '__unicode__'		        Returns the name. If the institution belongs to another institution, then show the
                                 acronym or the name of this institution.
-    'get_speaker_institution'   Used at the reports. The system tries to show only the acronym of the institution.
-                                If there is not an acronym, then it shows the name.
+    'get_person_institution'    Used at the reports. The system tries to show only the acronym of the institution.
+                                If there isn't an acronym, then it shows the name.
     'class Meta'		        Sets the description model (singular and plural) and and define ordering of data by name.
     """
     name = models.CharField(_('Name'), max_length=255)
@@ -84,7 +84,7 @@ class Institution(models.Model):
         else:
             return u'%s' % self.name
 
-    def get_speaker_institution(self):
+    def get_person_institution(self):
         if self.belongs_to:
             if self.belongs_to.belongs_to:
                 if self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
