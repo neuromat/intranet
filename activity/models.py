@@ -144,7 +144,7 @@ class TrainingProgram(ProjectActivities):
     def speakers(self):
         return format_html("<br>".join([
             unicode(speaker) +
-            unicode(" / " + speaker.institution.get_speaker_institution() if speaker.institution else "")
+            unicode(" / " + speaker.institution.get_person_institution() if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True
@@ -196,7 +196,7 @@ class Seminar(ProjectActivities):
     def speakers(self):
         return format_html("<br>".join([
             unicode(speaker) +
-            unicode(" / " + speaker.institution.get_speaker_institution() if speaker.institution else "")
+            unicode(" / " + speaker.institution.get_person_institution() if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True
