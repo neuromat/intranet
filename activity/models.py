@@ -72,6 +72,7 @@ class News(models.Model):
     """
     An instance of this class is a link to a publication related to a project activity.
 
+    'class Meta'		Sets the description model (singular and plural) and define ordering of data by url.
     """
     activity = models.ForeignKey(ProjectActivities)
     url = models.URLField(_('URL'))
@@ -89,6 +90,7 @@ class Meeting(ProjectActivities):
     """
     An instance of this class is a meeting.
 
+    'class Meta'		Sets the description model (singular and plural) and define ordering of data by start_date.
     """
     # import CEPID name
     cepid_name = settings.CEPID_NAME
@@ -116,6 +118,8 @@ class TrainingProgram(ProjectActivities):
     """
     An instance of this class is a training program.
 
+    'class Meta'		Sets the description model (singular and plural) and define ordering of data by start_date.
+    'speakers'          Get the speakers of the training program and their institutions.
     """
     speaker = models.ManyToManyField(Person, verbose_name=_('Speaker'))
     meeting = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
@@ -139,7 +143,8 @@ class TrainingProgram(ProjectActivities):
 
     def speakers(self):
         return format_html("<br>".join([
-            str(speaker) + str(" / " + speaker.institution.__unicode__() if speaker.institution else "")
+            unicode(speaker) +
+            unicode(" / " + speaker.institution.get_speaker_institution() if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True
@@ -152,7 +157,6 @@ class SeminarType(models.Model):
     """
     name = models.CharField(_('Name'), max_length=255)
 
-    # Returns the name
     def __unicode__(self):
         return u'%s' % self.name
 
@@ -166,6 +170,8 @@ class Seminar(ProjectActivities):
     """
     An instance of this class is a seminar.
 
+    'class Meta'		Sets the description model (singular and plural) and define ordering of data by date.
+    'speakers'          Get the speakers of the seminar and their institutions.
     """
     speaker = models.ManyToManyField(Person, verbose_name=_('Speaker'))
     meeting = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
@@ -189,7 +195,8 @@ class Seminar(ProjectActivities):
 
     def speakers(self):
         return format_html("<br>".join([
-            str(speaker) + str(" / " + speaker.institution.__unicode__() if speaker.institution else "")
+            unicode(speaker) +
+            unicode(" / " + speaker.institution.get_speaker_institution() if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True
