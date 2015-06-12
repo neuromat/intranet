@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-17 17:04-0300\n"
+"POT-Creation-Date: 2015-06-12 18:18-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,268 +17,278 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: activity/admin.py:11 activity/models.py:84
+msgid "Link"
+msgstr "Link"
+
 #: activity/apps.py:9
 msgid "Project activities"
 msgstr "Atividades do projeto"
 
-#: activity/models.py:47 activity/models.py:63
+#: activity/models.py:48 activity/models.py:130
 msgid "Other duration time"
 msgstr "Outro tempo de duração"
 
-#: activity/models.py:56 activity/models.py:80 activity/models.py:120
-#: activity/models.py:143
-msgid "Speaker"
-msgstr "Palestrante"
-
-#: activity/models.py:57 activity/models.py:81 activity/models.py:123
-#: activity/models.py:145 research/models.py:23
-msgid "Title"
-msgstr "Título"
-
-#: activity/models.py:58 activity/models.py:126 activity/models.py:148
-#: order/models.py:224 order/models.py:253 order/models.py:318
-#: research/models.py:125 templates/report/list_equipment_supplies_msc.html:42
-msgid "Description"
-msgstr "Descrição"
-
-#: activity/models.py:59 activity/models.py:102 activity/models.py:124
-#: activity/models.py:146 order/models.py:205
-#: templates/report/scientific_missions.html:10
-msgid "Start date"
-msgstr "Início"
-
-#: activity/models.py:60 activity/models.py:103 activity/models.py:125
-#: activity/models.py:147 order/models.py:206
-#: templates/report/scientific_missions.html:10
-msgid "End date"
-msgstr "Término"
-
-#: activity/models.py:61 activity/models.py:119 activity/models.py:144
-#: research/models.py:63 templates/report/scientific_missions.html:9
-msgid "Local"
-msgstr "Local"
-
-#: activity/models.py:62
-msgid "Duration"
-msgstr "Duração"
-
-#: activity/models.py:70
+#: activity/models.py:56 activity/models.py:135
 msgid "Training Program"
 msgstr "Programa de treinamento"
 
-#: activity/models.py:71
-msgid "Training Programs"
-msgstr "Programas de treinamento"
-
-#: activity/models.py:82
-msgid "Abstract"
-msgstr "Resumo"
-
-#: activity/models.py:83
-msgid "Date"
-msgstr "Data"
-
-#: activity/models.py:84
-msgid "Attachment"
-msgstr "Anexo"
-
-#: activity/models.py:90
-msgid "Seminar"
-msgstr "Seminário"
-
-#: activity/models.py:91
-msgid "Seminars"
-msgstr "Seminários"
-
-#: activity/models.py:100 member/models.py:181 order/models.py:77
-msgid "Investigator"
-msgstr "Pesquisador"
-
-#: activity/models.py:101 order/models.py:301
-msgid "Mission"
-msgstr "Missão"
-
-#: activity/models.py:109 templates/report/scientific_missions.html:9
-msgid "Scientific mission"
-msgstr "Missão científica"
-
-#: activity/models.py:110
-msgid "Scientific missions"
-msgstr "Missões científicas"
-
-#: activity/models.py:122
-msgid "Participant"
-msgstr "Participante"
-
-#: activity/models.py:127 activity/models.py:149 order/models.py:203
-#: order/models.py:226 research/models.py:69 research/models.py:161
-msgid "URL"
-msgstr "URL"
-
-#: activity/models.py:133
+#: activity/models.py:57 activity/models.py:107 activity/models.py:125
+#: activity/models.py:177
 msgid "Meeting"
 msgstr "Reunião"
 
-#: activity/models.py:134
+#: activity/models.py:58 activity/models.py:187
+#: templates/poster/seminar.html:31
+#: templates/poster/seminar_poster_pdf.html:62
+msgid "Seminar"
+msgstr "Seminário"
+
+#: activity/models.py:63 research/models.py:53 research/models.py:241
+#: templates/report/activity/meetings_report.html:16
+#: templates/report/activity/seminars_report.html:17
+#: templates/report/activity/seminars_report.html:20
+#: templates/report/activity/seminars_report.html:47
+#: templates/report/activity/seminars_report.html:56
+#: templates/report/activity/training_programs_report.html:17
+#: templates/report/activity/training_programs_report.html:49
+msgid "Title"
+msgstr "Título"
+
+#: activity/models.py:64
+#: templates/report/activity/scientific_missions_report.html:17
+msgid "Local"
+msgstr "Local"
+
+#: activity/models.py:65
+#, fuzzy
+#| msgid "Type of Trip"
+msgid "Type of activity"
+msgstr "Tipo de viagem"
+
+#: activity/models.py:78 order/models.py:204 order/models.py:227
+#: research/models.py:56 templates/report/activity/meetings_report.html:24
+msgid "URL"
+msgstr "URL"
+
+#: activity/models.py:85
+msgid "Links"
+msgstr "Links"
+
+#: activity/models.py:99 templates/report/activity/meetings.html:21
+msgid "Broad audience?"
+msgstr "Aberto ao público?"
+
+#: activity/models.py:100
+msgid "Organized by "
+msgstr "Organizado pelo "
+
+#: activity/models.py:101
+msgid "Participant"
+msgstr "Participante"
+
+#: activity/models.py:102 activity/models.py:126 order/models.py:225
+#: order/models.py:249 order/models.py:315 research/models.py:274
+#: templates/report/activity/meetings_report.html:17
+#: templates/report/order/list_equipment_supplies_msc.html:50
+msgid "Description"
+msgstr "Descrição"
+
+#: activity/models.py:103 activity/models.py:127 order/models.py:206
+#: templates/report/activity/meetings.html:29
+#: templates/report/activity/scientific_missions.html:21
+#: templates/report/activity/scientific_missions_report.html:18
+#: templates/report/activity/seminars.html:31
+#: templates/report/activity/training_programs.html:21
+#: templates/report/research/published.html:21
+msgid "Start date"
+msgstr "Início"
+
+#: activity/models.py:104 activity/models.py:128 order/models.py:207
+#: templates/report/activity/meetings.html:33
+#: templates/report/activity/scientific_missions.html:26
+#: templates/report/activity/scientific_missions_report.html:18
+#: templates/report/activity/seminars.html:36
+#: templates/report/activity/training_programs.html:26
+#: templates/report/research/published.html:26
+msgid "End date"
+msgstr "Término"
+
+#: activity/models.py:108
 msgid "Meetings"
 msgstr "Reuniões"
 
-#: activity/models.py:155
-msgid "General event"
-msgstr "Evento"
+#: activity/models.py:124 activity/models.py:176
+#: templates/poster/seminar.html:21
+#: templates/report/activity/seminars_report.html:17
+#: templates/report/activity/seminars_report.html:21
+#: templates/report/activity/seminars_report.html:47
+#: templates/report/activity/seminars_report.html:56
+#: templates/report/activity/training_programs_report.html:17
+#: templates/report/activity/training_programs_report.html:49
+msgid "Speaker"
+msgstr "Palestrante"
 
-#: activity/models.py:156
-msgid "General events"
-msgstr "Eventos"
+#: activity/models.py:129
+#: templates/report/activity/training_programs_report.html:18
+#: templates/report/activity/training_programs_report.html:49
+msgid "Duration"
+msgstr "Duração"
 
-#: member/admin.py:33
-msgid "Personal Info"
-msgstr "Informações pessoais"
+#: activity/models.py:132 templates/report/activity/meetings_report.html:20
+msgid "Number of participants"
+msgstr "Total de participantes"
 
-#: member/admin.py:36
-msgid "Contact Info"
-msgstr "Informações de Contato"
+#: activity/models.py:136
+msgid "Training Programs"
+msgstr "Programas de treinamento"
 
-#: member/apps.py:9
-msgid "Account"
-msgstr "Dados do usuário"
-
-#: member/forms.py:30 member/models.py:55 member/models.py:67
-#: member/models.py:120 order/models.py:231
-msgid "University"
-msgstr "Universidade"
-
-#: member/models.py:18
-#, python-format
-msgid "%s is not a valid CPF"
-msgstr "%s não é um CPF válido"
-
-#: member/models.py:28 member/models.py:47 member/models.py:68
-#: member/models.py:90 member/models.py:180 order/models.py:202
-#: research/models.py:42 research/models.py:83
+#: activity/models.py:158 order/models.py:203 person/models.py:24
+#: person/models.py:42 person/models.py:63 research/models.py:223
 msgid "Name"
 msgstr "Nome"
 
-#: member/models.py:35 member/models.py:119
-msgid "Role"
-msgstr "Perfil"
+#: activity/models.py:164
+msgid "Type of seminar"
+msgstr "Tipo de seminário"
 
-#: member/models.py:36
-msgid "Roles"
-msgstr "Perfis"
+#: activity/models.py:165
+msgid "Types of seminar"
+msgstr "Tipos de seminário"
 
-#: member/models.py:48 member/models.py:69 member/models.py:91
-msgid "Acronym"
-msgstr "Sigla"
+#: activity/models.py:178 order/models.py:231
+#: templates/report/activity/seminars.html:21
+#: templates/report/activity/seminars_report.html:20
+#: templates/report/activity/seminars_report.html:56
+#: templates/report/order/list_equipment_supplies_msc.html:32
+#: templates/report/order/list_order.html:41
+msgid "Category"
+msgstr "Categoria"
 
-#: member/models.py:56
-msgid "Universities"
-msgstr "Universidades"
+#: activity/models.py:179
+msgid "International guest lecturer?"
+msgstr ""
 
-#: member/models.py:76 member/models.py:88 order/models.py:234
-msgid "Institute / School / Administrative"
-msgstr "Instituto / Faculdade / Administrativo"
+#: activity/models.py:180
+msgid "Abstract"
+msgstr "Resumo"
 
-#: member/models.py:77
-msgid "Institutes / Schools / Administrative"
-msgstr "Institutos / Faculdades / Administrativos"
+#: activity/models.py:181 templates/report/activity/seminars_report.html:18
+#: templates/report/activity/seminars_report.html:21
+#: templates/report/activity/seminars_report.html:47
+#: templates/report/activity/seminars_report.html:56
+#: templates/report/activity/training_programs_report.html:17
+#: templates/report/activity/training_programs_report.html:49
+msgid "Date"
+msgstr "Data"
 
-#: member/models.py:98 order/models.py:236
-msgid "Department / Research project"
-msgstr "Departamento / Projeto de pesquisa"
+#: activity/models.py:182
+msgid "Time"
+msgstr "Hora"
 
-#: member/models.py:99
-msgid "Departments / Research projects"
-msgstr "Departamentos / Projetos de pesquisa"
+#: activity/models.py:183
+msgid "Attachment"
+msgstr "Anexo"
 
-#: member/models.py:112
-msgid "User"
+#: activity/models.py:184
+msgid "Room"
+msgstr "Sala"
+
+#: activity/models.py:188
+msgid "Seminars"
+msgstr "Seminários"
+
+#: activity/views.py:99 activity/views.py:179 activity/views.py:223
+#: research/views.py:61
+msgid "End date should be equal or greater than start date."
+msgstr ""
+
+#: activity/views.py:117
+msgid "You have to choose a seminar!"
+msgstr "Você tem que escolher um seminário!"
+
+#: activity/views.py:124
+msgid "No seminar matches the given query."
+msgstr "Nenhum seminário corresponde a esta consulta."
+
+#: custom_auth/admin.py:18
+msgid "Permissions"
+msgstr "Permissões"
+
+#: custom_auth/apps.py:6
+msgid "Authentication"
+msgstr "Autenticação"
+
+#: custom_auth/models.py:18
+msgid "The given username must be set"
+msgstr "O nome do usuário deve ser definido"
+
+#: custom_auth/models.py:47
+msgid "Username"
 msgstr "Usuário"
 
-#: member/models.py:113
-msgid "Force password change"
-msgstr "Forçar mudança de senha"
+#: custom_auth/models.py:48
+msgid ""
+"Required. 30 characters or fewer. Letters, numbers and @/./+/-/_ characters"
+msgstr ""
 
-#: member/models.py:114
-msgid "Force the user to change their password at next login."
-msgstr "Obrigar o usuário a alterar a senha no próximo login"
+#: custom_auth/models.py:51
+msgid "Enter a valid username."
+msgstr ""
 
-#: member/models.py:115 sistema/urls.py:18 templates/admin/base_site.html:4
+#: custom_auth/models.py:51
+msgid "invalid"
+msgstr ""
+
+#: custom_auth/models.py:52 person/models.py:132
+msgid "Email"
+msgstr "Email"
+
+#: custom_auth/models.py:53
+msgid "Staff status"
+msgstr ""
+
+#: custom_auth/models.py:54
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: custom_auth/models.py:55
+msgid "Active"
+msgstr ""
+
+#: custom_auth/models.py:56
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: custom_auth/models.py:58 sistema/urls.py:25
+#: templates/admin/base_site.html:4
 msgid "NIRA admin"
 msgstr ""
 
-#: member/models.py:116
+#: custom_auth/models.py:59
+
 msgid ""
-"Designates whether the user can create content on behalf of another user."
-msgstr "Indica se o usuário pode criar conteúdo em nome de outro usuário."
+"Designates whether this user has special permissions, e.g. see all orders, "
+"create order on behalf of another user."
+msgstr ""
 
-#: member/models.py:118
-msgid "Nickname"
-msgstr "Apelido"
+#: custom_auth/models.py:61
+msgid "Date joined"
+msgstr ""
 
-#: member/models.py:121
-msgid "RG"
-msgstr "RG"
+#: custom_auth/models.py:62
+msgid "User profile"
+msgstr ""
 
-#: member/models.py:122
-msgid "CPF"
-msgstr "CPF"
+#: custom_auth/models.py:77
+msgid "User"
+msgstr "Usuário"
 
-#: member/models.py:123
-msgid "Passport"
-msgstr "Passaporte"
-
-#: member/models.py:124
-msgid "Phone"
-msgstr "Telefone"
-
-#: member/models.py:125
-msgid "Cell Phone"
-msgstr "Celular"
-
-#: member/models.py:126
-msgid "Zip Code"
-msgstr "CEP"
-
-#: member/models.py:127
-msgid "Address"
-msgstr "Endereço"
-
-#: member/models.py:128
-msgid "Complement"
-msgstr "Complemento"
-
-#: member/models.py:129
-msgid "Number"
-msgstr "Número"
-
-#: member/models.py:130
-msgid "District"
-msgstr "Bairro"
-
-#: member/models.py:131
-msgid "City"
-msgstr "Cidade"
-
-#: member/models.py:132
-msgid "State"
-msgstr "Estado"
-
-#: member/models.py:133
-msgid "Country"
-msgstr "País"
-
-#: member/models.py:168 member/models.py:169
-msgid "Personal info"
-msgstr "Informações pessoais"
-
-#: member/models.py:188
-msgid "Bibliographic citation"
-msgstr "Nome em citação bibliográfica"
-
-#: member/models.py:189
-msgid "Bibliographic citations"
-msgstr "Nome em citações bibliográficas"
+#: custom_auth/models.py:78
+msgid "Users"
+msgstr "Usuários"
 
 #: order/admin.py:40
 msgid "Administrative system"
@@ -288,8 +298,8 @@ msgstr "Sistema Administrativo"
 msgid "Event Info"
 msgstr "Informações do Evento"
 
-#: order/admin.py:82 order/admin.py:104 order/admin.py:137 order/admin.py:191
-#: order/admin.py:219
+#: order/admin.py:82 order/admin.py:104 order/admin.py:135 order/admin.py:189
+#: order/admin.py:218
 msgid "Purpose"
 msgstr "Finalidade"
 
@@ -297,27 +307,27 @@ msgstr "Finalidade"
 msgid "Info about the equipment, supplies or miscellaneous"
 msgstr "Informações sobre os equipamentos ou bens de consumo"
 
-#: order/admin.py:134
+#: order/admin.py:132
 msgid "Service Info"
 msgstr "Informações sobre o serviço "
 
-#: order/admin.py:163
+#: order/admin.py:161
 msgid "Ticket Info"
 msgstr "Informações sobre a passagem"
 
-#: order/admin.py:167
+#: order/admin.py:165
 msgid "Purpose of the trip"
 msgstr "Finalidade da viagem"
 
-#: order/admin.py:188
+#: order/admin.py:186
 msgid "Daily stipend Info"
 msgstr "Informações sobre a diária"
 
-#: order/admin.py:216
+#: order/admin.py:215
 msgid "Reimbursement Info"
 msgstr "Informações sobre o reembolso"
 
-#: order/apps.py:9 order/models.py:90
+#: order/apps.py:9 order/models.py:95
 msgid "Order"
 msgstr "Pedido"
 
@@ -357,124 +367,139 @@ msgstr "Noite (18:00 - 00:00)"
 msgid "Night (12am - 6am)"
 msgstr "Madrugada (00:00 - 06:00)"
 
-#: order/forms.py:26 templates/report/list_equipment_supplies_msc.html:37
+#: order/forms.py:26
+#: templates/report/order/list_equipment_supplies_msc.html:45
 msgid "National"
 msgstr "Nacional"
 
-#: order/forms.py:27 templates/report/list_equipment_supplies_msc.html:39
+#: order/forms.py:27
+#: templates/report/order/list_equipment_supplies_msc.html:47
 msgid "Imported"
 msgstr "Importado"
 
-#: order/forms.py:31 templates/report/list_equipment_supplies_msc.html:28
+#: order/forms.py:31
+#: templates/report/order/list_equipment_supplies_msc.html:36
 msgid "Permanent material"
 msgstr "Material permanente"
 
-#: order/forms.py:32 templates/report/list_equipment_supplies_msc.html:30
+#: order/forms.py:32
+#: templates/report/order/list_equipment_supplies_msc.html:38
 msgid "Consumption items"
 msgstr "Material de consumo"
 
-#: order/models.py:22 order/models.py:210
+#: order/models.py:23 order/models.py:211
 msgid "Scientific event"
 msgstr "Evento"
 
-#: order/models.py:23 order/models.py:239 order/models.py:240
-#: templates/report/list_equipment_supplies_msc.html:8
+#: order/models.py:24 order/models.py:235 order/models.py:236
+#: templates/report/order/list_equipment_supplies_msc.html:16
 msgid "Equipment / Supplies / Miscellaneous"
 msgstr "Equipamentos e bens de consumo"
 
-#: order/models.py:24 order/models.py:257
+#: order/models.py:25 order/models.py:253
 msgid "Service"
 msgstr "Serviço"
 
-#: order/models.py:25 order/models.py:282
+#: order/models.py:26 order/models.py:278
 msgid "Ticket"
 msgstr "Passagem"
 
-#: order/models.py:26 order/models.py:304
+#: order/models.py:27 order/models.py:301
 msgid "Daily stipend"
 msgstr "Diária"
 
-#: order/models.py:27 order/models.py:321
+#: order/models.py:28 order/models.py:318
 msgid "Reimbursement"
 msgstr "Reembolso"
 
-#: order/models.py:38 templates/report/list_equipment_supplies_msc.html:11
+#: order/models.py:39
+#: templates/report/order/list_equipment_supplies_msc.html:19
 msgid "Open"
 msgstr "Aberto"
 
-#: order/models.py:39 templates/report/list_equipment_supplies_msc.html:13
+#: order/models.py:40
+#: templates/report/order/list_equipment_supplies_msc.html:21
 msgid "Pending"
 msgstr "Pendente"
 
-#: order/models.py:40 templates/report/list_equipment_supplies_msc.html:15
+#: order/models.py:41
+#: templates/report/order/list_equipment_supplies_msc.html:23
 msgid "Canceled"
 msgstr "Cancelado"
 
-#: order/models.py:41 templates/report/list_equipment_supplies_msc.html:17
+#: order/models.py:42
+#: templates/report/order/list_equipment_supplies_msc.html:25
 msgid "Approved"
 msgstr "Aprovado"
 
-#: order/models.py:42 templates/report/list_equipment_supplies_msc.html:19
+#: order/models.py:43
+#: templates/report/order/list_equipment_supplies_msc.html:27
 msgid "Denied"
 msgstr "Negado"
 
-#: order/models.py:43
+#: order/models.py:44
 msgid "Finished"
 msgstr "Finalizado"
 
-#: order/models.py:54 order/models.py:60
+#: order/models.py:55 order/models.py:61
 msgid "Scientific Mission"
 msgstr "Missão científica"
 
-#: order/models.py:61
+#: order/models.py:62
 msgid "Scientific Missions"
 msgstr "Missões científicas"
 
-#: order/models.py:78 templates/report/list_equipment_supplies_msc.html:43
+#: order/models.py:82
+msgid " member"
+msgstr ""
+
+#: order/models.py:83
+#: templates/report/order/list_equipment_supplies_msc.html:51
 msgid "Justification"
 msgstr "Justificativa"
 
-#: order/models.py:79 templates/report/list_equipment_supplies_msc.html:42
+#: order/models.py:84
 msgid "Order date"
 msgstr "Data/hora do pedido"
 
-#: order/models.py:80
+#: order/models.py:85
 msgid "Modified"
 msgstr "Alterado em"
 
-#: order/models.py:81
+#: order/models.py:86
 msgid "Type of order"
 msgstr "Tipo de pedido"
 
-#: order/models.py:83
+#: order/models.py:88
 msgid "Protocol"
 msgstr "Protocolo"
 
-#: order/models.py:91
+#: order/models.py:96
 msgid "Orders"
 msgstr "Pedidos"
 
-#: order/models.py:100 order/models.py:105
+#: order/models.py:105 order/models.py:110
 msgid "Order number"
 msgstr "Nr do pedido"
 
-#: order/models.py:204
+#: order/models.py:205
 msgid "Value"
 msgstr "Valor"
 
-#: order/models.py:207
+#: order/models.py:208
 msgid "Invitation"
 msgstr "Convite"
 
-#: order/models.py:211
+#: order/models.py:212
 msgid "Scientific events"
 msgstr "Eventos"
 
-#: order/models.py:225 templates/report/list_equipment_supplies_msc.html:43
+#: order/models.py:226
+#: templates/report/order/list_equipment_supplies_msc.html:51
 msgid "Quantity"
 msgstr "Quantidade"
 
-#: order/models.py:227
+#: order/models.py:228
 msgid ""
 "Link to the product details. You may suggest an URL address of the "
 "manufacturer of the product or any store that sells this product."
@@ -482,82 +507,198 @@ msgstr ""
 "Link para detalhes do produto. Você pode sugerir o endereço de alguma página "
 "WEB que descreva o material ou que comercializa o material solicitado."
 
-#: order/models.py:229 order/models.py:254 order/models.py:271
-#: order/models.py:296 templates/report/list_equipment_supplies_msc.html:33
-#: templates/report/list_order.html:43
+#: order/models.py:230 order/models.py:250 order/models.py:267
+#: order/models.py:292
+#: templates/report/order/list_equipment_supplies_msc.html:41
+#: templates/report/order/list_order.html:50
 msgid "Origin"
 msgstr "Origem"
 
-#: order/models.py:230 templates/report/list_equipment_supplies_msc.html:24
-#: templates/report/list_order.html:34
-msgid "Category"
-msgstr "Categoria"
+#: order/models.py:232 person/models.py:114 person/models.py:130
+#: research/models.py:169
+#, fuzzy
+#| msgid "Invitation"
+msgid "Institution"
+msgstr "Convite"
 
-#: order/models.py:232
-msgid ""
-"Institution that will receive the equipment, supplies or miscellaneous "
-"requested in this order"
-msgstr "Instituição que receberá os equipamentos solicitados neste pedido"
-
-#: order/models.py:258
+#: order/models.py:254
 msgid "Services"
 msgstr "Serviços"
 
-#: order/models.py:272 order/models.py:297
+#: order/models.py:268 order/models.py:293
 msgid "Destination"
 msgstr "Destino"
 
-#: order/models.py:273
+#: order/models.py:269
 msgid "Outbound Date"
 msgstr "Data de saída"
 
-#: order/models.py:274
+#: order/models.py:270
 msgid "Outbound Preferred time"
 msgstr "Período de preferência"
 
-#: order/models.py:275
+#: order/models.py:271
 msgid "Inbound Date"
 msgstr "Data de retorno"
 
-#: order/models.py:276
+#: order/models.py:272
 msgid "Inbound Preferred time"
 msgstr "Período de preferência"
 
-#: order/models.py:277
+#: order/models.py:273
 msgid "Type of Trip"
 msgstr "Tipo de viagem"
 
-#: order/models.py:278
+#: order/models.py:274
 msgid "Type of transportation"
 msgstr "Tipo de transporte"
 
-#: order/models.py:279
+#: order/models.py:275 research/models.py:58
 msgid "Note"
 msgstr "Observação"
 
-#: order/models.py:283
+#: order/models.py:279
 msgid "Tickets"
 msgstr "Passagens"
 
-#: order/models.py:298
+#: order/models.py:294
 msgid "Departure"
 msgstr "Partida"
 
-#: order/models.py:299
+#: order/models.py:295
 msgid "Arrival"
 msgstr "Chegada"
 
-#: order/models.py:300
+#: order/models.py:296
 msgid "Who will receive?"
 msgstr "Quem receberá a diária?"
 
-#: order/models.py:305
+#: order/models.py:297
+msgid "Mission"
+msgstr "Missão"
+
+#: order/models.py:298
+msgid "Project activity"
+msgstr "Atividade do projeto"
+
+#: order/models.py:302
 msgid "Daily stipends"
 msgstr "Diárias"
 
-#: order/models.py:322
+#: order/models.py:319
 msgid "Reimbursements"
 msgstr "Reembolsos"
+
+#: person/admin.py:18
+msgid "Contact Info"
+msgstr "Informações de Contato"
+
+#: person/apps.py:9
+msgid "Personal info"
+msgstr "Informações pessoais"
+
+#: person/models.py:14
+#, python-format
+msgid "%s is not a valid CPF"
+msgstr "%s não é um CPF válido"
+
+#: person/models.py:30 person/models.py:129
+msgid "Role"
+msgstr "Perfil"
+
+#: person/models.py:31
+msgid "Roles"
+msgstr "Perfis"
+
+#: person/models.py:48
+msgid "Type of institution"
+msgstr "Tipo de instituição"
+
+#: person/models.py:49
+msgid "Types of institution"
+msgstr "Tipos de instituição"
+
+#: person/models.py:64
+msgid "Acronym"
+msgstr "Sigla"
+
+#: person/models.py:65 research/models.py:61 research/models.py:82
+#: research/models.py:96 research/models.py:171 research/models.py:240
+msgid "Type"
+msgstr "Tipo"
+
+#: person/models.py:66
+msgid "Belongs to"
+msgstr "Pertence a"
+
+#: person/models.py:115
+msgid "Institutions"
+msgstr "Instituições"
+
+#: person/models.py:131
+msgid "Full name"
+msgstr "Nome completo"
+
+#: person/models.py:133
+msgid "Name in bibliographic citation"
+msgstr "Nome em citação bibliográfica"
+
+#: person/models.py:135
+msgid "RG"
+msgstr "RG"
+
+#: person/models.py:136
+msgid "CPF"
+msgstr "CPF"
+
+#: person/models.py:137
+msgid "Passport"
+msgstr "Passaporte"
+
+#: person/models.py:138
+msgid "Phone"
+msgstr "Telefone"
+
+#: person/models.py:139
+msgid "Cell Phone"
+msgstr "Celular"
+
+#: person/models.py:140
+msgid "Zip Code"
+msgstr "CEP"
+
+#: person/models.py:141
+msgid "Address"
+msgstr "Endereço"
+
+#: person/models.py:142
+msgid "Complement"
+msgstr "Complemento"
+
+#: person/models.py:143 research/models.py:121 research/models.py:148
+#: research/models.py:170
+msgid "Number"
+msgstr "Número"
+
+#: person/models.py:144
+msgid "District"
+msgstr "Bairro"
+
+#: person/models.py:145
+msgid "City"
+msgstr "Cidade"
+
+#: person/models.py:146
+msgid "State"
+msgstr "Estado"
+
+#: person/models.py:147
+msgid "Country"
+msgstr "País"
+
+#: person/models.py:164 person/models.py:165
+msgid "Person"
+msgstr "Pessoa"
 
 #: research/apps.py:9
 msgid "Research results"
@@ -571,122 +712,215 @@ msgstr "Em andamento"
 msgid "Concluded"
 msgstr "Concluído"
 
-#: research/models.py:24
-msgid "Reference to NeuroMat"
-msgstr "Referência ao NeuroMat"
+#: research/models.py:19 research/models.py:102 research/models.py:103
+msgid "Unpublished"
+msgstr "Não publicado"
 
-#: research/models.py:49
-msgid "Paper Status"
-msgstr "Status do artigo"
+#: research/models.py:20 research/models.py:29
+msgid "Published"
+msgstr "Publicado"
 
-#: research/models.py:50
-msgid "Papers Status"
-msgstr "Status dos artigos"
+#: research/models.py:27
+msgid "Draft"
+msgstr ""
 
-#: research/models.py:59 research/models.py:101 research/models.py:124
-#: research/models.py:151
-msgid "Author"
-msgstr "Autor"
+#: research/models.py:28
+msgid "Submitted"
+msgstr ""
 
-#: research/models.py:60 research/models.py:105 research/models.py:126
-#: templates/report/list_equipment_supplies_msc.html:9
-#: templates/report/list_order.html:23
-msgid "Status"
-msgstr "Status"
+#: research/models.py:39 research/models.py:174
+#, fuzzy
+#| msgid "Get report"
+msgid "Tech report"
+msgstr "Obter relatório"
 
-#: research/models.py:61 research/models.py:152
-msgid "DOI"
-msgstr "DOI"
+#: research/models.py:40 research/models.py:154
+msgid "Article"
+msgstr ""
 
-#: research/models.py:62
-msgid "ISSN"
-msgstr "ISSN"
+#: research/models.py:41
+msgid "In proceedings"
+msgstr ""
 
-#: research/models.py:64 research/models.py:154
-msgid "Volume"
-msgstr "Volume"
+#: research/models.py:42 research/models.py:197 research/models.py:208
+msgid "Book"
+msgstr ""
 
-#: research/models.py:65 research/models.py:155
-msgid "Issue"
-msgstr "Edição"
+#: research/models.py:43
+msgid "In book"
+msgstr ""
 
-#: research/models.py:66 research/models.py:157
-msgid "Start page"
-msgstr "Página inicial"
-
-#: research/models.py:67 research/models.py:158
-msgid "End page"
-msgstr "Página final"
-
-#: research/models.py:68 research/models.py:160
+#: research/models.py:54
 msgid "Year"
 msgstr "Ano"
 
-#: research/models.py:72
-msgid "Paper"
-msgstr "Artigo"
-
-#: research/models.py:90
-msgid "Type of Academic Work"
-msgstr "Tipo de trabalho acadêmico"
-
-#: research/models.py:91
-msgid "Types of Academic Work"
-msgstr "Tipos de trabalho acadêmico"
-
-#: research/models.py:100
-msgid "Type of academic work"
-msgstr "Tipo de trabalho acadêmico"
-
-#: research/models.py:102
-msgid "Advisor"
-msgstr "Orientador"
-
-#: research/models.py:103
-msgid "Co-Advisor"
-msgstr "Co-Orientador"
-
-#: research/models.py:108
-msgid "Academic Work"
-msgstr "Trabalho acadêmico"
-
-#: research/models.py:109
-msgid "Academic Works"
-msgstr "Trabalhos acadêmicos"
-
-#: research/models.py:134
-msgid "Work in Progress"
-msgstr "Trabalho em andamento"
-
-#: research/models.py:135
-msgid "Works in Progress"
-msgstr "Trabalhos em andamento"
-
-#: research/models.py:153
-msgid "ISBN"
+#: research/models.py:55
+msgid "Month"
 msgstr ""
 
-#: research/models.py:156
+#: research/models.py:57
+msgid "Key"
+msgstr ""
+
+#: research/models.py:77 research/models.py:247
+msgid "Reference to NeuroMat"
+msgstr "Referência ao NeuroMat"
+
+#: research/models.py:97 research/models.py:246 research/models.py:275
+#: templates/report/order/list_equipment_supplies_msc.html:17
+#: templates/report/order/list_order.html:30
+msgid "Status"
+msgstr "Status"
+
+#: research/models.py:99
+#, fuzzy
+#| msgid "Paper Status"
+msgid "Paper status"
+msgstr "Status do artigo"
+
+#: research/models.py:117 research/models.py:146 research/models.py:190
+msgid "DOI"
+msgstr "DOI"
+
+#: research/models.py:118
+msgid "Book title"
+msgstr ""
+
+#: research/models.py:119 research/models.py:191
+msgid "Editor"
+msgstr ""
+
+#: research/models.py:120 research/models.py:149 research/models.py:192
+msgid "Volume"
+msgstr "Volume"
+
+#: research/models.py:122 research/models.py:193
 msgid "Serie"
 msgstr "Série"
 
-#: research/models.py:159
+#: research/models.py:123 research/models.py:150 research/models.py:210
+msgid "Start page"
+msgstr "Página inicial"
+
+#: research/models.py:124 research/models.py:151 research/models.py:211
+msgid "End page"
+msgstr "Página final"
+
+#: research/models.py:125 research/models.py:189
 msgid "Publisher"
 msgstr "Editor"
 
-#: research/models.py:164 research/models.py:165
-msgid "Book / Book Chapters"
-msgstr "Livro / Capítulos de Livro"
+#: research/models.py:127
+#, fuzzy
+#| msgid "Invitation"
+msgid "Organization"
+msgstr "Convite"
 
-#: sistema/urls.py:17
+#: research/models.py:131
+msgid "Inproceeding"
+msgstr ""
+
+#: research/models.py:132
+msgid "Inproceedings"
+msgstr ""
+
+#: research/models.py:147
+msgid "Journal or magazine"
+msgstr ""
+
+#: research/models.py:155
+msgid "Articles"
+msgstr ""
+
+#: research/models.py:175
+#, fuzzy
+#| msgid "Get report"
+msgid "Tech reports"
+msgstr "Obter relatório"
+
+#: research/models.py:194
+msgid "Edition"
+msgstr ""
+
+#: research/models.py:198
+msgid "Books"
+msgstr ""
+
+#: research/models.py:209
+msgid "Chapter"
+msgstr ""
+
+#: research/models.py:214
+msgid "Inbook"
+msgstr ""
+
+#: research/models.py:215
+msgid "Inbooks"
+msgstr ""
+
+#: research/models.py:230
+msgid "Type of Academic Work"
+msgstr "Tipo de trabalho acadêmico"
+
+#: research/models.py:231
+msgid "Types of Academic Work"
+msgstr "Tipos de trabalho acadêmico"
+
+#: research/models.py:242 research/models.py:273
+msgid "Author"
+msgstr "Autor"
+
+#: research/models.py:243
+msgid "Advisor"
+msgstr "Orientador"
+
+#: research/models.py:244
+msgid "Co-Advisor"
+msgstr "Co-Orientador"
+
+#: research/models.py:256
+msgid "Academic Work"
+msgstr "Trabalho acadêmico"
+
+#: research/models.py:257
+msgid "Academic Works"
+msgstr "Trabalhos acadêmicos"
+
+#: research/models.py:283
+msgid "Work in Progress"
+msgstr "Trabalho em andamento"
+
+#: research/models.py:284
+msgid "Works in Progress"
+msgstr "Trabalhos em andamento"
+
+#: sistema/urls.py:24
 msgid "NeuroMat Individual Report of Activities"
 msgstr ""
 
-#: sistema/urls.py:19
+#: sistema/urls.py:26
 msgid "Administration"
 msgstr "Administração"
 
-#: templates/admin/index.html:12
+#: templates/admin/index.html:12 templates/poster/seminar.html:10
+#: templates/poster/seminar_poster.html:6
+#: templates/report/activity/meetings.html:11
+#: templates/report/activity/meetings_report.html:6
+#: templates/report/activity/scientific_missions.html:11
+#: templates/report/activity/scientific_missions_report.html:6
+#: templates/report/activity/seminars.html:11
+#: templates/report/activity/seminars_report.html:6
+#: templates/report/activity/training_programs.html:11
+#: templates/report/activity/training_programs_report.html:6
+#: templates/report/order/list_daily_stipend.html:6
+#: templates/report/order/list_equipment_supplies_msc.html:6
+#: templates/report/order/list_events.html:7
+#: templates/report/order/list_order.html:10
+#: templates/report/order/list_reimbursement.html:7
+#: templates/report/order/list_services.html:7
+#: templates/report/order/list_tickets.html:7
+#: templates/report/research/published.html:11
+#: templates/report/research/published_report.html:6
 msgid "Home"
 msgstr "Início"
 
@@ -703,11 +937,15 @@ msgstr "Adicionar"
 msgid "Change"
 msgstr "Alterar"
 
-#: templates/admin/index.html:61
+#: templates/admin/index.html:57
+msgid "Reports"
+msgstr "Relatórios"
+
+#: templates/admin/index.html:77
 msgid "About NIRA"
 msgstr "Sobre o NIRA"
 
-#: templates/admin/index.html:62
+#: templates/admin/index.html:78
 msgid ""
 "Main goals of the NeuroMat Individual Report of Activities (NIRA) are "
 "twofold. Firstly, it will automatically feed NeuroMat's annual Report of "
@@ -725,11 +963,11 @@ msgstr ""
 "administrativo do NeuroMat, especialmente na identificação e no tratamento "
 "das necessidades para o curso das atividades relacionadas com o NeuroMat."
 
-#: templates/admin/index.html:67
+#: templates/admin/index.html:83
 msgid "See your orders"
 msgstr "Veja seus pedidos"
 
-#: templates/admin/index.html:68
+#: templates/admin/index.html:84
 msgid ""
 "Track the status of your order, if you have any questions, please contact us "
 "at nira@numec.prp.usp.br."
@@ -737,41 +975,192 @@ msgstr ""
 "Acompanhe o status do seu pedido, se você tiver alguma dúvida, por favor, "
 "entre em contato conosco pelo email nira@numec.prp.usp.br."
 
-#: templates/admin/index.html:69
+#: templates/admin/index.html:85
 msgid "Check"
 msgstr "Verificar"
 
-#: templates/admin/index.html:73
+#: templates/admin/index.html:89
 msgid "NIRA version:"
 msgstr "Versão do NIRA:"
 
-#: templates/report/list_equipment_supplies_msc.html:8
-#: templates/report/list_order.html:14
-msgid "Order type"
-msgstr "Tipo de pedido"
+#: templates/poster/seminar.html:11 templates/poster/seminar_poster.html:7
+msgid "Seminar poster"
+msgstr "Poster de um seminário"
 
-#: templates/report/list_equipment_supplies_msc.html:21
-#: templates/report/list_equipment_supplies_msc.html:26
-#: templates/report/list_equipment_supplies_msc.html:35
-msgid "All"
-msgstr "Todos"
+#: templates/poster/seminar.html:42
+msgid "Get poster"
+msgstr "Obter poster"
 
-#: templates/report/list_equipment_supplies_msc.html:42
-msgid "Requester"
-msgstr "Pesquisador"
+#: templates/poster/seminar_poster.html:8
+msgid "Poster"
+msgstr "Poster"
 
-#: templates/report/list_equipment_supplies_msc.html:54
-msgid "No equipment / supplies / miscellaneous found!"
-msgstr "Nenhum Equipamento ou bem de consumo encontrado"
+#: templates/poster/seminar_poster.html:30
+msgid "Funded by"
+msgstr ""
 
-#: templates/report/list_order.html:53
+#: templates/poster/seminar_poster.html:35
+#: templates/poster/seminar_poster_pdf.html:57
+msgid "Organized by"
+msgstr ""
+
+#: templates/poster/seminar_poster.html:70
+#: templates/poster/seminar_poster_pdf.html:89
+msgid "No seminar found!"
+msgstr "Nenhum seminário encontrado!"
+
+#: templates/poster/seminar_poster_pdf.html:52
+msgid "Supported by"
+msgstr ""
+
+#: templates/poster/seminar_poster_pdf.html:70
+msgid "(International guest lecturer)"
+msgstr ""
+
+#: templates/report/activity/meetings.html:12
+#: templates/report/activity/meetings_report.html:7
+msgid "Meetings report"
+msgstr "Relatório de conferências"
+
+#: templates/report/activity/meetings.html:39
+#: templates/report/activity/scientific_missions.html:33
+#: templates/report/activity/seminars.html:43
+#: templates/report/activity/training_programs.html:33
+#: templates/report/order/list_order.html:60
+#: templates/report/research/published.html:33
 msgid "Get report"
 msgstr "Obter relatório"
 
-#: templates/report/scientific_missions.html:9
+#: templates/report/activity/meetings_report.html:8
+#: templates/report/activity/scientific_missions_report.html:8
+#: templates/report/activity/seminars_report.html:8
+#: templates/report/activity/training_programs_report.html:8
+#: templates/report/order/list_daily_stipend.html:8
+#: templates/report/order/list_equipment_supplies_msc.html:8
+#: templates/report/order/list_events.html:9
+#: templates/report/order/list_reimbursement.html:9
+#: templates/report/order/list_services.html:9
+#: templates/report/order/list_tickets.html:9
+#: templates/report/research/published_report.html:8
+msgid "Results"
+msgstr "Resultados"
+
+#: templates/report/activity/meetings_report.html:18
+msgid "Period"
+msgstr "Período"
+
+#: templates/report/activity/meetings_report.html:32
+msgid "No meetings found!"
+msgstr "Nenhuma conferência encontrada!"
+
+#: templates/report/activity/scientific_missions.html:12
+#: templates/report/activity/scientific_missions_report.html:7
+msgid "Scientific mission report"
+msgstr "Relatório de missões científicas"
+
+#: templates/report/activity/scientific_missions_report.html:17
 msgid "Researcher"
 msgstr "Pesquisador"
 
-#: templates/report/scientific_missions.html:26
+#: templates/report/activity/scientific_missions_report.html:17
+msgid "Scientific mission"
+msgstr "Missão científica"
+
+#: templates/report/activity/scientific_missions_report.html:36
+#: templates/report/activity/scientific_missions_report.html:54
+#: templates/report/activity/scientific_missions_report.html:100
+#: templates/report/activity/scientific_missions_report.html:112
+msgid "Participation in the training program entitled:"
+msgstr "Participação no programa de formação intitulado:"
+
+#: templates/report/activity/scientific_missions_report.html:41
+#: templates/report/activity/scientific_missions_report.html:58
+#: templates/report/activity/scientific_missions_report.html:103
+#: templates/report/activity/scientific_missions_report.html:114
+msgid "Participation in the meeting entitled:"
+msgstr "Participação na conferência intitulada:"
+
+#: templates/report/activity/scientific_missions_report.html:46
+#: templates/report/activity/scientific_missions_report.html:62
+#: templates/report/activity/scientific_missions_report.html:106
+#: templates/report/activity/scientific_missions_report.html:116
+msgid "Participation in the seminar entitled:"
+msgstr "Participação no seminário intitulado:"
+
+#: templates/report/activity/scientific_missions_report.html:66
+#: templates/report/activity/scientific_missions_report.html:119
+#: templates/report/activity/scientific_missions_report.html:132
 msgid "No scientific missions found!"
 msgstr "Nenhuma missão científica encontrada!"
+
+#: templates/report/activity/scientific_missions_report.html:79
+#: templates/report/activity/seminars_report.html:42
+#: templates/report/activity/training_programs_report.html:45
+msgid "Latex version:"
+msgstr "Versão em Latex:"
+
+#: templates/report/activity/scientific_missions_report.html:99
+#: templates/report/activity/scientific_missions_report.html:102
+#: templates/report/activity/scientific_missions_report.html:105
+msgid "and"
+msgstr "e"
+
+#: templates/report/activity/seminars.html:12
+#: templates/report/activity/seminars_report.html:7
+msgid "Seminars report"
+msgstr "Relatório de seminários"
+
+#: templates/report/activity/seminars_report.html:69
+msgid "No seminars found!"
+msgstr "Nenhuma seminário encontrado!"
+
+#: templates/report/activity/training_programs.html:12
+#: templates/report/activity/training_programs_report.html:7
+msgid "Training programs report"
+msgstr "Relatório de programas de treinamento"
+
+#: templates/report/activity/training_programs_report.html:70
+msgid "No training programs found!"
+msgstr "Nenhum programa de treinamento encontrado!"
+
+#: templates/report/order/list_daily_stipend.html:7
+#: templates/report/order/list_equipment_supplies_msc.html:7
+#: templates/report/order/list_events.html:8
+#: templates/report/order/list_order.html:11
+#: templates/report/order/list_reimbursement.html:8
+#: templates/report/order/list_services.html:8
+#: templates/report/order/list_tickets.html:8
+msgid "Orders report"
+msgstr "Relatório de pedidos"
+
+#: templates/report/order/list_equipment_supplies_msc.html:16
+#: templates/report/order/list_order.html:21
+msgid "order type"
+msgstr "tipo de pedido"
+
+#: templates/report/order/list_equipment_supplies_msc.html:29
+#: templates/report/order/list_equipment_supplies_msc.html:34
+#: templates/report/order/list_equipment_supplies_msc.html:43
+msgid "All"
+msgstr "Todos"
+
+#: templates/report/order/list_equipment_supplies_msc.html:50
+msgid "Requester"
+msgstr "Pesquisador"
+
+#: templates/report/order/list_equipment_supplies_msc.html:50
+msgid "order date"
+msgstr "data do pedido"
+
+#: templates/report/order/list_equipment_supplies_msc.html:62
+msgid "No equipment / supplies / miscellaneous found!"
+msgstr "Nenhum Equipamento ou bem de consumo encontrado"
+
+#: templates/report/research/published.html:12
+#: templates/report/research/published_report.html:7
+msgid "Published articles"
+msgstr ""
+
+#: templates/report/research/published_report.html:38
+msgid "No published articles found!"
+msgstr ""
