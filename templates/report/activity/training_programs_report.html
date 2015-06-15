@@ -44,12 +44,11 @@
 
     <h3>{% trans "Latex version:" %}</h3>
     <br>
-    <p>\begin{table}[h]</p>
-    <p>\begin{tabular}{r|r|r|r}</p>
-    <p>{% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} & {% trans "Duration" %} \\</p>
-    <p>\hline</p>
+    <span>\begin{longtable}{ |p{5,5cm}|p{5cm}|p{2cm}|p{1,5cm}| }</span><br>
+    <span>\hline</span><br>
+    <span>{% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} & {% trans "Duration" %} \\ \hline</span><br>
     {% for training in training_programs %}
-        <p>
+        <span>
             {{ training.trainingprogram.title }} & {{ training.trainingprogram.speakers }} &
             {% if training.trainingprogram.end_date %}
                 {{ training.trainingprogram.start_date|date:"d/m/Y" }} -
@@ -58,13 +57,13 @@
                 {{ training.trainingprogram.start_date|date:"d/m/Y" }} &
             {% endif %}
             {% if training.trainingprogram.duration == 'Other' %}
-                {{ training.trainingprogram.other_duration }}
+                {{ training.trainingprogram.other_duration }}  \\ \hline
             {% else %}
-                {{ training.trainingprogram.duration }}
+                {{ training.trainingprogram.duration }}  \\ \hline
             {% endif %}
+        </span><br>
     {% endfor %}
-    <p>\end{tabular}</p>
-    <p>\end{table}</p>
+    <span>\end{longtable}</span>
 
 {%  else %}
     {% trans "No training programs found!" %}
