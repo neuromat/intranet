@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-12 18:18-0300\n"
+"POT-Creation-Date: 2015-06-15 11:19-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr "Seminário"
 #: templates/report/activity/seminars_report.html:17
 #: templates/report/activity/seminars_report.html:20
 #: templates/report/activity/seminars_report.html:47
-#: templates/report/activity/seminars_report.html:56
+#: templates/report/activity/seminars_report.html:58
 #: templates/report/activity/training_programs_report.html:17
 #: templates/report/activity/training_programs_report.html:49
 msgid "Title"
@@ -57,14 +57,13 @@ msgstr "Título"
 
 #: activity/models.py:64
 #: templates/report/activity/scientific_missions_report.html:17
+#: templates/report/activity/scientific_missions_report.html:84
 msgid "Local"
 msgstr "Local"
 
 #: activity/models.py:65
-#, fuzzy
-#| msgid "Type of Trip"
 msgid "Type of activity"
-msgstr "Tipo de viagem"
+msgstr "Tipo de atividade"
 
 #: activity/models.py:78 order/models.py:204 order/models.py:227
 #: research/models.py:56 templates/report/activity/meetings_report.html:24
@@ -98,6 +97,7 @@ msgstr "Descrição"
 #: templates/report/activity/meetings.html:29
 #: templates/report/activity/scientific_missions.html:21
 #: templates/report/activity/scientific_missions_report.html:18
+#: templates/report/activity/scientific_missions_report.html:85
 #: templates/report/activity/seminars.html:31
 #: templates/report/activity/training_programs.html:21
 #: templates/report/research/published.html:21
@@ -108,13 +108,14 @@ msgstr "Início"
 #: templates/report/activity/meetings.html:33
 #: templates/report/activity/scientific_missions.html:26
 #: templates/report/activity/scientific_missions_report.html:18
+#: templates/report/activity/scientific_missions_report.html:85
 #: templates/report/activity/seminars.html:36
 #: templates/report/activity/training_programs.html:26
 #: templates/report/research/published.html:26
 msgid "End date"
 msgstr "Término"
 
-#: activity/models.py:108
+#: activity/models.py:108 templates/admin/index.html:61
 msgid "Meetings"
 msgstr "Reuniões"
 
@@ -123,7 +124,7 @@ msgstr "Reuniões"
 #: templates/report/activity/seminars_report.html:17
 #: templates/report/activity/seminars_report.html:21
 #: templates/report/activity/seminars_report.html:47
-#: templates/report/activity/seminars_report.html:56
+#: templates/report/activity/seminars_report.html:58
 #: templates/report/activity/training_programs_report.html:17
 #: templates/report/activity/training_programs_report.html:49
 msgid "Speaker"
@@ -159,7 +160,7 @@ msgstr "Tipos de seminário"
 #: activity/models.py:178 order/models.py:231
 #: templates/report/activity/seminars.html:21
 #: templates/report/activity/seminars_report.html:20
-#: templates/report/activity/seminars_report.html:56
+#: templates/report/activity/seminars_report.html:58
 #: templates/report/order/list_equipment_supplies_msc.html:32
 #: templates/report/order/list_order.html:41
 msgid "Category"
@@ -167,7 +168,7 @@ msgstr "Categoria"
 
 #: activity/models.py:179
 msgid "International guest lecturer?"
-msgstr ""
+msgstr "Palestrante de uma instituição do exterior?"
 
 #: activity/models.py:180
 msgid "Abstract"
@@ -176,7 +177,7 @@ msgstr "Resumo"
 #: activity/models.py:181 templates/report/activity/seminars_report.html:18
 #: templates/report/activity/seminars_report.html:21
 #: templates/report/activity/seminars_report.html:47
-#: templates/report/activity/seminars_report.html:56
+#: templates/report/activity/seminars_report.html:58
 #: templates/report/activity/training_programs_report.html:17
 #: templates/report/activity/training_programs_report.html:49
 msgid "Date"
@@ -194,7 +195,7 @@ msgstr "Anexo"
 msgid "Room"
 msgstr "Sala"
 
-#: activity/models.py:188
+#: activity/models.py:188 templates/admin/index.html:63
 msgid "Seminars"
 msgstr "Seminários"
 
@@ -268,7 +269,6 @@ msgid "NIRA admin"
 msgstr ""
 
 #: custom_auth/models.py:59
-
 msgid ""
 "Designates whether this user has special permissions, e.g. see all orders, "
 "create order on behalf of another user."
@@ -474,7 +474,7 @@ msgstr "Tipo de pedido"
 msgid "Protocol"
 msgstr "Protocolo"
 
-#: order/models.py:96
+#: order/models.py:96 templates/admin/index.html:60
 msgid "Orders"
 msgstr "Pedidos"
 
@@ -516,10 +516,8 @@ msgstr "Origem"
 
 #: order/models.py:232 person/models.py:114 person/models.py:130
 #: research/models.py:169
-#, fuzzy
-#| msgid "Invitation"
 msgid "Institution"
-msgstr "Convite"
+msgstr "Instituição"
 
 #: order/models.py:254
 msgid "Services"
@@ -729,10 +727,8 @@ msgid "Submitted"
 msgstr ""
 
 #: research/models.py:39 research/models.py:174
-#, fuzzy
-#| msgid "Get report"
 msgid "Tech report"
-msgstr "Obter relatório"
+msgstr ""
 
 #: research/models.py:40 research/models.py:154
 msgid "Article"
@@ -773,8 +769,6 @@ msgid "Status"
 msgstr "Status"
 
 #: research/models.py:99
-#, fuzzy
-#| msgid "Paper Status"
 msgid "Paper status"
 msgstr "Status do artigo"
 
@@ -811,10 +805,8 @@ msgid "Publisher"
 msgstr "Editor"
 
 #: research/models.py:127
-#, fuzzy
-#| msgid "Invitation"
 msgid "Organization"
-msgstr "Convite"
+msgstr ""
 
 #: research/models.py:131
 msgid "Inproceeding"
@@ -833,10 +825,8 @@ msgid "Articles"
 msgstr ""
 
 #: research/models.py:175
-#, fuzzy
-#| msgid "Get report"
 msgid "Tech reports"
-msgstr "Obter relatório"
+msgstr ""
 
 #: research/models.py:194
 msgid "Edition"
@@ -941,6 +931,19 @@ msgstr "Alterar"
 msgid "Reports"
 msgstr "Relatórios"
 
+#: templates/admin/index.html:62
+msgid "Scientific missions"
+msgstr "Missões científicas"
+
+#: templates/admin/index.html:64 templates/poster/seminar.html:11
+#: templates/poster/seminar_poster.html:7
+msgid "Seminar poster"
+msgstr "Poster de um seminário"
+
+#: templates/admin/index.html:65
+msgid "Training programs"
+msgstr "Programas de treinamento"
+
 #: templates/admin/index.html:77
 msgid "About NIRA"
 msgstr "Sobre o NIRA"
@@ -983,10 +986,6 @@ msgstr "Verificar"
 msgid "NIRA version:"
 msgstr "Versão do NIRA:"
 
-#: templates/poster/seminar.html:11 templates/poster/seminar_poster.html:7
-msgid "Seminar poster"
-msgstr "Poster de um seminário"
-
 #: templates/poster/seminar.html:42
 msgid "Get poster"
 msgstr "Obter poster"
@@ -1002,7 +1001,7 @@ msgstr ""
 #: templates/poster/seminar_poster.html:35
 #: templates/poster/seminar_poster_pdf.html:57
 msgid "Organized by"
-msgstr ""
+msgstr "Organizado pelo"
 
 #: templates/poster/seminar_poster.html:70
 #: templates/poster/seminar_poster_pdf.html:89
@@ -1059,37 +1058,39 @@ msgid "Scientific mission report"
 msgstr "Relatório de missões científicas"
 
 #: templates/report/activity/scientific_missions_report.html:17
+#: templates/report/activity/scientific_missions_report.html:84
 msgid "Researcher"
 msgstr "Pesquisador"
 
 #: templates/report/activity/scientific_missions_report.html:17
+#: templates/report/activity/scientific_missions_report.html:84
 msgid "Scientific mission"
 msgstr "Missão científica"
 
 #: templates/report/activity/scientific_missions_report.html:36
 #: templates/report/activity/scientific_missions_report.html:54
-#: templates/report/activity/scientific_missions_report.html:100
-#: templates/report/activity/scientific_missions_report.html:112
+#: templates/report/activity/scientific_missions_report.html:102
+#: templates/report/activity/scientific_missions_report.html:114
 msgid "Participation in the training program entitled:"
 msgstr "Participação no programa de formação intitulado:"
 
 #: templates/report/activity/scientific_missions_report.html:41
 #: templates/report/activity/scientific_missions_report.html:58
-#: templates/report/activity/scientific_missions_report.html:103
-#: templates/report/activity/scientific_missions_report.html:114
+#: templates/report/activity/scientific_missions_report.html:105
+#: templates/report/activity/scientific_missions_report.html:116
 msgid "Participation in the meeting entitled:"
 msgstr "Participação na conferência intitulada:"
 
 #: templates/report/activity/scientific_missions_report.html:46
 #: templates/report/activity/scientific_missions_report.html:62
-#: templates/report/activity/scientific_missions_report.html:106
-#: templates/report/activity/scientific_missions_report.html:116
+#: templates/report/activity/scientific_missions_report.html:108
+#: templates/report/activity/scientific_missions_report.html:118
 msgid "Participation in the seminar entitled:"
 msgstr "Participação no seminário intitulado:"
 
 #: templates/report/activity/scientific_missions_report.html:66
-#: templates/report/activity/scientific_missions_report.html:119
-#: templates/report/activity/scientific_missions_report.html:132
+#: templates/report/activity/scientific_missions_report.html:121
+#: templates/report/activity/scientific_missions_report.html:133
 msgid "No scientific missions found!"
 msgstr "Nenhuma missão científica encontrada!"
 
@@ -1099,9 +1100,9 @@ msgstr "Nenhuma missão científica encontrada!"
 msgid "Latex version:"
 msgstr "Versão em Latex:"
 
-#: templates/report/activity/scientific_missions_report.html:99
-#: templates/report/activity/scientific_missions_report.html:102
-#: templates/report/activity/scientific_missions_report.html:105
+#: templates/report/activity/scientific_missions_report.html:101
+#: templates/report/activity/scientific_missions_report.html:104
+#: templates/report/activity/scientific_missions_report.html:107
 msgid "and"
 msgstr "e"
 
@@ -1119,7 +1120,7 @@ msgstr "Nenhuma seminário encontrado!"
 msgid "Training programs report"
 msgstr "Relatório de programas de treinamento"
 
-#: templates/report/activity/training_programs_report.html:70
+#: templates/report/activity/training_programs_report.html:69
 msgid "No training programs found!"
 msgstr "Nenhum programa de treinamento encontrado!"
 
