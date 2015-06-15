@@ -451,7 +451,7 @@ msgstr "Missões científicas"
 
 #: order/models.py:82
 msgid " member"
-msgstr ""
+msgstr " (solicitante)"
 
 #: order/models.py:83
 #: templates/report/order/list_equipment_supplies_msc.html:51
