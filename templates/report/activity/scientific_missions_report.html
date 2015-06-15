@@ -78,20 +78,22 @@
 
     <h3>{% trans "Latex version:" %}</h3>
     <br>
-    <p>\begin{table}[h]</p>
-    <p>\begin{tabular}{r|r|r|r|r}</p>
-    <p>Researcher & Scientific mission & Local & Start date & End date \\</p>
-    <p>\hline</p>
+    <span>\begin{longtable}{ |p{4cm}|p{4,4cm}|p{2cm}|p{1,8cm}|p{1,8cm}| }</span><br>
+    <span>\hline</span><br>
+    <span>
+        {% trans "Researcher" %} & {% trans "Scientific mission" %} & {% trans "Local" %} &
+        {% trans "Start date" %} & {% trans "End date" %} \\ \hline
+    </span><br>
 
     {% for order in orders %}
         {% if order.dailystipend.receiver and order.dailystipend.receiver.institution == None %}
-            <p>{{ order.dailystipend.receiver }} &
+            <span>{{ order.dailystipend.receiver }} &
         {% elif order.dailystipend.receiver and order.dailystipend.receiver.institution != None %}
-            <p>{{ order.dailystipend.receiver }} / {{ order.dailystipend.receiver.institution.get_person_institution }} &
+            <span>{{ order.dailystipend.receiver }} / {{ order.dailystipend.receiver.institution.get_person_institution }} &
         {% elif order.requester and order.requester.institution == None %}
-            <p>{{ order.requester }} &
+            <span>{{ order.requester }} &
         {% elif order.requester and order.requester.institution != None %}
-            <p>{{ order.requester }} / {{ order.requester.institution.get_person_institution }} &
+            <span>{{ order.requester }} / {{ order.requester.institution.get_person_institution }} &
         {% endif %}
 
         {% if order.dailystipend.mission != None and order.dailystipend.project_activity != None %}
@@ -121,12 +123,11 @@
 
         {{ order.dailystipend.destination }} &
         {{ order.dailystipend.departure|date:"d/m/Y" }} &
-        {{ order.dailystipend.arrival|date:"d/m/Y" }}
-            </p>
+        {{ order.dailystipend.arrival|date:"d/m/Y" }} \\ \hline
+            </span><br>
     {% endfor %}
 
-    <p>\end{tabular}</p>
-    <p>\end{table}</p>
+    <span>\end{longtable}</span>
 
 {%  else %}
     {% trans "No scientific missions found!" %}
