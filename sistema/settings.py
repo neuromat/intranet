@@ -52,7 +52,7 @@ PROJECT_APPS = (
     'person',
     'order',
     'activity',
-    'research',
+    #'research',
 )
 
 INSTALLED_APPS += PROJECT_APPS
