@@ -99,7 +99,7 @@ class Meeting(ProjectActivities):
     broad_audience = models.BooleanField(_('Broad audience?'), default=False)
     cepid_event = models.BooleanField(_('Organized by '+cepid_name+'?'), default=False)
     participant = models.ManyToManyField(Person, verbose_name=_('Participant'), blank=True, null=True)
-    description = models.TextField(_('Description'))
+    description = models.TextField(_('Description'), blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'))
 
