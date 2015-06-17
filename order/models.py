@@ -80,7 +80,7 @@ class Order(models.Model):
 
     # fields
     requester = models.ForeignKey(Person, verbose_name=_(cepid_name+' member'))
-    justification = models.TextField(_('Justification'), max_length=1000)
+    justification = models.TextField(_('Justification'))
     order_date = models.DateTimeField(_('Order date'), auto_now_add=True, blank=True)
     date_modified = models.DateTimeField(_('Modified'), auto_now=True, blank=True)
     type_of_order = models.CharField(_('Type of order'), max_length=1, choices=ORDER_TYPE, blank=True)
