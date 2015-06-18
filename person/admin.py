@@ -21,10 +21,10 @@ class PersonAdmin(admin.ModelAdmin):
         }),
     )
 
-    # If not superuser, show the current user
+    # If not superuser or nira_admin, show the current user
     def get_queryset(self, request):
         qs = super(PersonAdmin, self).get_queryset(request)
-        if request.user.is_superuser:
+        if request.user.is_superuser or request.user.is_nira_admin:
             return qs
         return qs.filter(user=request.user)
 
