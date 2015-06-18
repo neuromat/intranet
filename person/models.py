@@ -128,7 +128,7 @@ class Person(models.Model):
     """
     role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True)
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
-    full_name = models.CharField(_('Full name'), max_length=255)
+    full_name = models.CharField(_('Full name'), unique=True, max_length=255)
     email = models.EmailField(_('Email'), blank=True, null=True)
     citation_name = models.CharField(_('Name in bibliographic citation'), max_length=255, blank=True, null=True,
                                      help_text='E.g.: Silva, J.')
