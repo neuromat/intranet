@@ -1,5 +1,6 @@
 from django.contrib import admin
 from dissemination.models import *
+from dissemination.forms import *
 from django.utils.translation import ugettext_lazy as _
 
 admin.site.register(Topic)
@@ -16,7 +17,7 @@ class InternalAdmin(admin.ModelAdmin):
     filter_horizontal = ('author', 'topic')
     list_display = ('title', 'authors', 'media_outlet', 'date')
     list_display_links = ('title', )
-
+    form = DisseminationForm
 
 admin.site.register(Internal, InternalAdmin)
 
@@ -30,5 +31,6 @@ class ExternalAdmin(admin.ModelAdmin):
     filter_horizontal = ('author', 'topic')
     list_display = ('title', 'authors', 'media_outlet', 'date')
     list_display_links = ('title', )
+    form = DisseminationForm
 
 admin.site.register(External, ExternalAdmin)
