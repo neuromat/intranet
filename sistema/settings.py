@@ -52,6 +52,7 @@ PROJECT_APPS = (
     'person',
     'order',
     'activity',
+    'dissemination',
     #'research',
 )
 
