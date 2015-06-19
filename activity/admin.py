@@ -20,6 +20,7 @@ class MeetingAdmin(admin.ModelAdmin):
         }),
     )
     inlines = [NewsInline]
+    filter_horizontal = ('participant',)
     list_display = ('title', 'broad_audience', 'cepid_event', 'local', 'start_date', 'end_date')
     list_display_links = ('title', )
 
@@ -34,6 +35,7 @@ class TrainingProgramAdmin(admin.ModelAdmin):
         }),
     )
     inlines = [NewsInline]
+    filter_horizontal = ('speaker',)
     list_display = ('speakers', 'title', 'local', 'start_date', 'end_date')
     list_display_links = ('title',)
     form = TrainingProgramForm
@@ -57,6 +59,7 @@ class SeminarAdmin(admin.ModelAdmin):
         }),
     )
     inlines = [NewsInline]
+    filter_horizontal = ('speaker',)
     list_display = ('category', 'speakers', 'title', 'date')
     list_display_links = ('title',)
 
