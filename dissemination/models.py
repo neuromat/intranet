@@ -49,6 +49,12 @@ class Dissemination(models.Model):
     class Meta:
         ordering = ('title', )
 
+    def topics(self):
+        return format_html("<br>".join([
+            unicode(topic) for topic in self.topic.all()]))
+
+    topics.allow_tags = True
+
 
 class InternalMediaOutlet(models.Model):
     """
@@ -77,7 +83,6 @@ class Internal(Dissemination):
     """
     media_outlet = models.ForeignKey(InternalMediaOutlet, verbose_name=_('Media outlet'))
     author = models.ManyToManyField(Person, verbose_name=_('Author'), blank=True, null=True)
-
 
     class Meta:
         verbose_name = _('Internal')
@@ -122,7 +127,6 @@ class External(Dissemination):
     """
     media_outlet = models.ForeignKey(ExternalMediaOutlet, verbose_name=_('Media outlet'))
     author = models.ManyToManyField(Person, verbose_name=_('Author'))
-
 
     class Meta:
         verbose_name = _('External')
