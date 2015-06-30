@@ -15,7 +15,7 @@ class InternalAdmin(admin.ModelAdmin):
         }),
     )
     filter_horizontal = ('author', 'topic')
-    list_display = ('title', 'authors', 'media_outlet', 'date')
+    list_display = ('title', 'media_outlet', 'topics', 'date')
     list_display_links = ('title', )
     form = DisseminationForm
 
@@ -29,7 +29,7 @@ class ExternalAdmin(admin.ModelAdmin):
         }),
     )
     filter_horizontal = ('author', 'topic')
-    list_display = ('title', 'authors', 'media_outlet', 'date')
+    list_display = ('title', 'authors', 'media_outlet', 'topics', 'date')
     list_display_links = ('title', )
     form = DisseminationForm
 
