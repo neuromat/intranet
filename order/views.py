@@ -41,7 +41,7 @@ def scientific_missions_report(request):
             end_date = datetime.datetime.strptime(now_plus_30, '%Y%m%d %H:%M:%S').date()
 
         orders = Order.objects.filter(type_of_order='d', status='f', dailystipend__departure__gt=start_date,
-                                      dailystipend__arrival__lt=end_date)
+                                      dailystipend__arrival__lt=end_date).order_by('dailystipend__departure')
 
         if end_date >= start_date:
             context = {'orders': orders}
