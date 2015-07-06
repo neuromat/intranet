@@ -26,12 +26,12 @@
             {% if category != '0' %}
                 <td>{{ seminar.seminar.title }}</td>
                 <td>{{ seminar.seminar.speakers }}</td>
-                <td>{{ seminar.seminar.date|date:"d/m/Y" }}</td>
+                <td>{{ seminar.seminar.date|date:"M d, Y" }}</td>
             {% else %}
                 <td>{{ seminar.seminar.category }}</td>
                 <td>{{ seminar.seminar.title }}</td>
                 <td>{{ seminar.seminar.speakers }}</td>
-                <td>{{ seminar.seminar.date|date:"d/m/Y" }}</td>
+                <td>{{ seminar.seminar.date|date:"M d, Y" }}</td>
             {% endif %}
         </tr>
     {% endfor %}
@@ -47,7 +47,7 @@
         <span>{% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} \\ \hline</span><br>
         {% for seminar in seminars %}
             <span>
-                {{ seminar.seminar.title }} & {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"d/m/Y" }}
+                {{ seminar.seminar.title }} & {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"M d, Y" }}
                 \\ \hline
             </span><br>
         {% endfor %}
@@ -59,7 +59,7 @@
         {% for seminar in seminars %}
             <span>
                 {{ seminar.seminar.category }} & {{ seminar.seminar.title }} &
-                {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"d/m/Y" }} \\ \hline
+                {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"M d, Y" }} \\ \hline
             </span><br>
         {% endfor %}
         <span>\end{longtable}</span>
