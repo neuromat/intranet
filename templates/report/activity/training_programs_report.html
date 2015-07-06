@@ -23,12 +23,12 @@
                 <td>{{ training.trainingprogram.speakers }}</td>
                 {% if training.trainingprogram.end_date %}
                     <td>
-                        {{ training.trainingprogram.start_date|date:"d/m/Y" }} -
-                        {{ training.trainingprogram.end_date|date:"d/m/Y" }}
+                        {{ training.trainingprogram.start_date|date:"M d, Y" }} -
+                        {{ training.trainingprogram.end_date|date:"M d, Y" }}
                     </td>
                 {% else %}
                     <td>
-                        {{ training.trainingprogram.start_date|date:"d/m/Y" }}
+                        {{ training.trainingprogram.start_date|date:"M d, Y" }}
                     </td>
                 {% endif %}
                 {% if training.trainingprogram.duration == 'Other' %}
@@ -51,10 +51,10 @@
         <span>
             {{ training.trainingprogram.title }} & {{ training.trainingprogram.speakers }} &
             {% if training.trainingprogram.end_date %}
-                {{ training.trainingprogram.start_date|date:"d/m/Y" }} -
-                {{ training.trainingprogram.end_date|date:"d/m/Y" }} &
+                {{ training.trainingprogram.start_date|date:"M d, Y" }} -
+                {{ training.trainingprogram.end_date|date:"M d, Y" }} &
             {% else %}
-                {{ training.trainingprogram.start_date|date:"d/m/Y" }} &
+                {{ training.trainingprogram.start_date|date:"M d, Y" }} &
             {% endif %}
             {% if training.trainingprogram.duration == 'Other' %}
                 {{ training.trainingprogram.other_duration }}  \\ \hline
