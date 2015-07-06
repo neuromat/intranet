@@ -67,8 +67,8 @@
             {% endif %}
 
             <td>{{ order.dailystipend.destination }}</td>
-            <td>{{ order.dailystipend.departure|date:"d/m/Y" }}</td>
-            <td>{{ order.dailystipend.arrival|date:"d/m/Y" }}</td>
+            <td>{{ order.dailystipend.departure|date:"M d, Y" }}</td>
+            <td>{{ order.dailystipend.arrival|date:"M d, Y" }}</td>
         </tr>
 
     {% endfor %}
@@ -122,8 +122,8 @@
         {% endif %}
 
         {{ order.dailystipend.destination }} &
-        {{ order.dailystipend.departure|date:"d/m/Y" }} &
-        {{ order.dailystipend.arrival|date:"d/m/Y" }} \\ \hline
+        {{ order.dailystipend.departure|date:"M d, Y" }} &
+        {{ order.dailystipend.arrival|date:"M d, Y" }} \\ \hline
             </span><br>
     {% endfor %}
 
