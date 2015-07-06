@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from person.models import Person
-from django.utils.html import format_html
 
 
 # Defining types of media
@@ -50,10 +49,7 @@ class Dissemination(models.Model):
         ordering = ('title', )
 
     def topics(self):
-        return format_html("<br>".join([
-            unicode(topic) for topic in self.topic.all()]))
-
-    topics.allow_tags = True
+        return ', '.join([unicode(topic) for topic in self.topic.all()])
 
 
 class InternalMediaOutlet(models.Model):
@@ -94,10 +90,7 @@ class Internal(Dissemination):
         super(Internal, self).save(*args, **kwargs)
 
     def authors(self):
-        return format_html("<br>".join([
-            unicode(author) for author in self.author.all()]))
-
-    authors.allow_tags = True
+        return ', '.join([unicode(author) for author in self.author.all()])
 
 
 class ExternalMediaOutlet(models.Model):
@@ -138,7 +131,4 @@ class External(Dissemination):
         super(External, self).save(*args, **kwargs)
 
     def authors(self):
-        return format_html("<br>".join([
-            unicode(author) for author in self.author.all()]))
-
-    authors.allow_tags = True
+        return ', '.join([unicode(author) for author in self.author.all()])
