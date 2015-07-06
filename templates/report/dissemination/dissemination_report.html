@@ -28,13 +28,13 @@
                 <td>{{ dissemination.title }}</td>
                 <td>{{ dissemination.internal.media_outlet }}</td>
                 <td>{{ dissemination.topics }}</td>
-                <td>{{ dissemination.date|date:"d/m/Y" }}</td>
+                <td>{{ dissemination.date|date:"M d, Y" }}</td>
             {% elif type == 'e'%}
                 <td>{{ dissemination.title }}</td>
                 <td>{{ dissemination.external.authors }}</td>
                 <td>{{ dissemination.external.media_outlet }}</td>
                 <td>{{ dissemination.topics }}</td>
-                <td>{{ dissemination.date|date:"d/m/Y" }}</td>
+                <td>{{ dissemination.date|date:"M d, Y" }}</td>
             {% endif %}
         </tr>
     {% endfor %}
@@ -53,7 +53,7 @@
         {% for dissemination in disseminations %}
             <span>
                 {{ dissemination.title }} & {{ dissemination.internal.media_outlet }} & {{ dissemination.topics }} &
-                {{ dissemination.date|date:"d/m/Y" }} \\ \hline
+                {{ dissemination.date|date:"M d, Y" }} \\ \hline
             </span><br>
         {% endfor %}
         <span>\end{longtable}</span>
@@ -68,7 +68,7 @@
             <span>
                 {{ dissemination.title }} & {{ dissemination.external.authors }} &
                 {{ dissemination.external.media_outlet }} & {{ dissemination.topics }} &
-                {{ dissemination.date|date:"d/m/Y" }} \\ \hline
+                {{ dissemination.date|date:"M d, Y" }} \\ \hline
             </span><br>
         {% endfor %}
         <span>\end{longtable}</span>
