@@ -49,17 +49,17 @@
         <span>\begin{longtable}{ |p{5cm}|p{4cm}|p{3cm}|p{2cm}| }</span><br>
         <span>\hline</span><br>
         <span>
-            {% trans "Title" %} & {% trans "Media outlet" %} & {% trans "Topics" %} & {% trans "Date" %} \\ \hline
+            {% trans "Title" %} & {% trans "Topics" %} & {% trans "URL" %} & {% trans "Date" %} \\ \hline
         </span><br>
         {% for dissemination in disseminations %}
             <span>
-                {{ dissemination.title }} & {{ dissemination.topics }} & {{ dissemination.link }} &
+                {{ dissemination.title }} & {{ dissemination.topics }} & \url&#123;{{ dissemination.link }}&#125; &
                 {{ dissemination.date|date:"M d, Y" }} \\ \hline
             </span><br>
         {% endfor %}
         <span>\end{longtable}</span>
     {% elif type == 'e' %}
-        <span>\begin{longtable}{ |p{4cm}|p{3cm}|p{2cm}|p{3cm}|p{2cm}| }</span><br>
+        <span>\begin{longtable}{ |p{3cm}|p{2,3cm}|p{2cm}|p{2cm}|p{3,5cm}|p{1,2cm}| }</span><br>
         <span>\hline</span><br>
         <span>
             {% trans "Title" %} & {% trans "Authors" %} & {% trans "Media outlet" %} & {% trans "Topics" %} &
@@ -69,7 +69,7 @@
             <span>
                 {{ dissemination.title }} & {{ dissemination.external.authors }} &
                 {{ dissemination.external.media_outlet }} & {{ dissemination.topics }} &
-                {{ dissemination.link }} & {{ dissemination.date|date:"M d, Y" }} \\ \hline
+                \url&#123;{{ dissemination.link }}&#125; & {{ dissemination.date|date:"M d, Y" }} \\ \hline
             </span><br>
         {% endfor %}
         <span>\end{longtable}</span>
