@@ -86,11 +86,11 @@ def seminars_report(request):
         if category == '0':
             seminars = ProjectActivities.objects.filter(type_of_activity='s',
                                                         seminar__date__gt=start_date,
-                                                        seminar__date__lt=end_date).order_by('seminar__date')
+                                                        seminar__date__lt=end_date).order_by('-seminar__date')
         else:
             seminars = ProjectActivities.objects.filter(type_of_activity='s', seminar__category=category,
                                                         seminar__date__gt=start_date,
-                                                        seminar__date__lt=end_date).order_by('seminar__date')
+                                                        seminar__date__lt=end_date).order_by('-seminar__date')
 
         if end_date >= start_date:
             context = {'seminars': seminars, 'category': category}
