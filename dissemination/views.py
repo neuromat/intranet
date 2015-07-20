@@ -59,10 +59,10 @@ def dissemination_report(request):
 
         if type == 'i':
             disseminations = Dissemination.objects.filter(type_of_media='i', date__gt=start_date,
-                                                          date__lt=end_date).order_by('date')
+                                                          date__lt=end_date).order_by('-date')
         elif type == 'e':
             disseminations = Dissemination.objects.filter(type_of_media='e', date__gt=start_date,
-                                                          date__lt=end_date).order_by('date')
+                                                          date__lt=end_date).order_by('-date')
 
         if end_date >= start_date:
             context = {'disseminations': disseminations, 'type': type}
