@@ -46,7 +46,7 @@
     <h3>{% trans "Latex version:" %}</h3>
     <br>
     {% if type == 'i' %}
-        <span>\begin{longtable}{ |p{5cm}|p{4cm}|p{3cm}|p{2cm}| }</span><br>
+        <span>\begin{longtable}{ |p{4cm}|p{4cm}|p{5cm}|p{2cm}| }</span><br>
         <span>\hline</span><br>
         <span>
             {% trans "Title" %} & {% trans "Topics" %} & {% trans "URL" %} & {% trans "Date" %} \\ \hline
@@ -59,7 +59,7 @@
         {% endfor %}
         <span>\end{longtable}</span>
     {% elif type == 'e' %}
-        <span>\begin{longtable}{ |p{3cm}|p{2,3cm}|p{2cm}|p{2cm}|p{3,5cm}|p{1,2cm}| }</span><br>
+        <span>\begin{longtable}{ |p{3cm}|p{2,3cm}|p{2cm}|p{3cm}|p{3,5cm}|p{1,2cm}| }</span><br>
         <span>\hline</span><br>
         <span>
             {% trans "Title" %} & {% trans "Authors" %} & {% trans "Media outlet" %} & {% trans "Topics" %} &
