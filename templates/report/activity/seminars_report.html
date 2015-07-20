@@ -13,26 +13,14 @@
 {% if seminars %}
     <table class="table table-striped table-bordered">
     <tr>
-        {% if category != '0' %}
-            <th width="40%">{% trans "Title" %}</th><th width="25%">{% trans "Speaker" %}</th>
-            <th width="10%">{% trans "Date" %}</th>
-        {% else %}
-            <th width="25%">{% trans "Category" %}</th><th width="40%">{% trans "Title" %}</th>
-            <th width="25%">{% trans "Speaker" %}</th><th width="10%">{% trans "Date" %}</th>
-        {% endif %}
+        <th width="40%">{% trans "Title" %}</th><th width="25%">{% trans "Speaker" %}</th>
+        <th width="10%">{% trans "Date" %}</th>
     </tr>
     {% for seminar in seminars %}
         <tr>
-            {% if category != '0' %}
-                <td>{{ seminar.seminar.title }}</td>
-                <td>{{ seminar.seminar.speakers }}</td>
-                <td>{{ seminar.seminar.date|date:"M d, Y" }}</td>
-            {% else %}
-                <td>{{ seminar.seminar.category }}</td>
-                <td>{{ seminar.seminar.title }}</td>
-                <td>{{ seminar.seminar.speakers }}</td>
-                <td>{{ seminar.seminar.date|date:"M d, Y" }}</td>
-            {% endif %}
+            <td>{{ seminar.seminar.title }}</td>
+            <td>{{ seminar.seminar.speakers }}</td>
+            <td>{{ seminar.seminar.date|date:"M d, Y" }}</td>
         </tr>
     {% endfor %}
     </table>
@@ -41,29 +29,16 @@
 
     <h3>{% trans "Latex version:" %}</h3>
     <br>
-    {% if category != '0' %}
-        <span>\begin{longtable}{ |p{6cm}|p{6cm}|p{2cm}| }</span><br>
-        <span>\hline</span><br>
-        <span>{% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} \\ \hline</span><br>
-        {% for seminar in seminars %}
-            <span>
-                {{ seminar.seminar.title }} & {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"M d, Y" }}
-                \\ \hline
-            </span><br>
-        {% endfor %}
-        <span>\end{longtable}</span>
-    {% else %}
-        <span>\begin{longtable}{ |p{3cm}|p{5cm}|p{5cm}|p{2cm}| }</span><br>
-        <span>\hline</span><br>
-        <span>{% trans "Category" %} & {% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} \\ \hline</span><br>
-        {% for seminar in seminars %}
-            <span>
-                {{ seminar.seminar.category }} & {{ seminar.seminar.title }} &
-                {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"M d, Y" }} \\ \hline
-            </span><br>
-        {% endfor %}
-        <span>\end{longtable}</span>
-    {% endif %}
+    <span>\begin{longtable}{ |p{6cm}|p{6cm}|p{2cm}| }</span><br>
+    <span>\hline</span><br>
+    <span>{% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} \\ \hline</span><br>
+    {% for seminar in seminars %}
+        <span>
+            {{ seminar.seminar.title }} & {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"M d, Y" }}
+            \\ \hline
+        </span><br>
+    {% endfor %}
+    <span>\end{longtable}</span>
 
 {%  else %}
     {% trans "No seminars found!" %}
