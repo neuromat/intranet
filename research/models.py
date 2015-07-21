@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from person.models import Person, Institution
 import datetime
 from django.utils.html import format_html
+from django.utils.dates import MONTHS
 
 # Defining types of status
 IN_PROGRESS = 'i'
@@ -43,16 +44,21 @@ TYPE = (
     (IN_BOOK, _('In book')),
 )
 
+YEAR_CHOICES = []
+for year in range(2010, (datetime.datetime.now().year+1)):
+    YEAR_CHOICES.append((year,year))
+YEAR_CHOICES.reverse()
+
 
 class ResearchResult(models.Model):
     """
     '__unicode__'		Returns the title.
     'class Meta'		Ordering of data by date modification.
     """
-    author = models.ManyToManyField(Person)
+    person = models.ManyToManyField(Person, through='Author')
     title = models.CharField(_('Title'), max_length=255)
-    year = models.IntegerField(_('Year'))
-    month = models.CharField(_('Month'), max_length=3, blank=True, null=True)
+    year = models.IntegerField(_('Year'), max_length=4, choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+    month = models.SmallIntegerField(_('Month'), choices=MONTHS.items())
     url = models.URLField(_('URL'), max_length=255, blank=True, null=True)
     key = models.CharField(_('Key'), max_length=255, blank=True, null=True)
     note = models.CharField(_('Note'), max_length=255, blank=True, null=True)
@@ -64,13 +70,24 @@ class ResearchResult(models.Model):
         return u'%s' % self.title
 
     def authors(self):
-        return format_html("; ".join([str(author.citation_name) for author in self.author.all()]))
+        return format_html("; ".join([unicode(person.full_name) for person in self.person.all()]))
 
     authors.allow_tags = True
 
     # Description of the model / Sort by title
     class Meta:
         ordering = ('-modified', )
+
+
+class Author(models.Model):
+    author = models.ForeignKey(Person)
+    research_result = models.ForeignKey(ResearchResult)
+    order = models.IntegerField(_('Order of author'))
+
+    class Meta:
+        verbose_name = _('Author')
+        verbose_name_plural = _('Authors')
+        ordering = ('order', )
 
 
 class Published(ResearchResult):
