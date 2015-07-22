@@ -70,7 +70,7 @@ class ResearchResult(models.Model):
         return u'%s' % self.title
 
     def authors(self):
-        return format_html("; ".join([unicode(person.full_name)
+        return format_html("; ".join([unicode(person.citation_name if person.citation_name else person.full_name)
                                       for person in self.person.all().order_by('author__order')]))
 
     authors.allow_tags = True
