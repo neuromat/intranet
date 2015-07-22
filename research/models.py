@@ -45,8 +45,8 @@ TYPE = (
 )
 
 YEAR_CHOICES = []
-for year in range(2010, (datetime.datetime.now().year+1)):
-    YEAR_CHOICES.append((year,year))
+for year in range(2013, (datetime.datetime.now().year+1)):
+    YEAR_CHOICES.append((year, year))
 YEAR_CHOICES.reverse()
 
 
@@ -70,7 +70,8 @@ class ResearchResult(models.Model):
         return u'%s' % self.title
 
     def authors(self):
-        return format_html("; ".join([unicode(person.full_name) for person in self.person.all()]))
+        return format_html("; ".join([unicode(person.full_name)
+                                      for person in self.person.all().order_by('author__order')]))
 
     authors.allow_tags = True
 
