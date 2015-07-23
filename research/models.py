@@ -21,29 +21,34 @@ RESEARCH_RESULT_TYPE = (
     (PUBLISHED, _('Published')),
 )
 
-# Defining types of paper status
-DRAFT = 'd'
-SUBMITTED = 's'
-PAPER_STATUS = (
-    (DRAFT, _('Draft')),
-    (SUBMITTED, _('Submitted')),
+# Defining types of status for article (Published)
+ACCEPTED = 'a'
+PUBLISHED_STATUS = (
+    (ACCEPTED, _('Accepted')),
     (PUBLISHED, _('Published')),
 )
 
+# Defining types of status for article (Unpublished)
+DRAFT = 'd'
+SUBMITTED = 's'
+UNPUBLISHED_STATUS = (
+    (DRAFT, _('Draft')),
+    (SUBMITTED, _('Submitted')),
+)
+
 # Defining types of research results
-TECHREPORT = 't'
 ARTICLE = 'a'
-IN_PROCEEDINGS = 'i'
+MEETING = 'm'
 BOOK = 'b'
-IN_BOOK = 'c'
+IN_BOOK = 'i'
 TYPE = (
-    (TECHREPORT, _('Tech report')),
     (ARTICLE, _('Article')),
-    (IN_PROCEEDINGS, _('In proceedings')),
+    (MEETING, _('Communication in meeting')),
     (BOOK, _('Book')),
     (IN_BOOK, _('In book')),
 )
 
+# Year to be displayed
 YEAR_CHOICES = []
 for year in range(2013, (datetime.datetime.now().year+1)):
     YEAR_CHOICES.append((year, year))
@@ -92,7 +97,7 @@ class Author(models.Model):
 
 
 class Published(ResearchResult):
-    reference = models.TextField(_('Reference to NeuroMat'),
+    reference = models.TextField(_('Reference to NeuroMat'), blank=True, null=True,
                                  help_text='You should copy here the lines of your work that makes reference to CEPID '
                                            'NeuroMat, e.g., "this article (thesis,...) was produced as part of the '
                                            'activities of FAPESP Center for Neuromathematics (grant #2013/07699-0, '
@@ -114,7 +119,7 @@ class Unpublished(ResearchResult):
     type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
     status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER, default=IN_PROGRESS,
                               blank=True, null=True)
-    paper_status = models.CharField(_('Paper status'), max_length=1, choices=PAPER_STATUS, blank=True, null=True)
+    paper_status = models.CharField(_('Paper status'), max_length=1, choices=UNPUBLISHED_STATUS, blank=True, null=True)
 
     class Meta:
         verbose_name = _('Unpublished')
@@ -146,14 +151,31 @@ class InProceeding(Published):
                                      blank=True, null=True)
 
     class Meta:
-        verbose_name = _('Inproceeding')
-        verbose_name_plural = _('Inproceedings')
+        verbose_name = _('Communication in meeting')
+        verbose_name_plural = _('Communications in meetings')
 
     # Sets the type of research result.
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.published_type = IN_PROCEEDINGS
+            self.published_type = MEETING
         super(InProceeding, self).save(*args, **kwargs)
+
+
+class Journal(models.Model):
+    """
+    An instance of this class is a journal.
+
+    """
+    name = models.CharField(_('Name'), max_length=255)
+
+    # Returns the name
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Journal')
+        verbose_name_plural = _('Journals')
+        ordering = ('name', )
 
 
 class Article(Published):
@@ -161,12 +183,14 @@ class Article(Published):
     An instance of this class is a paper published by a journal.
 
     """
+    journal = models.ForeignKey(Journal, verbose_name=_('Journal'))
+    status = models.CharField(_('Status'), max_length=1, choices=PUBLISHED_STATUS)
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
-    journal = models.CharField(_('Journal or magazine'), max_length=255)
     number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
-    volume = models.CharField(_('Volume'), max_length=255)
+    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Article')
@@ -177,26 +201,6 @@ class Article(Published):
         if self.pk is None:
             self.published_type = ARTICLE
         super(Article, self).save(*args, **kwargs)
-
-
-class TechReport(Published):
-    """
-    An instance of this class is a report published by a school or other institution.
-
-    """
-    institution = models.ForeignKey(Institution, verbose_name=_('Institution'))
-    number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
-    type = models.CharField(_('Type'), max_length=255, blank=True, null=True)
-
-    class Meta:
-        verbose_name = _('Tech report')
-        verbose_name_plural = _('Tech reports')
-
-    # Sets the type of research result.
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            self.published_type = TECHREPORT
-        super(TechReport, self).save(*args, **kwargs)
 
 
 class Book(Published):
@@ -281,31 +285,3 @@ class AcademicWork(models.Model):
             if orig.status != self.status:
                 self.modified = datetime.datetime.now()
         super(AcademicWork, self).save(*args, **kwargs)
-
-
-class WorkInProgress(models.Model):
-    """
-    An instance of this class is a work in progress.
-
-    """
-    author = models.ForeignKey(Person, verbose_name=_('Author'))
-    description = models.TextField(_('Description'))
-    status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(default=datetime.datetime.now)
-
-    def __unicode__(self):
-        return u'%s' % self.author
-
-    class Meta:
-        verbose_name = _('Work in Progress')
-        verbose_name_plural = _('Works in Progress')
-        ordering = ('modified', )
-
-    # Check if the status has changed to update the modified date.
-    def save(self, *args, **kwargs):
-        if self.pk is not None:
-            orig = WorkInProgress.objects.get(pk=self.pk)
-            if orig.status != self.status:
-                self.modified = datetime.datetime.now()
-        super(WorkInProgress, self).save(*args, **kwargs)

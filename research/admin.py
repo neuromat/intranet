@@ -1,10 +1,10 @@
 from django.contrib import admin
 from research.models import *
-from forms import UnpublishedAdminForm
-import copy
+from forms import UnpublishedAdminForm, ArticleAdminForm
 from django.db.models import Q
 
 admin.site.register(TypeAcademicWork)
+admin.site.register(Journal)
 
 
 class AuthorsInline(admin.TabularInline):
@@ -43,10 +43,11 @@ admin.site.register(InProceeding, InProceedingAdmin)
 
 
 class ArticleAdmin(SuperResearchResult):
-    fields = ['title', 'journal', 'year', 'month', 'volume', 'number', 'doi', 'start_page', 'end_page', 'key', 'url',
-              'note', 'reference']
-    list_display = ('authors', 'title', 'journal', 'created')
+    fields = ['title', 'journal', 'status', 'year', 'month', 'volume', 'number', 'doi', 'start_page', 'end_page',
+              'key', 'url', 'note', 'attachment', 'reference']
+    list_display = ('authors', 'title', 'journal', 'status', 'year')
     list_display_links = ('title',)
+    form = ArticleAdminForm
 
 admin.site.register(Article, ArticleAdmin)
 
@@ -68,14 +69,6 @@ class InBookAdmin(admin.ModelAdmin):
 admin.site.register(InBook, InBookAdmin)
 
 
-class TechReportAdmin(SuperResearchResult):
-    fields = ['title', 'institution', 'year', 'month', 'url', 'number', 'type', 'key', 'note', 'reference']
-    list_display = ('authors', 'title', 'institution', 'created')
-    list_display_links = ('title',)
-
-admin.site.register(TechReport, TechReportAdmin)
-
-
 class AcademicWorkAdmin(admin.ModelAdmin):
     fields = ['type', 'status', 'title', 'author', 'advisor', 'co_advisor', 'reference']
     list_display = ('title', 'author', 'advisor', 'type', 'status')
@@ -91,33 +84,3 @@ class AcademicWorkAdmin(admin.ModelAdmin):
         return qs.filter(Q(author=request.user) | Q(advisor=request.user))
 
 admin.site.register(AcademicWork, AcademicWorkAdmin)
-
-
-class WorkInProgressAdmin(admin.ModelAdmin):
-    fields = ['status', 'description']
-    list_display = ('author', 'status', 'description',)
-    list_display_links = ('author',)
-
-    # Shows the Work in Progress according to the user permission
-    # Users defined as superuser or NIRA Admin can see all
-    def get_queryset(self, request):
-        qs = super(WorkInProgressAdmin, self).get_queryset(request)
-        if request.user.is_nira_admin or request.user.is_superuser:
-            return qs
-        return qs.filter(author=request.user.projectmember)
-
-    # If superuser or NIRA Admin, enable the author field
-    def get_fieldsets(self, request, obj=None):
-        fieldsets = copy.deepcopy(super(WorkInProgressAdmin, self).get_fieldsets(request, obj))
-        if request.user.is_nira_admin or request.user.is_superuser:
-            fieldsets[0][1]['fields'].insert(0, 'author')
-        return fieldsets
-
-    # If not superuser or NIRA Admin, set the author as the current user
-    def save_model(self, request, obj, form, change):
-        if not request.user.is_nira_admin and not request.user.is_superuser:
-            if not change:
-                obj.author = Person.objects.get(user=request.user)
-        obj.save()
-
-admin.site.register(WorkInProgress, WorkInProgressAdmin)
