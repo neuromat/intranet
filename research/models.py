@@ -138,6 +138,8 @@ class InProceeding(Published):
 
     """
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
+    address = models.CharField(_('Address'), max_length=255, blank=True, null=True,
+                               help_text='Where the conference was held, e.g., "Nagoya, Japan".')
     book_title = models.CharField(_('Book title'), max_length=255)
     editor = models.CharField(_('Editor'), max_length=255, blank=True, null=True)
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
@@ -145,6 +147,7 @@ class InProceeding(Published):
     serie = models.CharField(_('Serie'), max_length=255, blank=True, null=True)
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
     publisher = models.ForeignKey(Institution, related_name='published_by', verbose_name=_('Publisher'),
                                   blank=True, null=True)
     organization = models.ForeignKey(Institution, related_name='sponsored_by', verbose_name=_('Organization'),

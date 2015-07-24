@@ -26,7 +26,7 @@ class SuperResearchResult(admin.ModelAdmin):
 
 class UnpublishedAdmin(SuperResearchResult):
     fields = ['status', 'title', 'type', 'paper_status', 'year', 'month', 'key', 'url', 'note']
-    list_display = ('authors', 'title', 'type', 'status', 'created')
+    list_display = ('authors', 'title', 'type', 'status', 'year')
     list_display_links = ('title',)
     form = UnpublishedAdminForm
 
@@ -34,9 +34,9 @@ admin.site.register(Unpublished, UnpublishedAdmin)
 
 
 class InProceedingAdmin(SuperResearchResult):
-    fields = ['title', 'book_title', 'year', 'month', 'doi', 'editor', 'volume', 'number', 'serie', 'start_page',
-              'end_page', 'publisher', 'organization', 'key', 'url', 'note', 'reference']
-    list_display = ('authors', 'title', 'created')
+    fields = ['title', 'book_title', 'year', 'month', 'address', 'doi', 'editor', 'volume', 'number', 'serie',
+              'start_page', 'end_page', 'publisher', 'organization', 'key', 'url', 'note', 'attachment', 'reference']
+    list_display = ('authors', 'title', 'book_title', 'year')
     list_display_links = ('title',)
 
 admin.site.register(InProceeding, InProceedingAdmin)
