@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from research.models import MONTHS, YEAR_CHOICES
 from django.contrib import messages
 from models import ResearchResult
+from django.db.models import Q
 
 
 @login_required
@@ -19,11 +20,13 @@ def published_articles(request):
         end_year = request.POST['end_year']
 
         if start_month == '0' and start_year == '0' and end_month == '0' and end_year == '0':
-            published = ResearchResult.objects.filter(research_result_type='p').order_by('year')
+            published = ResearchResult.objects.filter(Q(published__published_type='a') |
+                                                      Q(published__published_type='m')).order_by('year')
         else:
-            published = ResearchResult.objects.filter(research_result_type='p', month__gte=start_month,
-                                                      year__gte=start_year, month__lte=end_month,
-                                                      year__lte=end_year).order_by('year')
+            published = ResearchResult.objects.filter(Q(published__published_type='a') |
+                                                      Q(published__published_type='m'),
+                                                      month__gte=start_month, year__gte=start_year,
+                                                      month__lte=end_month, year__lte=end_year).order_by('year')
 
         if start_year < end_year:
             context = {'published': published}
