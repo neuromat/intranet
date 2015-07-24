@@ -12,26 +12,50 @@
 {% block content %}
 
 {% if published %}
-    <p><strong>Published</strong></p>
+    <p><strong>Published or Accepted</strong></p>
     <ol type="1">
         {% for article in published %}
-            <li style="text-align: justify">
-                <strong>{{ article.title }}</strong>. {{ article.authors }} {{ article.published.article.journal }}.
-                Vol. {{ article.published.article.volume }},
-                {% if article.published.article.number %}
-                    ISSN: {{ article.published.article.number }},
-                {% endif %}
-                {% if article.published.article.start_page and article.published.article.end_page %}
-                    Page(s): {{ article.published.article.start_page }}-{{ article.published.article.end_page }},
-                {% endif %}
-                {% if article.published.article.doi %}
-                    DOI: {{ article.published.article.doi }},
-                {% endif %}
-                {% if article.url %}
-                    Available at: <a href="{{ article.url }}" target="_blank">{{ article.url }}</a>,
-                {% endif %}
-                {{ article.year }}.
-            </li><br>
+            {% if article.published.published_type == 'a' %}
+                <li style="text-align: justify">
+                    <strong>{{ article.title }}</strong>. {{ article.authors }} {{ article.published.article.journal }}.
+                    {% if article.published.article.volume %}
+                        Vol. {{ article.published.article.volume }},
+                    {% endif %}
+                    {% if article.published.article.number %}
+                        n° {{ article.published.article.number }},
+                    {% endif %}
+                    {% if article.published.article.start_page and article.published.article.end_page %}
+                        Page(s): {{ article.published.article.start_page }}-{{ article.published.article.end_page }},
+                    {% endif %}
+                    {% if article.published.article.doi %}
+                        DOI: {{ article.published.article.doi }},
+                    {% endif %}
+                    {% if article.url %}
+                        Available at: <a href="{{ article.url }}" target="_blank">{{ article.url }}</a>,
+                    {% endif %}
+                    {% if article.published.article.status == 'a' %}
+                        {{ article.year }}, to appear.
+                    {% else %}
+                        {{ article.year }}.
+                    {% endif %}
+                </li><br>
+            {% endif %}
+        {% endfor %}
+    </ol>
+
+    <p><strong>Communications in meetings with referee</strong></p>
+    <ol type="1">
+        {% for article in published %}
+            {% if article.published.published_type == 'm' %}
+                <li style="text-align: justify">
+                    <strong>{{ article.title }}</strong>. {{ article.authors }}
+                    {{ article.published.inproceeding.book_title }}. {{ article.published.inproceeding.address }}.
+                    {% if article.url %}
+                        Available at: <a href="{{ article.url }}" target="_blank">{{ article.url }}</a>,
+                    {% endif %}
+                    {{ article.year }}.
+                </li><br>
+            {% endif %}
         {% endfor %}
     </ol>
 {%  else %}
