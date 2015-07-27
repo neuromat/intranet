@@ -78,7 +78,8 @@ class Internal(Dissemination):
     'authors'           Get the authors of the publication.
     """
     media_outlet = models.ForeignKey(InternalMediaOutlet, verbose_name=_('Media outlet'))
-    author = models.ManyToManyField(Person, verbose_name=_('Author'), blank=True, null=True)
+    author = models.ManyToManyField(Person, verbose_name=_('Author'), blank=True, null=True,
+                                    limit_choices_to={'role__name': 'Journalist'})
 
     class Meta:
         verbose_name = _('Internal')
@@ -119,7 +120,7 @@ class External(Dissemination):
     'authors'           Get the authors of the publication.
     """
     media_outlet = models.ForeignKey(ExternalMediaOutlet, verbose_name=_('Media outlet'))
-    author = models.ManyToManyField(Person, verbose_name=_('Author'))
+    author = models.ManyToManyField(Person, verbose_name=_('Author'), limit_choices_to={'role__name': 'Journalist'})
 
     class Meta:
         verbose_name = _('External')
