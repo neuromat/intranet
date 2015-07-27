@@ -33,17 +33,17 @@
                 {% if order.dailystipend.project_activity.type_of_activity == 't' %}
                     <td>
                         {{ order.dailystipend.mission }}<br>
-                        {% trans "Participation in the training program entitled:" %} {{ order.dailystipend.project_activity }}
+                        {% trans "Participation in the training program entitled:" %} {{ order.dailystipend.project_activity.title }}
                     </td>
                 {% elif order.dailystipend.project_activity.type_of_activity == 'm' %}
                     <td>
                         {{ order.dailystipend.mission }}<br>
-                        {% trans "Participation in the meeting entitled:" %} {{ order.dailystipend.project_activity }}
+                        {% trans "Participation in the meeting entitled:" %} {{ order.dailystipend.project_activity.title }}
                     </td>
                 {% elif order.dailystipend.project_activity.type_of_activity == 's' %}
                     <td>
                         {{ order.dailystipend.mission }}<br>
-                        {% trans "Participation in the seminar entitled:" %} {{ order.dailystipend.project_activity }}
+                        {% trans "Participation in the seminar entitled:" %} {{ order.dailystipend.project_activity.title }}
                     </td>
                 {% endif %}
             {% elif order.dailystipend.mission != None %}
@@ -51,15 +51,15 @@
             {% elif order.dailystipend.project_activity != None %}
                 {% if order.dailystipend.project_activity.type_of_activity == 't' %}
                     <td>
-                        {% trans "Participation in the training program entitled:" %} {{ order.dailystipend.project_activity }}
+                        {% trans "Participation in the training program entitled:" %} {{ order.dailystipend.project_activity.title }}
                     </td>
                 {% elif order.dailystipend.project_activity.type_of_activity == 'm' %}
                     <td>
-                        {% trans "Participation in the meeting entitled:" %} {{ order.dailystipend.project_activity }}
+                        {% trans "Participation in the meeting entitled:" %} {{ order.dailystipend.project_activity.title }}
                     </td>
                 {% elif order.dailystipend.project_activity.type_of_activity == 's' %}
                     <td>
-                        {% trans "Participation in the seminar entitled:" %} {{ order.dailystipend.project_activity }}
+                        {% trans "Participation in the seminar entitled:" %} {{ order.dailystipend.project_activity.title }}
                     </td>
                 {% endif %}
             {% else %}
