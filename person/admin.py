@@ -20,6 +20,8 @@ class PersonAdmin(admin.ModelAdmin):
                        'state', 'country')
         }),
     )
+    list_display = ('full_name', 'role', 'institution')
+    list_display_links = ('full_name',)
 
     # If not superuser or nira_admin, show the current user
     def get_queryset(self, request):
