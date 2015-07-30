@@ -83,4 +83,16 @@ class AcademicWorkAdmin(admin.ModelAdmin):
         # To see the academic work, the user should be the author or the advisor
         return qs.filter(Q(author=request.user) | Q(advisor=request.user))
 
+    # Hide journalists in the author or advidor fields
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "author" or db_field.name == "advisor":
+            kwargs["queryset"] = Person.objects.filter(~Q(role__name='Journalist'))
+        return super(AcademicWorkAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+    # Hide journalists in the co_advisor field
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == "co_advisor":
+            kwargs["queryset"] = Person.objects.filter(~Q(role__name='Journalist'))
+        return super(AcademicWorkAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 admin.site.register(AcademicWork, AcademicWorkAdmin)
