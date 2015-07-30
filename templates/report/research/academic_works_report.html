@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li><a href="/research/academic_works">{% trans 'Report of academic works' %}</a></li>
+<li>{% trans 'Results' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+
+{% if results %}
+    {% if type == '1' %}
+        <h4>Post-doctoral fellows</h4>
+        {% for result in results %}
+            {% if result.status == 'c' %}
+                <p><strong>Concluded</strong></p>
+                <ol>
+                    <li>{{ result.title }}</li>
+                    <ul>
+                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>Name of the student: {{ result.author }}</li>
+                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>Institution: {{ result.institution }}</li>
+                        <li>Schollarship: {{ result.schollarship }}</li>
+                    </ul>
+                </ol>
+            <br>
+            {% elif result.status == 'i' %}
+                <p><strong>In progress</strong></p>
+                <ol>
+                    <li>{{ result.title }}</li>
+                </ol>
+            {% endif %}
+        {% endfor %}
+    {% elif type == '2' %}
+        <p><strong>PhD thesis</strong></p>
+    {% elif type == '3' %}
+        <p><strong>MSc dissertations</strong></p>
+    {% endif %}
+    <br>
+
+    <h3>{% trans "Latex version:" %}</h3>
+    <br>
+
+{%  else %}
+    {% trans "No academic works found!" %}
+{% endif %}
+
+
+{% endblock %}
