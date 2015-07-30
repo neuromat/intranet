@@ -268,23 +268,12 @@ class AcademicWork(models.Model):
     advisor = models.ForeignKey(Person, verbose_name=_('Advisor'), related_name='advisor_academic_work')
     co_advisor = models.ManyToManyField(Person, verbose_name=_('Co-Advisor'),
                                         related_name='co_advisor_academic_work', blank=True, null=True)
+    institution = models.ForeignKey(Institution, verbose_name=_('Institution'))
     status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER)
-    reference = models.TextField(_('Reference to NeuroMat'),
-                                 help_text='You should copy here the lines of your work that makes reference to CEPID '
-                                           'NeuroMat, e.g., "this article (thesis,...) was produced as part of the '
-                                           'activities of FAPESP Center for Neuromathematics (grant #2013/07699-0, '
-                                           'S.Paulo Research Foundation)".')
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(default=datetime.datetime.now)
+    schollarship = models.CharField(_('Schollarship'), max_length=255, blank=True, null=True)
+    start_date = models.DateField(_('Start date'))
+    end_date = models.DateField(_('End date'))
 
     class Meta:
         verbose_name = _('Academic Work')
         verbose_name_plural = _('Academic Works')
-
-    # Check if the status has changed to update the modified date.
-    def save(self, *args, **kwargs):
-        if self.pk is not None:
-            orig = AcademicWork.objects.get(pk=self.pk)
-            if orig.status != self.status:
-                self.modified = datetime.datetime.now()
-        super(AcademicWork, self).save(*args, **kwargs)
