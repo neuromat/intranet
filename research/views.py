@@ -92,11 +92,15 @@ def academic_works(request):
 
         type = request.POST['type']
 
-        results = AcademicWork.objects.filter(type=type, start_date__gt=start_date,
-                                              end_date__lt=end_date).order_by('end_date')
+        result_status_concluded = AcademicWork.objects.filter(type=type, status='c', start_date__gt=start_date,
+                                                              end_date__lt=end_date).order_by('end_date')
+
+        result_status_in_progress = AcademicWork.objects.filter(type=type, status='i', start_date__gt=start_date,
+                                                                end_date__lt=end_date).order_by('end_date')
 
         if end_date >= start_date:
-            context = {'results': results, 'type': type}
+            context = {'result_status_concluded': result_status_concluded,
+                       'result_status_in_progress': result_status_in_progress, 'type': type}
             return render(request, 'report/research/academic_works_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
