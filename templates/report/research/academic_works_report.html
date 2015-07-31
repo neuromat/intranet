@@ -11,13 +11,13 @@
 
 {% block content %}
 
-{% if results %}
+{% if result_status_concluded or result_status_in_progress %}
     {% if type == '1' %}
         <h4>Post-doctoral fellows</h4>
-        {% for result in results %}
-            {% if result.status == 'c' %}
-                <p><strong>Concluded</strong></p>
-                <ol>
+        {% if result_status_concluded %}
+            <p><strong>Concluded</strong></p>
+            <ol>
+                {% for result in result_status_concluded %}
                     <li>{{ result.title }}</li>
                     <ul>
                         <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
@@ -26,15 +26,27 @@
                         <li>Institution: {{ result.institution }}</li>
                         <li>Schollarship: {{ result.schollarship }}</li>
                     </ul>
-                </ol>
-            <br>
-            {% elif result.status == 'i' %}
-                <p><strong>In progress</strong></p>
-                <ol>
+                    <br>
+                {% endfor %}
+            </ol>
+        {% endif %}
+        <br>
+        {% if result_status_in_progress %}
+            <p><strong>In progress</strong></p>
+            <ol>
+                {% for result in result_status_in_progress %}
                     <li>{{ result.title }}</li>
-                </ol>
-            {% endif %}
-        {% endfor %}
+                    <ul>
+                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>Name of the student: {{ result.author }}</li>
+                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>Institution: {{ result.institution }}</li>
+                        <li>Schollarship: {{ result.schollarship }}</li>
+                    </ul>
+                    <br>
+                {% endfor %}
+            </ol>
+        {% endif %}
     {% elif type == '2' %}
         <p><strong>PhD thesis</strong></p>
     {% elif type == '3' %}
