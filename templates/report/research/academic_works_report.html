@@ -48,9 +48,75 @@
             </ol>
         {% endif %}
     {% elif type == '2' %}
-        <p><strong>PhD thesis</strong></p>
+        <h4><strong>PhD thesis</strong></h4>
+        {% if result_status_concluded %}
+            <p><strong>Concluded</strong></p>
+            <ol>
+                {% for result in result_status_concluded %}
+                    <li>{{ result.title }}</li>
+                    <ul>
+                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>Name of the student: {{ result.author }}</li>
+                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>Institution: {{ result.institution }}</li>
+                        <li>Schollarship: {{ result.schollarship }}</li>
+                    </ul>
+                    <br>
+                {% endfor %}
+            </ol>
+        {% endif %}
+        <br>
+        {% if result_status_in_progress %}
+            <p><strong>In progress</strong></p>
+            <ol>
+                {% for result in result_status_in_progress %}
+                    <li>{{ result.title }}</li>
+                    <ul>
+                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>Name of the student: {{ result.author }}</li>
+                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>Institution: {{ result.institution }}</li>
+                        <li>Schollarship: {{ result.schollarship }}</li>
+                    </ul>
+                    <br>
+                {% endfor %}
+            </ol>
+        {% endif %}
     {% elif type == '3' %}
-        <p><strong>MSc dissertations</strong></p>
+        <h4><strong>MSc dissertations</strong></h4>
+        {% if result_status_concluded %}
+            <p><strong>Concluded</strong></p>
+            <ol>
+                {% for result in result_status_concluded %}
+                    <li>{{ result.title }}</li>
+                    <ul>
+                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>Name of the student: {{ result.author }}</li>
+                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>Institution: {{ result.institution }}</li>
+                        <li>Schollarship: {{ result.schollarship }}</li>
+                    </ul>
+                    <br>
+                {% endfor %}
+            </ol>
+        {% endif %}
+        <br>
+        {% if result_status_in_progress %}
+            <p><strong>In progress</strong></p>
+            <ol>
+                {% for result in result_status_in_progress %}
+                    <li>{{ result.title }}</li>
+                    <ul>
+                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>Name of the student: {{ result.author }}</li>
+                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>Institution: {{ result.institution }}</li>
+                        <li>Schollarship: {{ result.schollarship }}</li>
+                    </ul>
+                    <br>
+                {% endfor %}
+            </ol>
+        {% endif %}
     {% endif %}
     <br>
 
