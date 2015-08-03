@@ -92,11 +92,13 @@ def academic_works(request):
 
         type = request.POST['type']
 
-        result_status_concluded = AcademicWork.objects.filter(type=type, status='c', start_date__gt=start_date,
-                                                              end_date__lt=end_date).order_by('end_date')
+        # Show all the academic works completed within the selected period
+        result_status_concluded = AcademicWork.objects.filter(type=type, status='c', end_date__gt=start_date,
+                                                              end_date__lt=end_date).order_by('-end_date')
 
-        result_status_in_progress = AcademicWork.objects.filter(type=type, status='i', start_date__gt=start_date,
-                                                                end_date__lt=end_date).order_by('end_date')
+        # Show all the academic works that are in progress within the selected period
+        result_status_in_progress = AcademicWork.objects.filter(type=type, status='i',
+                                                                start_date__lt=end_date).order_by('-end_date')
 
         if end_date >= start_date:
             context = {'result_status_concluded': result_status_concluded,
