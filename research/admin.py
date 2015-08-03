@@ -72,7 +72,7 @@ admin.site.register(InBook, InBookAdmin)
 class AcademicWorkAdmin(admin.ModelAdmin):
     fields = ['type', 'status', 'title', 'author', 'advisor', 'co_advisor', 'institution', 'schollarship',
               'start_date', 'end_date']
-    list_display = ('title', 'author', 'advisor', 'type', 'status')
+    list_display = ('title', 'author', 'advisor', 'type', 'status', 'start_date', 'end_date')
     list_display_links = ('title',)
 
     # Shows the academic work according to the user permission
