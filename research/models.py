@@ -3,7 +3,6 @@ from django.utils.translation import ugettext_lazy as _
 from person.models import Person, Institution
 import datetime
 from django.utils.html import format_html
-from django.utils.dates import MONTHS
 
 # Defining types of status
 IN_PROGRESS = 'i'
@@ -48,11 +47,15 @@ TYPE = (
     (IN_BOOK, _('In book')),
 )
 
-# Year to be displayed
-YEAR_CHOICES = []
-for year in range(2013, (datetime.datetime.now().year+1)):
-    YEAR_CHOICES.append((year, year))
-YEAR_CHOICES.reverse()
+# Teams
+SCIENTIFIC = 's'
+DISSEMINATION = 'd'
+TECHNOLOGY_TRANSFER = 't'
+TEAMS = (
+    (SCIENTIFIC, _('Scientific')),
+    (DISSEMINATION, _('Dissemination')),
+    (TECHNOLOGY_TRANSFER, _('Technology transfer'))
+)
 
 
 class ResearchResult(models.Model):
@@ -60,10 +63,11 @@ class ResearchResult(models.Model):
     '__unicode__'		Returns the title.
     'class Meta'		Ordering of data by date modification.
     """
+    team = models.CharField(_('Team'), max_length=1, choices=TEAMS)
     person = models.ManyToManyField(Person, through='Author')
     title = models.CharField(_('Title'), max_length=255)
-    year = models.IntegerField(_('Year'), max_length=4, choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    month = models.SmallIntegerField(_('Month'), choices=MONTHS.items())
+    date = models.DateField(_('Date'), help_text='Date the article was published, accepted or submitted. '
+                                                 'Only month and year are important here.')
     url = models.URLField(_('URL'), max_length=255, blank=True, null=True)
     key = models.CharField(_('Key'), max_length=255, blank=True, null=True)
     note = models.CharField(_('Note'), max_length=255, blank=True, null=True)
@@ -264,7 +268,7 @@ class AcademicWork(models.Model):
     """
     type = models.ForeignKey(TypeAcademicWork, verbose_name=_('Type'))
     title = models.CharField(_('Title'), max_length=255)
-    author = models.ForeignKey(Person, verbose_name=_('Author'))
+    advisee = models.ForeignKey(Person, verbose_name=_('Advisee'))
     advisor = models.ForeignKey(Person, verbose_name=_('Advisor'), related_name='advisor_academic_work')
     co_advisor = models.ManyToManyField(Person, verbose_name=_('Co-Advisor'),
                                         related_name='co_advisor_academic_work', blank=True, null=True)
