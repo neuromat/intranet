@@ -36,7 +36,7 @@ admin.site.register(Unpublished, UnpublishedAdmin)
 class InProceedingAdmin(SuperResearchResult):
     fields = ['title', 'book_title', 'year', 'month', 'address', 'doi', 'editor', 'volume', 'number', 'serie',
               'start_page', 'end_page', 'publisher', 'organization', 'key', 'url', 'note', 'attachment', 'reference']
-    list_display = ('authors', 'title', 'book_title', 'year')
+    list_display = ('authors', 'title', 'book_title', 'month', 'year')
     list_display_links = ('title',)
 
 admin.site.register(InProceeding, InProceedingAdmin)
@@ -45,7 +45,7 @@ admin.site.register(InProceeding, InProceedingAdmin)
 class ArticleAdmin(SuperResearchResult):
     fields = ['title', 'journal', 'status', 'year', 'month', 'volume', 'number', 'doi', 'start_page', 'end_page',
               'key', 'url', 'note', 'attachment', 'reference']
-    list_display = ('authors', 'title', 'journal', 'status', 'year')
+    list_display = ('authors', 'title', 'journal', 'status', 'month', 'year')
     list_display_links = ('title',)
     form = ArticleAdminForm
 
