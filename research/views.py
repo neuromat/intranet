@@ -9,6 +9,7 @@ import datetime
 
 TIME = " 00:00:00"
 
+
 def start_date_typed(start_date):
     start_day = start_date[0:2]
     start_month = start_date[3:5]
