@@ -25,27 +25,27 @@ class SuperResearchResult(admin.ModelAdmin):
 
 
 class UnpublishedAdmin(SuperResearchResult):
-    fields = ['status', 'title', 'type', 'paper_status', 'year', 'month', 'key', 'url', 'note']
-    list_display = ('authors', 'title', 'type', 'status', 'year')
+    fields = ['team', 'status', 'title', 'type', 'paper_status', 'date', 'url', 'key', 'note']
+    list_display = ('authors', 'title', 'type', 'status', 'date')
     list_display_links = ('title',)
-    form = UnpublishedAdminForm
+    #form = UnpublishedAdminForm
 
 admin.site.register(Unpublished, UnpublishedAdmin)
 
 
 class InProceedingAdmin(SuperResearchResult):
-    fields = ['title', 'book_title', 'year', 'month', 'address', 'doi', 'editor', 'volume', 'number', 'serie',
+    fields = ['team', 'title', 'book_title', 'date', 'address', 'doi', 'editor', 'volume', 'number', 'serie',
               'start_page', 'end_page', 'publisher', 'organization', 'key', 'url', 'note', 'attachment', 'reference']
-    list_display = ('authors', 'title', 'book_title', 'month', 'year')
+    list_display = ('authors', 'title', 'book_title', 'date')
     list_display_links = ('title',)
 
 admin.site.register(InProceeding, InProceedingAdmin)
 
 
 class ArticleAdmin(SuperResearchResult):
-    fields = ['title', 'journal', 'status', 'year', 'month', 'volume', 'number', 'doi', 'start_page', 'end_page',
-              'key', 'url', 'note', 'attachment', 'reference']
-    list_display = ('authors', 'title', 'journal', 'status', 'month', 'year')
+    fields = ['team', 'title', 'journal', 'status', 'date', 'volume', 'number', 'doi', 'start_page', 'end_page', 'key',
+              'url', 'note', 'attachment', 'reference']
+    list_display = ('team', 'authors', 'title', 'journal', 'status', 'date')
     list_display_links = ('title',)
     form = ArticleAdminForm
 
@@ -53,8 +53,8 @@ admin.site.register(Article, ArticleAdmin)
 
 
 class BookAdmin(SuperResearchResult):
-    fields = ['title', 'publisher', 'editor', 'year', 'month', 'doi', 'volume', 'serie', 'edition', 'url', 'key',
-              'note', 'reference']
+    fields = ['team', 'title', 'publisher', 'editor', 'date', 'doi', 'volume', 'serie', 'edition', 'url', 'key', 'note',
+              'reference']
     list_display = ('authors', 'title', 'created')
     list_display_links = ('title',)
 
@@ -70,9 +70,9 @@ admin.site.register(InBook, InBookAdmin)
 
 
 class AcademicWorkAdmin(admin.ModelAdmin):
-    fields = ['type', 'status', 'title', 'author', 'advisor', 'co_advisor', 'institution', 'schollarship',
+    fields = ['type', 'status', 'title', 'advisee', 'advisor', 'co_advisor', 'institution', 'schollarship',
               'start_date', 'end_date']
-    list_display = ('title', 'author', 'advisor', 'type', 'status', 'start_date', 'end_date')
+    list_display = ('title', 'advisee', 'advisor', 'type', 'status', 'start_date', 'end_date')
     list_display_links = ('title',)
 
     # Shows the academic work according to the user permission
