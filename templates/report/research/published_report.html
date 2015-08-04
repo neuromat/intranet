@@ -17,15 +17,15 @@
         {% for article in published %}
             {% if article.published.published_type == 'a' %}
                 <li style="text-align: justify">
-                    <strong>{{ article.title }}</strong>. {{ article.authors }} {{ article.published.article.journal }}.
+                    <strong>{{ article.title }}</strong>. {{ article.authors }} {{ article.published.article.journal }},
                     {% if article.published.article.volume %}
-                        Vol. {{ article.published.article.volume }},
+                        <strong>{{ article.published.article.volume }}</strong>
                     {% endif %}
                     {% if article.published.article.number %}
-                        n° {{ article.published.article.number }},
+                        ({{ article.published.article.number }}),
                     {% endif %}
                     {% if article.published.article.start_page and article.published.article.end_page %}
-                        Page(s): {{ article.published.article.start_page }}-{{ article.published.article.end_page }},
+                        {{ article.published.article.start_page }}-{{ article.published.article.end_page }},
                     {% endif %}
                     {% if article.published.article.doi %}
                         DOI: {{ article.published.article.doi }},
