@@ -130,6 +130,44 @@
         </ol>
     {% endif %}
 
+    {% if c_dissemination %}
+        <p><strong>Communications in meetings with referee from the dissemination team</strong></p>
+        <ol type="1">
+            {% for article in c_dissemination %}
+                <li style="text-align: justify">
+                    {% if article.url %}
+                        <a href="{{ article.url }}" target="_blank"><strong>{{ article.title }}</strong></a>.
+                    {% else %}
+                        <strong>{{ article.title }}</strong>.
+                    {% endif %}
+                    {{ article.authors }} {{ article.published.communicationinmeeting.event_name }},
+                    {{ article.published.communicationinmeeting.local }},
+                    from {{ article.published.communicationinmeeting.start_date|date:"M d" }}
+                    to {{ article.published.communicationinmeeting.end_date }}.
+                </li><br>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    {% if c_transfer %}
+        <p><strong>Communications in meetings with referee from the technology transfer team</strong></p>
+        <ol type="1">
+            {% for article in c_transfer %}
+                <li style="text-align: justify">
+                    {% if article.url %}
+                        <a href="{{ article.url }}" target="_blank"><strong>{{ article.title }}</strong></a>.
+                    {% else %}
+                        <strong>{{ article.title }}</strong>.
+                    {% endif %}
+                    {{ article.authors }} {{ article.published.communicationinmeeting.event_name }},
+                    {{ article.published.communicationinmeeting.local }},
+                    from {{ article.published.communicationinmeeting.start_date|date:"M d" }}
+                    to {{ article.published.communicationinmeeting.end_date }}.
+                </li><br>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
     {% if submitted %}
         <p><strong>Submitted</strong></p>
         <ol type="1">
