@@ -51,25 +51,44 @@ def articles(request):
         else:
             end_date = now_plus_five_years()
 
-        scientific = ResearchResult.objects.filter(published__published_type='a', team='s', date__gt=start_date,
-                                                   date__lt=end_date).order_by('-date')
+        scientific = ResearchResult.objects.filter(published__published_type='a', team='s',
+                                                   published__article__date__gt=start_date,
+                                                   published__article__date__lt=end_date).order_by('-published__article__date')
 
-        dissemination = ResearchResult.objects.filter(published__published_type='a', team='d', date__gt=start_date,
-                                                      date__lt=end_date).order_by('-date')
+        dissemination = ResearchResult.objects.filter(published__published_type='a', team='d',
+                                                      published__article__date__gt=start_date,
+                                                      published__article__date__lt=end_date).order_by('-published__article__date')
 
-        transfer = ResearchResult.objects.filter(published__published_type='a', team='t', date__gt=start_date,
-                                                 date__lt=end_date).order_by('-date')
+        transfer = ResearchResult.objects.filter(published__published_type='a', team='t',
+                                                 published__article__date__gt=start_date,
+                                                 published__article__date__lt=end_date).order_by('-published__article__date')
+
+        # "c" means Communication. Refers to communications in meetings with referee.
+        c_scientific = ResearchResult.objects.filter(published__published_type='m', team='s',
+                                                     published__communicationinmeeting__start_date__gt=start_date,
+                                                     published__communicationinmeeting__start_date__lt=end_date).order_by('-published__communicationinmeeting__start_date')
+
+        c_dissemination = ResearchResult.objects.filter(published__published_type='m', team='d',
+                                                        published__communicationinmeeting__start_date__gt=start_date,
+                                                        published__communicationinmeeting__start_date__lt=end_date).order_by('-published__communicationinmeeting__start_date')
+
+        c_transfer = ResearchResult.objects.filter(published__published_type='m', team='t',
+                                                   published__communicationinmeeting__start_date__gt=start_date,
+                                                   published__communicationinmeeting__start_date__lt=end_date).order_by('-published__communicationinmeeting__start_date')
 
         submitted = ResearchResult.objects.filter(research_result_type='u', unpublished__type='a',
                                                   unpublished__paper_status='s', unpublished__status='i',
-                                                  date__gt=start_date, date__lt=end_date).order_by('-date')
+                                                  unpublished__date__gt=start_date,
+                                                  unpublished__date__lt=end_date).order_by('-unpublished__date')
 
         draft = ResearchResult.objects.filter(research_result_type='u', unpublished__type='a',
                                               unpublished__paper_status='d', unpublished__status='i',
-                                              date__gt=start_date, date__lt=end_date).order_by('-date')
+                                              unpublished__date__gt=start_date,
+                                              unpublished__date__lt=end_date).order_by('-unpublished__date')
 
         if start_date < end_date:
             context = {'scientific': scientific, 'dissemination': dissemination, 'transfer': transfer,
+                       'c_scientific': c_scientific, 'c_dissemination': c_dissemination, 'c_transfer': c_transfer,
                        'submitted': submitted, 'draft': draft}
             return render(request, 'report/research/articles_report.html', context)
 

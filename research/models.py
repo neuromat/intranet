@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from person.models import Person, Institution
-import datetime
 from django.utils.html import format_html
 
 # Defining types of status
@@ -59,20 +58,11 @@ TEAMS = (
 
 
 class ResearchResult(models.Model):
-    """
-    '__unicode__'		Returns the title.
-    'class Meta'		Ordering of data by date modification.
-    """
     team = models.CharField(_('Team'), max_length=1, choices=TEAMS)
     person = models.ManyToManyField(Person, through='Author')
     title = models.CharField(_('Title'), max_length=255)
-    date = models.DateField(_('Date'), help_text='Date the article was published, accepted or submitted. '
-                                                 'Only month and year are important here.')
     url = models.URLField(_('URL'), max_length=255, blank=True, null=True)
-    key = models.CharField(_('Key'), max_length=255, blank=True, null=True)
     note = models.CharField(_('Note'), max_length=255, blank=True, null=True)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(default=datetime.datetime.now)
     research_result_type = models.CharField(_('Type'), max_length=1, choices=RESEARCH_RESULT_TYPE, blank=True)
 
     def __unicode__(self):
@@ -83,10 +73,6 @@ class ResearchResult(models.Model):
                                       for person in self.person.all().order_by('author__order')]))
 
     authors.allow_tags = True
-
-    # Description of the model / Sort by title
-    class Meta:
-        ordering = ('-modified', )
 
 
 class Author(models.Model):
@@ -101,11 +87,6 @@ class Author(models.Model):
 
 
 class Published(ResearchResult):
-    reference = models.TextField(_('Reference to NeuroMat'), blank=True, null=True,
-                                 help_text='You should copy here the lines of your work that makes reference to CEPID '
-                                           'NeuroMat, e.g., "this article (thesis,...) was produced as part of the '
-                                           'activities of FAPESP Center for Neuromathematics (grant #2013/07699-0, '
-                                           'S.Paulo Research Foundation)".')
     published_type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
 
     # Sets the type of research result as published.
@@ -124,6 +105,8 @@ class Unpublished(ResearchResult):
     status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER, default=IN_PROGRESS,
                               blank=True, null=True)
     paper_status = models.CharField(_('Paper status'), max_length=1, choices=UNPUBLISHED_STATUS, blank=True, null=True)
+    date = models.DateField(_('Date'), help_text='Date the academic work was done. '
+                                                 'Only month and year are important here.')
 
     class Meta:
         verbose_name = _('Unpublished')
@@ -136,26 +119,19 @@ class Unpublished(ResearchResult):
         super(Unpublished, self).save(*args, **kwargs)
 
 
-class InProceeding(Published):
+class CommunicationInMeeting(Published):
     """
-    An instance of this class is an article in a conference proceedings.
+    An instance of this class is an article in a conference, congress, meeting or symposium.
 
     """
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
-    address = models.CharField(_('Address'), max_length=255, blank=True, null=True,
-                               help_text='Where the conference was held, e.g., "Nagoya, Japan".')
-    book_title = models.CharField(_('Book title'), max_length=255)
-    editor = models.CharField(_('Editor'), max_length=255, blank=True, null=True)
-    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
-    number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
-    serie = models.CharField(_('Serie'), max_length=255, blank=True, null=True)
-    start_page = models.IntegerField(_('Start page'), blank=True, null=True)
-    end_page = models.IntegerField(_('End page'), blank=True, null=True)
+    event_name = models.CharField(_('Event name'), max_length=255,
+                                  help_text='Name of the conference, congress, meeting or symposium')
+    local = models.CharField(_('Local'), max_length=255, blank=True, null=True,
+                             help_text='Where the event was held, e.g., "Nagoya, Japan".')
     attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    publisher = models.ForeignKey(Institution, related_name='published_by', verbose_name=_('Publisher'),
-                                  blank=True, null=True)
-    organization = models.ForeignKey(Institution, related_name='sponsored_by', verbose_name=_('Organization'),
-                                     blank=True, null=True)
+    start_date = models.DateField(_('Start date of the event'))
+    end_date = models.DateField(_('End date of the event'))
 
     class Meta:
         verbose_name = _('Communication in meeting')
@@ -165,7 +141,7 @@ class InProceeding(Published):
     def save(self, *args, **kwargs):
         if self.pk is None:
             self.published_type = MEETING
-        super(InProceeding, self).save(*args, **kwargs)
+        super(CommunicationInMeeting, self).save(*args, **kwargs)
 
 
 class Journal(models.Model):
@@ -198,6 +174,8 @@ class Article(Published):
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
     attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'), help_text='Date the article was published or accepted. '
+                                                 'Only month and year are important here.')
 
     class Meta:
         verbose_name = _('Article')
@@ -221,6 +199,7 @@ class Book(Published):
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     serie = models.CharField(_('Serie'), max_length=255, blank=True, null=True)
     edition = models.CharField(_('Edition'), max_length=255, blank=True, null=True)
+    date = models.DateField(_('Date'), help_text='Date the book was published. Only month and year are important here.')
 
     class Meta:
         verbose_name = _('Book')

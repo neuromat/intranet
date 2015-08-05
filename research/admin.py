@@ -25,26 +25,25 @@ class SuperResearchResult(admin.ModelAdmin):
 
 
 class UnpublishedAdmin(SuperResearchResult):
-    fields = ['team', 'status', 'title', 'type', 'paper_status', 'date', 'url', 'key', 'note']
-    list_display = ('authors', 'title', 'type', 'status', 'date')
+    fields = ['team', 'status', 'title', 'type', 'paper_status', 'date', 'url', 'note']
+    list_display = ('authors', 'title', 'type', 'status', 'paper_status', 'date')
     list_display_links = ('title',)
-    #form = UnpublishedAdminForm
+    form = UnpublishedAdminForm
 
 admin.site.register(Unpublished, UnpublishedAdmin)
 
 
-class InProceedingAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'book_title', 'date', 'address', 'doi', 'editor', 'volume', 'number', 'serie',
-              'start_page', 'end_page', 'publisher', 'organization', 'url', 'key', 'note', 'attachment', 'reference']
-    list_display = ('authors', 'title', 'book_title', 'date')
+class CommunicationInMeetingAdmin(SuperResearchResult):
+    fields = ['team', 'title', 'event_name', 'local', 'start_date', 'end_date', 'doi', 'url', 'note', 'attachment']
+    list_display = ('authors', 'title', 'event_name')
     list_display_links = ('title',)
 
-admin.site.register(InProceeding, InProceedingAdmin)
+admin.site.register(CommunicationInMeeting, CommunicationInMeetingAdmin)
 
 
 class ArticleAdmin(SuperResearchResult):
     fields = ['team', 'title', 'journal', 'status', 'date', 'volume', 'number', 'doi', 'start_page', 'end_page', 'url',
-              'key', 'note', 'attachment', 'reference']
+              'note', 'attachment']
     list_display = ('team', 'authors', 'title', 'journal', 'status', 'date')
     list_display_links = ('title',)
     form = ArticleAdminForm
@@ -53,9 +52,8 @@ admin.site.register(Article, ArticleAdmin)
 
 
 class BookAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'publisher', 'editor', 'date', 'doi', 'volume', 'serie', 'edition', 'url', 'key', 'note',
-              'reference']
-    list_display = ('authors', 'title', 'created')
+    fields = ['team', 'title', 'publisher', 'editor', 'date', 'doi', 'volume', 'serie', 'edition', 'url', 'note']
+    list_display = ('authors', 'title', 'date')
     list_display_links = ('title',)
 
 admin.site.register(Book, BookAdmin)
