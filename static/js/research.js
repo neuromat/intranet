@@ -32,14 +32,12 @@ $(document).ready(function () {
             $('#id_doi').parents('.row').show();
             $('#id_start_page').parents('.row').show();
             $('#id_end_page').parents('.row').show();
-            $('#id_url').parents('.row').show();
         } else{
             $('#id_volume').parents('.row').hide();
             $('#id_number').parents('.row').hide();
             $('#id_doi').parents('.row').hide();
             $('#id_start_page').parents('.row').hide();
             $('#id_end_page').parents('.row').hide();
-            $('#id_url').parents('.row').hide();
         }
     });
 
@@ -50,14 +48,12 @@ $(document).ready(function () {
             $('#id_doi').parents('.row').show();
             $('#id_start_page').parents('.row').show();
             $('#id_end_page').parents('.row').show();
-            $('#id_url').parents('.row').show();
         } else{
             $('#id_volume').parents('.row').hide();
             $('#id_number').parents('.row').hide();
             $('#id_doi').parents('.row').hide();
             $('#id_start_page').parents('.row').hide();
             $('#id_end_page').parents('.row').hide();
-            $('#id_url').parents('.row').hide();
         }
     });
 });
