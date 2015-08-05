@@ -36,7 +36,7 @@ def now_plus_five_years():
 
 
 @login_required
-def published_articles(request):
+def articles(request):
 
     if request.method == 'POST':
         start_date = request.POST['start_date']
@@ -71,9 +71,9 @@ def published_articles(request):
         if start_date < end_date:
             context = {'scientific': scientific, 'dissemination': dissemination, 'transfer': transfer,
                        'submitted': submitted, 'draft': draft}
-            return render(request, 'report/research/published_report.html', context)
+            return render(request, 'report/research/articles_report.html', context)
 
-    return render(request, 'report/research/published.html')
+    return render(request, 'report/research/articles.html')
 
 
 @login_required
