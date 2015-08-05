@@ -94,23 +94,23 @@ def academic_works(request):
         else:
             end_date = now_plus_five_years()
 
-        type = request.POST['type']
+        work_type = request.POST['type']
 
         # Show all the academic works completed within the selected period
-        result_status_concluded = AcademicWork.objects.filter(type=type, status='c', end_date__gt=start_date,
+        result_status_concluded = AcademicWork.objects.filter(type=work_type, status='c', end_date__gt=start_date,
                                                               end_date__lt=end_date).order_by('-end_date')
 
         # Show all the academic works that are in progress within the selected period
-        result_status_in_progress = AcademicWork.objects.filter(type=type, status='i',
+        result_status_in_progress = AcademicWork.objects.filter(type=work_type, status='i',
                                                                 start_date__lt=end_date).order_by('-end_date')
 
         if end_date >= start_date:
             context = {'result_status_concluded': result_status_concluded,
-                       'result_status_in_progress': result_status_in_progress, 'type': type}
+                       'result_status_in_progress': result_status_in_progress, 'type': work_type}
             return render(request, 'report/research/academic_works_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
-            context = {'types': types}
+            context = {'types': work_type}
             return render(request, 'report/research/academic_works.html', context)
 
     context = {'types': types}
