@@ -34,8 +34,8 @@ admin.site.register(Unpublished, UnpublishedAdmin)
 
 
 class CommunicationInMeetingAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'event_name', 'local', 'start_date', 'end_date', 'doi', 'url', 'note', 'attachment']
-    list_display = ('authors', 'title', 'event_name')
+    fields = ['team', 'title', 'event', 'doi', 'url', 'note', 'attachment']
+    list_display = ('authors', 'title', 'event')
     list_display_links = ('title',)
 
 admin.site.register(CommunicationInMeeting, CommunicationInMeetingAdmin)
@@ -65,6 +65,14 @@ class InBookAdmin(admin.ModelAdmin):
     list_display_links = ('book',)
 
 admin.site.register(InBook, InBookAdmin)
+
+
+class EventAdmin(admin.ModelAdmin):
+    fields = ['name', 'local', 'start_date', 'end_date']
+    list_display = ('name', 'local', 'start_date', 'end_date')
+    list_display_links = ('name',)
+
+admin.site.register(Event, EventAdmin)
 
 
 class AcademicWorkAdmin(admin.ModelAdmin):

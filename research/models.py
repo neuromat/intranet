@@ -99,6 +99,7 @@ class Published(ResearchResult):
 class Unpublished(ResearchResult):
     """
     An instance of this class is a document having an author and title, but not formally published.
+    Similar to @unpublished from bibtex.
 
     """
     type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
@@ -119,19 +120,38 @@ class Unpublished(ResearchResult):
         super(Unpublished, self).save(*args, **kwargs)
 
 
+class Event(models.Model):
+    """
+    An instance of this class is a conference, a congress, a meeting or a symposium.
+    Similar to @proceedings from bibtex.
+
+    """
+    name = models.CharField(_('Name'), max_length=255)
+    start_date = models.DateField(_('Start date of the event'))
+    end_date = models.DateField(_('End date of the event'))
+    local = models.CharField(_('Local'), max_length=255, help_text='Where the conference was held, '
+                                                                   'e.g., "Rio de Janeiro, RJ, Brazil".')
+
+    # Returns the name
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Event')
+        verbose_name_plural = _('Events')
+        ordering = ('name', )
+
+
 class CommunicationInMeeting(Published):
     """
     An instance of this class is an article in a conference, congress, meeting or symposium.
+    Similar to @inproceedings from bibtex.
 
     """
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
-    event_name = models.CharField(_('Event name'), max_length=255,
-                                  help_text='Name of the conference, congress, meeting or symposium')
-    local = models.CharField(_('Local'), max_length=255, blank=True, null=True,
-                             help_text='Where the event was held, e.g., "Nagoya, Japan".')
+    event = models.ForeignKey(Event, verbose_name=_('Event'), help_text='Name of the conference, congress, meeting or '
+                                                                        'symposium')
     attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    start_date = models.DateField(_('Start date of the event'))
-    end_date = models.DateField(_('End date of the event'))
 
     class Meta:
         verbose_name = _('Communication in meeting')
@@ -164,6 +184,7 @@ class Journal(models.Model):
 class Article(Published):
     """
     An instance of this class is a paper published by a journal.
+    Similar to @article from bibtex.
 
     """
     journal = models.ForeignKey(Journal, verbose_name=_('Journal'))
@@ -190,7 +211,8 @@ class Article(Published):
 
 class Book(Published):
     """
-    An instance of this class is a book or a chapter of a book.
+    An instance of this class is a book.
+    Similar to @book from bibtex.
 
     """
     publisher = models.ForeignKey(Institution, verbose_name=_('Publisher'))
@@ -213,6 +235,11 @@ class Book(Published):
 
 
 class InBook(models.Model):
+    """
+    An instance of this class is a chapter of a book.
+    Similar to @inbook from bibtex.
+
+    """
     book = models.ForeignKey(Book, verbose_name=_('Book'))
     chapter = models.CharField(_('Chapter'), max_length=255, blank=True, null=True)
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
