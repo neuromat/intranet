@@ -121,10 +121,10 @@
                     {% else %}
                         <strong>{{ article.title }}</strong>.
                     {% endif %}
-                    {{ article.authors }} {{ article.published.communicationinmeeting.event_name }},
-                    {{ article.published.communicationinmeeting.local }},
-                    from {{ article.published.communicationinmeeting.start_date|date:"M d" }}
-                    to {{ article.published.communicationinmeeting.end_date }}.
+                    {{ article.authors }} {{ article.published.communicationinmeeting.event.name }},
+                    {{ article.published.communicationinmeeting.event.local }},
+                    from {{ article.published.communicationinmeeting.event.start_date|date:"M d" }}
+                    to {{ article.published.communicationinmeeting.event.end_date }}.
                 </li><br>
             {% endfor %}
         </ol>
@@ -140,10 +140,10 @@
                     {% else %}
                         <strong>{{ article.title }}</strong>.
                     {% endif %}
-                    {{ article.authors }} {{ article.published.communicationinmeeting.event_name }},
-                    {{ article.published.communicationinmeeting.local }},
-                    from {{ article.published.communicationinmeeting.start_date|date:"M d" }}
-                    to {{ article.published.communicationinmeeting.end_date }}.
+                    {{ article.authors }} {{ article.published.communicationinmeeting.event.name }},
+                    {{ article.published.communicationinmeeting.event.local }},
+                    from {{ article.published.communicationinmeeting.event.start_date|date:"M d" }}
+                    to {{ article.published.communicationinmeeting.event.end_date }}.
                 </li><br>
             {% endfor %}
         </ol>
@@ -159,10 +159,10 @@
                     {% else %}
                         <strong>{{ article.title }}</strong>.
                     {% endif %}
-                    {{ article.authors }} {{ article.published.communicationinmeeting.event_name }},
-                    {{ article.published.communicationinmeeting.local }},
-                    from {{ article.published.communicationinmeeting.start_date|date:"M d" }}
-                    to {{ article.published.communicationinmeeting.end_date }}.
+                    {{ article.authors }} {{ article.published.communicationinmeeting.event.name }},
+                    {{ article.published.communicationinmeeting.event.local }},
+                    from {{ article.published.communicationinmeeting.event.start_date|date:"M d" }}
+                    to {{ article.published.communicationinmeeting.event.end_date }}.
                 </li><br>
             {% endfor %}
         </ol>

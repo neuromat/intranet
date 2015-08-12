@@ -65,16 +65,16 @@ def articles(request):
 
         # "c" means Communication. Refers to communications in meetings with referee.
         c_scientific = ResearchResult.objects.filter(published__published_type='m', team='s',
-                                                     published__communicationinmeeting__start_date__gt=start_date,
-                                                     published__communicationinmeeting__start_date__lt=end_date).order_by('-published__communicationinmeeting__start_date')
+                                                     published__communicationinmeeting__event__start_date__gt=start_date,
+                                                     published__communicationinmeeting__event__start_date__lt=end_date).order_by('-published__communicationinmeeting__event__start_date')
 
         c_dissemination = ResearchResult.objects.filter(published__published_type='m', team='d',
-                                                        published__communicationinmeeting__start_date__gt=start_date,
-                                                        published__communicationinmeeting__start_date__lt=end_date).order_by('-published__communicationinmeeting__start_date')
+                                                        published__communicationinmeeting__event__start_date__gt=start_date,
+                                                        published__communicationinmeeting__event__start_date__lt=end_date).order_by('-published__communicationinmeeting__event__start_date')
 
         c_transfer = ResearchResult.objects.filter(published__published_type='m', team='t',
-                                                   published__communicationinmeeting__start_date__gt=start_date,
-                                                   published__communicationinmeeting__start_date__lt=end_date).order_by('-published__communicationinmeeting__start_date')
+                                                   published__communicationinmeeting__event__start_date__gt=start_date,
+                                                   published__communicationinmeeting__event__start_date__lt=end_date).order_by('-published__communicationinmeeting__event__start_date')
 
         submitted = ResearchResult.objects.filter(research_result_type='u', unpublished__type='a',
                                                   unpublished__paper_status='s', unpublished__status='i',
