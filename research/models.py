@@ -132,7 +132,6 @@ class Event(models.Model):
     local = models.CharField(_('Local'), max_length=255, help_text='Where the conference was held, '
                                                                    'e.g., "Rio de Janeiro, RJ, Brazil".')
 
-    # Returns the name
     def __unicode__(self):
         return u'%s' % self.name
 
@@ -171,7 +170,6 @@ class Journal(models.Model):
     """
     name = models.CharField(_('Name'), max_length=255)
 
-    # Returns the name
     def __unicode__(self):
         return u'%s' % self.name
 
@@ -245,6 +243,9 @@ class InBook(models.Model):
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
 
+    def __unicode__(self):
+        return u'%s' % self.chapter
+
     class Meta:
         verbose_name = _('Inbook')
         verbose_name_plural = _('Inbooks')
@@ -257,7 +258,6 @@ class TypeAcademicWork(models.Model):
     """
     name = models.CharField(_('Name'), max_length=255)
 
-    # Returns the name
     def __unicode__(self):
         return u'%s' % self.name
 
@@ -284,6 +284,13 @@ class AcademicWork(models.Model):
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'))
 
+    def __unicode__(self):
+        return u'%s' % self.title
+
+    def co_advisors(self):
+        return ', '.join([unicode(co_advisor.full_name) for co_advisor in self.co_advisor.all()])
+
     class Meta:
         verbose_name = _('Academic Work')
         verbose_name_plural = _('Academic Works')
+        ordering = ('-end_date', )
