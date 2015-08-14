@@ -11,13 +11,13 @@
 
 {% block content %}
 
-{% if result_status_concluded or result_status_in_progress %}
-    {% if type == '1' %}
-        <h4>Post-doctoral fellows</h4>
-        {% if result_status_concluded %}
+{% if postdoc_concluded or postdoc_in_progress or phd_concluded or phd_in_progress or msc_concluded or msc_in_progress %}
+    {% if postdoc_concluded or postdoc_in_progress %}
+        <h3><strong>Post-doctoral fellows</strong></h3>
+        {% if postdoc_concluded %}
             <p><strong>Concluded</strong></p>
             <ol>
-                {% for result in result_status_concluded %}
+                {% for result in postdoc_concluded %}
                     <li>{{ result.title }}</li>
                     <ul>
                         <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
@@ -30,11 +30,10 @@
                 {% endfor %}
             </ol>
         {% endif %}
-        <br>
-        {% if result_status_in_progress %}
+        {% if postdoc_in_progress %}
             <p><strong>In progress</strong></p>
             <ol>
-                {% for result in result_status_in_progress %}
+                {% for result in postdoc_in_progress %}
                     <li>{{ result.title }}</li>
                     <ul>
                         <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
@@ -47,12 +46,13 @@
                 {% endfor %}
             </ol>
         {% endif %}
-    {% elif type == '2' %}
-        <h4><strong>PhD thesis</strong></h4>
-        {% if result_status_concluded %}
+    {% endif %}
+    {% if phd_concluded or phd_in_progress %}
+        <h3><strong>PhD thesis</strong></h3>
+        {% if phd_concluded %}
             <p><strong>Concluded</strong></p>
             <ol>
-                {% for result in result_status_concluded %}
+                {% for result in phd_concluded %}
                     <li>{{ result.title }}</li>
                     <ul>
                         <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
@@ -65,11 +65,10 @@
                 {% endfor %}
             </ol>
         {% endif %}
-        <br>
-        {% if result_status_in_progress %}
+        {% if phd_in_progress %}
             <p><strong>In progress</strong></p>
             <ol>
-                {% for result in result_status_in_progress %}
+                {% for result in phd_in_progress %}
                     <li>{{ result.title }}</li>
                     <ul>
                         <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
@@ -82,12 +81,13 @@
                 {% endfor %}
             </ol>
         {% endif %}
-    {% elif type == '3' %}
-        <h4><strong>MSc dissertations</strong></h4>
-        {% if result_status_concluded %}
+    {% endif %}
+    {% if msc_concluded or msc_in_progress %}
+        <h3><strong>MSc dissertations</strong></h3>
+        {% if msc_concluded %}
             <p><strong>Concluded</strong></p>
             <ol>
-                {% for result in result_status_concluded %}
+                {% for result in msc_concluded %}
                     <li>{{ result.title }}</li>
                     <ul>
                         <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
@@ -100,11 +100,10 @@
                 {% endfor %}
             </ol>
         {% endif %}
-        <br>
-        {% if result_status_in_progress %}
+        {% if msc_in_progress %}
             <p><strong>In progress</strong></p>
             <ol>
-                {% for result in result_status_in_progress %}
+                {% for result in msc_in_progress %}
                     <li>{{ result.title }}</li>
                     <ul>
                         <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>

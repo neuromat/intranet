@@ -17,15 +17,6 @@
 <form role="form" method="post">{% csrf_token %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-3 col-sm-3">
-            <label>{% trans "Type" %}</label>
-            <select class="form-control" name="type" id="id_type">
-                {% for type in types %}
-                    <option value="{{ type.id }}">{{ type.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
         <div class="col-xs-2 col-sm-2">
             <label>{% trans "Start date" %}</label>
             <input class="form-control" name="start_date" id="id_start_date">

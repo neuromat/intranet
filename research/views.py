@@ -98,8 +98,6 @@ def articles(request):
 @login_required
 def academic_works(request):
 
-    types = TypeAcademicWork.objects.all()
-
     if request.method == 'POST':
         start_date = request.POST['start_date']
         if start_date:
@@ -113,25 +111,31 @@ def academic_works(request):
         else:
             end_date = now_plus_five_years()
 
-        work_type = request.POST['type']
+        # Get all the Postdocs among the chosen dates
+        postdoc_concluded = AcademicWork.objects.filter(type__name='Post-doctoral', status='c', end_date__gt=start_date,
+                                                        end_date__lt=end_date).order_by('-end_date')
+        postdoc_in_progress = AcademicWork.objects.filter(type__name='Post-doctoral', status='i',
+                                                          start_date__lt=end_date).order_by('-end_date')
 
-        # Show all the academic works completed within the selected period
-        result_status_concluded = AcademicWork.objects.filter(type=work_type, status='c', end_date__gt=start_date,
-                                                              end_date__lt=end_date).order_by('-end_date')
+        # Get all the PhDs among the chosen dates
+        phd_concluded = AcademicWork.objects.filter(type__name='PhD', status='c', end_date__gt=start_date,
+                                                    end_date__lt=end_date).order_by('-end_date')
+        phd_in_progress = AcademicWork.objects.filter(type__name='PhD', status='i',
+                                                      start_date__lt=end_date).order_by('-end_date')
 
-        # Show all the academic works that are in progress within the selected period
-        result_status_in_progress = AcademicWork.objects.filter(type=work_type, status='i',
-                                                                start_date__lt=end_date).order_by('-end_date')
+        # Get all the MScs among the chosen dates
+        msc_concluded = AcademicWork.objects.filter(type__name='MSc', status='c', end_date__gt=start_date,
+                                                    end_date__lt=end_date).order_by('-end_date')
+        msc_in_progress = AcademicWork.objects.filter(type__name='MSc', status='i',
+                                                      start_date__lt=end_date).order_by('-end_date')
 
         if end_date >= start_date:
-            context = {'result_status_concluded': result_status_concluded,
-                       'result_status_in_progress': result_status_in_progress, 'type': work_type}
+            context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
+                       'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
+                       'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
             return render(request, 'report/research/academic_works_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
-            context = {'types': work_type}
-            return render(request, 'report/research/academic_works.html', context)
+            return render(request, 'report/research/academic_works.html')
 
-    context = {'types': types}
-
-    return render(request, 'report/research/academic_works.html', context)
+    return render(request, 'report/research/academic_works.html')
