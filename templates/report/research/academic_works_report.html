@@ -11,6 +11,8 @@
 
 {% block content %}
 
+<h4><a href="{% url 'research.views.academic_works' 1 %}">{% trans 'Download latex file' %}</a></h4>
+
 {% if postdoc_concluded or postdoc_in_progress or phd_concluded or phd_in_progress or msc_concluded or msc_in_progress %}
     {% if postdoc_concluded or postdoc_in_progress %}
         <h3><strong>Post-doctoral fellows</strong></h3>
