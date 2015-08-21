@@ -4,11 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from models import ResearchResult, AcademicWork
 import datetime
-import os
-from tempfile import mkdtemp, mkstemp
 from django.template.loader import render_to_string
-from django.conf import settings
-import shutil
 
 TIME = " 00:00:00"
 
@@ -146,7 +142,8 @@ def academic_works(request, tex=False):
             else:
                 context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
                            'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-                           'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
+                           'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress,
+                           'start_date': start_date, 'end_date': end_date}
 
                 return render(request, 'report/research/academic_works_report.html', context)
         else:
