@@ -1,0 +1,27 @@
+{% block content %}
+
+{% if postdoc_concluded or postdoc_in_progress or phd_concluded or phd_in_progress or msc_concluded or msc_in_progress %}
+	{% if postdoc_concluded or postdoc_in_progress %}
+\subsubsection{Post-doctoral fellows}
+		{% if postdoc_concluded %}
+\paragraph{Concluded}
+\begin{enumerate}
+			{% for postdoc in postdoc_concluded %}
+	\item Title of the project: {{ postdoc.title }}
+	\begin{itemize}
+		\item Period: {{ postdoc.start_date }} to {{ postdoc.end_date }}
+		\item Name of the student: {{ postdoc.advisee }}
+		\item Advisor: {{ postdoc.advisor }}
+		{% if postdoc.co_advisors %}\item Co-advisor: {{ postdoc.co_advisors }}{% endif %}
+		\item Institution: {{ postdoc.institution }}
+		{% if postdoc.schollarship %}\item Schollarship: {{ postdoc.schollarship }}{% endif %}
+	\end{itemize}
+             {% endfor %}
+\end{enumerate}
+		{% endif %}	
+	{% endif %}
+{%  else %}
+    No academic works found!
+{% endif %}
+
+{% endblock %}
