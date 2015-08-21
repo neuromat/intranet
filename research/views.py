@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
@@ -101,7 +101,7 @@ def articles(request):
 
 
 @login_required
-def academic_works(request):
+def academic_works(request, tex=False):
 
     if request.method == 'POST':
         start_date = request.POST['start_date']
@@ -135,28 +135,20 @@ def academic_works(request):
                                                       start_date__lt=end_date).order_by('-end_date')
 
         if end_date >= start_date:
-            context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
-                       'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-                       'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
+            if tex:
+                context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
+                           'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
+                           'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
 
-            # In a temporary folder, make a temporary file
-            tmp_folder = mkdtemp()
-            os.chdir(tmp_folder)
-            texfile, texfilename = mkstemp(dir=tmp_folder)
+                response = HttpResponse(render_to_string('report/research/tex/academic_works.tex', context), content_type='text/plain')
+                response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
+                return response
+            else:
+                context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
+                           'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
+                           'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
 
-            # Pass the TeX template through Django templating engine and into the temp file
-            os.write(texfile, render_to_string('report/research/tex/academic_works.tex', context).encode('utf-8'))
-            os.close(texfile)
-
-            # Copy and remove
-            shutil.move(texfilename, settings.MEDIA_ROOT)
-            shutil.rmtree(tmp_folder)
-
-            context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
-                       'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-                       'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
-
-            return render(request, 'report/research/academic_works_report.html', context)
+                return render(request, 'report/research/academic_works_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/research/academic_works.html')
