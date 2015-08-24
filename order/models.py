@@ -173,7 +173,7 @@ class Order(models.Model):
                                % (requester_name, check_order.id, nira_website, order_type, check_order.id)
                 if subject and from_email and to:
                     try:
-                        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, bcc=to)
                         msg.attach_alternative(html_content, "text/html")
                         msg.send()
                     except BadHeaderError:
@@ -186,7 +186,7 @@ class Order(models.Model):
                            'Clique <a href="%s/admin/order/order">aqui</a> para ver o pedido.</p>' % nira_website
             if subject and from_email and to:
                 try:
-                    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, bcc=to)
                     msg.attach_alternative(html_content, "text/html")
                     msg.send()
                 except BadHeaderError:
