@@ -99,7 +99,37 @@ def articles(request):
 @login_required
 def academic_works(request, tex=False):
 
-    if request.method == 'POST':
+    if tex:
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+
+        # Get all the Postdocs among the chosen dates
+        postdoc_concluded = AcademicWork.objects.filter(type__name='Post-doctoral', status='c', end_date__gt=start_date,
+                                                        end_date__lt=end_date).order_by('-end_date')
+        postdoc_in_progress = AcademicWork.objects.filter(type__name='Post-doctoral', status='i',
+                                                          start_date__lt=end_date).order_by('-end_date')
+
+        # Get all the PhDs among the chosen dates
+        phd_concluded = AcademicWork.objects.filter(type__name='PhD', status='c', end_date__gt=start_date,
+                                                    end_date__lt=end_date).order_by('-end_date')
+        phd_in_progress = AcademicWork.objects.filter(type__name='PhD', status='i',
+                                                      start_date__lt=end_date).order_by('-end_date')
+
+        # Get all the MScs among the chosen dates
+        msc_concluded = AcademicWork.objects.filter(type__name='MSc', status='c', end_date__gt=start_date,
+                                                    end_date__lt=end_date).order_by('-end_date')
+        msc_in_progress = AcademicWork.objects.filter(type__name='MSc', status='i',
+                                                      start_date__lt=end_date).order_by('-end_date')
+
+        context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
+                   'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
+                   'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
+
+        response = HttpResponse(render_to_string('report/research/tex/academic_works.tex', context), content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
+        return response
+
+    elif request.method == 'POST':
         start_date = request.POST['start_date']
         if start_date:
             start_date = start_date_typed(start_date)
@@ -131,21 +161,12 @@ def academic_works(request, tex=False):
                                                       start_date__lt=end_date).order_by('-end_date')
 
         if end_date >= start_date:
-            if tex:
-                context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
-                           'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-                           'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
+            context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
+                       'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
+                       'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress,
+                       'start_date': start_date, 'end_date': end_date}
 
-                response = HttpResponse(render_to_string('report/research/tex/academic_works.tex', context), content_type='text/plain')
-                response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
-                return response
-            else:
-                context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
-                           'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-                           'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress,
-                           'start_date': start_date, 'end_date': end_date}
-
-                return render(request, 'report/research/academic_works_report.html', context)
+            return render(request, 'report/research/academic_works_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/research/academic_works.html')
