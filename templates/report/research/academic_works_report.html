@@ -11,13 +11,10 @@
 
 {% block content %}
 
-<h4><a href="{% url 'research.views.academic_works' 1 %}?start_date={{ start_date }}&end_date={{ end_date }}">{% trans 'Download latex file' %}</a></h4>
-
-<form action="{% url 'research.views.academic_works' 1 %}" method="GET">
-    <input type="hidden" name="start_date" value="{{ start_date }}" />
-    <input type="hidden" name="end_date" value="{{ end_date }}" />
-    <input type="submit" title="{% trans 'Download latex file' %}" class="btn_print" name="acao" value="1"  />
-</form>
+<p>
+    <a href="{% url 'research.views.academic_works' 1 %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}">{% trans 'Download .tex file' %}</a> |
+    {% trans 'Download .ris file' %}
+</p>
 
 {% if postdoc_concluded or postdoc_in_progress or phd_concluded or phd_in_progress or msc_concluded or msc_in_progress %}
     {% if postdoc_concluded or postdoc_in_progress %}
