@@ -18,22 +18,22 @@
 
 {% if postdoc_concluded or postdoc_in_progress or phd_concluded or phd_in_progress or msc_concluded or msc_in_progress %}
     {% if postdoc_concluded or postdoc_in_progress %}
-        <h3><strong>Post-doctoral fellows</strong></h3>
+        <h3><strong>{% trans 'Post-doctoral fellows' %}</strong></h3>
         {% if postdoc_concluded %}
-            <p><strong>Concluded</strong></p>
+            <p><strong>{% trans 'Concluded' %}</strong></p>
             <ol>
                 {% for result in postdoc_concluded %}
-                    <li>{{ result.title }}</li>
+                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
                     <ul>
-                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
-                        <li>Name of the student: {{ result.advisee }}</li>
-                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>{% trans 'Period' %}: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
+                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
-                            <li>Co-advisor: {{ result.co_advisors }}</li>
+                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
-                        <li>Institution: {{ result.institution }}</li>
+                        <li>{% trans 'Institution' %}: {{ result.institution }}</li>
                         {% if result.schollarship %}
-                            <li>Schollarship: {{ result.schollarship }}</li>
+                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
                         {% endif %}
                     </ul>
                     <br>
@@ -41,20 +41,20 @@
             </ol>
         {% endif %}
         {% if postdoc_in_progress %}
-            <p><strong>In progress</strong></p>
+            <p><strong>{% trans 'In progress' %}</strong></p>
             <ol>
                 {% for result in postdoc_in_progress %}
-                    <li>{{ result.title }}</li>
+                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
                     <ul>
-                        <li>Period: {{ result.start_date }} - ongoing</li>
-                        <li>Name of the student: {{ result.advisee }}</li>
-                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing</li>
+                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
+                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
-                            <li>Co-advisor: {{ result.co_advisors }}</li>
+                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
-                        <li>Institution: {{ result.institution }}</li>
+                        <li>{% trans 'Institution' %}: {{ result.institution }}</li>
                         {% if result.schollarship %}
-                            <li>Schollarship: {{ result.schollarship }}</li>
+                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
                         {% endif %}
                     </ul>
                     <br>
@@ -63,22 +63,22 @@
         {% endif %}
     {% endif %}
     {% if phd_concluded or phd_in_progress %}
-        <h3><strong>PhD thesis</strong></h3>
+        <h3><strong>{% trans 'PhD thesis' %}</strong></h3>
         {% if phd_concluded %}
-            <p><strong>Concluded</strong></p>
+            <p><strong>{% trans 'Concluded' %}</strong></p>
             <ol>
                 {% for result in phd_concluded %}
-                    <li>{{ result.title }}</li>
+                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
                     <ul>
-                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
-                        <li>Name of the student: {{ result.advisee }}</li>
-                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>{% trans 'Period' %}: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
+                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
-                            <li>Co-advisor: {{ result.co_advisors }}</li>
+                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
-                        <li>Institution: {{ result.institution }}</li>
+                        <li>{% trans 'Institution' %}: {{ result.institution }}</li>
                         {% if result.schollarship %}
-                            <li>Schollarship: {{ result.schollarship }}</li>
+                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
                         {% endif %}
                     </ul>
                     <br>
@@ -86,20 +86,20 @@
             </ol>
         {% endif %}
         {% if phd_in_progress %}
-            <p><strong>In progress</strong></p>
+            <p><strong>{% trans 'In progress' %}</strong></p>
             <ol>
                 {% for result in phd_in_progress %}
-                    <li>{{ result.title }}</li>
+                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
                     <ul>
-                        <li>Period: {{ result.start_date }} - ongoing</li>
-                        <li>Name of the student: {{ result.advisee }}</li>
-                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing</li>
+                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
+                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
-                            <li>Co-advisor: {{ result.co_advisors }}</li>
+                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
-                        <li>Institution: {{ result.institution }}</li>
+                        <li>{% trans 'Institution' %}: {{ result.institution }}</li>
                         {% if result.schollarship %}
-                            <li>Schollarship: {{ result.schollarship }}</li>
+                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
                         {% endif %}
                     </ul>
                     <br>
@@ -108,22 +108,22 @@
         {% endif %}
     {% endif %}
     {% if msc_concluded or msc_in_progress %}
-        <h3><strong>MSc dissertations</strong></h3>
+        <h3><strong>{% trans 'MSc dissertations' %}</strong></h3>
         {% if msc_concluded %}
-            <p><strong>Concluded</strong></p>
+            <p><strong>{% trans 'Concluded' %}</strong></p>
             <ol>
                 {% for result in msc_concluded %}
-                    <li>{{ result.title }}</li>
+                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
                     <ul>
-                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
-                        <li>Name of the student: {{ result.advisee }}</li>
-                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>{% trans 'Period' %}: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
+                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
-                            <li>Co-advisor: {{ result.co_advisors }}</li>
+                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
-                        <li>Institution: {{ result.institution }}</li>
+                        <li>{% trans 'Institution' %}: {{ result.institution }}</li>
                         {% if result.schollarship %}
-                            <li>Schollarship: {{ result.schollarship }}</li>
+                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
                         {% endif %}
                     </ul>
                     <br>
@@ -131,20 +131,20 @@
             </ol>
         {% endif %}
         {% if msc_in_progress %}
-            <p><strong>In progress</strong></p>
+            <p><strong>{% trans 'In progress' %}</strong></p>
             <ol>
                 {% for result in msc_in_progress %}
-                    <li>{{ result.title }}</li>
+                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
                     <ul>
-                        <li>Period: {{ result.start_date }} - ongoing</li>
-                        <li>Name of the student: {{ result.advisee }}</li>
-                        <li>Advisor: {{ result.advisor }}</li>
+                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing</li>
+                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
+                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
-                            <li>Co-advisor: {{ result.co_advisors }}</li>
+                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
-                        <li>Institution: {{ result.institution }}</li>
+                        <li>{% trans 'Institution' %}: {{ result.institution }}</li>
                         {% if result.schollarship %}
-                            <li>Schollarship: {{ result.schollarship }}</li>
+                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
                         {% endif %}
                     </ul>
                     <br>
