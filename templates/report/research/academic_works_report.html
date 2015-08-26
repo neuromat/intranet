@@ -46,7 +46,7 @@
                 {% for result in postdoc_in_progress %}
                     <li>{{ result.title }}</li>
                     <ul>
-                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>Period: {{ result.start_date }} - ongoing</li>
                         <li>Name of the student: {{ result.advisee }}</li>
                         <li>Advisor: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
@@ -91,7 +91,7 @@
                 {% for result in phd_in_progress %}
                     <li>{{ result.title }}</li>
                     <ul>
-                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>Period: {{ result.start_date }} - ongoing</li>
                         <li>Name of the student: {{ result.advisee }}</li>
                         <li>Advisor: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
@@ -136,7 +136,7 @@
                 {% for result in msc_in_progress %}
                     <li>{{ result.title }}</li>
                     <ul>
-                        <li>Period: {{ result.start_date }} to {{ result.end_date }}</li>
+                        <li>Period: {{ result.start_date }} - ongoing</li>
                         <li>Name of the student: {{ result.advisee }}</li>
                         <li>Advisor: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
