@@ -279,10 +279,9 @@ class AcademicWork(models.Model):
     co_advisor = models.ManyToManyField(Person, verbose_name=_('Co-Advisor'),
                                         related_name='co_advisor_academic_work', blank=True, null=True)
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'))
-    status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER)
     schollarship = models.CharField(_('Schollarship'), max_length=255, blank=True, null=True)
     start_date = models.DateField(_('Start date'))
-    end_date = models.DateField(_('End date'))
+    end_date = models.DateField(_('End date'), blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -293,4 +292,4 @@ class AcademicWork(models.Model):
     class Meta:
         verbose_name = _('Academic Work')
         verbose_name_plural = _('Academic Works')
-        ordering = ('-end_date', )
+        ordering = ('-start_date', )

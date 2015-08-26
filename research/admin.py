@@ -76,9 +76,9 @@ admin.site.register(Event, EventAdmin)
 
 
 class AcademicWorkAdmin(admin.ModelAdmin):
-    fields = ['type', 'status', 'title', 'advisee', 'advisor', 'co_advisor', 'institution', 'schollarship',
-              'start_date', 'end_date']
-    list_display = ('title', 'advisee', 'advisor', 'type', 'status', 'start_date', 'end_date')
+    fields = ['type', 'title', 'advisee', 'advisor', 'co_advisor', 'institution', 'schollarship', 'start_date',
+              'end_date']
+    list_display = ('title', 'advisee', 'advisor', 'type', 'start_date', 'end_date')
     list_display_links = ('title',)
 
     # Shows the academic work according to the user permission
