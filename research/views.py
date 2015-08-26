@@ -38,7 +38,6 @@ def now_plus_five_years():
 
 @login_required
 def articles(request):
-
     if request.method == 'POST':
         start_date = request.POST['start_date']
         if start_date:
@@ -96,40 +95,31 @@ def articles(request):
     return render(request, 'report/research/articles.html')
 
 
+def search_academic_works(start_date, end_date):
+    # Get all the Postdocs among the chosen dates
+    postdoc_concluded = AcademicWork.objects.filter(type__name='Post-doctoral', status='c', end_date__gt=start_date,
+                                                    end_date__lt=end_date).order_by('-end_date')
+    postdoc_in_progress = AcademicWork.objects.filter(type__name='Post-doctoral', status='i',
+                                                      start_date__lt=end_date).order_by('-end_date')
+
+    # Get all the PhDs among the chosen dates
+    phd_concluded = AcademicWork.objects.filter(type__name='PhD', status='c', end_date__gt=start_date,
+                                                end_date__lt=end_date).order_by('-end_date')
+    phd_in_progress = AcademicWork.objects.filter(type__name='PhD', status='i',
+                                                  start_date__lt=end_date).order_by('-end_date')
+
+    # Get all the MScs among the chosen dates
+    msc_concluded = AcademicWork.objects.filter(type__name='MSc', status='c', end_date__gt=start_date,
+                                                end_date__lt=end_date).order_by('-end_date')
+    msc_in_progress = AcademicWork.objects.filter(type__name='MSc', status='i',
+                                                  start_date__lt=end_date).order_by('-end_date')
+
+    return postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress
+
+
 @login_required
-def academic_works(request, tex=False):
-
-    if tex:
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
-
-        # Get all the Postdocs among the chosen dates
-        postdoc_concluded = AcademicWork.objects.filter(type__name='Post-doctoral', status='c', end_date__gt=start_date,
-                                                        end_date__lt=end_date).order_by('-end_date')
-        postdoc_in_progress = AcademicWork.objects.filter(type__name='Post-doctoral', status='i',
-                                                          start_date__lt=end_date).order_by('-end_date')
-
-        # Get all the PhDs among the chosen dates
-        phd_concluded = AcademicWork.objects.filter(type__name='PhD', status='c', end_date__gt=start_date,
-                                                    end_date__lt=end_date).order_by('-end_date')
-        phd_in_progress = AcademicWork.objects.filter(type__name='PhD', status='i',
-                                                      start_date__lt=end_date).order_by('-end_date')
-
-        # Get all the MScs among the chosen dates
-        msc_concluded = AcademicWork.objects.filter(type__name='MSc', status='c', end_date__gt=start_date,
-                                                    end_date__lt=end_date).order_by('-end_date')
-        msc_in_progress = AcademicWork.objects.filter(type__name='MSc', status='i',
-                                                      start_date__lt=end_date).order_by('-end_date')
-
-        context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
-                   'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-                   'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
-
-        response = HttpResponse(render_to_string('report/research/tex/academic_works.tex', context), content_type='text/plain')
-        response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
-        return response
-
-    elif request.method == 'POST':
+def academic_works(request):
+    if request.method == 'POST':
         start_date = request.POST['start_date']
         if start_date:
             start_date = start_date_typed(start_date)
@@ -142,23 +132,7 @@ def academic_works(request, tex=False):
         else:
             end_date = now_plus_five_years()
 
-        # Get all the Postdocs among the chosen dates
-        postdoc_concluded = AcademicWork.objects.filter(type__name='Post-doctoral', status='c', end_date__gt=start_date,
-                                                        end_date__lt=end_date).order_by('-end_date')
-        postdoc_in_progress = AcademicWork.objects.filter(type__name='Post-doctoral', status='i',
-                                                          start_date__lt=end_date).order_by('-end_date')
-
-        # Get all the PhDs among the chosen dates
-        phd_concluded = AcademicWork.objects.filter(type__name='PhD', status='c', end_date__gt=start_date,
-                                                    end_date__lt=end_date).order_by('-end_date')
-        phd_in_progress = AcademicWork.objects.filter(type__name='PhD', status='i',
-                                                      start_date__lt=end_date).order_by('-end_date')
-
-        # Get all the MScs among the chosen dates
-        msc_concluded = AcademicWork.objects.filter(type__name='MSc', status='c', end_date__gt=start_date,
-                                                    end_date__lt=end_date).order_by('-end_date')
-        msc_in_progress = AcademicWork.objects.filter(type__name='MSc', status='i',
-                                                      start_date__lt=end_date).order_by('-end_date')
+        postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress = search_academic_works(start_date, end_date)
 
         if end_date >= start_date:
             context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
@@ -172,3 +146,19 @@ def academic_works(request, tex=False):
             return render(request, 'report/research/academic_works.html')
 
     return render(request, 'report/research/academic_works.html')
+
+
+@login_required
+def academic_works_tex(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress = search_academic_works(start_date, end_date)
+
+    context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
+               'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
+               'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
+
+    response = HttpResponse(render_to_string('report/research/tex/academic_works.tex', context), content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
+    return response
