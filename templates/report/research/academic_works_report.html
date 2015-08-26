@@ -12,7 +12,7 @@
 {% block content %}
 
 <p>
-    <a href="{% url 'research.views.academic_works' 1 %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}">{% trans 'Download .tex file' %}</a> |
+    <a href="{% url 'academic_works_tex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}">{% trans 'Download .tex file' %}</a> |
     {% trans 'Download .ris file' %}
 </p>
 
