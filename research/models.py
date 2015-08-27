@@ -276,9 +276,8 @@ class AcademicWork(models.Model):
     title = models.CharField(_('Title'), max_length=255)
     advisee = models.ForeignKey(Person, verbose_name=_('Advisee'))
     advisor = models.ForeignKey(Person, verbose_name=_('Advisor'), related_name='advisor_academic_work')
-    co_advisor = models.ManyToManyField(Person, verbose_name=_('Co-Advisor'),
-                                        related_name='co_advisor_academic_work', blank=True, null=True)
-    institution = models.ForeignKey(Institution, verbose_name=_('Institution'))
+    co_advisor = models.ManyToManyField(Person, verbose_name=_('Co-Advisor'), related_name='co_advisor_academic_work',
+                                        blank=True, null=True)
     schollarship = models.CharField(_('Schollarship'), max_length=255, blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
