@@ -1,27 +1,114 @@
 {% block content %}
-
 {% if postdoc_concluded or postdoc_in_progress or phd_concluded or phd_in_progress or msc_concluded or msc_in_progress %}
 	{% if postdoc_concluded or postdoc_in_progress %}
 \subsubsection{Post-doctoral fellows}
 		{% if postdoc_concluded %}
 \paragraph{Concluded}
 \begin{enumerate}
-			{% for postdoc in postdoc_concluded %}
-	\item Title of the project: {{ postdoc.title }}
+			{% for result in postdoc_concluded %}
+	\item Title of the project: {{ result.title }}
 	\begin{itemize}
-		\item Period: {{ postdoc.start_date }} to {{ postdoc.end_date }}
-		\item Name of the student: {{ postdoc.advisee }}
-		\item Advisor: {{ postdoc.advisor }}
-		{% if postdoc.co_advisors %}\item Co-advisor: {{ postdoc.co_advisors }}{% endif %}
-		\item Institution: {{ postdoc.institution }}
-		{% if postdoc.schollarship %}\item Schollarship: {{ postdoc.schollarship }}{% endif %}
+		\item Period: {{ result.start_date }} to {{ result.end_date }}
+		\item Advisee: {{ result.advisee }}
+		\item Advisor: {{ result.advisor }}
+		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
+		\item Institution: {{ result.institution }}
+		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+	\end{itemize}
+             {% endfor %}
+\end{enumerate}
+		{% endif %}	
+		{% if postdoc_in_progress %}
+\paragraph{In progress}
+\begin{enumerate}
+			{% for result in postdoc_in_progress %}
+	\item Title of the project: {{ result.title }}
+	\begin{itemize}
+		\item Period: {{ result.start_date }} - ongoing
+		\item Advisee: {{ result.advisee }}
+		\item Advisor: {{ result.advisor }}
+		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
+		\item Institution: {{ result.institution }}
+		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
 	\end{itemize}
              {% endfor %}
 \end{enumerate}
 		{% endif %}	
 	{% endif %}
+
+{% if phd_concluded or phd_in_progress %}
+\subsubsection{PhD thesis}
+		{% if phd_concluded %}
+\paragraph{Concluded}
+\begin{enumerate}
+			{% for result in phd_concluded %}
+	\item Title of the project: {{ result.title }}
+	\begin{itemize}
+		\item Period: {{ result.start_date }} to {{ result.end_date }}
+		\item Advisee: {{ result.advisee }}
+		\item Advisor: {{ result.advisor }}
+		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
+		\item Institution: {{ result.institution }}
+		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+	\end{itemize}
+             {% endfor %}
+\end{enumerate}
+		{% endif %}	
+		{% if phd_in_progress %}
+\paragraph{In progress}
+\begin{enumerate}
+			{% for result in phd_in_progress %}
+	\item Title of the project: {{ result.title }}
+	\begin{itemize}
+		\item Period: {{ result.start_date }} - ongoing
+		\item Advisee: {{ result.advisee }}
+		\item Advisor: {{ result.advisor }}
+		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
+		\item Institution: {{ result.institution }}
+		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+	\end{itemize}
+             {% endfor %}
+\end{enumerate}
+		{% endif %}	
+	{% endif %}
+
+{% if msc_concluded or msc_in_progress %}
+\subsubsection{MSc dissertations}
+		{% if msc_concluded %}
+\paragraph{Concluded}
+\begin{enumerate}
+			{% for result in msc_concluded %}
+	\item Title of the project: {{ result.title }}
+	\begin{itemize}
+		\item Period: {{ result.start_date }} to {{ result.end_date }}
+		\item Advisee: {{ result.advisee }}
+		\item Advisor: {{ result.advisor }}
+		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
+		\item Institution: {{ result.institution }}
+		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+	\end{itemize}
+             {% endfor %}
+\end{enumerate}
+		{% endif %}	
+		{% if msc_in_progress %}
+\paragraph{In progress}
+\begin{enumerate}
+			{% for result in msc_in_progress %}
+	\item Title of the project: {{ result.title }}
+	\begin{itemize}
+		\item Period: {{ result.start_date }} - ongoing
+		\item Advisee: {{ result.advisee }}
+		\item Advisor: {{ result.advisor }}
+		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
+		\item Institution: {{ result.institution }}
+		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+	\end{itemize}
+             {% endfor %}
+\end{enumerate}
+		{% endif %}	
+	{% endif %}
+	
 {%  else %}
     No academic works found!
 {% endif %}
-
 {% endblock %}
