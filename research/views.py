@@ -5,6 +5,7 @@ from django.contrib import messages
 from models import ResearchResult, AcademicWork
 import datetime
 from django.template.loader import render_to_string
+from django.db.models import Q
 
 TIME = " 00:00:00"
 
@@ -99,20 +100,21 @@ def search_academic_works(start_date, end_date):
     # Get all the Postdocs among the chosen dates
     postdoc_concluded = AcademicWork.objects.filter(type__name='Post-doctoral', end_date__gt=start_date,
                                                     end_date__lt=end_date).order_by('-end_date')
-    postdoc_in_progress = AcademicWork.objects.filter(type__name='Post-doctoral', start_date__lt=end_date,
-                                                      end_date__isnull=True).order_by('-start_date')
+    postdoc_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gt=end_date),
+                                                      type__name='Post-doctoral',
+                                                      start_date__lt=end_date).order_by('-start_date')
 
     # Get all the PhDs among the chosen dates
     phd_concluded = AcademicWork.objects.filter(type__name='PhD', end_date__gt=start_date,
                                                 end_date__lt=end_date).order_by('-end_date')
-    phd_in_progress = AcademicWork.objects.filter(type__name='PhD', start_date__lt=end_date,
-                                                  end_date__isnull=True).order_by('-start_date')
+    phd_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gt=end_date),
+                                                  type__name='PhD', start_date__lt=end_date).order_by('-start_date')
 
     # Get all the MScs among the chosen dates
     msc_concluded = AcademicWork.objects.filter(type__name='MSc', end_date__gt=start_date,
                                                 end_date__lt=end_date).order_by('-end_date')
-    msc_in_progress = AcademicWork.objects.filter(type__name='MSc', start_date__lt=end_date,
-                                                  end_date__isnull=True).order_by('-start_date')
+    msc_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gt=end_date),
+                                                  type__name='MSc', start_date__lt=end_date).order_by('-start_date')
 
     return postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress
 
