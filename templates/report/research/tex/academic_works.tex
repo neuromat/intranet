@@ -12,7 +12,7 @@
 		\item Advisee: {{ result.advisee }}
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
-		\item Institution: {{ result.institution }}
+		\item Institution: {{ result.advisee.institution }}
 		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
 	\end{itemize}
              {% endfor %}
@@ -28,7 +28,7 @@
 		\item Advisee: {{ result.advisee }}
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
-		\item Institution: {{ result.institution }}
+		\item Institution: {{ result.advisee.institution }}
 		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
 	\end{itemize}
              {% endfor %}
@@ -48,7 +48,7 @@
 		\item Advisee: {{ result.advisee }}
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
-		\item Institution: {{ result.institution }}
+		\item Institution: {{ result.advisee.institution }}
 		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
 	\end{itemize}
              {% endfor %}
@@ -64,7 +64,7 @@
 		\item Advisee: {{ result.advisee }}
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
-		\item Institution: {{ result.institution }}
+		\item Institution: {{ result.advisee.institution }}
 		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
 	\end{itemize}
              {% endfor %}
@@ -84,7 +84,7 @@
 		\item Advisee: {{ result.advisee }}
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
-		\item Institution: {{ result.institution }}
+		\item Institution: {{ result.advisee.institution }}
 		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
 	\end{itemize}
              {% endfor %}
@@ -100,7 +100,7 @@
 		\item Advisee: {{ result.advisee }}
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
-		\item Institution: {{ result.institution }}
+		\item Institution: {{ result.advisee.institution }}
 		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
 	\end{itemize}
              {% endfor %}
