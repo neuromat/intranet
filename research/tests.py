@@ -5,13 +5,11 @@ from django.test.client import RequestFactory
 from models import AcademicWork, TypeAcademicWork, Person
 
 
-USER_USERNAME = 'myadmin'
-USER_PWD = 'mypassword'
+USERNAME = 'myuser'
+PASSWORD = 'mypassword'
 
 
 class ResearchValidation(TestCase):
-
-    user = ''
     academic_work = None
     advisee = None
     advisor = None
@@ -20,14 +18,14 @@ class ResearchValidation(TestCase):
     postdoc_02 = None
 
     def setUp(self):
-        self.user = User.objects.create_user(username=USER_USERNAME, password=USER_PWD)
+        self.user = User.objects.create_user(username=USERNAME, password=PASSWORD)
         self.user.is_staff = True
         self.user.is_superuser = True
         self.user.save()
 
         self.factory = RequestFactory()
 
-        logged = self.client.login(username=USER_USERNAME, password=USER_PWD)
+        logged = self.client.login(username=USERNAME, password=PASSWORD)
         self.assertEqual(logged, True)
 
         academic_work = TypeAcademicWork.objects.create(name='Post-doctoral')
@@ -38,6 +36,8 @@ class ResearchValidation(TestCase):
 
         advisor = Person.objects.create(full_name='Emma Miller')
         advisor.save()
+
+        # List of academic works
 
         # First academic work
         postdoc_01 = AcademicWork()
@@ -53,8 +53,62 @@ class ResearchValidation(TestCase):
         postdoc_02.type = academic_work
         postdoc_02.advisee = advisee
         postdoc_02.advisor = advisor
-        postdoc_02.start_date = '2013-08-20'
-        postdoc_02.end_date = '2014-08-26'
+        postdoc_02.start_date = '2013-07-01'
+        postdoc_02.end_date = '2014-05-26'
+        postdoc_02.save()
+
+        # Third academic work
+        postdoc_02 = AcademicWork()
+        postdoc_02.type = academic_work
+        postdoc_02.advisee = advisee
+        postdoc_02.advisor = advisor
+        postdoc_02.start_date = '2014-08-05'
+        postdoc_02.end_date = '2015-06-20'
+        postdoc_02.save()
+
+        # Fourth academic work
+        postdoc_02 = AcademicWork()
+        postdoc_02.type = academic_work
+        postdoc_02.advisee = advisee
+        postdoc_02.advisor = advisor
+        postdoc_02.start_date = '2015-06-25'
+        postdoc_02.end_date = '2016-01-01'
+        postdoc_02.save()
+
+        # Fifth academic work
+        postdoc_02 = AcademicWork()
+        postdoc_02.type = academic_work
+        postdoc_02.advisee = advisee
+        postdoc_02.advisor = advisor
+        postdoc_02.start_date = '2015-08-26'
+        postdoc_02.end_date = '2016-01-01'
+        postdoc_02.save()
+
+        # Sixth academic work
+        postdoc_02 = AcademicWork()
+        postdoc_02.type = academic_work
+        postdoc_02.advisee = advisee
+        postdoc_02.advisor = advisor
+        postdoc_02.start_date = '2013-05-20'
+        postdoc_02.end_date = '2016-01-01'
+        postdoc_02.save()
+
+        # Seventh academic work
+        postdoc_02 = AcademicWork()
+        postdoc_02.type = academic_work
+        postdoc_02.advisee = advisee
+        postdoc_02.advisor = advisor
+        postdoc_02.start_date = '2013-07-01'
+        postdoc_02.end_date = '2014-07-01'
+        postdoc_02.save()
+
+        # Eighth academic work
+        postdoc_02 = AcademicWork()
+        postdoc_02.type = academic_work
+        postdoc_02.advisee = advisee
+        postdoc_02.advisor = advisor
+        postdoc_02.start_date = '2014-07-01'
+        postdoc_02.end_date = '2016-01-01'
         postdoc_02.save()
 
     def test_current_report(self):
@@ -63,4 +117,14 @@ class ResearchValidation(TestCase):
 
         response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
 
-        self.assertEqual(len(response.context['postdoc_concluded']), 1)
+        self.assertEqual(len(response.context['postdoc_concluded']), 3)
+        self.assertEqual(len(response.context['postdoc_in_progress']), 3)
+
+    def test_previous_report(self):
+        start_date = '01-07-2013'
+        end_date = '01-07-2014'
+
+        response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
+
+        self.assertEqual(len(response.context['postdoc_concluded']), 2)
+        self.assertEqual(len(response.context['postdoc_in_progress']), 3)
