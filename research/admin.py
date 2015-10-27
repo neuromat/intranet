@@ -1,10 +1,9 @@
 from django.contrib import admin
 from research.models import *
-from forms import UnpublishedAdminForm, ArticleAdminForm
+from forms import ArticleAdminForm
 from django.db.models import Q
 
 admin.site.register(TypeAcademicWork)
-admin.site.register(Journal)
 
 
 class AuthorsInline(admin.TabularInline):
@@ -12,9 +11,24 @@ class AuthorsInline(admin.TabularInline):
     extra = 1
 
 
-class SuperResearchResult(admin.ModelAdmin):
-    inlines = (AuthorsInline,)
+class DraftInline(admin.TabularInline):
+    model = Draft
 
+
+class SubmittedInline(admin.TabularInline):
+    model = Submitted
+    extra = 1
+
+
+class AcceptedInline(admin.TabularInline):
+    model = Accepted
+
+
+class PublishedInline(admin.StackedInline):
+    model = Published
+
+
+class SuperResearchResult(admin.ModelAdmin):
     # Shows the research result according to the user permission
     # Users defined as superuser or NIRA Admin can see all the research result
     def get_queryset(self, request):
@@ -24,31 +38,30 @@ class SuperResearchResult(admin.ModelAdmin):
         return qs.filter(author=request.user.projectmember)
 
 
-class UnpublishedAdmin(SuperResearchResult):
-    fields = ['team', 'status', 'title', 'type', 'paper_status', 'date', 'url', 'note']
-    list_display = ('authors', 'title', 'type', 'status', 'paper_status', 'date')
-    list_display_links = ('title',)
-    form = UnpublishedAdminForm
-
-admin.site.register(Unpublished, UnpublishedAdmin)
-
-
-class CommunicationInMeetingAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'event', 'doi', 'url', 'note', 'attachment']
-    list_display = ('authors', 'title', 'event')
-    list_display_links = ('title',)
-
-admin.site.register(CommunicationInMeeting, CommunicationInMeetingAdmin)
-
-
 class ArticleAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'journal', 'status', 'date', 'volume', 'number', 'doi', 'start_page', 'end_page', 'url',
-              'note', 'attachment']
-    list_display = ('team', 'authors', 'title', 'journal', 'status', 'date')
+    fields = ['team', 'title', 'journal', 'event', 'url', 'note']
+    list_display = ('team', 'authors', 'title')
     list_display_links = ('title',)
+    inlines = (AuthorsInline, DraftInline, SubmittedInline, AcceptedInline, PublishedInline)
     form = ArticleAdminForm
 
 admin.site.register(Article, ArticleAdmin)
+
+
+class EventAdmin(admin.ModelAdmin):
+    fields = ['name', 'acronym', 'local', 'start_date', 'end_date']
+    list_display = ('name', 'local', 'start_date', 'end_date')
+    list_display_links = ('name',)
+
+admin.site.register(Event, EventAdmin)
+
+
+class JournalAdmin(admin.ModelAdmin):
+    fields = ['name', 'acronym']
+    list_display = ('name',)
+    list_display_links = ('name',)
+
+admin.site.register(Journal, JournalAdmin)
 
 
 class BookAdmin(SuperResearchResult):
@@ -65,14 +78,6 @@ class InBookAdmin(admin.ModelAdmin):
     list_display_links = ('book',)
 
 admin.site.register(InBook, InBookAdmin)
-
-
-class EventAdmin(admin.ModelAdmin):
-    fields = ['name', 'local', 'start_date', 'end_date']
-    list_display = ('name', 'local', 'start_date', 'end_date')
-    list_display_links = ('name',)
-
-admin.site.register(Event, EventAdmin)
 
 
 class AcademicWorkAdmin(admin.ModelAdmin):

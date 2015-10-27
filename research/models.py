@@ -3,47 +3,15 @@ from django.utils.translation import ugettext_lazy as _
 from person.models import Person, Institution
 from django.utils.html import format_html
 
-# Defining types of status
-IN_PROGRESS = 'i'
-CONCLUDED = 'c'
-STATUS_ANSWER = (
-    (IN_PROGRESS, _('In Progress')),
-    (CONCLUDED, _('Concluded')),
-)
-
-# Defining types of research results
-UNPUBLISHED = 'u'
-PUBLISHED = 'p'
-RESEARCH_RESULT_TYPE = (
-    (UNPUBLISHED, _('Unpublished')),
-    (PUBLISHED, _('Published')),
-)
-
-# Defining types of status for article (Published)
-ACCEPTED = 'a'
-PUBLISHED_STATUS = (
-    (ACCEPTED, _('Accepted')),
-    (PUBLISHED, _('Published')),
-)
-
-# Defining types of status for article (Unpublished)
-DRAFT = 'd'
-SUBMITTED = 's'
-UNPUBLISHED_STATUS = (
-    (DRAFT, _('Draft')),
-    (SUBMITTED, _('Submitted')),
-)
 
 # Defining types of research results
 ARTICLE = 'a'
-MEETING = 'm'
 BOOK = 'b'
-IN_BOOK = 'i'
+BOOK_CHAPTER = 'c'
 TYPE = (
     (ARTICLE, _('Article')),
-    (MEETING, _('Communication in meeting')),
     (BOOK, _('Book')),
-    (IN_BOOK, _('In book')),
+    (BOOK_CHAPTER, _('Book chapter')),
 )
 
 # Teams
@@ -63,7 +31,7 @@ class ResearchResult(models.Model):
     title = models.CharField(_('Title'), max_length=255)
     url = models.URLField(_('URL'), max_length=255, blank=True, null=True)
     note = models.CharField(_('Note'), max_length=255, blank=True, null=True)
-    research_result_type = models.CharField(_('Type'), max_length=1, choices=RESEARCH_RESULT_TYPE, blank=True)
+    research_result_type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -86,40 +54,6 @@ class Author(models.Model):
         ordering = ('order', )
 
 
-class Published(ResearchResult):
-    published_type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
-
-    # Sets the type of research result as published.
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            self.research_result_type = PUBLISHED
-        super(Published, self).save(*args, **kwargs)
-
-
-class Unpublished(ResearchResult):
-    """
-    An instance of this class is a document having an author and title, but not formally published.
-    Similar to @unpublished from bibtex.
-
-    """
-    type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
-    status = models.CharField(_('Status'), max_length=1, choices=STATUS_ANSWER, default=IN_PROGRESS,
-                              blank=True, null=True)
-    paper_status = models.CharField(_('Paper status'), max_length=1, choices=UNPUBLISHED_STATUS, blank=True, null=True)
-    date = models.DateField(_('Date'), help_text='Date the academic work was done. '
-                                                 'Only month and year are important here.')
-
-    class Meta:
-        verbose_name = _('Unpublished')
-        verbose_name_plural = _('Unpublished')
-
-    # Sets the type of research result as unpublished.
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            self.research_result_type = UNPUBLISHED
-        super(Unpublished, self).save(*args, **kwargs)
-
-
 class Event(models.Model):
     """
     An instance of this class is a conference, a congress, a meeting or a symposium.
@@ -127,6 +61,7 @@ class Event(models.Model):
 
     """
     name = models.CharField(_('Name'), max_length=255)
+    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
     start_date = models.DateField(_('Start date of the event'))
     end_date = models.DateField(_('End date of the event'))
     local = models.CharField(_('Local'), max_length=255, help_text='Where the conference was held, '
@@ -141,34 +76,13 @@ class Event(models.Model):
         ordering = ('name', )
 
 
-class CommunicationInMeeting(Published):
-    """
-    An instance of this class is an article in a conference, congress, meeting or symposium.
-    Similar to @inproceedings from bibtex.
-
-    """
-    doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
-    event = models.ForeignKey(Event, verbose_name=_('Event'), help_text='Name of the conference, congress, meeting or '
-                                                                        'symposium')
-    attachment = models.FileField(_('Attachment'), blank=True, null=True)
-
-    class Meta:
-        verbose_name = _('Communication in meeting')
-        verbose_name_plural = _('Communications in meetings')
-
-    # Sets the type of research result.
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            self.published_type = MEETING
-        super(CommunicationInMeeting, self).save(*args, **kwargs)
-
-
 class Journal(models.Model):
     """
     An instance of this class is a journal.
 
     """
     name = models.CharField(_('Name'), max_length=255)
+    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.name
@@ -179,35 +93,76 @@ class Journal(models.Model):
         ordering = ('name', )
 
 
-class Article(Published):
+class Article(ResearchResult):
     """
-    An instance of this class is a paper published by a journal.
-    Similar to @article from bibtex.
+    An instance of this class is a paper in a conference or in a journal.
 
     """
-    journal = models.ForeignKey(Journal, verbose_name=_('Journal'))
-    status = models.CharField(_('Status'), max_length=1, choices=PUBLISHED_STATUS)
-    doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
-    number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
-    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
-    start_page = models.IntegerField(_('Start page'), blank=True, null=True)
-    end_page = models.IntegerField(_('End page'), blank=True, null=True)
-    attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    date = models.DateField(_('Date'), help_text='Date the article was published or accepted. '
-                                                 'Only month and year are important here.')
+    journal = models.ForeignKey(Journal, verbose_name=_('Journal'), blank=True, null=True)
+    event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
+                              help_text='Name of the conference, congress, meeting or symposium')
+
+    def __unicode__(self):
+        return u'%s' % self.title
 
     class Meta:
         verbose_name = _('Article')
         verbose_name_plural = _('Articles')
+        ordering = ('title', )
 
-    # Sets the type of research result.
+    # Sets the type of research result as article.
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.published_type = ARTICLE
+            self.research_result_type = ARTICLE
         super(Article, self).save(*args, **kwargs)
 
 
-class Book(Published):
+class Draft(models.Model):
+    article = models.OneToOneField(Article, verbose_name=_('Article'))
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'))
+
+    class Meta:
+        verbose_name = _('Draft')
+        verbose_name_plural = _('Draft')
+
+
+class Submitted(models.Model):
+    article = models.ForeignKey(Article, verbose_name=_('Article'))
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'))
+
+    class Meta:
+        verbose_name = _('Submitted')
+        verbose_name_plural = _('Submitted')
+
+
+class Accepted(models.Model):
+    article = models.OneToOneField(Article, verbose_name=_('Article'))
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'))
+
+    class Meta:
+        verbose_name = _('Accepted')
+        verbose_name_plural = _('Accepted')
+
+
+class Published(models.Model):
+    article = models.OneToOneField(Article, verbose_name=_('Article'))
+    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
+    number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
+    doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
+    start_page = models.IntegerField(_('Start page'), blank=True, null=True)
+    end_page = models.IntegerField(_('End page'), blank=True, null=True)
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'))
+
+    class Meta:
+        verbose_name = _('Published')
+        verbose_name_plural = _('Published')
+
+
+class Book(ResearchResult):
     """
     An instance of this class is a book.
     Similar to @book from bibtex.
@@ -219,7 +174,10 @@ class Book(Published):
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     serie = models.CharField(_('Serie'), max_length=255, blank=True, null=True)
     edition = models.CharField(_('Edition'), max_length=255, blank=True, null=True)
-    date = models.DateField(_('Date'), help_text='Date the book was published. Only month and year are important here.')
+    date = models.DateField(_('Date'), help_text='Date the book was published.')
+
+    def __unicode__(self):
+        return u'%s' % self.title
 
     class Meta:
         verbose_name = _('Book')
@@ -228,27 +186,33 @@ class Book(Published):
     # Sets the type of research result.
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.published_type = BOOK
+            self.research_result_type = BOOK
         super(Book, self).save(*args, **kwargs)
 
 
-class InBook(models.Model):
+class InBook(ResearchResult):
     """
     An instance of this class is a chapter of a book.
     Similar to @inbook from bibtex.
 
     """
     book = models.ForeignKey(Book, verbose_name=_('Book'))
-    chapter = models.CharField(_('Chapter'), max_length=255, blank=True, null=True)
+    chapter_number = models.CharField(_('Chapter number'), max_length=50, blank=True, null=True)
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s' % self.chapter
+        return u'%s' % self.title
 
     class Meta:
         verbose_name = _('Inbook')
         verbose_name_plural = _('Inbooks')
+
+    # Sets the type of research result.
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.research_result_type = BOOK_CHAPTER
+        super(InBook, self).save(*args, **kwargs)
 
 
 class TypeAcademicWork(models.Model):
