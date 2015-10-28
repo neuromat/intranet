@@ -65,7 +65,7 @@ admin.site.register(Journal, JournalAdmin)
 
 
 class BookAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'publisher', 'volume', 'serie', 'edition', 'doi', 'date', 'url', 'note']
+    fields = ['team', 'title', 'publisher', 'isbn', 'volume', 'serie', 'edition', 'doi', 'date', 'url', 'note']
     list_display = ('authors', 'title', 'date')
     list_display_links = ('title',)
     inlines = (AuthorsInline,)

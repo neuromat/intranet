@@ -169,6 +169,7 @@ class Book(ResearchResult):
 
     """
     publisher = models.ForeignKey(Institution, verbose_name=_('Publisher'))
+    isbn = models.CharField(_('ISBN'), max_length=30, blank=True, null=True)
     volume = models.CharField(_('Volume/Number'), max_length=255, blank=True, null=True)
     serie = models.CharField(_('Serie'), max_length=255, blank=True, null=True)
     edition = models.CharField(_('Edition'), max_length=255, blank=True, null=True)
