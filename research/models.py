@@ -197,7 +197,6 @@ class BookChapter(models.Model):
 
     """
     book = models.ForeignKey(Book, verbose_name=_('Book'))
-    author = models.ManyToManyField(Person)
     chapter = models.CharField(_('Chapter'), max_length=255, blank=True, null=True)
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
@@ -208,10 +207,6 @@ class BookChapter(models.Model):
     class Meta:
         verbose_name = _('Book chapter')
         verbose_name_plural = _('Book chapters')
-
-    def authors(self):
-        return format_html("; ".join([unicode(author.citation_name if author.citation_name else author.full_name)
-                                      for author in self.author.all()]))
 
     # Sets the type of research result.
     def save(self, *args, **kwargs):

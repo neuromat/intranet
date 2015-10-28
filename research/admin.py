@@ -74,8 +74,8 @@ admin.site.register(Book, BookAdmin)
 
 
 class BookChapterAdmin(admin.ModelAdmin):
-    fields = ['book', 'author', 'chapter', 'start_page', 'end_page']
-    list_display = ('book', 'authors', 'chapter', 'start_page', 'end_page')
+    fields = ['book', 'chapter', 'start_page', 'end_page']
+    list_display = ('book', 'chapter', 'start_page', 'end_page')
     list_display_links = ('chapter',)
 
 admin.site.register(BookChapter, BookChapterAdmin)
