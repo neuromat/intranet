@@ -6,12 +6,10 @@ from django.utils.html import format_html
 
 # Defining types of research results
 ARTICLE = 'a'
-BOOK = 'b'
-BOOK_CHAPTER = 'c'
+BOOK_OR_CHAPTER = 'b'
 TYPE = (
     (ARTICLE, _('Article')),
-    (BOOK, _('Book')),
-    (BOOK_CHAPTER, _('Book chapter')),
+    (BOOK_OR_CHAPTER, _('Book')),
 )
 
 # Teams
@@ -22,6 +20,14 @@ TEAMS = (
     (SCIENTIFIC, _('Scientific')),
     (DISSEMINATION, _('Dissemination')),
     (TECHNOLOGY_TRANSFER, _('Technology transfer'))
+)
+
+# Book or chapter
+BOOK = 'b'
+CHAPTER = 'c'
+TYPE_BOOK_OR_CHAPTER = (
+    (BOOK, _('Book')),
+    (CHAPTER, _('Chapter')),
 )
 
 
@@ -168,6 +174,7 @@ class Book(ResearchResult):
     Similar to @book from bibtex.
 
     """
+    type = models.CharField(_('Type'), max_length=1, choices=TYPE_BOOK_OR_CHAPTER)
     publisher = models.ForeignKey(Institution, verbose_name=_('Publisher'))
     isbn = models.CharField(_('ISBN'), max_length=30, blank=True, null=True)
     volume = models.CharField(_('Volume/Number'), max_length=255, blank=True, null=True)
@@ -175,44 +182,22 @@ class Book(ResearchResult):
     edition = models.CharField(_('Edition'), max_length=255, blank=True, null=True)
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
     date = models.DateField(_('Date'), help_text='Date the book was published.')
-
-    def __unicode__(self):
-        return u'%s' % self.title
-
-    class Meta:
-        verbose_name = _('Book')
-        verbose_name_plural = _('Books')
-
-    # Sets the type of research result.
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            self.research_result_type = BOOK
-        super(Book, self).save(*args, **kwargs)
-
-
-class BookChapter(models.Model):
-    """
-    An instance of this class is a book chapter.
-    Similar to @inbook from bibtex.
-
-    """
-    book = models.ForeignKey(Book, verbose_name=_('Book'))
     chapter = models.CharField(_('Chapter'), max_length=255, blank=True, null=True)
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s' % self.chapter
+        return u'%s' % self.title
 
     class Meta:
-        verbose_name = _('Book chapter')
-        verbose_name_plural = _('Book chapters')
+        verbose_name = _('Book and chapter')
+        verbose_name_plural = _('Books and chapters')
 
     # Sets the type of research result.
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.research_result_type = BOOK_CHAPTER
-        super(BookChapter, self).save(*args, **kwargs)
+            self.research_result_type = BOOK_OR_CHAPTER
+        super(Book, self).save(*args, **kwargs)
 
 
 class TypeAcademicWork(models.Model):

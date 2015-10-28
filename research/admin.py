@@ -1,6 +1,6 @@
 from django.contrib import admin
 from research.models import *
-from forms import ArticleAdminForm
+from forms import ArticleAdminForm, BookAdminForm
 from django.db.models import Q
 
 admin.site.register(TypeAcademicWork)
@@ -65,20 +65,14 @@ admin.site.register(Journal, JournalAdmin)
 
 
 class BookAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'publisher', 'isbn', 'volume', 'serie', 'edition', 'doi', 'date', 'url', 'note']
-    list_display = ('authors', 'title', 'date')
+    fields = ['team', 'type', 'title', 'chapter', 'start_page', 'end_page', 'publisher', 'isbn', 'volume', 'serie',
+              'edition', 'doi', 'date', 'url', 'note']
+    list_display = ('type', 'authors', 'title', 'date')
     list_display_links = ('title',)
     inlines = (AuthorsInline,)
+    form = BookAdminForm
 
 admin.site.register(Book, BookAdmin)
-
-
-class BookChapterAdmin(admin.ModelAdmin):
-    fields = ['book', 'chapter', 'start_page', 'end_page']
-    list_display = ('book', 'chapter', 'start_page', 'end_page')
-    list_display_links = ('chapter',)
-
-admin.site.register(BookChapter, BookChapterAdmin)
 
 
 class AcademicWorkAdmin(admin.ModelAdmin):
