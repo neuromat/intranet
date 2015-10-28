@@ -72,7 +72,7 @@ class Event(models.Model):
 
     class Meta:
         verbose_name = _('Event')
-        verbose_name_plural = _('Events')
+        verbose_name_plural = _('Events (congress, conference, etc.)')
         ordering = ('name', )
 
 
@@ -169,11 +169,10 @@ class Book(ResearchResult):
 
     """
     publisher = models.ForeignKey(Institution, verbose_name=_('Publisher'))
-    doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
-    editor = models.CharField(_('Editor'), max_length=255, blank=True, null=True)
-    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
+    volume = models.CharField(_('Volume/Number'), max_length=255, blank=True, null=True)
     serie = models.CharField(_('Serie'), max_length=255, blank=True, null=True)
     edition = models.CharField(_('Edition'), max_length=255, blank=True, null=True)
+    doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
     date = models.DateField(_('Date'), help_text='Date the book was published.')
 
     def __unicode__(self):
@@ -190,29 +189,34 @@ class Book(ResearchResult):
         super(Book, self).save(*args, **kwargs)
 
 
-class InBook(ResearchResult):
+class BookChapter(models.Model):
     """
-    An instance of this class is a chapter of a book.
+    An instance of this class is a book chapter.
     Similar to @inbook from bibtex.
 
     """
     book = models.ForeignKey(Book, verbose_name=_('Book'))
-    chapter_number = models.CharField(_('Chapter number'), max_length=50, blank=True, null=True)
+    author = models.ManyToManyField(Person)
+    chapter = models.CharField(_('Chapter'), max_length=255, blank=True, null=True)
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s' % self.title
+        return u'%s' % self.chapter
 
     class Meta:
-        verbose_name = _('Inbook')
-        verbose_name_plural = _('Inbooks')
+        verbose_name = _('Book chapter')
+        verbose_name_plural = _('Book chapters')
+
+    def authors(self):
+        return format_html("; ".join([unicode(author.citation_name if author.citation_name else author.full_name)
+                                      for author in self.author.all()]))
 
     # Sets the type of research result.
     def save(self, *args, **kwargs):
         if self.pk is None:
             self.research_result_type = BOOK_CHAPTER
-        super(InBook, self).save(*args, **kwargs)
+        super(BookChapter, self).save(*args, **kwargs)
 
 
 class TypeAcademicWork(models.Model):

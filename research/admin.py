@@ -65,19 +65,20 @@ admin.site.register(Journal, JournalAdmin)
 
 
 class BookAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'publisher', 'editor', 'date', 'doi', 'volume', 'serie', 'edition', 'url', 'note']
+    fields = ['team', 'title', 'publisher', 'volume', 'serie', 'edition', 'doi', 'date', 'url', 'note']
     list_display = ('authors', 'title', 'date')
     list_display_links = ('title',)
+    inlines = (AuthorsInline,)
 
 admin.site.register(Book, BookAdmin)
 
 
-class InBookAdmin(admin.ModelAdmin):
-    fields = ['book', 'chapter', 'start_page', 'end_page']
-    list_display = ('book', 'chapter', 'start_page', 'end_page')
-    list_display_links = ('book',)
+class BookChapterAdmin(admin.ModelAdmin):
+    fields = ['book', 'author', 'chapter', 'start_page', 'end_page']
+    list_display = ('book', 'authors', 'chapter', 'start_page', 'end_page')
+    list_display_links = ('chapter',)
 
-admin.site.register(InBook, InBookAdmin)
+admin.site.register(BookChapter, BookChapterAdmin)
 
 
 class AcademicWorkAdmin(admin.ModelAdmin):
