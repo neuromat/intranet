@@ -11,21 +11,12 @@ class AuthorsInline(admin.TabularInline):
     extra = 1
 
 
-class DraftInline(admin.TabularInline):
-    model = Draft
-
-
-class SubmittedInline(admin.TabularInline):
-    model = Submitted
+class ArticleStatusInline(admin.StackedInline):
+    model = ArticleStatus
     extra = 1
 
-
-class AcceptedInline(admin.TabularInline):
-    model = Accepted
-
-
-class PublishedInline(admin.StackedInline):
-    model = Published
+    class Media:
+        js = ('/static/js/article.js',)
 
 
 class SuperResearchResult(admin.ModelAdmin):
@@ -42,7 +33,7 @@ class ArticleAdmin(SuperResearchResult):
     fields = ['team', 'title', 'journal', 'event', 'url', 'note']
     list_display = ('team', 'authors', 'title')
     list_display_links = ('title',)
-    inlines = (AuthorsInline, DraftInline, SubmittedInline, AcceptedInline, PublishedInline)
+    inlines = (AuthorsInline, ArticleStatusInline)
     form = ArticleAdminForm
 
 admin.site.register(Article, ArticleAdmin)

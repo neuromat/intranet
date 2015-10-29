@@ -30,6 +30,17 @@ TYPE_BOOK_OR_CHAPTER = (
     (CHAPTER, _('Chapter')),
 )
 
+DRAFT = 'd'
+SUBMITTED = 's'
+ACCEPTED = 'a'
+PUBLISHED = 'p'
+STATUS = (
+    (DRAFT, _('Draft')),
+    (SUBMITTED, _('Submitted')),
+    (ACCEPTED, _('Accepted')),
+    (PUBLISHED, _('Published')),
+)
+
 
 class ResearchResult(models.Model):
     team = models.CharField(_('Team'), max_length=1, choices=TEAMS)
@@ -123,38 +134,9 @@ class Article(ResearchResult):
         super(Article, self).save(*args, **kwargs)
 
 
-class Draft(models.Model):
-    article = models.OneToOneField(Article, verbose_name=_('Article'))
-    attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    date = models.DateField(_('Date'))
-
-    class Meta:
-        verbose_name = _('Draft')
-        verbose_name_plural = _('Draft')
-
-
-class Submitted(models.Model):
+class ArticleStatus(models.Model):
+    type = models.CharField(_('Type'), max_length=1, choices=STATUS)
     article = models.ForeignKey(Article, verbose_name=_('Article'))
-    attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    date = models.DateField(_('Date'))
-
-    class Meta:
-        verbose_name = _('Submitted')
-        verbose_name_plural = _('Submitted')
-
-
-class Accepted(models.Model):
-    article = models.OneToOneField(Article, verbose_name=_('Article'))
-    attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    date = models.DateField(_('Date'))
-
-    class Meta:
-        verbose_name = _('Accepted')
-        verbose_name_plural = _('Accepted')
-
-
-class Published(models.Model):
-    article = models.OneToOneField(Article, verbose_name=_('Article'))
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
@@ -164,8 +146,8 @@ class Published(models.Model):
     date = models.DateField(_('Date'))
 
     class Meta:
-        verbose_name = _('Published')
-        verbose_name_plural = _('Published')
+        verbose_name = _('Status')
+        verbose_name_plural = _('Status')
 
 
 class Book(ResearchResult):
