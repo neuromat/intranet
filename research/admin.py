@@ -33,7 +33,7 @@ class SuperResearchResult(admin.ModelAdmin):
 
 class ArticleAdmin(SuperResearchResult):
     fields = ['team', 'title', 'journal', 'event', 'url', 'note']
-    list_display = ('team', 'authors', 'title')
+    list_display = ('team', 'authors', 'title', 'status')
     list_display_links = ('title',)
     inlines = (AuthorsInline, UnpublishedInline, PublishedInline)
     form = ArticleAdminForm

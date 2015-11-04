@@ -121,6 +121,12 @@ class Article(ResearchResult):
     def __unicode__(self):
         return u'%s' % self.title
 
+    def status(self):
+        if Published.objects.filter(article_id=self.pk):
+            return u'Published'
+        else:
+            return u'Unpublished'
+
     class Meta:
         verbose_name = _('Article')
         verbose_name_plural = _('Articles')
