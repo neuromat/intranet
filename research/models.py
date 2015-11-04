@@ -30,15 +30,14 @@ TYPE_BOOK_OR_CHAPTER = (
     (CHAPTER, _('Chapter')),
 )
 
+# Types of unpublished papers
 DRAFT = 'd'
 SUBMITTED = 's'
 ACCEPTED = 'a'
-PUBLISHED = 'p'
 STATUS = (
     (DRAFT, _('Draft')),
     (SUBMITTED, _('Submitted')),
     (ACCEPTED, _('Accepted')),
-    (PUBLISHED, _('Published')),
 )
 
 
@@ -134,9 +133,19 @@ class Article(ResearchResult):
         super(Article, self).save(*args, **kwargs)
 
 
-class ArticleStatus(models.Model):
+class Unpublished(models.Model):
     type = models.CharField(_('Type'), max_length=1, choices=STATUS)
     article = models.ForeignKey(Article, verbose_name=_('Article'))
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'))
+
+    class Meta:
+        verbose_name = _('Unpublished')
+        verbose_name_plural = _('Unpublished')
+
+
+class Published(models.Model):
+    article = models.OneToOneField(Article, verbose_name=_('Article'))
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
@@ -146,8 +155,8 @@ class ArticleStatus(models.Model):
     date = models.DateField(_('Date'))
 
     class Meta:
-        verbose_name = _('Status')
-        verbose_name_plural = _('Status')
+        verbose_name = _('Published')
+        verbose_name_plural = _('Published')
 
 
 class Book(ResearchResult):

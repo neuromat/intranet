@@ -11,29 +11,31 @@ class AuthorsInline(admin.TabularInline):
     extra = 1
 
 
-class ArticleStatusInline(admin.StackedInline):
-    model = ArticleStatus
+class UnpublishedInline(admin.StackedInline):
+    model = Unpublished
     extra = 1
 
-    class Media:
-        js = ('/static/js/article.js',)
+
+class PublishedInline(admin.StackedInline):
+    model = Published
+    extra = 1
 
 
 class SuperResearchResult(admin.ModelAdmin):
     # Shows the research result according to the user permission
-    # Users defined as superuser or NIRA Admin can see all the research result
+    # No restriction for users defined as superuser or NIRA Admin
     def get_queryset(self, request):
         qs = super(SuperResearchResult, self).get_queryset(request)
         if request.user.is_nira_admin or request.user.is_superuser:
             return qs
-        return qs.filter(author=request.user.projectmember)
+        return qs.filter(person__user=request.user)
 
 
 class ArticleAdmin(SuperResearchResult):
     fields = ['team', 'title', 'journal', 'event', 'url', 'note']
     list_display = ('team', 'authors', 'title')
     list_display_links = ('title',)
-    inlines = (AuthorsInline, ArticleStatusInline)
+    inlines = (AuthorsInline, UnpublishedInline, PublishedInline)
     form = ArticleAdminForm
 
 admin.site.register(Article, ArticleAdmin)
@@ -72,24 +74,26 @@ class AcademicWorkAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
 
     # Shows the academic work according to the user permission
-    # Users defined as superuser or NIRA Admin can see all the academic work
+    # No restriction for users defined as superuser or NIRA Admin
     def get_queryset(self, request):
         qs = super(AcademicWorkAdmin, self).get_queryset(request)
         if request.user.is_nira_admin or request.user.is_superuser:
             return qs
-        # To see the academic work, the user should be the author or the advisor
-        return qs.filter(Q(author=request.user) | Q(advisor=request.user))
+        # To see the academic work, the user should be the advisee or the advisor
+        return qs.filter(Q(advisee__user=request.user) |
+                         Q(advisor__user=request.user) |
+                         Q(co_advisor__user=request.user))
 
-    # Hide journalists in the author or advidor fields
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "author" or db_field.name == "advisor":
-            kwargs["queryset"] = Person.objects.filter(~Q(role__name='Journalist'))
-        return super(AcademicWorkAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    # Hide journalists in the co_advisor field
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        if db_field.name == "co_advisor":
-            kwargs["queryset"] = Person.objects.filter(~Q(role__name='Journalist'))
-        return super(AcademicWorkAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    # # Hide journalists in the author or advidor fields
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     if db_field.name == "author" or db_field.name == "advisor":
+    #         kwargs["queryset"] = Person.objects.filter(~Q(role__name='Journalist'))
+    #     return super(AcademicWorkAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    #
+    # # Hide journalists in the co_advisor field
+    # def formfield_for_manytomany(self, db_field, request, **kwargs):
+    #     if db_field.name == "co_advisor":
+    #         kwargs["queryset"] = Person.objects.filter(~Q(role__name='Journalist'))
+    #     return super(AcademicWorkAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 admin.site.register(AcademicWork, AcademicWorkAdmin)
