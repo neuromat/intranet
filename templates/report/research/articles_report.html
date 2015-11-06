@@ -11,35 +11,47 @@
 
 {% block content %}
 
-{% if scientific or dissemination or transfer or c_scientific or c_dissemination or c_transfer or submitted or draft%}
-    {% if scientific %}
+{% if published_scientific or accepted_scientific or submitted_scientific or draft_scientific or published_dissemin or accepted_dissemin or submitted_dissemin or draft_dissemin or published_tec_trans or accepted_tec_trans or submitted_tec_trans or draft_tec_trans %}
+    {% if published_scientific %}
         <p><strong>Published or accepted</strong></p>
         <ol type="1">
-            {% for article in scientific %}
+            {% for article in published_scientific %}
                 <li style="text-align: justify">
-                    {% if article.url %}
-                        <a href="{{ article.url }}" target="_blank"><strong>{{ article.title }}</strong></a>.
+                    {% if article.article.url %}
+                        <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
                     {% else %}
-                        <strong>{{ article.title }}</strong>.
+                        <strong>{{ article.article.title }}</strong>.
                     {% endif %}
-                    {{ article.authors }} {{ article.published.article.journal }},
-                    {% if article.published.article.volume %}
-                        <strong>{{ article.published.article.volume }}</strong>
+                    {{ article.article.authors }} {{ article.journal }},
+                    {% if article.volume %}
+                        <strong>{{ article.volume }}</strong>
                     {% endif %}
-                    {% if article.published.article.number %}
-                        ({{ article.published.article.number }}),
+                    {% if article.number %}
+                        ({{ article.number }}),
                     {% endif %}
-                    {% if article.published.article.start_page and article.published.article.end_page %}
-                        {{ article.published.article.start_page }}-{{ article.published.article.end_page }},
+                    {% if article.start_page and article.end_page %}
+                        {{ article.start_page }}-{{ article.end_page }},
                     {% endif %}
-                    {% if article.published.article.doi %}
-                        DOI: {{ article.published.article.doi }},
+                    {% if article.doi %}
+                        DOI: {{ article.doi }},
                     {% endif %}
-                    {% if article.published.article.status == 'a' %}
-                        {{ article.published.article.date|date:"Y" }}, to appear.
+                    {{ article.date|date:"Y" }}.
+                </li><br>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    {% if accepted_scientific %}
+        <ol type="1">
+            {% for article in accepted_scientific %}
+                <li style="text-align: justify">
+                    {% if article.article.url %}
+                        <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
                     {% else %}
-                        {{ article.published.article.date|date:"Y" }}.
+                        <strong>{{ article.article.title }}</strong>.
                     {% endif %}
+                    {{ article.article.authors }} {{ article.journal }},
+                    {{ article.date|date:"Y" }}, to appear.
                 </li><br>
             {% endfor %}
         </ol>

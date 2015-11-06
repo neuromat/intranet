@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
-from models import ResearchResult, AcademicWork
+from models import AcademicWork, Published, Unpublished
 import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
@@ -37,63 +37,70 @@ def now_plus_five_years():
     return date
 
 
-# @login_required
-# def articles(request):
-#     if request.method == 'POST':
-#         start_date = request.POST['start_date']
-#         if start_date:
-#             start_date = start_date_typed(start_date)
-#         else:
-#             start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
-#
-#         end_date = request.POST['end_date']
-#         if end_date:
-#             end_date = end_date_typed(end_date)
-#         else:
-#             end_date = now_plus_five_years()
-#
-#         scientific = ResearchResult.objects.filter(published__published_type='a', team='s',
-#                                                    published__article__date__gt=start_date,
-#                                                    published__article__date__lt=end_date).order_by('-published__article__date')
-#
-#         dissemination = ResearchResult.objects.filter(published__published_type='a', team='d',
-#                                                       published__article__date__gt=start_date,
-#                                                       published__article__date__lt=end_date).order_by('-published__article__date')
-#
-#         transfer = ResearchResult.objects.filter(published__published_type='a', team='t',
-#                                                  published__article__date__gt=start_date,
-#                                                  published__article__date__lt=end_date).order_by('-published__article__date')
-#
-#         # "c" means Communication. Refers to communications in meetings with referee.
-#         c_scientific = ResearchResult.objects.filter(published__published_type='m', team='s',
-#                                                      published__communicationinmeeting__event__start_date__gt=start_date,
-#                                                      published__communicationinmeeting__event__start_date__lt=end_date).order_by('-published__communicationinmeeting__event__start_date')
-#
-#         c_dissemination = ResearchResult.objects.filter(published__published_type='m', team='d',
-#                                                         published__communicationinmeeting__event__start_date__gt=start_date,
-#                                                         published__communicationinmeeting__event__start_date__lt=end_date).order_by('-published__communicationinmeeting__event__start_date')
-#
-#         c_transfer = ResearchResult.objects.filter(published__published_type='m', team='t',
-#                                                    published__communicationinmeeting__event__start_date__gt=start_date,
-#                                                    published__communicationinmeeting__event__start_date__lt=end_date).order_by('-published__communicationinmeeting__event__start_date')
-#
-#         submitted = ResearchResult.objects.filter(research_result_type='u', unpublished__type='a',
-#                                                   unpublished__paper_status='s', unpublished__status='i',
-#                                                   unpublished__date__gt=start_date,
-#                                                   unpublished__date__lt=end_date).order_by('-unpublished__date')
-#
-#         draft = ResearchResult.objects.filter(research_result_type='u', unpublished__type='a',
-#                                               unpublished__paper_status='d', unpublished__status='i',
-#                                               unpublished__date__gt=start_date,
-#                                               unpublished__date__lt=end_date).order_by('-unpublished__date')
-#
-#         if start_date < end_date:
-#             context = {'scientific': scientific, 'dissemination': dissemination, 'transfer': transfer,
-#                        'c_scientific': c_scientific, 'c_dissemination': c_dissemination, 'c_transfer': c_transfer,
-#                        'submitted': submitted, 'draft': draft}
-#             return render(request, 'report/research/articles_report.html', context)
-#
-#     return render(request, 'report/research/articles.html')
+@login_required
+def articles(request):
+    if request.method == 'POST':
+        start_date = request.POST['start_date']
+        if start_date:
+            start_date = start_date_typed(start_date)
+        else:
+            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+
+        end_date = request.POST['end_date']
+        if end_date:
+            end_date = end_date_typed(end_date)
+        else:
+            end_date = now_plus_five_years()
+
+        # Articles from the scientific team
+        published_scientific = Published.objects.filter(article__research_result_type='a', article__team='s',
+                                                        date__gt=start_date, date__lt=end_date).order_by('date')
+
+        accepted_scientific = Unpublished.objects.filter(article__research_result_type='a', article__team='s', type='a',
+                                                         date__gt=start_date, date__lt=end_date).order_by('date')
+
+        submitted_scientific = Unpublished.objects.filter(article__research_result_type='a', article__team='s', type='s',
+                                                          date__gt=start_date, date__lt=end_date).order_by('date')
+
+        draft_scientific = Unpublished.objects.filter(article__research_result_type='a', article__team='s', type='d',
+                                                      date__gt=start_date, date__lt=end_date).order_by('date')
+
+        # Articles from the dissemination team
+        published_dissemin = Published.objects.filter(article__research_result_type='a', article__team='d',
+                                                      date__gt=start_date, date__lt=end_date).order_by('date')
+
+        accepted_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='a',
+                                                       date__gt=start_date, date__lt=end_date).order_by('date')
+
+        submitted_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='s',
+                                                        date__gt=start_date, date__lt=end_date).order_by('date')
+
+        draft_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='d',
+                                                    date__gt=start_date, date__lt=end_date).order_by('date')
+
+        # Articles from the technology transfer team
+        published_tec_trans = Published.objects.filter(article__research_result_type='a', article__team='t',
+                                                       date__gt=start_date, date__lt=end_date).order_by('date')
+
+        accepted_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='a',
+                                                        date__gt=start_date, date__lt=end_date).order_by('date')
+
+        submitted_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='s',
+                                                         date__gt=start_date, date__lt=end_date).order_by('date')
+
+        draft_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='d',
+                                                     date__gt=start_date, date__lt=end_date).order_by('date')
+
+        if start_date < end_date:
+            context = {'published_scientific': published_scientific, 'accepted_scientific': accepted_scientific,
+                       'submitted_scientific': submitted_scientific, 'draft_scientific': draft_scientific,
+                       'published_dissemin': published_dissemin, 'accepted_dissemin': accepted_dissemin,
+                       'submitted_dissemin': submitted_dissemin, 'draft_dissemin': draft_dissemin,
+                       'published_tec_trans': published_tec_trans, 'accepted_tec_trans': accepted_tec_trans,
+                       'submitted_tec_trans': submitted_tec_trans, 'draft_tec_trans': draft_tec_trans}
+            return render(request, 'report/research/articles_report.html', context)
+
+    return render(request, 'report/research/articles.html')
 
 
 def search_academic_works(start_date, end_date):
