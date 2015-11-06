@@ -40,6 +40,14 @@ STATUS = (
     (ACCEPTED, _('Accepted')),
 )
 
+# Published in a journal or in a conference?
+JOURNAL = 'j'
+EVENT = 'e'
+ARTICLE_TYPE = (
+    (JOURNAL, _('Journal')),
+    (EVENT, _('Conference, congress, meeting, etc')),
+)
+
 
 class ResearchResult(models.Model):
     team = models.CharField(_('Team'), max_length=1, choices=TEAMS)
@@ -114,9 +122,6 @@ class Article(ResearchResult):
     An instance of this class is a paper in a conference or in a journal.
 
     """
-    journal = models.ForeignKey(Journal, verbose_name=_('Journal'), blank=True, null=True)
-    event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
-                              help_text='Name of the conference, congress, meeting or symposium')
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -151,6 +156,10 @@ class Unpublished(models.Model):
 
 
 class Published(models.Model):
+    type = models.CharField(_('Where?'), max_length=1, choices=ARTICLE_TYPE)
+    journal = models.ForeignKey(Journal, verbose_name=_('Journal'), blank=True, null=True)
+    event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
+                              help_text='Name of the conference, congress, meeting or symposium')
     article = models.OneToOneField(Article, verbose_name=_('Article'))
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     number = models.CharField(_('Number'), max_length=255, blank=True, null=True)

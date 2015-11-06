@@ -20,6 +20,9 @@ class PublishedInline(admin.StackedInline):
     model = Published
     extra = 1
 
+    class Media:
+        js = ('/static/js/published.js',)
+
 
 class SuperResearchResult(admin.ModelAdmin):
     # Shows the research result according to the user permission
@@ -32,7 +35,7 @@ class SuperResearchResult(admin.ModelAdmin):
 
 
 class ArticleAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'journal', 'event', 'url', 'note']
+    fields = ['team', 'title', 'url', 'note']
     list_display = ('team', 'authors', 'title', 'status')
     list_display_links = ('title',)
     inlines = (AuthorsInline, UnpublishedInline, PublishedInline)
