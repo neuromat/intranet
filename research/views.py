@@ -6,6 +6,7 @@ from models import AcademicWork, Published, Unpublished
 import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
+from itertools import chain
 
 TIME = " 00:00:00"
 
@@ -52,44 +53,50 @@ def articles(request):
         else:
             end_date = now_plus_five_years()
 
+        published = Published.objects.filter(article__research_result_type='a', date__gt=start_date, date__lt=end_date).values_list('article_id', flat=True)
+        accepted = Unpublished.objects.filter(article__research_result_type='a', type='a', date__lt=end_date).values_list('article_id', flat=True)
+        submitted = Unpublished.objects.filter(article__research_result_type='a', type='s', date__lt=end_date).values_list('article_id', flat=True)
+        accepted_list = list(chain(published, accepted))
+        submitted_list = list(chain(published, accepted, submitted))
+
         # Articles from the scientific team
         published_scientific = Published.objects.filter(article__research_result_type='a', article__team='s',
                                                         date__gt=start_date, date__lt=end_date).order_by('date')
 
         accepted_scientific = Unpublished.objects.filter(article__research_result_type='a', article__team='s', type='a',
-                                                         date__gt=start_date, date__lt=end_date).order_by('date')
+                                                         date__lt=end_date).exclude(article_id__in=published).order_by('date')
 
         submitted_scientific = Unpublished.objects.filter(article__research_result_type='a', article__team='s', type='s',
-                                                          date__gt=start_date, date__lt=end_date).order_by('date')
+                                                          date__lt=end_date).exclude(article_id__in=accepted_list).order_by('date')
 
         draft_scientific = Unpublished.objects.filter(article__research_result_type='a', article__team='s', type='d',
-                                                      date__gt=start_date, date__lt=end_date).order_by('date')
+                                                      date__lt=end_date).exclude(article_id__in=submitted_list).order_by('date')
 
         # Articles from the dissemination team
         published_dissemin = Published.objects.filter(article__research_result_type='a', article__team='d',
                                                       date__gt=start_date, date__lt=end_date).order_by('date')
 
         accepted_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='a',
-                                                       date__gt=start_date, date__lt=end_date).order_by('date')
+                                                       date__gt=start_date).exclude(article_id__in=published).order_by('date')
 
         submitted_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='s',
-                                                        date__gt=start_date, date__lt=end_date).order_by('date')
+                                                        date__gt=start_date).exclude(article_id__in=accepted_list).order_by('date')
 
         draft_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='d',
-                                                    date__gt=start_date, date__lt=end_date).order_by('date')
+                                                    date__gt=start_date).exclude(article_id__in=submitted_list).order_by('date')
 
         # Articles from the technology transfer team
         published_tec_trans = Published.objects.filter(article__research_result_type='a', article__team='t',
                                                        date__gt=start_date, date__lt=end_date).order_by('date')
 
         accepted_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='a',
-                                                        date__gt=start_date, date__lt=end_date).order_by('date')
+                                                        date__gt=start_date).exclude(article_id__in=published).order_by('date')
 
         submitted_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='s',
-                                                         date__gt=start_date, date__lt=end_date).order_by('date')
+                                                         date__gt=start_date).exclude(article_id__in=accepted_list).order_by('date')
 
         draft_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='d',
-                                                     date__gt=start_date, date__lt=end_date).order_by('date')
+                                                     date__gt=start_date).exclude(article_id__in=submitted_list).order_by('date')
 
         if start_date < end_date:
             context = {'published_scientific': published_scientific, 'accepted_scientific': accepted_scientific,
