@@ -52,12 +52,12 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Event, EventAdmin)
 
 
-class JournalAdmin(admin.ModelAdmin):
+class PeriodicalAdmin(admin.ModelAdmin):
     fields = ['name', 'acronym']
     list_display = ('name',)
     list_display_links = ('name',)
 
-admin.site.register(Journal, JournalAdmin)
+admin.site.register(Periodical, PeriodicalAdmin)
 
 
 class BookAdmin(SuperResearchResult):

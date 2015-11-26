@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from person.models import Person, Institution
 from django.utils.html import format_html
+import datetime
 
 
 # Defining types of research results
@@ -41,11 +42,11 @@ STATUS = (
 )
 
 # Published in a journal or in a conference?
-JOURNAL = 'j'
+PERIODICAL = 'p'
 EVENT = 'e'
 ARTICLE_TYPE = (
-    (JOURNAL, _('Journal')),
-    (EVENT, _('Conference, congress, meeting, etc')),
+    (PERIODICAL, _('Periodical (Journal or magazine)')),
+    (EVENT, _('Event (Conference, congress, meeting, etc)')),
 )
 
 
@@ -78,102 +79,6 @@ class Author(models.Model):
         ordering = ('order', )
 
 
-class Event(models.Model):
-    """
-    An instance of this class is a conference, a congress, a meeting or a symposium.
-    Similar to @proceedings from bibtex.
-
-    """
-    name = models.CharField(_('Name'), max_length=255)
-    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
-    start_date = models.DateField(_('Start date of the event'))
-    end_date = models.DateField(_('End date of the event'))
-    local = models.CharField(_('Local'), max_length=255, help_text='Where the conference was held, '
-                                                                   'e.g., "Rio de Janeiro, RJ, Brazil".')
-
-    def __unicode__(self):
-        return u'%s' % self.name
-
-    class Meta:
-        verbose_name = _('Event')
-        verbose_name_plural = _('Events (congress, conference, etc.)')
-        ordering = ('name', )
-
-
-class Journal(models.Model):
-    """
-    An instance of this class is a journal.
-
-    """
-    name = models.CharField(_('Name'), max_length=255)
-    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
-
-    def __unicode__(self):
-        return u'%s' % self.name
-
-    class Meta:
-        verbose_name = _('Journal')
-        verbose_name_plural = _('Journals')
-        ordering = ('name', )
-
-
-class Article(ResearchResult):
-    """
-    An instance of this class is a paper in a conference or in a journal.
-
-    """
-
-    def __unicode__(self):
-        return u'%s' % self.title
-
-    def status(self):
-        if Published.objects.filter(article_id=self.pk):
-            return u'Published'
-        else:
-            return u'Unpublished'
-
-    class Meta:
-        verbose_name = _('Article')
-        verbose_name_plural = _('Articles')
-        ordering = ('title', )
-
-    # Sets the type of research result as article.
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            self.research_result_type = ARTICLE
-        super(Article, self).save(*args, **kwargs)
-
-
-class Unpublished(models.Model):
-    type = models.CharField(_('Type'), max_length=1, choices=STATUS)
-    article = models.ForeignKey(Article, verbose_name=_('Article'))
-    attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    date = models.DateField(_('Date'))
-
-    class Meta:
-        verbose_name = _('Unpublished')
-        verbose_name_plural = _('Unpublished')
-
-
-class Published(models.Model):
-    type = models.CharField(_('Where?'), max_length=1, choices=ARTICLE_TYPE)
-    journal = models.ForeignKey(Journal, verbose_name=_('Journal'), blank=True, null=True)
-    event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
-                              help_text='Name of the conference, congress, meeting or symposium')
-    article = models.OneToOneField(Article, verbose_name=_('Article'))
-    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
-    number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
-    doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
-    start_page = models.IntegerField(_('Start page'), blank=True, null=True)
-    end_page = models.IntegerField(_('End page'), blank=True, null=True)
-    attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    date = models.DateField(_('Date'))
-
-    class Meta:
-        verbose_name = _('Published')
-        verbose_name_plural = _('Published')
-
-
 class Book(ResearchResult):
     """
     An instance of this class is a book.
@@ -204,6 +109,108 @@ class Book(ResearchResult):
         if self.pk is None:
             self.research_result_type = BOOK_OR_CHAPTER
         super(Book, self).save(*args, **kwargs)
+
+
+class Article(ResearchResult):
+    """
+    An instance of this class is a paper in a conference or in a journal.
+
+    """
+
+    def __unicode__(self):
+        return u'%s' % self.title
+
+    def status(self):
+        if Published.objects.filter(article_id=self.pk):
+            return u'Published'
+        else:
+            return u'Unpublished'
+
+    class Meta:
+        verbose_name = _('Article')
+        verbose_name_plural = _('Articles')
+        ordering = ('title', )
+
+    # Sets the type of research result as article.
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.research_result_type = ARTICLE
+        super(Article, self).save(*args, **kwargs)
+
+
+class Periodical(models.Model):
+    """
+    An instance of this class is a journal or magazine.
+
+    """
+    name = models.CharField(_('Name'), max_length=255)
+    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Periodical')
+        verbose_name_plural = _('Periodicals')
+        ordering = ('name', )
+
+
+class Event(models.Model):
+    """
+    An instance of this class is a conference, a congress, a meeting or a symposium.
+    Similar to @proceedings from bibtex.
+
+    """
+    name = models.CharField(_('Name'), max_length=255)
+    acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
+    start_date = models.DateField(_('Start date of the event'))
+    end_date = models.DateField(_('End date of the event'))
+    local = models.CharField(_('Local'), max_length=255, help_text='Where the conference was held, '
+                                                                   'e.g., "Rio de Janeiro, RJ, Brazil".')
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Event')
+        verbose_name_plural = _('Events (congress, conference, etc.)')
+        ordering = ('name', )
+
+
+class Unpublished(models.Model):
+    type = models.CharField(_('Type'), max_length=1, choices=STATUS)
+    article = models.ForeignKey(Article, verbose_name=_('Article'))
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'))
+
+    class Meta:
+        verbose_name = _('Unpublished')
+        verbose_name_plural = _('Unpublished')
+
+
+class Published(models.Model):
+    type = models.CharField(_('Where?'), max_length=1, choices=ARTICLE_TYPE)
+    periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'), blank=True, null=True)
+    event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
+                              help_text='Name of the conference, congress, meeting or symposium')
+    article = models.OneToOneField(Article, verbose_name=_('Article'))
+    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
+    number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
+    doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
+    start_page = models.IntegerField(_('Start page'), blank=True, null=True)
+    end_page = models.IntegerField(_('End page'), blank=True, null=True)
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('Published')
+        verbose_name_plural = _('Published')
+
+    # Periodical articles must have a date.
+    def save(self, *args, **kwargs):
+        if self.type == PERIODICAL and self.date is None:
+            self.date = datetime.datetime.now()
+        super(Published, self).save(*args, **kwargs)
 
 
 class TypeAcademicWork(models.Model):
