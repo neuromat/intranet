@@ -19,11 +19,13 @@ class UnpublishedInline(admin.StackedInline):
 class PublishedInPeriodicalInline(admin.StackedInline):
     model = PublishedInPeriodical
     extra = 1
+    fields = ['periodical', 'doi', 'volume', 'number', 'start_page', 'end_page', 'date', 'attachment']
 
 
 class PublishedInEventInline(admin.StackedInline):
     model = PublishedInEvent
     extra = 1
+    fields = ['event', 'doi', 'start_page', 'end_page', 'attachment']
 
 
 class SuperResearchResult(admin.ModelAdmin):
