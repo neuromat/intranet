@@ -12,6 +12,9 @@ class ArticleAdminForm(forms.ModelForm):
             'url': TextInput(attrs={'size': 90, 'placeholder': 'http://example.com'}),
         }
 
+    class Media:
+        js = ('/static/js/published.js',)
+
 
 class BookAdminForm(forms.ModelForm):
 
