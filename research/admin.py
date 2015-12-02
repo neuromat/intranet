@@ -16,12 +16,14 @@ class UnpublishedInline(admin.StackedInline):
     extra = 1
 
 
-class PublishedInline(admin.StackedInline):
-    model = Published
+class PublishedInPeriodicalInline(admin.StackedInline):
+    model = PublishedInPeriodical
     extra = 1
 
-    class Media:
-        js = ('/static/js/published.js',)
+
+class PublishedInEventInline(admin.StackedInline):
+    model = PublishedInEvent
+    extra = 1
 
 
 class SuperResearchResult(admin.ModelAdmin):
@@ -35,10 +37,10 @@ class SuperResearchResult(admin.ModelAdmin):
 
 
 class ArticleAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'url', 'note']
+    fields = ['team', 'type', 'title', 'url', 'note']
     list_display = ('team', 'authors', 'title', 'status')
     list_display_links = ('title',)
-    inlines = (AuthorsInline, UnpublishedInline, PublishedInline)
+    inlines = (AuthorsInline, UnpublishedInline, PublishedInPeriodicalInline, PublishedInEventInline)
     form = ArticleAdminForm
 
 admin.site.register(Article, ArticleAdmin)

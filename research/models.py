@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from person.models import Person, Institution
 from django.utils.html import format_html
-import datetime
 
 
 # Defining types of research results
@@ -116,6 +115,7 @@ class Article(ResearchResult):
     An instance of this class is a paper in a conference or in a journal.
 
     """
+    type = models.CharField(_('Where will be published?'), max_length=1, blank=True, null=True, choices=ARTICLE_TYPE)
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -189,28 +189,27 @@ class Unpublished(models.Model):
 
 
 class Published(models.Model):
-    type = models.CharField(_('Where?'), max_length=1, choices=ARTICLE_TYPE)
-    periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'), blank=True, null=True)
-    event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
-                              help_text='Name of the conference, congress, meeting or symposium')
     article = models.OneToOneField(Article, verbose_name=_('Article'))
-    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
-    number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
     attachment = models.FileField(_('Attachment'), blank=True, null=True)
-    date = models.DateField(_('Date'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Published')
         verbose_name_plural = _('Published')
 
-    # Periodical articles must have a date.
-    def save(self, *args, **kwargs):
-        if self.type == PERIODICAL and self.date is None:
-            self.date = datetime.datetime.now()
-        super(Published, self).save(*args, **kwargs)
+
+class PublishedInPeriodical(Published):
+    periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'), blank=True, null=True)
+    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
+    number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
+    date = models.DateField(_('Date'))
+
+
+class PublishedInEvent(Published):
+    event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
+                              help_text='Name of the conference, congress, meeting or symposium')
 
 
 class TypeAcademicWork(models.Model):
