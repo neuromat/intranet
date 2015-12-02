@@ -201,15 +201,15 @@ class Published(models.Model):
 
 
 class PublishedInPeriodical(Published):
-    periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'), blank=True, null=True)
+    periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'))
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
     date = models.DateField(_('Date'))
 
 
 class PublishedInEvent(Published):
-    event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
-                              help_text='Name of the conference, congress, meeting or symposium')
+    event = models.ForeignKey(Event, verbose_name=_('Event'), help_text='Name of the conference, congress, meeting or '
+                                                                        'symposium')
 
 
 class TypeAcademicWork(models.Model):
