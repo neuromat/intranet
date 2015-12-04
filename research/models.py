@@ -30,16 +30,6 @@ TYPE_BOOK_OR_CHAPTER = (
     (CHAPTER, _('Chapter')),
 )
 
-# Types of unpublished papers
-DRAFT = 'd'
-SUBMITTED = 's'
-ACCEPTED = 'a'
-STATUS = (
-    (DRAFT, _('Draft')),
-    (SUBMITTED, _('Submitted')),
-    (ACCEPTED, _('Accepted')),
-)
-
 # Published in a journal or in a conference?
 PERIODICAL = 'p'
 EVENT = 'e'
@@ -116,15 +106,10 @@ class Article(ResearchResult):
 
     """
     type = models.CharField(_('Where will be published?'), max_length=1, blank=True, null=True, choices=ARTICLE_TYPE)
+    status = models.CharField(_('Status'), max_length=1)
 
     def __unicode__(self):
         return u'%s' % self.title
-
-    def status(self):
-        if Published.objects.filter(article_id=self.pk):
-            return u'Published'
-        else:
-            return u'Unpublished'
 
     class Meta:
         verbose_name = _('Article')
@@ -163,6 +148,9 @@ class Event(models.Model):
     """
     name = models.CharField(_('Name'), max_length=255)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
+    publisher = models.ForeignKey(Institution, verbose_name=_('Publisher'), blank=True, null=True)
+    volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
+    number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
     start_date = models.DateField(_('Start date of the event'))
     end_date = models.DateField(_('End date of the event'))
     local = models.CharField(_('Local'), max_length=255, help_text='Where the conference was held, '
@@ -177,15 +165,43 @@ class Event(models.Model):
         ordering = ('name', )
 
 
-class Unpublished(models.Model):
-    type = models.CharField(_('Type'), max_length=1, choices=STATUS)
-    article = models.ForeignKey(Article, verbose_name=_('Article'))
+class Draft(models.Model):
+    article = models.ForeignKey(Article)
     attachment = models.FileField(_('Attachment'), blank=True, null=True)
     date = models.DateField(_('Date'))
 
     class Meta:
-        verbose_name = _('Unpublished')
-        verbose_name_plural = _('Unpublished')
+        verbose_name = _('Draft')
+        verbose_name_plural = _('Draft')
+
+
+class Submitted(models.Model):
+    article = models.ForeignKey(Article)
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'))
+
+    class Meta:
+        verbose_name = _('Submitted')
+        verbose_name_plural = _('Submitted')
+
+
+class Accepted(models.Model):
+    article = models.OneToOneField(Article)
+    attachment = models.FileField(_('Attachment'), blank=True, null=True)
+    date = models.DateField(_('Date'))
+
+    class Meta:
+        verbose_name = _('Accepted')
+        verbose_name_plural = _('Accepted')
+
+
+class AcceptedInPeriodical(Accepted):
+    periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'))
+
+
+class AcceptedInEvent(Accepted):
+    event = models.ForeignKey(Event, verbose_name=_('Event'), help_text='Name of the conference, congress, meeting '
+                                                                        'or symposium')
 
 
 class Published(models.Model):

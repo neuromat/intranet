@@ -11,8 +11,23 @@ class AuthorsInline(admin.TabularInline):
     extra = 1
 
 
-class UnpublishedInline(admin.StackedInline):
-    model = Unpublished
+class DraftInline(admin.StackedInline):
+    model = Draft
+    extra = 1
+
+
+class SubmittedInline(admin.StackedInline):
+    model = Submitted
+    extra = 1
+
+
+class AcceptedInPeriodicalInline(admin.StackedInline):
+    model = AcceptedInPeriodical
+    extra = 1
+
+
+class AcceptedInEventInline(admin.StackedInline):
+    model = AcceptedInEvent
     extra = 1
 
 
@@ -39,17 +54,18 @@ class SuperResearchResult(admin.ModelAdmin):
 
 
 class ArticleAdmin(SuperResearchResult):
-    fields = ['team', 'type', 'title', 'url', 'note']
+    fields = ['team', 'title', 'status', 'type', 'url', 'note']
     list_display = ('team', 'authors', 'title', 'status')
     list_display_links = ('title',)
-    inlines = (AuthorsInline, UnpublishedInline, PublishedInPeriodicalInline, PublishedInEventInline)
+    inlines = (AuthorsInline, DraftInline, SubmittedInline, AcceptedInPeriodicalInline, AcceptedInEventInline,
+               PublishedInPeriodicalInline, PublishedInEventInline)
     form = ArticleAdminForm
 
 admin.site.register(Article, ArticleAdmin)
 
 
 class EventAdmin(admin.ModelAdmin):
-    fields = ['name', 'acronym', 'local', 'start_date', 'end_date']
+    fields = ['name', 'acronym', 'local', 'start_date', 'end_date', 'publisher', 'volume', 'number']
     list_display = ('name', 'local', 'start_date', 'end_date')
     list_display_links = ('name',)
 
