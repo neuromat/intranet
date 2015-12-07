@@ -53,7 +53,7 @@ $(document).ready(function () {
 
 
     // ### Hide/show draft inline ###
-    if ($draft.checked){
+    if ($draft.is(':checked')) {
         $('[id^="draft"]').parents('._inline-group').show();
     } else {
         $('[id^="draft"]').parents('._inline-group').hide();
@@ -69,7 +69,7 @@ $(document).ready(function () {
 
 
     // ### Hide/show submitted inline ###
-    if ($submitted.checked){
+    if ($submitted.is(':checked')) {
         $('[id^="submitted"]').parents('._inline-group').show();
     } else {
         $('[id^="submitted"]').parents('._inline-group').hide();
@@ -85,7 +85,7 @@ $(document).ready(function () {
 
 
     // ### Hide/show accepted inline ###
-    if ($accepted.checked){
+    if ($accepted.is(':checked')) {
         $('[id^="accepted"]').parents('._inline-group').show();
     } else {
         $('[id^="accepted"]').parents('._inline-group').hide();
