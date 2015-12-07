@@ -151,7 +151,7 @@ class Article(ResearchResult):
     event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
                               help_text='Name of the conference, congress, meeting or symposium')
     type = models.CharField(_('Where?'), max_length=1, blank=True, null=True, choices=ARTICLE_TYPE)
-    status = models.CharField(_('Status'), max_length=1)
+    status = models.CharField(_('Status'), max_length=50)
 
     def __unicode__(self):
         return u'%s' % self.title
