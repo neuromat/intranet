@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
-from models import AcademicWork, Published, Unpublished
+from models import AcademicWork, PublishedInPeriodical, Accepted, Submitted, Draft
 import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
@@ -53,58 +53,60 @@ def articles(request):
         else:
             end_date = now_plus_five_years()
 
-        published = Published.objects.filter(article__research_result_type='a', date__gt=start_date, date__lt=end_date).values_list('article_id', flat=True)
-        accepted = Unpublished.objects.filter(article__research_result_type='a', type='a', date__lt=end_date).values_list('article_id', flat=True)
-        submitted = Unpublished.objects.filter(article__research_result_type='a', type='s', date__lt=end_date).values_list('article_id', flat=True)
-        accepted_list = list(chain(published, accepted))
-        submitted_list = list(chain(published, accepted, submitted))
+        # Get IDs from periodical articles
+        published_periodical = PublishedInPeriodical.objects.filter(date__gt=start_date, date__lt=end_date).values_list('article_id', flat=True)
+        accepted_periodical = Accepted.objects.filter(date__lt=end_date).values_list('article_id', flat=True)
+        submitted_periodical = Submitted.objects.filter(date__lt=end_date).values_list('article_id', flat=True)
+        accepted_periodical_list = list(chain(published_periodical, accepted_periodical))
+        submitted_periodical_list = list(chain(published_periodical, accepted_periodical, submitted_periodical))
+
+        # Get IDs from event articles
+        # published_event = PublishedInEvent.objects.filter(article__research_result_type='a', date__gt=start_date, date__lt=end_date).values_list('article_id', flat=True)
+        # accepted_event_list = list(chain(published_event, accepted_periodical))
+        # submitted_event_list = list(chain(published_periodical, accepted_periodical, submitted_periodical))
 
         # Articles from the scientific team
-        published_scientific = Published.objects.filter(article__research_result_type='a', article__team='s',
-                                                        date__gt=start_date, date__lt=end_date).order_by('date')
+        published_scientific = PublishedInPeriodical.objects.filter(article__team='s', date__gt=start_date, date__lt=end_date).order_by('date')
 
-        accepted_scientific = Unpublished.objects.filter(article__research_result_type='a', article__team='s', type='a',
-                                                         date__lt=end_date).exclude(article_id__in=published).order_by('date')
+        accepted_scientific = Accepted.objects.filter(article__team='s', date__lt=end_date).exclude(article_id__in=published_periodical).order_by('date')
 
-        submitted_scientific = Unpublished.objects.filter(article__research_result_type='a', article__team='s', type='s',
-                                                          date__lt=end_date).exclude(article_id__in=accepted_list).order_by('date')
+        submitted_scientific = Submitted.objects.filter(article__team='s', date__lt=end_date).exclude(article_id__in=accepted_periodical_list).order_by('date')
 
-        draft_scientific = Unpublished.objects.filter(article__research_result_type='a', article__team='s', type='d',
-                                                      date__lt=end_date).exclude(article_id__in=submitted_list).order_by('date')
+        draft_scientific = Draft.objects.filter(article__team='s', date__lt=end_date).exclude(article_id__in=submitted_periodical_list).order_by('date')
 
-        # Articles from the dissemination team
-        published_dissemin = Published.objects.filter(article__research_result_type='a', article__team='d',
-                                                      date__gt=start_date, date__lt=end_date).order_by('date')
-
-        accepted_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='a',
-                                                       date__gt=start_date).exclude(article_id__in=published).order_by('date')
-
-        submitted_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='s',
-                                                        date__gt=start_date).exclude(article_id__in=accepted_list).order_by('date')
-
-        draft_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='d',
-                                                    date__gt=start_date).exclude(article_id__in=submitted_list).order_by('date')
-
-        # Articles from the technology transfer team
-        published_tec_trans = Published.objects.filter(article__research_result_type='a', article__team='t',
-                                                       date__gt=start_date, date__lt=end_date).order_by('date')
-
-        accepted_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='a',
-                                                        date__gt=start_date).exclude(article_id__in=published).order_by('date')
-
-        submitted_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='s',
-                                                         date__gt=start_date).exclude(article_id__in=accepted_list).order_by('date')
-
-        draft_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='d',
-                                                     date__gt=start_date).exclude(article_id__in=submitted_list).order_by('date')
+        # # Articles from the dissemination team
+        # published_dissemin = PublishedInPeriodical.objects.filter(article__research_result_type='a', article__team='d',
+        #                                               date__gt=start_date, date__lt=end_date).order_by('date')
+        #
+        # accepted_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='a',
+        #                                                date__gt=start_date).exclude(article_id__in=published_periodical).order_by('date')
+        #
+        # submitted_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='s',
+        #                                                 date__gt=start_date).exclude(article_id__in=accepted_periodical_list).order_by('date')
+        #
+        # draft_dissemin = Unpublished.objects.filter(article__research_result_type='a', article__team='d', type='d',
+        #                                             date__gt=start_date).exclude(article_id__in=submitted_periodical_list).order_by('date')
+        #
+        # # Articles from the technology transfer team
+        # published_tec_trans = PublishedInPeriodical.objects.filter(article__research_result_type='a', article__team='t',
+        #                                                date__gt=start_date, date__lt=end_date).order_by('date')
+        #
+        # accepted_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='a',
+        #                                                 date__gt=start_date).exclude(article_id__in=published_periodical).order_by('date')
+        #
+        # submitted_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='s',
+        #                                                  date__gt=start_date).exclude(article_id__in=accepted_periodical_list).order_by('date')
+        #
+        # draft_tec_trans = Unpublished.objects.filter(article__research_result_type='a', article__team='t', type='d',
+        #                                              date__gt=start_date).exclude(article_id__in=submitted_periodical_list).order_by('date')
 
         if start_date < end_date:
             context = {'published_scientific': published_scientific, 'accepted_scientific': accepted_scientific,
-                       'submitted_scientific': submitted_scientific, 'draft_scientific': draft_scientific,
-                       'published_dissemin': published_dissemin, 'accepted_dissemin': accepted_dissemin,
-                       'submitted_dissemin': submitted_dissemin, 'draft_dissemin': draft_dissemin,
-                       'published_tec_trans': published_tec_trans, 'accepted_tec_trans': accepted_tec_trans,
-                       'submitted_tec_trans': submitted_tec_trans, 'draft_tec_trans': draft_tec_trans}
+                       'submitted_scientific': submitted_scientific, 'draft_scientific': draft_scientific,}
+                       # 'published_dissemin': published_dissemin, 'accepted_dissemin': accepted_dissemin,
+                       # 'submitted_dissemin': submitted_dissemin, 'draft_dissemin': draft_dissemin,
+                       # 'published_tec_trans': published_tec_trans, 'accepted_tec_trans': accepted_tec_trans,
+                       # 'submitted_tec_trans': submitted_tec_trans, 'draft_tec_trans': draft_tec_trans}
             return render(request, 'report/research/articles_report.html', context)
 
     return render(request, 'report/research/articles.html')
