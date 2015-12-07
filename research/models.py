@@ -100,29 +100,6 @@ class Book(ResearchResult):
         super(Book, self).save(*args, **kwargs)
 
 
-class Article(ResearchResult):
-    """
-    An instance of this class is a paper in a conference or in a journal.
-
-    """
-    type = models.CharField(_('Where will be published?'), max_length=1, blank=True, null=True, choices=ARTICLE_TYPE)
-    status = models.CharField(_('Status'), max_length=1)
-
-    def __unicode__(self):
-        return u'%s' % self.title
-
-    class Meta:
-        verbose_name = _('Article')
-        verbose_name_plural = _('Articles')
-        ordering = ('title', )
-
-    # Sets the type of research result as article.
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            self.research_result_type = ARTICLE
-        super(Article, self).save(*args, **kwargs)
-
-
 class Periodical(models.Model):
     """
     An instance of this class is a journal or magazine.
@@ -165,6 +142,32 @@ class Event(models.Model):
         ordering = ('name', )
 
 
+class Article(ResearchResult):
+    """
+    An instance of this class is a paper in a conference or in a journal.
+
+    """
+    periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'), blank=True, null=True)
+    event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
+                              help_text='Name of the conference, congress, meeting or symposium')
+    type = models.CharField(_('Where?'), max_length=1, blank=True, null=True, choices=ARTICLE_TYPE)
+    status = models.CharField(_('Status'), max_length=1)
+
+    def __unicode__(self):
+        return u'%s' % self.title
+
+    class Meta:
+        verbose_name = _('Article')
+        verbose_name_plural = _('Articles')
+        ordering = ('title', )
+
+    # Sets the type of research result as article.
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.research_result_type = ARTICLE
+        super(Article, self).save(*args, **kwargs)
+
+
 class Draft(models.Model):
     article = models.ForeignKey(Article)
     attachment = models.FileField(_('Attachment'), blank=True, null=True)
@@ -195,15 +198,6 @@ class Accepted(models.Model):
         verbose_name_plural = _('Accepted')
 
 
-class AcceptedInPeriodical(Accepted):
-    periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'))
-
-
-class AcceptedInEvent(Accepted):
-    event = models.ForeignKey(Event, verbose_name=_('Event'), help_text='Name of the conference, congress, meeting '
-                                                                        'or symposium')
-
-
 class Published(models.Model):
     article = models.OneToOneField(Article, verbose_name=_('Article'))
     doi = models.CharField(_('DOI'), max_length=255, blank=True, null=True)
@@ -217,15 +211,9 @@ class Published(models.Model):
 
 
 class PublishedInPeriodical(Published):
-    periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'))
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
     date = models.DateField(_('Date'))
-
-
-class PublishedInEvent(Published):
-    event = models.ForeignKey(Event, verbose_name=_('Event'), help_text='Name of the conference, congress, meeting or '
-                                                                        'symposium')
 
 
 class TypeAcademicWork(models.Model):

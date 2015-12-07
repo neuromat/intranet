@@ -21,26 +21,21 @@ class SubmittedInline(admin.StackedInline):
     extra = 1
 
 
-class AcceptedInPeriodicalInline(admin.StackedInline):
-    model = AcceptedInPeriodical
+class AcceptedInline(admin.StackedInline):
+    model = Accepted
     extra = 1
 
 
-class AcceptedInEventInline(admin.StackedInline):
-    model = AcceptedInEvent
+class PublishedInline(admin.StackedInline):
+    model = Published
     extra = 1
+    fields = ['doi', 'start_page', 'end_page', 'attachment']
 
 
 class PublishedInPeriodicalInline(admin.StackedInline):
     model = PublishedInPeriodical
     extra = 1
-    fields = ['periodical', 'doi', 'volume', 'number', 'start_page', 'end_page', 'date', 'attachment']
-
-
-class PublishedInEventInline(admin.StackedInline):
-    model = PublishedInEvent
-    extra = 1
-    fields = ['event', 'doi', 'start_page', 'end_page', 'attachment']
+    fields = ['doi', 'volume', 'number', 'start_page', 'end_page', 'date', 'attachment']
 
 
 class SuperResearchResult(admin.ModelAdmin):
@@ -54,11 +49,10 @@ class SuperResearchResult(admin.ModelAdmin):
 
 
 class ArticleAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'status', 'type', 'url', 'note']
+    fields = ['team', 'title', 'status', 'type', 'periodical', 'event', 'url', 'note']
     list_display = ('team', 'authors', 'title', 'status')
     list_display_links = ('title',)
-    inlines = (AuthorsInline, DraftInline, SubmittedInline, AcceptedInPeriodicalInline, AcceptedInEventInline,
-               PublishedInPeriodicalInline, PublishedInEventInline)
+    inlines = (AuthorsInline, DraftInline, SubmittedInline, AcceptedInline, PublishedInline, PublishedInPeriodicalInline)
     form = ArticleAdminForm
 
 admin.site.register(Article, ArticleAdmin)
