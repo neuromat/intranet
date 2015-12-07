@@ -156,6 +156,16 @@ class Article(ResearchResult):
     def __unicode__(self):
         return u'%s' % self.title
 
+    def current_status(self):
+        if u'p' in self.status:
+            return u'Published'
+        elif u'a' in self.status:
+            return u'Accepted'
+        elif u's' in self.status:
+            return u'Submitted'
+        elif u'd' in self.status:
+            return u'Draft'
+
     class Meta:
         verbose_name = _('Article')
         verbose_name_plural = _('Articles')
