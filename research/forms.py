@@ -33,6 +33,17 @@ class ArticleAdminForm(forms.ModelForm):
         }
 
 
+class AuthorsInlineFormset(forms.models.BaseInlineFormSet):
+    def clean(self):
+        """Check that at least one author has been entered."""
+        super(AuthorsInlineFormset, self).clean()
+        if any(self.errors):
+            return
+        if not any(cleaned_data and not cleaned_data.get('DELETE', False)
+                   for cleaned_data in self.cleaned_data):
+            raise forms.ValidationError(_('You must have at least one author'))
+
+
 class BookAdminForm(forms.ModelForm):
 
     class Meta:

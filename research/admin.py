@@ -1,6 +1,6 @@
 from django.contrib import admin
 from research.models import *
-from forms import ArticleAdminForm, BookAdminForm
+from forms import ArticleAdminForm, BookAdminForm, AuthorsInlineFormset
 from django.db.models import Q
 
 admin.site.register(TypeAcademicWork)
@@ -9,6 +9,7 @@ admin.site.register(TypeAcademicWork)
 class AuthorsInline(admin.TabularInline):
     model = Author
     extra = 1
+    formset = AuthorsInlineFormset
 
 
 class DraftInline(admin.StackedInline):
