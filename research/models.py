@@ -166,6 +166,14 @@ class Article(ResearchResult):
         elif u'd' in self.status:
             return u'Draft'
 
+    def type_of_article(self):
+        if self.type == PERIODICAL:
+            return u'Periodical'
+        elif self.type == EVENT:
+            return u'Event'
+        else:
+            return u'Not defined'
+
     class Meta:
         verbose_name = _('Article')
         verbose_name_plural = _('Articles')
