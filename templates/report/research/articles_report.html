@@ -11,7 +11,7 @@
 
 {% block content %}
 
-{% if published_scientific or accepted_scientific or submitted_scientific or draft_scientific or published_dissemin or accepted_dissemin or submitted_dissemin or draft_dissemin or published_tec_trans or accepted_tec_trans or submitted_tec_trans or draft_tec_trans %}
+{% if published_scientific or accepted_scientific or submitted_scientific or draft_scientific or published_dissemin or accepted_dissemin or submitted_dissemin or draft_dissemin or published_tec_trans or accepted_tec_trans or submitted_tec_trans or draft_tec_trans or published_scientific_in_event or accepted_scientific_in_event or published_dissemin_in_event or accepted_dissemin_in_event or published_tec_trans_in_event or accepted_tec_trans_in_event%}
     {% if published_scientific or accepted_scientific %}
         <p><strong>Published or accepted</strong></p>
         <ol type="1">
@@ -23,7 +23,7 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.journal }},
+                        {{ article.article.authors }} {{ article.article.periodical }},
                         {% if article.volume %}
                             <strong>{{ article.volume }}</strong>
                         {% endif %}
@@ -48,7 +48,95 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.journal }},
+                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {{ article.date|date:"Y" }}, to appear.
+                    </li><br>
+                {% endfor %}
+            {% endif %}
+        </ol>
+    {% endif %}
+
+    {% if published_dissemin or accepted_dissemin %}
+        <p><strong>Published or accepted from the dissemination team</strong></p>
+        <ol type="1">
+            {% if published_dissemin %}
+                {% for article in published_dissemin %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {% if article.volume %}
+                            <strong>{{ article.volume }}</strong>
+                        {% endif %}
+                        {% if article.number %}
+                            ({{ article.number }}),
+                        {% endif %}
+                        {% if article.start_page and article.end_page %}
+                            {{ article.start_page }}-{{ article.end_page }},
+                        {% endif %}
+                        {% if article.doi %}
+                            DOI: {{ article.doi }},
+                        {% endif %}
+                        {{ article.date|date:"Y" }}.
+                    </li><br>
+                {% endfor %}
+            {% endif %}
+            {% if accepted_dissemin %}
+                {% for article in accepted_dissemin %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {{ article.date|date:"Y" }}, to appear.
+                    </li><br>
+                {% endfor %}
+            {% endif %}
+        </ol>
+    {% endif %}
+
+    {% if published_tec_trans or accepted_tec_trans %}
+        <p><strong>Published or accepted from the technological transfer team</strong></p>
+        <ol type="1">
+            {% if published_tec_trans %}
+                {% for article in published_tec_trans %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {% if article.volume %}
+                            <strong>{{ article.volume }}</strong>
+                        {% endif %}
+                        {% if article.number %}
+                            ({{ article.number }}),
+                        {% endif %}
+                        {% if article.start_page and article.end_page %}
+                            {{ article.start_page }}-{{ article.end_page }},
+                        {% endif %}
+                        {% if article.doi %}
+                            DOI: {{ article.doi }},
+                        {% endif %}
+                        {{ article.date|date:"Y" }}.
+                    </li><br>
+                {% endfor %}
+            {% endif %}
+            {% if accepted_tec_trans %}
+                {% for article in accepted_tec_trans %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {{ article.article.authors }} {{ article.article.periodical }},
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
                 {% endfor %}
@@ -75,6 +163,92 @@
         </ol>
     {% endif %}
 
+    {% if submitted_dissemin %}
+        <p><strong>Submitted from the dissemination team</strong></p>
+        <ol type="1">
+            {% for article in submitted_dissemin %}
+                <li style="text-align: justify">
+                    {% if article.article.url %}
+                        <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                    {% else %}
+                        <strong>{{ article.article.title }}</strong>.
+                    {% endif %}
+                    {{ article.article.authors }}
+                    {% if article.article.note %}
+                        {{ article.article.note }}.
+                    {% endif %}
+                </li><br>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    {% if submitted_tec_trans %}
+        <p><strong>Submitted from the technological transfer team</strong></p>
+        <ol type="1">
+            {% for article in submitted_tec_trans %}
+                <li style="text-align: justify">
+                    {% if article.article.url %}
+                        <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                    {% else %}
+                        <strong>{{ article.article.title }}</strong>.
+                    {% endif %}
+                    {{ article.article.authors }}
+                    {% if article.article.note %}
+                        {{ article.article.note }}.
+                    {% endif %}
+                </li><br>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    {% if published_scientific_in_event or accepted_scientific_in_event %}
+        <p><strong>Communications in meetings with referee</strong></p>
+        <ol type="1">
+            {% if published_scientific_in_event %}
+                {% for article in published_scientific_in_event %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {{ article.article.authors }} {{ article.article.event }},
+                        {% if article.article.event.acronym %}
+                            {{ article.article.event.acronym }},
+                        {% endif %}
+                        {{ article.article.event.local }},
+                        {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}.
+                        {% else %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.
+                        {% endif %}
+                    </li><br>
+                {% endfor %}
+            {% endif %}
+            {% if accepted_scientific_in_event %}
+                {% for article in accepted_scientific_in_event %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {{ article.article.authors }} {{ article.article.event }},
+                        {% if article.article.event.acronym %}
+                            {{ article.article.event.acronym }},
+                        {% endif %}
+                        {{ article.article.event.local }},
+                        {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}, to be held..
+                        {% else %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held.
+                        {% endif %}
+                    </li><br>
+                {% endfor %}
+            {% endif %}
+        </ol>
+    {% endif %}
+
     {% if draft_scientific %}
         <p><strong>Draft</strong></p>
         <ol type="1">
@@ -86,50 +260,6 @@
                     {% endif %}
                 </li><br>
             {% endfor %}
-        </ol>
-    {% endif %}
-
-    {% if published_dissemin or accepted_dissemin %}
-        <p><strong>Published or accepted from the dissemination team</strong></p>
-        <ol type="1">
-            {% if published_dissemin %}
-                {% for article in published_dissemin %}
-                    <li style="text-align: justify">
-                        {% if article.article.url %}
-                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
-                        {% else %}
-                            <strong>{{ article.article.title }}</strong>.
-                        {% endif %}
-                        {{ article.article.authors }} {{ article.journal }},
-                        {% if article.volume %}
-                            <strong>{{ article.volume }}</strong>
-                        {% endif %}
-                        {% if article.number %}
-                            ({{ article.number }}),
-                        {% endif %}
-                        {% if article.start_page and article.end_page %}
-                            {{ article.start_page }}-{{ article.end_page }},
-                        {% endif %}
-                        {% if article.doi %}
-                            DOI: {{ article.doi }},
-                        {% endif %}
-                        {{ article.date|date:"Y" }}.
-                    </li><br>
-                {% endfor %}
-            {% endif %}
-            {% if accepted_dissemin %}
-                {% for article in accepted_dissemin %}
-                    <li style="text-align: justify">
-                        {% if article.article.url %}
-                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
-                        {% else %}
-                            <strong>{{ article.article.title }}</strong>.
-                        {% endif %}
-                        {{ article.article.authors }} {{ article.journal }},
-                        {{ article.date|date:"Y" }}, to appear.
-                    </li><br>
-                {% endfor %}
-            {% endif %}
         </ol>
     {% endif %}
 
