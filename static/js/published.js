@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 
     // ### Hide/show "Where will be published?" field ###
-    if ($accepted.checked || $published.checked){
+    if ($accepted.is(':checked') || $published.is(':checked')){
         $id_type.parents('.row').show();
     } else {
         $id_type.parents('.row').hide();
@@ -41,8 +41,10 @@ $(document).ready(function () {
     $id_type.change(function(){
         if($(this).val() == 'p' && ($published.is(':checked') || $accepted.is(':checked'))){
             $periodical.parents('.row').show();
+            $event.prop('selectedIndex',0);
             $event.parents('.row').hide();
         } else if($(this).val() == 'e' && ($published.is(':checked') || $accepted.is(':checked'))){
+            $periodical.prop('selectedIndex',0);
             $periodical.parents('.row').hide();
             $event.parents('.row').show();
         } else{
@@ -120,7 +122,7 @@ $(document).ready(function () {
 
     // ### Hide/show published inline ###
     $event.each(function() {
-        if($(this).length && ($id_type.val() == 'e' && $published.is(':checked'))){
+        if($(this).val() != '' && ($id_type.val() == 'e' && $published.is(':checked'))){
             $('[id^="published-"]').parents('._inline-group').show();
         } else{
             $('[id^="published-"]').parents('._inline-group').hide();
@@ -148,6 +150,8 @@ $(document).ready(function () {
         }
     });
 
+
+    // ### Hide/show some fields according to the status ###
     $status.click(function(){
        if ($published.is(':checked') && ($id_type.val() == 'p' && $periodical.val() != '')) {
            $('[id^="publishedinperiodical"]').parents('._inline-group').show();
@@ -177,5 +181,43 @@ $(document).ready(function () {
            $event.parents('.row').hide();
        }
     });
+
+
+    // ### Hide/show some fields in accordance with the values entered ###
+    if ($accepted.is(':checked') && $id_type.val() == 'p') {
+        $('[id^="accepted"]').parents('._inline-group').show();
+        $periodical.parents('.row').show();
+        $id_type.parents('.row').show();
+        $event.parents('.row').hide();
+    } else if ($accepted.is(':checked') && $id_type.val() == 'e') {
+        $('[id^="accepted"]').parents('._inline-group').show();
+        $periodical.parents('.row').hide();
+        $id_type.parents('.row').show();
+        $event.parents('.row').show();
+    }
+
+    if ($published.is(':checked') && $id_type.val() == 'e' && $event.val() != '') {
+        $('[id^="published-"]').parents('._inline-group').show();
+        $periodical.parents('.row').hide();
+        $id_type.parents('.row').show();
+        $event.parents('.row').show();
+    } else if ($published.is(':checked') && $id_type.val() == 'e' && $event.val() == '') {
+        $('[id^="published-"]').parents('._inline-group').hide();
+        $periodical.parents('.row').hide();
+        $id_type.parents('.row').show();
+        $event.parents('.row').show();
+    }
+
+    if ($published.is(':checked') && $id_type.val() == 'p' && $periodical.val() != '') {
+        $('[id^="publishedinperiodical"]').parents('._inline-group').show();
+        $periodical.parents('.row').show();
+        $id_type.parents('.row').show();
+        $event.parents('.row').hide();
+    } else if ($published.is(':checked') && $id_type.val() == 'p' && $periodical.val() == '') {
+        $('[id^="publishedinperiodical"]').parents('._inline-group').hide();
+        $periodical.parents('.row').show();
+        $id_type.parents('.row').show();
+        $event.parents('.row').hide();
+    }
 
 });
