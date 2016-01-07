@@ -59,8 +59,8 @@ def articles(request):
         published_event = Published.objects.filter(article__type='e', article__event__start_date__lt=end_date,
                                                    article__event__end_date__gt=start_date).order_by('article__event__start_date')
         accepted = Accepted.objects.filter(date__lt=end_date).order_by('date')
-        submitted = Submitted.objects.filter(date__lt=end_date).order_by('date')
-        draft = Draft.objects.filter(date__lt=end_date).order_by('date')
+        submitted = Submitted.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
+        draft = Draft.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
 
         # Articles IDs
         published_periodical_ids = published_periodical.values_list('article_id', flat=True)
@@ -73,7 +73,7 @@ def articles(request):
                                                                        Q(article_id__in=accepted_ids) |
                                                                        Q(article_id__in=submitted_ids))
 
-        # Articles from the dissemination team
+        # Articles from the scientific team
         published_scientific = published_periodical.filter(article__team='s')
         accepted_scientific = accepted.filter(article__type='p', article__team='s', article_id__in=accepted_ids)
         submitted_scientific = submitted.filter(article__team='s', article_id__in=submitted_ids)
