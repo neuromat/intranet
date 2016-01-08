@@ -26,6 +26,11 @@ def createArticle(title, team):
    article.save()
    return article
 
+def createHiddenArticle(title, team):
+   article = Article(title=title, team=team, hide=True)
+   article.save()
+   return article
+
 def createDraft(article, date):
     draft = Draft(article=article, date=date)
     draft.save()
@@ -78,11 +83,13 @@ class ResearchValidation(TestCase):
     article_06 = None
     article_07 = None
     article_08 = None
+    article_09 = None
 
     draft_01 = None
     draft_04 = None
     draft_05 = None
     draft_08 = None
+    draft_09 = None
 
     submitted_01 = None
     submitted_02 = None
@@ -191,6 +198,10 @@ class ResearchValidation(TestCase):
         self.article_08 = createArticle('Article 08', team)
         self.draft_08 = createDraft(self.article_08, '2014-06-30')
 
+        # Nineth Article: Draft(30/06/14)
+        self.article_09 = createHiddenArticle('Article 09', team)
+        self.draft_09 = createDraft(self.article_09, '2014-06-30')
+
     def test_current_academic_works_report(self):
         start_date = '01-07-2014'
         end_date = '31-07-2015'
@@ -234,15 +245,24 @@ class ResearchValidation(TestCase):
 
         response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
 
-        self.assertEqual(len(response.context['draft_scientific']), 3)
+        self.assertEqual(len(response.context['draft_scientific']), 4)
         self.assertEqual(len(response.context['submitted_scientific']), 1)
         self.assertEqual(len(response.context['accepted_scientific']), 2)
         self.assertEqual(len(response.context['published_scientific']), 1)
 
-        drafted_articles = [item.article.title for item in response.context['draft_scientific']]
-        self.assertTrue(self.article_04.title in drafted_articles)
-        self.assertTrue(self.article_05.title in drafted_articles)
-        self.assertTrue(self.article_08.title in drafted_articles)
+        show_drafted_articles = []
+        hide_drafted_articles = []
+
+        for item in response.context['draft_scientific']:
+            if item.article.hide:
+                hide_drafted_articles.append(item.article.title)
+            else:
+                show_drafted_articles.append(item.article.title)
+
+        self.assertTrue(self.article_04.title in show_drafted_articles)
+        self.assertTrue(self.article_05.title in show_drafted_articles)
+        self.assertTrue(self.article_08.title in show_drafted_articles)
+        self.assertTrue(self.article_09.title in hide_drafted_articles)
 
         submitted_articles = [item.article.title for item in response.context['submitted_scientific']]
         self.assertTrue(self.article_02.title in submitted_articles)
@@ -254,21 +274,31 @@ class ResearchValidation(TestCase):
         published_articles = [item.article.title for item in response.context['published_scientific']]
         self.assertTrue(self.article_07.title in published_articles)
 
+
     def test_previous_articles_report(self):
         start_date = '01-07-2013'
         end_date = '31-07-2014'
 
         response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
 
-        self.assertEqual(len(response.context['draft_scientific']), 3)
+        self.assertEqual(len(response.context['draft_scientific']), 4)
         self.assertEqual(len(response.context['submitted_scientific']), 2)
         self.assertEqual(len(response.context['accepted_scientific']), 1)
         self.assertEqual(len(response.context['published_scientific']), 2)
 
-        drafted_articles = [item.article.title for item in response.context['draft_scientific']]
-        self.assertTrue(self.article_04.title in drafted_articles)
-        self.assertTrue(self.article_05.title in drafted_articles)
-        self.assertTrue(self.article_08.title in drafted_articles)
+        show_drafted_articles = []
+        hide_drafted_articles = []
+
+        for item in response.context['draft_scientific']:
+            if item.article.hide:
+                hide_drafted_articles.append(item.article.title)
+            else:
+                show_drafted_articles.append(item.article.title)
+
+        self.assertTrue(self.article_04.title in show_drafted_articles)
+        self.assertTrue(self.article_05.title in show_drafted_articles)
+        self.assertTrue(self.article_08.title in show_drafted_articles)
+        self.assertTrue(self.article_09.title in hide_drafted_articles)
 
         submitted_articles = [item.article.title for item in response.context['submitted_scientific']]
         self.assertTrue(self.article_01.title in submitted_articles)
