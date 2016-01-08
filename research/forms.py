@@ -27,7 +27,7 @@ class ArticleAdminForm(forms.ModelForm):
         }
 
     class Media:
-        js = ('/static/js/published.js',)
+        js = ('/static/js/articles.js',)
         css = {
             'all': ('/static/css/customization.css',)
         }
