@@ -117,6 +117,9 @@ def articles(request):
                        'published_tec_trans_in_event': published_tec_trans_in_event,
                        'accepted_tec_trans_in_event': accepted_tec_trans_in_event}
             return render(request, 'report/research/articles_report.html', context)
+        else:
+            messages.error(request, _('End date should be equal or greater than start date.'))
+            return render(request, 'report/research/articles.html')
 
     return render(request, 'report/research/articles.html')
 
