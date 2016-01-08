@@ -8,6 +8,49 @@ from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submi
 USERNAME = 'myuser'
 PASSWORD = 'mypassword'
 
+# DRY way for testing
+
+def createPostdoc(type, title, advisee, advisor, start_date, end_date):
+        postdoc = AcademicWork()
+        postdoc.type = type
+        postdoc.title = title
+        postdoc.advisee = advisee
+        postdoc.advisor = advisor
+        postdoc.start_date = start_date
+        postdoc.end_date = end_date
+        postdoc.save()
+        return postdoc
+
+def createArticle(title, team):
+   article = Article(title=title, team=team)
+   article.save()
+   return article
+
+def createDraft(article, date):
+    draft = Draft(article=article, date=date)
+    draft.save()
+    return draft
+
+def createSubmitted(article, date):
+    submitted = Submitted(article=article, date=date)
+    submitted.save()
+    return submitted
+
+def createAccepted(article, date):
+    accepted = Accepted(article=article, date=date)
+    # Why is this necessary?
+    article.type = 'p'
+    article.save()
+    accepted.save()
+    return accepted
+
+def createPublishedInPeriodical(article, date, placeOfPublication):
+    published = PublishedInPeriodical(article=article, date=date)
+    published.save()
+    article.periodical = placeOfPublication
+    article.type = 'p'
+    article.save()
+    return published
 
 class ResearchValidation(TestCase):
     academic_work = None
@@ -85,134 +128,70 @@ class ResearchValidation(TestCase):
         # List of academic works
 
         # First academic work
-        self.postdoc_01 = AcademicWork()
-        self.postdoc_01.type = academic_work
-        self.postdoc_01.title = 'postdoc_01'
-        self.postdoc_01.advisee = advisee
-        self.postdoc_01.advisor = advisor
-        self.postdoc_01.start_date = '2013-08-20'
-        self.postdoc_01.end_date = '2014-08-26'
-        self.postdoc_01.save()
+        self.postdoc_01 = createPostdoc(academic_work, 'postdoc_01', advisee, advisor, '2013-08-20', '2014-08-26')
 
         # Second academic work
-        self.postdoc_02 = AcademicWork()
-        self.postdoc_02.type = academic_work
-        self.postdoc_02.title = 'postdoc_02'
-        self.postdoc_02.advisee = advisee
-        self.postdoc_02.advisor = advisor
-        self.postdoc_02.start_date = '2013-07-01'
-        self.postdoc_02.end_date = '2014-05-26'
-        self.postdoc_02.save()
+        self.postdoc_02 = createPostdoc(academic_work,'postdoc_02', advisee, advisor, '2013-07-01', '2014-05-26')
 
         # Third academic work
-        self.postdoc_03 = AcademicWork()
-        self.postdoc_03.type = academic_work
-        self.postdoc_03.title = 'postdoc_03'
-        self.postdoc_03.advisee = advisee
-        self.postdoc_03.advisor = advisor
-        self.postdoc_03.start_date = '2014-08-05'
-        self.postdoc_03.end_date = '2015-06-20'
-        self.postdoc_03.save()
+        self.postdoc_03 = createPostdoc(academic_work, 'postdoc_03', advisee, advisor, '2014-08-05', '2015-06-20')
 
         # Fourth academic work
-        self.postdoc_04 = AcademicWork()
-        self.postdoc_04.type = academic_work
-        self.postdoc_04.title = 'postdoc_04'
-        self.postdoc_04.advisee = advisee
-        self.postdoc_04.advisor = advisor
-        self.postdoc_04.start_date = '2015-06-25'
-        self.postdoc_04.end_date = '2016-01-01'
-        self.postdoc_04.save()
+        self.postdoc_04 = createPostdoc(academic_work, 'postdoc_04', advisee, advisor, '2015-06-25', '2016-01-01')
 
         # Fifth academic work
-        self.postdoc_05 = AcademicWork()
-        self.postdoc_05.type = academic_work
-        self.postdoc_05.title = 'postdoc_05'
-        self.postdoc_05.advisee = advisee
-        self.postdoc_05.advisor = advisor
-        self.postdoc_05.start_date = '2015-08-26'
-        self.postdoc_05.end_date = '2016-01-01'
-        self.postdoc_05.save()
+        self.postdoc_05 = createPostdoc(academic_work, 'postdoc_05', advisee, advisor, '2015-08-26', '2016-01-01')
 
         # Sixth academic work
-        self.postdoc_06 = AcademicWork()
-        self.postdoc_06.type = academic_work
-        self.postdoc_06.title = 'postdoc_06'
-        self.postdoc_06.advisee = advisee
-        self.postdoc_06.advisor = advisor
-        self.postdoc_06.start_date = '2013-05-20'
-        self.postdoc_06.end_date = '2016-01-01'
-        self.postdoc_06.save()
+        self.postdoc_06 = createPostdoc(academic_work, 'postdoc_06', advisee, advisor, '2013-05-20', '2016-01-01')
 
         # Seventh academic work
-        self.postdoc_07 = AcademicWork()
-        self.postdoc_07.type = academic_work
-        self.postdoc_07.title = 'postdoc_07'
-        self.postdoc_07.advisee = advisee
-        self.postdoc_07.advisor = advisor
-        self.postdoc_07.start_date = '2013-07-01'
-        self.postdoc_07.end_date = '2014-07-01'
-        self.postdoc_07.save()
+        self.postdoc_07 = createPostdoc(academic_work, 'postdoc_07', advisee, advisor, '2013-07-01', '2014-07-01')
 
         # Eighth academic work
-        self.postdoc_08 = AcademicWork()
-        self.postdoc_08.type = academic_work
-        self.postdoc_08.title = 'postdoc_08'
-        self.postdoc_08.advisee = advisee
-        self.postdoc_08.advisor = advisor
-        self.postdoc_08.start_date = '2014-07-01'
-        self.postdoc_08.end_date = '2016-01-01'
-        self.postdoc_08.save()
+        self.postdoc_08 = createPostdoc(academic_work, 'postdoc_08', advisee, advisor, '2014-07-01', '2016-01-01')
+
+        # List of articles
 
         # First Article: Draft(20/12/12), Submitted(05/01/14), Accepted(05/01/15), Published(05/11/15)
-        self.article_01 = Article(title='Artigo 01', team=team)
-        self.article_01.save()
-        self.draft_01 = Draft(article=self.article_01, date='2012-12-20')
-        self.draft_01.save()
-        self.submitted_01 = Submitted(article=self.article_01, date='2014-01-05')
-        self.submitted_01.save()
-        self.accepted_01 = Accepted(article=self.article_01, date='2015-01-05')
-        self.accepted_01.save()
-        self.published_01 = PublishedInPeriodical(article=self.article_01, date='2015-11-05')
-        self.article_01.periodical = place_of_publication
+        self.article_01 = createArticle('Artigo 01', team)
+        self.draft_01 = createDraft(self.article_01, '2012-12-20')
+        self.submitted_01 = createSubmitted(self.article_01, '2014-01-05')
+        self.accepted_01 = createAccepted(self.article_01, '2015-01-05')
+        self.published_01 = createPublishedInPeriodical(self.article_01, '2015-11-05', place_of_publication)
 
         # Second Article: Submitted(31/07/14)
-        self.article_02 = Article(title='Article 02', team=team)
-        self.article_02.save()
-        self.submitted_02 = Submitted(article=self.article_02, date='2014-07-31')
-        self.submitted_02.save()
+        self.article_02 = createArticle('Article 02', team)
+        self.submitted_02 = createSubmitted(self.article_02, '2014-07-31')
 
         # Third Article: Accepted(31/07/14), Published(05/11/15)
-        self.article_03 = Article(title='Article 03', team=team)
-        self.accepted_03 = Accepted(article=self.article_03, date='2014-07-31')
-        self.published_03 = PublishedInPeriodical(article=self.article_03, date='2015-11-15')
-        self.article_03.periodical = place_of_publication
+        self.article_03 = createArticle('Article 03', team)
+        self.accepted_03 = createAccepted(self.article_03,'2014-07-31')
+        self.published_03 = createPublishedInPeriodical(self.article_03, '2015-11-15', place_of_publication)
 
         # Fourth Article: Draft(01/06/14), Published(01/08/15)
-        self.article_04 = Article(title='Article 04', team=team)
-        self.draft_04 = Draft(article=self.article_04, date='2014-06-01')
-        self.published_04 = PublishedInPeriodical(article=self.article_04, date='2015-08-01')
-        self.article_04.periodical = place_of_publication
+        self.article_04 = createArticle('Article 04', team)
+        self.draft_04 = createDraft(self.article_04, '2014-06-01')
+        self.published_04 = createPublishedInPeriodical(self.article_04, '2015-08-01', place_of_publication)
 
         # Fifth Article: Draft(01/06/14), Published(01/08/15)
-        self.article_05 = Article(title='Article 05', team=team)
-        self.draft_05 = Draft(article=self.article_05, date='2014-06-01')
-        self.published_05 = PublishedInPeriodical(article=self.article_05,date='2015-08-01')
-        self.article_05.periodical = place_of_publication
+        self.article_05 = createArticle('Article 05', team)
+        self.draft_05 = createDraft(self.article_05, '2014-06-01')
+        self.published_05 = createPublishedInPeriodical(self.article_05,'2015-08-01', place_of_publication)
 
         # Sixth Article: Published(30/06/14)
-        self.article_06 = Article(title='Article 06', team=team)
-        self.published_06 = PublishedInPeriodical(article=self.article_06, date='2014-06-30')
+        self.article_06 = createArticle('Article 06', team)
+        self.published_06 = createPublishedInPeriodical(self.article_06, '2014-06-30', place_of_publication)
 
         # Seventh Article: Published(01/07/14)
-        self.article_07 = Article(title='Article 07', team=team)
-        self.published_07 = PublishedInPeriodical(article=self.article_07, date='2014-07-01')
+        self.article_07 = createArticle('Article 07', team)
+        self.published_07 = createPublishedInPeriodical(self.article_07, '2014-07-01', place_of_publication)
 
         # Eighth Article: Draft(30/06/14)
-        self.article_08 = Article(title='Article 08', team=team)
-        self.draft_08 = Draft(article=self.article_08, date='2014-06-30')
+        self.article_08 = createArticle('Article 08', team)
+        self.draft_08 = createDraft(self.article_08, '2014-06-30')
 
-    def test_current_report(self):
+    def test_current_academic_works_report(self):
         start_date = '01-07-2014'
         end_date = '31-07-2015'
 
@@ -231,7 +210,7 @@ class ResearchValidation(TestCase):
         self.assertTrue(self.postdoc_06.title in titles_in_progress)
         self.assertTrue(self.postdoc_08.title in titles_in_progress)
 
-    def test_previous_report(self):
+    def test_previous_academic_works_report(self):
         start_date = '01-07-2013'
         end_date = '01-07-2014'
 
@@ -249,12 +228,55 @@ class ResearchValidation(TestCase):
         self.assertTrue(self.postdoc_06.title in titles_in_progress)
         self.assertTrue(self.postdoc_08.title in titles_in_progress)
 
-    def test_articles_in_certain_period(self):
+    def test_current_articles_report(self):
         start_date = '01-07-2014'
         end_date = '31-07-2015'
 
         response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
 
-        # self.assertEqual(len(response.context['published_scientific']), 1)
+        self.assertEqual(len(response.context['draft_scientific']), 3)
         self.assertEqual(len(response.context['submitted_scientific']), 1)
+        self.assertEqual(len(response.context['accepted_scientific']), 2)
+        self.assertEqual(len(response.context['published_scientific']), 1)
 
+        drafted_articles = [item.article.title for item in response.context['draft_scientific']]
+        self.assertTrue(self.article_04.title in drafted_articles)
+        self.assertTrue(self.article_05.title in drafted_articles)
+        self.assertTrue(self.article_08.title in drafted_articles)
+
+        submitted_articles = [item.article.title for item in response.context['submitted_scientific']]
+        self.assertTrue(self.article_02.title in submitted_articles)
+
+        accepted_articles = [item.article.title for item in response.context['accepted_scientific']]
+        self.assertTrue(self.article_01.title in accepted_articles)
+        self.assertTrue(self.article_03.title in accepted_articles)
+
+        published_articles = [item.article.title for item in response.context['published_scientific']]
+        self.assertTrue(self.article_07.title in published_articles)
+
+    def test_previous_articles_report(self):
+        start_date = '01-07-2013'
+        end_date = '31-07-2014'
+
+        response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
+
+        self.assertEqual(len(response.context['draft_scientific']), 3)
+        self.assertEqual(len(response.context['submitted_scientific']), 2)
+        self.assertEqual(len(response.context['accepted_scientific']), 1)
+        self.assertEqual(len(response.context['published_scientific']), 2)
+
+        drafted_articles = [item.article.title for item in response.context['draft_scientific']]
+        self.assertTrue(self.article_04.title in drafted_articles)
+        self.assertTrue(self.article_05.title in drafted_articles)
+        self.assertTrue(self.article_08.title in drafted_articles)
+
+        submitted_articles = [item.article.title for item in response.context['submitted_scientific']]
+        self.assertTrue(self.article_01.title in submitted_articles)
+        self.assertTrue(self.article_02.title in submitted_articles)
+
+        accepted_articles = [item.article.title for item in response.context['accepted_scientific']]
+        self.assertTrue(self.article_03.title in accepted_articles)
+
+        published_articles = [item.article.title for item in response.context['published_scientific']]
+        self.assertTrue(self.article_06.title in published_articles)
+        self.assertTrue(self.article_07.title in published_articles)
