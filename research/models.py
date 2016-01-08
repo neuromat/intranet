@@ -152,27 +152,28 @@ class Article(ResearchResult):
                               help_text='Name of the conference, congress, meeting or symposium')
     type = models.CharField(_('Where?'), max_length=1, blank=True, null=True, choices=ARTICLE_TYPE)
     status = models.CharField(_('Status'), max_length=50)
+    hide = models.BooleanField(_('Hide this paper in the report'), default=False)
 
     def __unicode__(self):
         return u'%s' % self.title
 
     def current_status(self):
         if u'p' in self.status:
-            return u'Published'
+            return _('Published')
         elif u'a' in self.status:
-            return u'Accepted'
+            return _('Accepted')
         elif u's' in self.status:
-            return u'Submitted'
+            return _('Submitted')
         elif u'd' in self.status:
-            return u'Draft'
+            return _('Draft')
 
     def type_of_article(self):
         if self.type == PERIODICAL:
-            return u'Periodical'
+            return _('Periodical')
         elif self.type == EVENT:
-            return u'Event'
+            return _('Event')
         else:
-            return u'Not defined'
+            return _('Not defined')
 
     class Meta:
         verbose_name = _('Article')

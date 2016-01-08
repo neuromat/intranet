@@ -17,6 +17,7 @@
         <ol type="1">
             {% if published_scientific %}
                 {% for article in published_scientific %}
+                    {% if not article.article.hide %}
                     <li style="text-align: justify">
                         {% if article.article.url %}
                             <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -38,10 +39,12 @@
                         {% endif %}
                         {{ article.date|date:"Y" }}.
                     </li><br>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
             {% if accepted_scientific %}
                 {% for article in accepted_scientific %}
+                    {% if not article.article.hide %}
                     <li style="text-align: justify">
                         {% if article.article.url %}
                             <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -51,6 +54,7 @@
                         {{ article.article.authors }} {{ article.article.periodical }},
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         </ol>
@@ -61,6 +65,7 @@
         <ol type="1">
             {% if published_dissemin %}
                 {% for article in published_dissemin %}
+                    {% if not article.article.hide %}
                     <li style="text-align: justify">
                         {% if article.article.url %}
                             <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -82,10 +87,12 @@
                         {% endif %}
                         {{ article.date|date:"Y" }}.
                     </li><br>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
             {% if accepted_dissemin %}
                 {% for article in accepted_dissemin %}
+                    {% if not article.article.hide %}
                     <li style="text-align: justify">
                         {% if article.article.url %}
                             <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -95,6 +102,7 @@
                         {{ article.article.authors }} {{ article.article.periodical }},
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         </ol>
@@ -105,6 +113,7 @@
         <ol type="1">
             {% if published_tec_trans %}
                 {% for article in published_tec_trans %}
+                    {% if not article.article.hide %}
                     <li style="text-align: justify">
                         {% if article.article.url %}
                             <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -126,10 +135,12 @@
                         {% endif %}
                         {{ article.date|date:"Y" }}.
                     </li><br>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
             {% if accepted_tec_trans %}
                 {% for article in accepted_tec_trans %}
+                    {% if not article.article.hide %}
                     <li style="text-align: justify">
                         {% if article.article.url %}
                             <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -139,6 +150,7 @@
                         {{ article.article.authors }} {{ article.article.periodical }},
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         </ol>
@@ -148,6 +160,7 @@
         <p><strong>Submitted</strong></p>
         <ol type="1">
             {% for article in submitted_scientific %}
+                {% if not article.article.hide %}
                 <li style="text-align: justify">
                     {% if article.article.url %}
                         <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -159,6 +172,7 @@
                         {{ article.article.note }}.
                     {% endif %}
                 </li><br>
+                {% endif %}
             {% endfor %}
         </ol>
     {% endif %}
@@ -167,6 +181,7 @@
         <p><strong>Submitted from the dissemination team</strong></p>
         <ol type="1">
             {% for article in submitted_dissemin %}
+                {% if not article.article.hide %}
                 <li style="text-align: justify">
                     {% if article.article.url %}
                         <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -178,6 +193,7 @@
                         {{ article.article.note }}.
                     {% endif %}
                 </li><br>
+                {% endif %}
             {% endfor %}
         </ol>
     {% endif %}
@@ -186,6 +202,7 @@
         <p><strong>Submitted from the technological transfer team</strong></p>
         <ol type="1">
             {% for article in submitted_tec_trans %}
+                {% if not article.article.hide %}
                 <li style="text-align: justify">
                     {% if article.article.url %}
                         <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -197,6 +214,7 @@
                         {{ article.article.note }}.
                     {% endif %}
                 </li><br>
+                {% endif %}
             {% endfor %}
         </ol>
     {% endif %}
@@ -206,6 +224,7 @@
         <ol type="1">
             {% if published_scientific_in_event %}
                 {% for article in published_scientific_in_event %}
+                    {% if not article.article.hide %}
                     <li style="text-align: justify">
                         {% if article.article.url %}
                             <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -223,10 +242,12 @@
                             {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.
                         {% endif %}
                     </li><br>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
             {% if accepted_scientific_in_event %}
                 {% for article in accepted_scientific_in_event %}
+                    {% if not article.article.hide %}
                     <li style="text-align: justify">
                         {% if article.article.url %}
                             <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
@@ -244,6 +265,7 @@
                             {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held.
                         {% endif %}
                     </li><br>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         </ol>
@@ -253,12 +275,46 @@
         <p><strong>Draft</strong></p>
         <ol type="1">
             {% for article in draft_scientific %}
+                {% if not article.article.hide %}
                 <li style="text-align: justify">
                     <strong>{{ article.article.title }}</strong>. {{ article.article.authors }}
                     {% if article.article.note %}
                         {{ article.article.note }}.
                     {% endif %}
                 </li><br>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    {% if draft_dissemin %}
+        <p><strong>Draft from the dissemination team</strong></p>
+        <ol type="1">
+            {% for article in draft_dissemin %}
+                {% if not article.article.hide %}
+                <li style="text-align: justify">
+                    <strong>{{ article.article.title }}</strong>. {{ article.article.authors }}
+                    {% if article.article.note %}
+                        {{ article.article.note }}.
+                    {% endif %}
+                </li><br>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    {% if draft_tec_trans %}
+        <p><strong>Draft from the technological transfer team</strong></p>
+        <ol type="1">
+            {% for article in draft_tec_trans %}
+                {% if not article.article.hide %}
+                <li style="text-align: justify">
+                    <strong>{{ article.article.title }}</strong>. {{ article.article.authors }}
+                    {% if article.article.note %}
+                        {{ article.article.note }}.
+                    {% endif %}
+                </li><br>
+                {% endif %}
             {% endfor %}
         </ol>
     {% endif %}
