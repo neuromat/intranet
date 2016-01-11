@@ -10,6 +10,13 @@ from itertools import chain
 
 TIME = " 00:00:00"
 
+def valid_date(date):
+    d = date[0:2]
+    m = date[3:5]
+    if (01 <= int(d) <= 31) and (01 <= int(m) <= 12):
+        return True
+    else:
+        return False
 
 def start_date_typed(start_date):
     start_day = start_date[0:2]
@@ -19,7 +26,6 @@ def start_date_typed(start_date):
     start_date = datetime.datetime.strptime(start_date, "%Y%m%d %H:%M:%S").date()
     start_date -= datetime.timedelta(days=1)
     return start_date
-
 
 def end_date_typed(end_date):
     end_day = end_date[0:2]
@@ -41,15 +47,24 @@ def now_plus_five_years():
 @login_required
 def articles(request):
     if request.method == 'POST':
+
         start_date = request.POST['start_date']
         if start_date:
-            start_date = start_date_typed(start_date)
+            if valid_date(start_date):
+                start_date = start_date_typed(start_date)
+            else:
+                messages.error(request, _('Invalid start date!'))
+                return render(request, 'report/research/articles.html')
         else:
             start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
 
         end_date = request.POST['end_date']
         if end_date:
-            end_date = end_date_typed(end_date)
+            if valid_date(end_date):
+                end_date = end_date_typed(end_date)
+            else:
+                messages.error(request, _('Invalid end date!'))
+                return render(request, 'report/research/articles.html')
         else:
             end_date = now_plus_five_years()
 

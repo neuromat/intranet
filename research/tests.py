@@ -274,7 +274,6 @@ class ResearchValidation(TestCase):
         published_articles = [item.article.title for item in response.context['published_scientific']]
         self.assertTrue(self.article_07.title in published_articles)
 
-
     def test_previous_articles_report(self):
         start_date = '01-07-2013'
         end_date = '31-07-2014'
