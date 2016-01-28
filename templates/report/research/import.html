@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block extrahead %}
+<script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
+<script src="{% static 'js/scientific_mission_report.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li>{% trans 'Import papers' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+
+<form role="form" method="post" enctype="multipart/form-data">{% csrf_token %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4">
+            <label>{% trans "Add a .ris file to import papers" %}</label>
+            <input type="file" class="form-control" name="file" id="id_file">
+        </div>
+
+        <div class="col-xs-2 col-sm-2">
+            <br>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Submit" %}</button>
+             </div>
+        </div>
+    </div>
+</div>
+</form>
+
+{% endblock %}

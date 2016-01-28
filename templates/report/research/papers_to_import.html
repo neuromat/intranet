@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block extrahead %}
+<script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
+<script src="{% static 'js/scientific_mission_report.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
+<li>{% trans 'Papers to import' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+{% if periodicals_to_add %}
+    <strong>List of periodicals to add:</strong><br><br>
+    {% for periodical in periodicals_to_add %}
+        <li style="text-align: justify">
+            {{ periodical }}
+        </li><br>
+    {% endfor %}
+    <a href="/research/import_papers">{% trans 'Add all periodicals' %}</a><br><br>
+{% endif %}
+
+{% if events_to_add %}
+    <strong>List of events to add:</strong><br><br>
+    {% for event in events_to_add %}
+        <li style="text-align: justify">
+            {{ event }}
+        </li><br>
+    {% endfor %}
+{% endif %}
+{% endblock %}

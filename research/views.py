@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
-from models import AcademicWork, PublishedInPeriodical, Published, Accepted, Submitted, Draft
+from models import AcademicWork, PublishedInPeriodical, Published, Accepted, Submitted, Draft, Periodical, Event
 import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
@@ -11,9 +11,9 @@ from itertools import chain
 TIME = " 00:00:00"
 
 def valid_date(date):
-    d = date[0:2]
-    m = date[3:5]
-    if (01 <= int(d) <= 31) and (01 <= int(m) <= 12):
+    day = date[0:2]
+    month = date[3:5]
+    if (01 <= int(day) <= 31) and (01 <= int(month) <= 12):
         return True
     else:
         return False
@@ -207,3 +207,51 @@ def academic_works_tex(request):
     response = HttpResponse(render_to_string('report/research/tex/academic_works.tex', context), content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
     return response
+
+
+@login_required
+def import_papers(request):
+    if request.method == 'POST':
+        if request.FILES:
+            file = request.FILES['file'].read().splitlines()
+            paper = {}
+            papers = []
+
+            # Creating a list of dicts where each dict is a paper.
+            for line in file:
+                words = line.split()
+                if words == []: continue
+                elif words[0] == 'ER':
+                    papers.append(paper)
+                    paper = {}
+                else:
+                    key = words[0]
+                    values = words[2:]
+                    values = ' '.join(values)
+                    paper[key] = values
+
+            # Look for periodicals. Remove duplicates and arXiv papers.
+            periodicals = [key['JO'] for key in papers if 'JO' in key and 'JOUR' in key.values()]
+            periodicals = list(set(periodicals))
+            periodicals = [name for name in periodicals if not name.startswith('arXiv')]
+
+            periodicals_to_add = []
+            for periodical in periodicals:
+                if not Periodical.objects.filter(name=periodical):
+                    periodicals_to_add.append(periodical)
+
+            # Look for events and remove duplicates
+            events_ty_jour = [key['JO'] for key in papers if 'JO' in key and 'CONF' in key.values()]
+            events_ty_chap = [key['T2'] for key in papers if 'T2' in key and 'CHAP' in key.values()]
+            events = events_ty_jour + events_ty_chap
+            events = list(set(events))
+
+            events_to_add = []
+            for event in events:
+                if not Event.objects.filter(name=event):
+                    events_to_add.append(event)
+
+            context = {'periodicals_to_add': periodicals_to_add, 'events_to_add': events_to_add}
+            return render(request, 'report/research/papers_to_import.html', context)
+
+    return render(request, 'report/research/import.html')
