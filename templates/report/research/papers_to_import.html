@@ -22,7 +22,7 @@
             {{ periodical }}
         </li><br>
     {% endfor %}
-    <a href="/research/import_papers">{% trans 'Add all periodicals' %}</a><br><br>
+    <a href="{% url 'add_periodical' %}?periodicals_to_add={{ periodicals_to_add }}">{% trans 'Add all periodicals' %}</a><br><br>
 {% endif %}
 
 {% if events_to_add %}

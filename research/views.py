@@ -255,3 +255,12 @@ def import_papers(request):
             return render(request, 'report/research/papers_to_import.html', context)
 
     return render(request, 'report/research/import.html')
+
+
+def add_periodical(request):
+    periodicals = request.GET.get('periodicals_to_add')
+    for periodical in periodicals:
+        name = Periodical(name=periodical)
+        name.save()
+
+    return render(request, 'report/research/import.html')
