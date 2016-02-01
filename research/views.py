@@ -7,6 +7,7 @@ import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
 from itertools import chain
+import ast
 
 TIME = " 00:00:00"
 
@@ -258,9 +259,16 @@ def import_papers(request):
 
 
 def add_periodical(request):
-    periodicals = request.GET.get('periodicals_to_add')
+    list = request.GET.get('periodicals_to_add')
+    periodicals = [item.decode('utf8') for item in ast.literal_eval(list)]
+    num_of_periodicals = len(periodicals)
     for periodical in periodicals:
         name = Periodical(name=periodical)
         name.save()
+
+    if num_of_periodicals == 1:
+        messages.success(request, _('Successfully added one Periodical.'))
+    else:
+        messages.success(request, _('Successfully added all the Periodicals.'))
 
     return render(request, 'report/research/import.html')
