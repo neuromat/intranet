@@ -2,8 +2,7 @@
 {% load i18n admin_static bootstrapped_goodies_tags %}
 
 {% block extrahead %}
-<script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
-<script src="{% static 'js/scientific_mission_report.js' %}"></script>
+<script src="{% static 'js/import_papers.js' %}"></script>
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -17,12 +16,12 @@
 {% block content %}
 {% if periodicals_to_add %}
     <strong>List of periodicals to add:</strong><br><br>
+    <input type="checkbox" value='all_periodicals' id="selectall"> {% trans 'Select all' %}<br>
     {% for periodical in periodicals_to_add %}
-        <li style="text-align: justify">
-            {{ periodical }}
-        </li><br>
+        <input type="checkbox" class="checkbox1" name="periodicals_to_add" value='{{ periodical }}'> {{ periodical }}<br>
     {% endfor %}
-    <a href="{% url 'add_periodical' %}?periodicals_to_add={{ periodicals_to_add }}">{% trans 'Add all periodicals' %}</a><br><br>
+    <br>
+    <a class="btn btn-primary btn-lg" href="{% url 'add_periodical' %}?periodicals_to_add={{ periodicals_to_add }}" role="button" style="font-size:16px;">{% trans 'Add periodicals' %}</a><br><br>
 {% endif %}
 
 {% if events_to_add %}
