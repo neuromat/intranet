@@ -7,7 +7,7 @@ import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
 from itertools import chain
-import ast
+from person.models import Person
 
 TIME = " 00:00:00"
 
@@ -217,6 +217,7 @@ def import_papers(request):
             file = request.FILES['file'].read().splitlines()
             paper = {}
             papers = []
+            num_author = 1
 
             # Creating a list of dicts where each dict is a paper.
             for line in file:
@@ -225,11 +226,19 @@ def import_papers(request):
                 elif words[0] == 'ER':
                     papers.append(paper)
                     paper = {}
+                    num_author = 1
+                elif words[0] == 'A1':
+                    key = 'A'+str(num_author)
+                    values = words[2:]
+                    values = ' '.join(values)
+                    paper[key] = values
+                    num_author += 1
                 else:
                     key = words[0]
                     values = words[2:]
                     values = ' '.join(values)
                     paper[key] = values
+
 
             # Look for periodicals. Remove duplicates and arXiv papers.
             periodicals = [key['JO'] for key in papers if 'JO' in key and 'JOUR' in key.values()]
@@ -252,7 +261,22 @@ def import_papers(request):
                 if not Event.objects.filter(name=event):
                     events_to_add.append(event)
 
-            context = {'periodicals_to_add': periodicals_to_add, 'events_to_add': events_to_add}
+            # Look for authors and remove duplicates
+            author_ris_symbol = ['A'+str(num) for num in range(1, 16)]
+            # authors = [key[author_ris_symbol] for key in papers if author_ris_symbol in key]
+            list_of_author = []
+            for symbol in author_ris_symbol:
+                authors = [key[symbol] for key in papers if symbol in key]
+                if authors != []:
+                    list_of_author.append(authors)
+            authors = list(set(list_of_author))
+
+            authors_to_add = []
+            for author in authors:
+                if not Person.objects.filter(citation_name=author):
+                    authors_to_add.append(author)
+
+            context = {'periodicals_to_add': periodicals_to_add, 'events_to_add': events_to_add, 'authors_to_add': authors_to_add}
             return render(request, 'report/research/papers_to_import.html', context)
 
     return render(request, 'report/research/import.html')
