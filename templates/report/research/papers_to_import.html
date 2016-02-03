@@ -14,22 +14,26 @@
 {% endblock %}
 
 {% block content %}
+<form role="form" method="post" action="{% url 'research.views.add_periodical' %}">{% csrf_token %}
 {% if periodicals_to_add %}
     <strong>List of periodicals to add:</strong><br><br>
-    <input type="checkbox" value='all_periodicals' id="selectall"> {% trans 'Select all' %}<br>
-    {% for periodical in periodicals_to_add %}
-        <input type="checkbox" class="checkbox1" name="periodicals_to_add" value='{{ periodical }}'> {{ periodical }}<br>
-    {% endfor %}
-    <br>
-    <a class="btn btn-primary btn-lg" href="{% url 'add_periodical' %}?periodicals_to_add={{ periodicals_to_add }}" role="button" style="font-size:16px;">{% trans 'Add periodicals' %}</a><br><br>
+    <table class="table table-striped">
+        <tr><td><input type="checkbox" value='all_periodicals' id="select_all_periodicals"> {% trans 'Select all' %}</td></tr>
+        {% for periodical in periodicals_to_add %}
+            <tr><td><input type="checkbox" class="checkbox_periodicals" name="periodicals_to_add" value='{{ periodical }}'> {{ periodical }}</td></tr>
+        {% endfor %}
+    </table>
 {% endif %}
 
 {% if events_to_add %}
-    <strong>List of events to add:</strong><br><br>
-    {% for event in events_to_add %}
-        <li style="text-align: justify">
-            {{ event }}
-        </li><br>
-    {% endfor %}
+    <strong>List of events to add (sorry, events should be add manually):</strong><br><br>
+    <table class="table table-striped">
+        {% for event in events_to_add %}
+            <tr><td>{{ event }}</td></tr>
+        {% endfor %}
+    </table>
 {% endif %}
+
+<button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Add items" %}</button>
+</form>
 {% endblock %}

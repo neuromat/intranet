@@ -259,16 +259,20 @@ def import_papers(request):
 
 
 def add_periodical(request):
-    list = request.GET.get('periodicals_to_add')
-    periodicals = [item.decode('utf8') for item in ast.literal_eval(list)]
-    num_of_periodicals = len(periodicals)
-    for periodical in periodicals:
-        name = Periodical(name=periodical)
-        name.save()
+    periodicals = request.POST.getlist('periodicals_to_add')
 
-    if num_of_periodicals == 1:
-        messages.success(request, _('Successfully added one Periodical.'))
+    if periodicals:
+        num_of_periodicals = len(periodicals)
+        for periodical in periodicals:
+            name = Periodical(name=periodical)
+            name.save()
+
+        if num_of_periodicals == 1:
+            messages.success(request, _('Successfully added one Periodical.'))
+        else:
+            messages.success(request, _('Successfully added all the Periodicals.'))
+
     else:
-        messages.success(request, _('Successfully added all the Periodicals.'))
+        messages.warning(request, _('You have selected no item. Nothing to be done!'))
 
     return render(request, 'report/research/import.html')
