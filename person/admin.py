@@ -5,6 +5,7 @@ from forms import *
 
 admin.site.register(Role)
 admin.site.register(InstitutionType)
+admin.site.register(CitationName)
 
 
 class PersonAdmin(admin.ModelAdmin):
