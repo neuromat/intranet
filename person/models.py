@@ -145,8 +145,10 @@ class Person(models.Model):
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True)
     full_name = models.CharField(_('Full name'), unique=True, max_length=255)
     email = models.EmailField(_('Email'), blank=True, null=True)
-    citation_name = models.ForeignKey(CitationName, verbose_name=_('Name in bibliographic citation'), blank=True,
-                                      null=True, help_text='E.g.: Silva, J.')
+    citation_name = models.CharField(_('Name in bibliographic citation'), max_length=255, blank=True, null=True,
+                                     help_text='E.g.: Silva, J.')
+    list_citation_name = models.ForeignKey(CitationName, verbose_name=_('Names in bibliographic citation'), blank=True,
+                                           null=True, help_text='E.g.: Silva, J.')
     rg = models.CharField(_('RG'), max_length=12, blank=True, null=True)
     cpf = models.CharField(_('CPF'), blank=True, null=True, max_length=15, validators=[validate_cpf])
     passport = models.CharField(_('Passport'), max_length=12, blank=True, null=True)
