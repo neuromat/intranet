@@ -5,13 +5,12 @@ from forms import *
 
 admin.site.register(Role)
 admin.site.register(InstitutionType)
-admin.site.register(CitationName)
 
 
 class PersonAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['full_name', 'email', 'citation_name', 'list_citation_name', 'role', 'institution']
+            'fields': ['full_name', 'email', 'citation_name', 'role', 'institution']
         }),
         (None, {
             'fields': ('rg', 'cpf', 'passport')
@@ -49,3 +48,11 @@ class InstitutionAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
 
 admin.site.register(Institution, InstitutionAdmin)
+
+
+class CitationNameAdmin(admin.ModelAdmin):
+    fields = ['person', 'name']
+    list_display = ('person', 'name')
+    list_display_links = ('name',)
+
+admin.site.register(CitationName, CitationNameAdmin)

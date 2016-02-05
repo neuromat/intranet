@@ -116,21 +116,6 @@ class Institution(models.Model):
         ordering = ('name',)
 
 
-class CitationName(models.Model):
-    """
-    An instance of this class represents a citation name used by a person
-    """
-    name = models.CharField(_('Name in bibliographic citation'), max_length=255, blank=True, null=True)
-
-    def __unicode__(self):
-        return u'%s' % self.name
-
-    class Meta:
-        verbose_name = _('Citation name')
-        verbose_name_plural = _('Citation name')
-        ordering = ('name', )
-
-
 class Person(models.Model):
     """
     An instance of this class represents a person that is a member or a visitor.
@@ -147,8 +132,6 @@ class Person(models.Model):
     email = models.EmailField(_('Email'), blank=True, null=True)
     citation_name = models.CharField(_('Name in bibliographic citation'), max_length=255, blank=True, null=True,
                                      help_text='E.g.: Silva, J.')
-    list_citation_name = models.ForeignKey(CitationName, verbose_name=_('Names in bibliographic citation'), blank=True,
-                                           null=True, help_text='E.g.: Silva, J.')
     rg = models.CharField(_('RG'), max_length=12, blank=True, null=True)
     cpf = models.CharField(_('CPF'), blank=True, null=True, max_length=15, validators=[validate_cpf])
     passport = models.CharField(_('Passport'), max_length=12, blank=True, null=True)
@@ -181,3 +164,19 @@ class Person(models.Model):
         verbose_name = _('Person')
         verbose_name_plural = _('Person')
         ordering = ('full_name',)
+
+
+class CitationName(models.Model):
+    """
+    An instance of this class represents a citation name used by a person
+    """
+    person = models.ForeignKey(Person, verbose_name=_('Name'))
+    name = models.CharField(_('Name in bibliographic citation'), max_length=255)
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Citation name')
+        verbose_name_plural = _('Citation name')
+        ordering = ('name', )
