@@ -24,6 +24,10 @@
         {% endfor %}
     </table>
 {% endif %}
+<button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Add periodicals" %}</button>
+</form>
+
+<br><br>
 
 {% if events_to_add %}
     <strong>List of events to add (sorry, events should be add manually):</strong><br><br>
@@ -43,6 +47,22 @@
     </table>
 {% endif %}
 
-<button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Add items" %}</button>
-</form>
+{% if neuromat_papers_to_add %}
+    <strong>List of papers to add:</strong><br><br>
+    <table class="table table-striped">
+        {% for paper in neuromat_papers_to_add %}
+            <tr><td>{{ paper }}</td></tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if neuromat_papers_to_check_status %}
+    <strong>List of papers to check status:</strong><br><br>
+    <table class="table table-striped">
+        {% for paper in neuromat_papers_to_check_status %}
+            <tr><td>{{ paper }}</td></tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
 {% endblock %}

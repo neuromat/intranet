@@ -2,12 +2,12 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
-from models import AcademicWork, PublishedInPeriodical, Published, Accepted, Submitted, Draft, Periodical, Event
+from models import AcademicWork, PublishedInPeriodical, Published, Accepted, Submitted, Draft, Periodical, Event, ResearchResult
 import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
 from itertools import chain
-from person.models import Person
+from person.models import CitationName
 
 TIME = " 00:00:00"
 
@@ -238,7 +238,7 @@ def import_papers(request):
                     values = ' '.join(values)
                     paper[key] = values
 
-            # Look for periodicals. Remove duplicates and arXiv papers.
+            # Look for periodical to be registered. Remove duplicates and arXiv papers.
             periodicals = [key['JO'] for key in papers if 'JO' in key and 'JOUR' in key.values()]
             periodicals = list(set(periodicals))
             periodicals = [name for name in periodicals if not name.startswith('arXiv')]
@@ -248,7 +248,7 @@ def import_papers(request):
                 if not Periodical.objects.filter(name=periodical):
                     periodicals_to_add.append(periodical)
 
-            # Look for events and remove duplicates
+            # Look for event to be registered. Remove duplicates
             events_ty_jour = [key['JO'] for key in papers if 'JO' in key and 'CONF' in key.values()]
             events_ty_chap = [key['T2'] for key in papers if 'T2' in key and 'CHAP' in key.values()]
             events = events_ty_jour + events_ty_chap
@@ -259,15 +259,37 @@ def import_papers(request):
                 if not Event.objects.filter(name=event):
                     events_to_add.append(event)
 
-            # Look for authors and remove duplicates
-            authors = [key['A1'] for key in papers if 'A1' in key]
-            authors_to_add = []
-            for each_list in authors:
-                for author in each_list:
-                    if not Person.objects.filter(citation_name=author) and author not in authors_to_add:
-                        authors_to_add.append(author)
+            # Look for papers at NIRA system
+            titles = [key['TI'] for key in papers if 'TI' in key]
+            title_found = []
+            title_not_found = []
+            for title in titles:
+                if ResearchResult.objects.filter(title=title):
+                    title_found.append(title)
+                else:
+                    title_not_found.append(title)
 
-            context = {'periodicals_to_add': periodicals_to_add, 'events_to_add': events_to_add, 'authors_to_add': authors_to_add}
+            papers_registered = filter(lambda title: title['TI'] in title_found, papers)
+            papers_not_registered = filter(lambda title: title['TI'] in title_not_found, papers)
+
+            # Look for papers without known authors
+            paper_unknown_author_list = []
+            for each_dict in papers:
+                for each_key in each_dict:
+                    if 'TI' in each_key:
+                        paper_title = each_dict[each_key]
+                    elif 'A1' in each_key:
+                        paper_author = each_dict[each_key]
+                        known_author = 0
+                        for author in paper_author:
+                            if CitationName.objects.filter(name=author):
+                                known_author += 1
+                        if known_author == 0:
+                            paper_unknown_author = {'paper_title':paper_title, 'paper_author': paper_author}
+                            paper_unknown_author_list.append(paper_unknown_author)
+
+
+            context = {'periodicals_to_add': periodicals_to_add, 'events_to_add': events_to_add}
             return render(request, 'report/research/papers_to_import.html', context)
 
     return render(request, 'report/research/import.html')
