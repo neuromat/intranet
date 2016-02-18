@@ -2,7 +2,8 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
-from models import AcademicWork, PublishedInPeriodical, Published, Accepted, Submitted, Draft, Periodical, Event, ResearchResult
+from models import AcademicWork, PublishedInPeriodical, Published, Accepted, Submitted, Draft, Periodical, Event, \
+    ResearchResult, Article
 import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
@@ -259,25 +260,25 @@ def import_papers(request):
                 if not Event.objects.filter(name=event):
                     events_to_add.append(event)
 
-            # Look for papers at NIRA system
-            titles = [key['TI'] for key in papers if 'TI' in key]
-            title_found = []
-            title_not_found = []
-            for title in titles:
-                if ResearchResult.objects.filter(title=title):
-                    title_found.append(title)
-                else:
-                    title_not_found.append(title)
-
-            papers_registered = filter(lambda title: title['TI'] in title_found, papers)
-            papers_not_registered = filter(lambda title: title['TI'] in title_not_found, papers)
-
-            # Look for papers without known authors
-            paper_unknown_author_list = []
+            # Hey! Oh! Let's GO!!!
+            get_paper = ''
             for each_dict in papers:
                 for each_key in each_dict:
-                    if 'TI' in each_key:
+                    if 'T1' in each_key:
                         paper_title = each_dict[each_key]
+                        if ResearchResult.objects.filter(title=paper_title):
+                            paper_registered = True
+                            get_paper = Article.objects.get(title=paper_title)
+                        else:
+                            paper_registered = False
+
+                        if paper_registered:
+                            get_paper_status = get_paper.current_status()
+                            if get_paper_status == 'Draft' or get_paper_status == 'Submitted':
+                                change_status = True
+                            else:
+                                change_status = False
+
                     elif 'A1' in each_key:
                         paper_author = each_dict[each_key]
                         known_author = 0
@@ -285,9 +286,28 @@ def import_papers(request):
                             if CitationName.objects.filter(name=author):
                                 known_author += 1
                         if known_author == 0:
-                            paper_unknown_author = {'paper_title':paper_title, 'paper_author': paper_author}
-                            paper_unknown_author_list.append(paper_unknown_author)
+                            paper_unknown_author = True
+                        else:
+                            paper_unknown_author = False
 
+                    elif 'JO' in each_key:
+                        paper_journal = each_dict[each_key]
+
+                    elif 'VL' in each_key:
+                        paper_volume = each_dict[each_key]
+
+                    elif 'IS' in each_key:
+                        paper_issue = each_dict[each_key]
+
+                    elif 'SP' in each_key:
+                        paper_start_page = each_dict[each_key]
+
+                    elif 'EP' in each_key:
+                        paper_end_page = each_dict[each_key]
+
+                    # Houston, we have a problem here!
+                    elif 'Y1' in each_key:
+                        paper_year = each_dict[each_key]
 
             context = {'periodicals_to_add': periodicals_to_add, 'events_to_add': events_to_add}
             return render(request, 'report/research/papers_to_import.html', context)
