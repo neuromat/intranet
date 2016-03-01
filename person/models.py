@@ -179,4 +179,4 @@ class CitationName(models.Model):
     class Meta:
         verbose_name = _('Citation name')
         verbose_name_plural = _('Citation name')
-        ordering = ('name', )
+        ordering = ('person', )
