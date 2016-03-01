@@ -9,6 +9,8 @@ from django.template.loader import render_to_string
 from django.db.models import Q
 from itertools import chain
 from person.models import CitationName
+from django.core.cache import cache
+
 
 TIME = " 00:00:00"
 
@@ -249,80 +251,26 @@ def import_papers(request):
                 if not Periodical.objects.filter(name=periodical):
                     periodicals_to_add.append(periodical)
 
-            # Look for event to be registered. Remove duplicates
-            events_ty_jour = [key['JO'] for key in papers if 'JO' in key and 'CONF' in key.values()]
-            events_ty_chap = [key['T2'] for key in papers if 'T2' in key and 'CHAP' in key.values()]
-            events = events_ty_jour + events_ty_chap
-            events = list(set(events))
+            # Cache the list of papers
+            cache.set('papers', papers, 60 * 10)
+            cache.set('periodicals', periodicals_to_add, 60 * 10)
 
-            events_to_add = []
-            for event in events:
-                if not Event.objects.filter(name=event):
-                    events_to_add.append(event)
-
-            # Hey! Oh! Let's GO!!!
-            get_paper = ''
-            for each_dict in papers:
-                for each_key in each_dict:
-                    if 'T1' in each_key:
-                        paper_title = each_dict[each_key]
-                        if ResearchResult.objects.filter(title=paper_title):
-                            paper_registered = True
-                            get_paper = Article.objects.get(title=paper_title)
-                        else:
-                            paper_registered = False
-
-                        if paper_registered:
-                            get_paper_status = get_paper.current_status()
-                            if get_paper_status == 'Draft' or get_paper_status == 'Submitted':
-                                change_status = True
-                            else:
-                                change_status = False
-
-                    elif 'A1' in each_key:
-                        paper_author = each_dict[each_key]
-                        known_author = 0
-                        for author in paper_author:
-                            if CitationName.objects.filter(name=author):
-                                known_author += 1
-                        if known_author == 0:
-                            paper_unknown_author = True
-                        else:
-                            paper_unknown_author = False
-
-                    elif 'JO' in each_key:
-                        paper_journal = each_dict[each_key]
-
-                    elif 'VL' in each_key:
-                        paper_volume = each_dict[each_key]
-
-                    elif 'IS' in each_key:
-                        paper_issue = each_dict[each_key]
-
-                    elif 'SP' in each_key:
-                        paper_start_page = each_dict[each_key]
-
-                    elif 'EP' in each_key:
-                        paper_end_page = each_dict[each_key]
-
-                    # Houston, we have a problem here!
-                    elif 'Y1' in each_key:
-                        paper_year = each_dict[each_key]
-
-            context = {'periodicals_to_add': periodicals_to_add, 'events_to_add': events_to_add}
-            return render(request, 'report/research/papers_to_import.html', context)
+            context = {'periodicals_to_add': periodicals_to_add}
+            return render(request, 'report/research/periodicals_to_import.html', context)
 
     return render(request, 'report/research/import.html')
 
 
 def add_periodical(request):
     periodicals = request.POST.getlist('periodicals_to_add')
+    periodicals_to_add = cache.get('periodicals')
 
     if periodicals:
         num_of_periodicals = len(periodicals)
         for periodical in periodicals:
             name = Periodical(name=periodical)
             name.save()
+            periodicals_to_add.remove(periodical)
 
         if num_of_periodicals == 1:
             messages.success(request, _('Successfully added one Periodical.'))
@@ -332,4 +280,80 @@ def add_periodical(request):
     else:
         messages.warning(request, _('You have selected no item. Nothing to be done!'))
 
-    return render(request, 'report/research/import.html')
+    context = {'periodicals_to_add': periodicals_to_add}
+    return render(request, 'report/research/periodicals_to_import.html', context)
+
+
+def add_events(request):
+    papers = cache.get('papers')
+
+    # Look for event to be registered. Remove duplicates
+    events_ty_jour = [key['JO'] for key in papers if 'JO' in key and 'CONF' in key.values()]
+    events_ty_chap = [key['T2'] for key in papers if 'T2' in key and 'CHAP' in key.values()]
+    events = events_ty_jour + events_ty_chap
+    events = list(set(events))
+
+    events_to_add = []
+    for event in events:
+        if not Event.objects.filter(name=event):
+            events_to_add.append(event)
+
+
+def add_papers(request):
+    papers = cache.get('papers')
+    papers_list = []
+    for each_dict in papers:
+        paper = {}
+        paper_title = ''
+        paper_author = ''
+        paper_journal = ''
+        paper_volume = ''
+        paper_issue = ''
+        paper_start_page = ''
+        paper_end_page = ''
+        paper_year = ''
+
+        for each_key in each_dict:
+            if 'T1' in each_key:
+                paper_title = each_dict[each_key]
+                if ResearchResult.objects.filter(title=paper_title):
+                    get_paper = Article.objects.get(title=paper_title)
+                    get_paper_status = get_paper.current_status()
+                    if get_paper_status == 'Draft' or get_paper_status == 'Submitted':
+                        change_status = True
+
+            elif 'A1' in each_key:
+                paper_author = each_dict[each_key]
+                known_author = 0
+                for author in paper_author:
+                    if CitationName.objects.filter(name=author):
+                        known_author += 1
+                if known_author == 0:
+                    paper_unknown_author = True
+                else:
+                    paper_unknown_author = False
+
+            elif 'JO' in each_key:
+                paper_journal = each_dict[each_key]
+
+            elif 'VL' in each_key:
+                paper_volume = each_dict[each_key]
+
+            elif 'IS' in each_key:
+                paper_issue = each_dict[each_key]
+
+            elif 'SP' in each_key:
+                paper_start_page = each_dict[each_key]
+
+            elif 'EP' in each_key:
+                paper_end_page = each_dict[each_key]
+
+            # Houston, we have a problem here!
+            elif 'Y1' in each_key:
+                paper_year = each_dict[each_key]
+
+            paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_journal': paper_journal}
+            papers_list.append(paper)
+
+    context = {'papers_list': papers_list}
+    return render(request, 'report/research/add_papers.html', context)

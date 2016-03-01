@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
+<li>{% trans 'Papers to import' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<form role="form" method="post" action="{% url 'research.views.add_periodical' %}">{% csrf_token %}
+    {% if events_to_add %}
+    <strong>List of events to add (sorry, events should be add manually):</strong><br><br>
+    <table class="table table-striped">
+        {% for event in events_to_add %}
+            <tr><td>{{ event }}</td></tr>
+        {% endfor %}
+    </table>
+{% endif %}
+<button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Next" %}</button>
+</form>
+
+{% endblock %}
