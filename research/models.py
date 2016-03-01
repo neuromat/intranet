@@ -46,6 +46,7 @@ class ResearchResult(models.Model):
     url = models.URLField(_('URL'), max_length=255, blank=True, null=True)
     note = models.CharField(_('Note'), max_length=255, blank=True, null=True)
     research_result_type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
+    ris_file_authors = models.CharField(_('RIS file authors'), max_length=255, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.title
