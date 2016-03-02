@@ -1,0 +1,54 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block extrahead %}
+<script src="{% static 'js/import_papers.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
+<li>{% trans 'Papers to import' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+
+{% if papers_list %}
+    <strong>List of papers to add:</strong><br><br>
+    <span><input type="checkbox" value='all_papers' id="select_all_papers"> {% trans 'Select all' %}</span>
+    <table class="table table-striped">
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Authors</th>
+            <th>Journal</th>
+            <th>Vol.</th>
+            <th>Issue</th>
+            <th>Start pg</th>
+            <th>End pg</th>
+            <th>Year</th>
+        </tr>
+        {% for paper in papers_list %}
+        <tr>
+            <td><input type="checkbox" class="checkbox_papers" name="papers_to_add" value='{{ paper_title }}'></td>
+            <td>{{ paper.paper_title }}</td>
+            <td>{{ paper.paper_author }}</td>
+            <td>{{ paper.paper_journal }}</td>
+            <td>{{ paper.paper_volume }}</td>
+            <td>{{ paper.paper_issue }}</td>
+            <td>{{ paper.paper_start_page }}</td>
+            <td>{{ paper.paper_end_page }}</td>
+            <td>{{ paper.paper_year }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+<div class="btn-group pull-right">
+    <button type="submit" class="btn btn-default" name="action" value="back">Back</button>
+    <button type="submit" class="btn btn-default" name="action" value="next">Next</button>
+</div>
+
+{% endblock %}
