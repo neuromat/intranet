@@ -335,9 +335,28 @@ def add_papers(request):
                     elif 'A1' in each_key:
                         paper_author = each_dict[each_key]
                         known_author = 0
+                        citation_names = ''
                         for author in paper_author:
                             if CitationName.objects.filter(name=author):
                                 known_author += 1
+                            names = author.split()
+                            invalid_name = ['e', 'da', 'do', 'de', 'dos']
+                            if names[0] in invalid_name:
+                                last_name = names[0:2]
+                                last_name = ' '.join(last_name)
+                            else:
+                                last_name = names[0]
+
+                            letters = ''
+                            for name in names:
+                                if name != last_name and name not in invalid_name:
+                                    letters += name[0]
+
+                            citation_name = last_name+' '+letters
+                            citation_names += citation_name
+
+                        paper_author = citation_names
+
                         if known_author == 0:
                             paper_unknown_author = True
                         else:
