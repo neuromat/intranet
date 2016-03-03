@@ -1,0 +1,56 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block extrahead %}
+    <script src="{% static 'js/import_papers.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li><a href="/">{% trans 'Home' %}</a></li>
+        <li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
+        <li>{% trans 'Papers to import' %}</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <form role="form" method="post">{% csrf_token %}
+        {% if event_papers %}
+            <strong>{% trans "List of papers from events to add:" %}</strong><br><br>
+            <span><input type="checkbox" value='all_papers' id="select_all_papers"> {% trans 'Select all' %}</span>
+            <table class="table table-striped">
+                <tr>
+                    <th></th>
+                    <th>{% trans "Title" %}</th>
+                    <th>{% trans "Authors" %}</th>
+                    <th>{% trans "Journal" %}</th>
+                    <th>{% trans "Vol." %}</th>
+                    <th>{% trans "Issue" %}</th>
+                    <th>{% trans "Start pg" %}</th>
+                    <th>{% trans "End pg" %}</th>
+                    <th>{% trans "Year" %}</th>
+                </tr>
+                {% for paper in event_papers %}
+                <tr>
+                    <td><input type="checkbox" class="checkbox_papers" name="papers_to_add" value='{{ paper_title }}'></td>
+                    <td><input type="text" name="paper_title" style="width: 300px" value="{{ paper.paper_title }}"></td>
+                    <td><input type="text" name="paper_title" style="width: 220px" value="{{ paper.paper_author }}"></td>
+                    <td><input type="text" name="paper_title" style="width: 160px" value="{{ paper.paper_journal }}"></td>
+                    <td><input type="text" name="paper_title" style="width: 60px" value="{{ paper.paper_volume }}"></td>
+                    <td><input type="text" name="paper_title" style="width: 60px" value="{{ paper.paper_issue }}"></td>
+                    <td><input type="text" name="paper_title" style="width: 60px" value="{{ paper.paper_start_page }}"></td>
+                    <td><input type="text" name="paper_title" style="width: 60px" value="{{ paper.paper_end_page }}"></td>
+                    <td><input type="text" name="paper_title" style="width: 60px" value="{{ paper.paper_year }}"></td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <strong>{% trans "No papers from events to be added!" %}</strong><br><br>
+        {% endif %}
+
+        <div class="btn-group pull-right">
+            <button type="submit" class="btn btn-default" name="action" value="back">Back</button>
+            <button type="submit" class="btn btn-default" name="action" value="next" disabled>Next</button>
+        </div>
+    </form>
+{% endblock %}

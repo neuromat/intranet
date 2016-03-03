@@ -2,35 +2,35 @@
 {% load i18n admin_static bootstrapped_goodies_tags %}
 
 {% block extrahead %}
-<script src="{% static 'js/import_papers.js' %}"></script>
+    <script src="{% static 'js/import_papers.js' %}"></script>
 {% endblock %}
 
 {% block breadcrumbs %}
-<ul class="breadcrumb">
-<li><a href="/">{% trans 'Home' %}</a></li>
-<li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
-<li>{% trans 'Papers to import' %}</li>
-</ul>
+    <ul class="breadcrumb">
+        <li><a href="/">{% trans 'Home' %}</a></li>
+        <li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
+        <li>{% trans 'Papers to import' %}</li>
+    </ul>
 {% endblock %}
 
 {% block content %}
+    <form role="form" method="post" action="{% url 'research.views.add_periodicals' %}">{% csrf_token %}
+        {% if periodicals_to_add %}
+            <strong>{% trans "List of periodicals to add:" %}</strong><br><br>
+            <table class="table table-striped">
+                <tr><td><input type="checkbox" value='all_periodicals' id="select_all_periodicals"> {% trans 'Select all' %}</td></tr>
+                {% for periodical in periodicals_to_add %}
+                    <tr><td><input type="checkbox" class="checkbox_periodicals" name="periodicals_to_add" value='{{ periodical }}'> {{ periodical }}</td></tr>
+                {% endfor %}
+            </table>
+            <button type="submit" class="btn btn-primary btn-lg" name="action" value="add" style="font-size:16px;" role="button">{% trans "Add periodicals" %}</button>
+        {% else %}
+            <strong>{% trans "No periodicals to be added!" %}</strong><br><br>
+        {% endif %}
 
-<form role="form" method="post" action="{% url 'research.views.add_periodicals' %}">{% csrf_token %}
-{% if periodicals_to_add %}
-    <strong>List of periodicals to add:</strong><br><br>
-    <table class="table table-striped">
-        <tr><td><input type="checkbox" value='all_periodicals' id="select_all_periodicals"> {% trans 'Select all' %}</td></tr>
-        {% for periodical in periodicals_to_add %}
-            <tr><td><input type="checkbox" class="checkbox_periodicals" name="periodicals_to_add" value='{{ periodical }}'> {{ periodical }}</td></tr>
-        {% endfor %}
-    </table>
-{% endif %}
-<button type="submit" class="btn btn-primary btn-lg" name="action" value="add" style="font-size:16px;" role="button">{% trans "Add periodicals" %}</button>
-
-<div class="btn-group pull-right">
-    <button type="submit" class="btn btn-default" name="action" value="back" disabled>Back</button>
-    <button type="submit" class="btn btn-default" name="action" value="next">Next</button>
-</div>
-</form>
-
+        <div class="btn-group pull-right">
+            <button type="submit" class="btn btn-default" name="action" value="back" disabled>Back</button>
+            <button type="submit" class="btn btn-default" name="action" value="next">Next</button>
+        </div>
+    </form>
 {% endblock %}

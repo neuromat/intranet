@@ -301,6 +301,7 @@ def add_periodicals(request):
                 if not Event.objects.filter(name=event):
                     events_to_add.append(event)
 
+            cache.set('events', events_to_add, 60 * 10)
             context = {'events_to_add': events_to_add}
             return render(request, 'report/research/events_to_import.html', context)
 
@@ -312,9 +313,11 @@ def add_papers(request):
     if request.method == "POST":
         if request.POST['action'] == "next":
             papers = cache.get('papers')
-            papers_list = []
+            periodical_papers = []
+            event_papers = []
 
             for each_dict in papers:
+                paper_type = ''
                 paper_title = ''
                 paper_author = ''
                 paper_journal = ''
@@ -324,7 +327,9 @@ def add_papers(request):
                 paper_end_page = ''
                 paper_year = ''
                 for each_key in each_dict:
-                    if 'T1' in each_key:
+                    if 'TY' in each_key:
+                        paper_type = each_dict[each_key]
+                    elif 'T1' in each_key:
                         paper_title = each_dict[each_key]
                         if paper_title.isupper():
                             paper_title = paper_title.capitalize()
@@ -388,13 +393,34 @@ def add_papers(request):
                 paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_journal': paper_journal,
                          'paper_volume': paper_volume, 'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
                          'paper_end_page': paper_end_page, 'paper_year': paper_year}
-                papers_list.append(paper)
 
-            context = {'papers_list': papers_list}
-            return render(request, 'report/research/add_papers.html', context)
+                if 'JOUR' in paper_type:
+                    periodical_papers.append(paper)
+                else:
+                    event_papers.append(paper)
+
+            cache.set('periodical_papers', periodical_papers, 60 * 10)
+            cache.set('event_papers', event_papers, 60 * 10)
+
+            context = {'periodical_papers': periodical_papers}
+            return render(request, 'report/research/add_periodical_papers.html', context)
 
         # Back to the list of periodicals to add
         elif request.POST['action'] == "back":
             periodicals_to_add = cache.get('periodicals')
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
+
+
+def add_periodical_papers(request):
+    if request.method == "POST":
+        if request.POST['action'] == "next":
+            event_papers = cache.get('event_papers')
+            context = {'event_papers': event_papers}
+            return render(request, 'report/research/add_event_papers.html', context)
+
+        # Back to the list of events to add
+        elif request.POST['action'] == "back":
+            events_to_add = cache.get('events')
+            context = {'events_to_add': events_to_add}
+            return render(request, 'report/research/events_to_import.html', context)
