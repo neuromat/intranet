@@ -326,6 +326,8 @@ def add_papers(request):
                 for each_key in each_dict:
                     if 'T1' in each_key:
                         paper_title = each_dict[each_key]
+                        if paper_title.isupper():
+                            paper_title = paper_title.capitalize()
                         if ResearchResult.objects.filter(title=paper_title):
                             get_paper = Article.objects.get(title=paper_title)
                             get_paper_status = get_paper.current_status()
@@ -339,6 +341,8 @@ def add_papers(request):
                         for author in paper_author:
                             if CitationName.objects.filter(name=author):
                                 known_author += 1
+                            if author.isupper():
+                                author = author.title()
                             names = author.split(',')
                             last_name = names[0]
                             other_names = names[1]
@@ -349,7 +353,7 @@ def add_papers(request):
                                 if name not in invalid_name:
                                     letters += name[0]
 
-                            if author == paper_author[-1]:
+                            if author.lower() == paper_author[-1].lower():
                                 citation_name = last_name+','+' '+letters+'.'
                             else:
                                 citation_name = last_name+','+' '+letters+';'+' '
