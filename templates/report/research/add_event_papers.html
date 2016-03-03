@@ -2,7 +2,7 @@
 {% load i18n admin_static bootstrapped_goodies_tags %}
 
 {% block extrahead %}
-    <script src="{% static 'js/import_papers.js' %}"></script>
+    <script src="{% static 'js/add_event_papers.js' %}"></script>
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -17,7 +17,7 @@
     <form role="form" method="post">{% csrf_token %}
         {% if event_papers %}
             <strong>{% trans "List of papers from events to add:" %}</strong><br><br>
-            <span><input type="checkbox" value='all_papers' id="select_all_papers"> {% trans 'Select all' %}</span>
+            <span><input type="checkbox" value='all_papers' id="select_all_event_papers"> {% trans 'Select all' %}</span>
             <table class="table table-striped">
                 <tr>
                     <th></th>
@@ -32,7 +32,7 @@
                 </tr>
                 {% for paper in event_papers %}
                 <tr>
-                    <td><input type="checkbox" class="checkbox_papers" name="papers_to_add" value='{{ paper_title }}'></td>
+                    <td><input type="checkbox" class="checkbox_event_papers" name="papers_to_add" value='{{ paper_title }}'></td>
                     <td><input type="text" name="paper_title" style="width: 300px" value="{{ paper.paper_title }}"></td>
                     <td><input type="text" name="paper_title" style="width: 220px" value="{{ paper.paper_author }}"></td>
                     <td><input type="text" name="paper_title" style="width: 160px" value="{{ paper.paper_journal }}"></td>
