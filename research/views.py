@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
@@ -10,9 +11,16 @@ from django.db.models import Q
 from itertools import chain
 from person.models import CitationName
 from django.core.cache import cache
+from BeautifulSoup import BeautifulSoup
+import urllib2
+import HTMLParser
+import re
+import time
 
 
 TIME = " 00:00:00"
+SCHOLAR = 'https://scholar.google.com.br'
+SCHOLAR_USER = '/citations?user=OaY57UIAAAAJ&cstart=00&pagesize=1000'
 
 def valid_date(date):
     day = date[0:2]
@@ -213,6 +221,50 @@ def academic_works_tex(request):
     return response
 
 
+def scholar():
+    html_scholar = urllib2.urlopen(SCHOLAR+SCHOLAR_USER)
+    soup = BeautifulSoup(html_scholar)
+
+    scholar_list = []
+    for line in soup.findAll('a'):
+        line = str(line)
+        if 'class="gsc_a_at"' in line:
+            result = line.split('class="gsc_a_at">')
+            link = result[0].split('"')
+            link = link[1]
+            title = result[1].split('</a>')
+            title = title[0]
+            paper = {title: link}
+            scholar_list.append(paper)
+
+    return scholar_list
+
+
+def scholar_date(scholar_list, paper_title):
+    paper_url = ''
+    for each_dict in scholar_list:
+        for each_key in each_dict:
+            if paper_title in each_key:
+                paper_url = each_dict[each_key]
+
+    html_parser = HTMLParser.HTMLParser()
+    citation_link = html_parser.unescape(paper_url)
+
+    html_paper = urllib2.urlopen(SCHOLAR+citation_link)
+    soup = BeautifulSoup(html_paper)
+
+    date = ''
+    for line in soup:
+        line = str(line)
+        if line.startswith('<body>'):
+            try:
+                date = re.search('<div class="gsc_field">Data de publicação</div><div class="gsc_value">(.+?)</div>', line).group(1)
+            except AttributeError:
+                date = ''
+
+    return date
+
+
 @login_required
 def import_papers(request):
     if request.method == 'POST':
@@ -315,6 +367,7 @@ def add_papers(request):
             papers = cache.get('papers')
             periodical_papers = []
             event_papers = []
+            scholar_list = scholar()
 
             for each_dict in papers:
                 paper_type = ''
@@ -386,18 +439,20 @@ def add_papers(request):
                     elif 'EP' in each_key:
                         paper_end_page = each_dict[each_key]
 
-                    # Houston, we have a problem here!
-                    elif 'Y1' in each_key:
-                        paper_year = each_dict[each_key]
+                # To get the date of the paper, we need to access Google Scholar
+                paper_date = scholar_date(scholar_list, paper_title)
 
                 paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_journal': paper_journal,
                          'paper_volume': paper_volume, 'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
-                         'paper_end_page': paper_end_page, 'paper_year': paper_year}
+                         'paper_end_page': paper_end_page, 'paper_date': paper_date}
 
                 if 'JOUR' in paper_type:
                     periodical_papers.append(paper)
                 else:
                     event_papers.append(paper)
+
+                # Wait 5 seconds to do the next paper (Google can block us!)
+                time.sleep(5)
 
             cache.set('periodical_papers', periodical_papers, 60 * 10)
             cache.set('event_papers', event_papers, 60 * 10)
