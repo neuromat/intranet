@@ -63,4 +63,7 @@ class SeminarAdmin(admin.ModelAdmin):
     list_display = ('category', 'speakers', 'title', 'date')
     list_display_links = ('title',)
 
+    class Media:
+        js = ('/static/js/seminar.js',)
+
 admin.site.register(Seminar, SeminarAdmin)
