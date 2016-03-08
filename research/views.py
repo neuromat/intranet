@@ -3,8 +3,7 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
-from models import AcademicWork, PublishedInPeriodical, Published, Accepted, Submitted, Draft, Periodical, Event, \
-    ResearchResult, Article
+from models import *
 import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
@@ -369,12 +368,13 @@ def add_papers(request):
             periodical_papers = []
             event_papers = []
             # scholar_list = scholar()
+            periodicals = Periodical.objects.all()
 
             for each_dict in papers:
                 paper_type = ''
                 paper_title = ''
                 paper_author = ''
-                paper_journal = ''
+                periodical_id = ''
                 paper_volume = ''
                 paper_issue = ''
                 paper_start_page = ''
@@ -427,6 +427,14 @@ def add_papers(request):
 
                     elif 'JO' in each_key:
                         paper_journal = each_dict[each_key]
+                        if periodicals.filter(name=paper_journal):
+                            get_periodical = periodicals.get(name=paper_journal)
+                            periodical_id = get_periodical.pk
+                        elif periodicals.filter(acronym=paper_journal):
+                            get_periodical = periodicals.get(acronym=paper_journal)
+                            periodical_id = get_periodical.pk
+                        else:
+                            periodical_id = ''
 
                     elif 'VL' in each_key:
                         paper_volume = each_dict[each_key]
@@ -444,7 +452,7 @@ def add_papers(request):
                 # paper_date = scholar_date(scholar_list, paper_title)
                 paper_date = ''
 
-                paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_journal': paper_journal,
+                paper = {'paper_title': paper_title, 'paper_author': paper_author, 'periodical_id': periodical_id,
                          'paper_volume': paper_volume, 'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
                          'paper_end_page': paper_end_page, 'paper_date': paper_date}
 
@@ -454,12 +462,12 @@ def add_papers(request):
                     event_papers.append(paper)
 
                 # Wait 5 to 10 seconds to do the next paper.
-                time.sleep(randint(5,10))
+                # time.sleep(randint(5,10))
 
             cache.set('periodical_papers', periodical_papers, 60 * 10)
             cache.set('event_papers', event_papers, 60 * 10)
 
-            context = {'periodical_papers': periodical_papers}
+            context = {'periodical_papers': periodical_papers, 'periodicals': periodicals}
             return render(request, 'report/research/add_periodical_papers.html', context)
 
         # Back to the list of periodicals to add

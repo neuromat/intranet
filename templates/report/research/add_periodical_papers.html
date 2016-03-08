@@ -28,19 +28,30 @@
                     <th>{% trans "Issue" %}</th>
                     <th>{% trans "Start pg" %}</th>
                     <th>{% trans "End pg" %}</th>
-                    <th>{% trans "Year" %}</th>
+                    <th>{% trans "Date" %}</th>
                 </tr>
                 {% for paper in periodical_papers %}
                 <tr>
                     <td><input type="checkbox" class="checkbox_periodical_papers" name="papers_to_add" value='{{ paper_title }}'></td>
-                    <td><input type="text" name="paper_title" style="width: 300px" value="{{ paper.paper_title }}"></td>
-                    <td><input type="text" name="paper_title" style="width: 220px" value="{{ paper.paper_author }}"></td>
-                    <td><input type="text" name="paper_title" style="width: 160px" value="{{ paper.paper_journal }}"></td>
-                    <td><input type="text" name="paper_title" style="width: 60px" value="{{ paper.paper_volume }}"></td>
-                    <td><input type="text" name="paper_title" style="width: 40px" value="{{ paper.paper_issue }}"></td>
-                    <td><input type="text" name="paper_title" style="width: 60px" value="{{ paper.paper_start_page }}"></td>
-                    <td><input type="text" name="paper_title" style="width: 60px" value="{{ paper.paper_end_page }}"></td>
-                    <td><input type="text" name="paper_title" style="width: 80px" value="{{ paper.paper_date }}"></td>
+                    <td><input class="form-control" type="text" name="paper_title" style="width: 300px" value="{{ paper.paper_title }}"></td>
+                    <td><input class="form-control" type="text" name="paper_author" style="width: 220px" value="{{ paper.paper_author }}"></td>
+                    <td>
+                        <select class="form-control" name="paper_periodical" id="id_periodical" style="width: 160px">
+                            <option value="none">-----</option>
+                            {% for periodical in periodicals %}
+                                {% if periodical.id == paper.periodical_id %}
+                                    <option value="{{ periodical.name }}" selected="selected">{{ periodical.name }}</option>
+                                {% else %}
+                                    <option value="{{ periodical.name }}">{{ periodical.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input class="form-control" type="text" name="paper_volume" style="width: 60px" value="{{ paper.paper_volume }}"></td>
+                    <td><input class="form-control" type="text" name="paper_issue" style="width: 40px" value="{{ paper.paper_issue }}"></td>
+                    <td><input class="form-control" type="text" name="paper_start_page" style="width: 60px" value="{{ paper.paper_start_page }}"></td>
+                    <td><input class="form-control" type="text" name="paper_end_page" style="width: 60px" value="{{ paper.paper_end_page }}"></td>
+                    <td><input class="form-control" type="text" name="paper_date" style="width: 80px" value="{{ paper.paper_date }}"></td>
                 </tr>
                 {% endfor %}
             </table>
