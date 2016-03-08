@@ -369,12 +369,14 @@ def add_papers(request):
             event_papers = []
             # scholar_list = scholar()
             periodicals = Periodical.objects.all()
+            events = Event.objects.all()
 
             for each_dict in papers:
                 paper_type = ''
                 paper_title = ''
                 paper_author = ''
                 periodical_id = ''
+                event_id = ''
                 paper_volume = ''
                 paper_issue = ''
                 paper_start_page = ''
@@ -433,8 +435,20 @@ def add_papers(request):
                         elif periodicals.filter(acronym=paper_journal):
                             get_periodical = periodicals.get(acronym=paper_journal)
                             periodical_id = get_periodical.pk
+                        elif events.filter(name=paper_journal):
+                            get_event = events.get(name=paper_journal)
+                            event_id = get_event.pk
                         else:
                             periodical_id = ''
+                            event_id = ''
+
+                    elif 'T2' in each_key:
+                        paper_event = each_dict[each_key]
+                        if events.filter(name=paper_event):
+                            get_event = events.get(name=paper_event)
+                            event_id = get_event.pk
+                        else:
+                            event_id = ''
 
                     elif 'VL' in each_key:
                         paper_volume = each_dict[each_key]
@@ -453,8 +467,9 @@ def add_papers(request):
                 paper_date = ''
 
                 paper = {'paper_title': paper_title, 'paper_author': paper_author, 'periodical_id': periodical_id,
-                         'paper_volume': paper_volume, 'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
-                         'paper_end_page': paper_end_page, 'paper_date': paper_date}
+                         'event_id': event_id, 'paper_volume': paper_volume, 'paper_issue': paper_issue,
+                         'paper_start_page': paper_start_page, 'paper_end_page': paper_end_page,
+                         'paper_date': paper_date}
 
                 if 'JOUR' in paper_type:
                     periodical_papers.append(paper)
@@ -481,7 +496,8 @@ def add_periodical_papers(request):
     if request.method == "POST":
         if request.POST['action'] == "next":
             event_papers = cache.get('event_papers')
-            context = {'event_papers': event_papers}
+            events = Event.objects.all()
+            context = {'event_papers': event_papers, 'events': events }
             return render(request, 'report/research/add_event_papers.html', context)
 
         # Back to the list of events to add
