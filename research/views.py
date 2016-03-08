@@ -16,6 +16,7 @@ import urllib2
 import HTMLParser
 import re
 import time
+from random import randint
 
 
 TIME = " 00:00:00"
@@ -367,7 +368,7 @@ def add_papers(request):
             papers = cache.get('papers')
             periodical_papers = []
             event_papers = []
-            scholar_list = scholar()
+            # scholar_list = scholar()
 
             for each_dict in papers:
                 paper_type = ''
@@ -378,7 +379,7 @@ def add_papers(request):
                 paper_issue = ''
                 paper_start_page = ''
                 paper_end_page = ''
-                paper_year = ''
+
                 for each_key in each_dict:
                     if 'TY' in each_key:
                         paper_type = each_dict[each_key]
@@ -440,7 +441,8 @@ def add_papers(request):
                         paper_end_page = each_dict[each_key]
 
                 # To get the date of the paper, we need to access Google Scholar
-                paper_date = scholar_date(scholar_list, paper_title)
+                # paper_date = scholar_date(scholar_list, paper_title)
+                paper_date = ''
 
                 paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_journal': paper_journal,
                          'paper_volume': paper_volume, 'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
@@ -451,8 +453,8 @@ def add_papers(request):
                 else:
                     event_papers.append(paper)
 
-                # Wait 5 seconds to do the next paper (Google can block us!)
-                time.sleep(5)
+                # Wait 5 to 10 seconds to do the next paper.
+                time.sleep(randint(5,10))
 
             cache.set('periodical_papers', periodical_papers, 60 * 10)
             cache.set('event_papers', event_papers, 60 * 10)
