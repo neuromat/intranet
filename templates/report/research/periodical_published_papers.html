@@ -14,9 +14,9 @@
 {% endblock %}
 
 {% block content %}
-    <form role="form" method="post" action="{% url 'research.views.add_periodical_papers' %}">{% csrf_token %}
-        {% if periodical_papers %}
-            <strong>{% trans "List of papers from periodicals to add:" %}</strong><br><br>
+    <form role="form" method="post" action="{% url 'research.views.periodical_published_papers' %}">{% csrf_token %}
+        {% if periodical_published_papers %}
+            <strong>{% trans "List of published papers to add:" %}</strong><br><br>
             <span><input type="checkbox" value='all_papers' id="select_all_periodical_papers"> {% trans 'Select all' %}</span>
             <table class="table table-striped">
                 <tr>
@@ -30,7 +30,7 @@
                     <th>{% trans "End pg" %}</th>
                     <th>{% trans "Date" %}</th>
                 </tr>
-                {% for paper in periodical_papers %}
+                {% for paper in periodical_published_papers %}
                 <tr>
                     <td><input type="checkbox" class="checkbox_periodical_papers" name="papers_to_add" value='{{ paper_title }}'></td>
                     <td><input class="form-control" type="text" name="paper_title" style="width: 300px" value="{{ paper.paper_title }}"></td>
@@ -56,7 +56,7 @@
                 {% endfor %}
             </table>
         {% else %}
-            <strong>{% trans "No papers from periodicals to be added!" %}</strong><br><br>
+            <strong>{% trans "There is no published papers to add!" %}</strong><br><br>
         {% endif %}
 
         <div class="btn-group pull-right">

@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-    <form role="form" method="post">{% csrf_token %}
+    <form role="form" method="post" action="{% url 'research.views.event_papers' %}">{% csrf_token %}
         {% if event_papers %}
             <strong>{% trans "List of papers from events to add:" %}</strong><br><br>
             <span><input type="checkbox" value='all_papers' id="select_all_event_papers"> {% trans 'Select all' %}</span>
