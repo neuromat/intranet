@@ -379,6 +379,7 @@ def add_papers(request):
                 paper_type = ''
                 paper_title = ''
                 paper_author = ''
+                paper_journal = ''
                 periodical_id = ''
                 event_id = ''
                 paper_volume = ''
@@ -433,24 +434,25 @@ def add_papers(request):
 
                     elif 'JO' in each_key:
                         paper_journal = each_dict[each_key]
-                        if periodicals.filter(name=paper_journal):
-                            get_periodical = periodicals.get(name=paper_journal)
-                            periodical_id = get_periodical.pk
-                        elif periodicals.filter(acronym=paper_journal):
-                            get_periodical = periodicals.get(acronym=paper_journal)
-                            periodical_id = get_periodical.pk
-                        elif periodical_ris_file.filter(name=paper_journal):
-                            get_periodical = periodical_ris_file.get(name=paper_journal)
-                            periodical_id = get_periodical.periodical_id
-                        elif events.filter(name=paper_journal):
-                            get_event = events.get(name=paper_journal)
-                            event_id = get_event.pk
-                        elif events_ris_file.filter(name=paper_journal):
-                            get_event = events_ris_file.get(name=paper_journal)
-                            event_id = get_event.event_id
-                        else:
-                            periodical_id = ''
-                            event_id = ''
+                        if not paper_journal.startswith('arXiv'):
+                            if periodicals.filter(name=paper_journal):
+                                get_periodical = periodicals.get(name=paper_journal)
+                                periodical_id = get_periodical.pk
+                            elif periodicals.filter(acronym=paper_journal):
+                                get_periodical = periodicals.get(acronym=paper_journal)
+                                periodical_id = get_periodical.pk
+                            elif periodical_ris_file.filter(name=paper_journal):
+                                get_periodical = periodical_ris_file.get(name=paper_journal)
+                                periodical_id = get_periodical.periodical_id
+                            elif events.filter(name=paper_journal):
+                                get_event = events.get(name=paper_journal)
+                                event_id = get_event.pk
+                            elif events_ris_file.filter(name=paper_journal):
+                                get_event = events_ris_file.get(name=paper_journal)
+                                event_id = get_event.event_id
+                            else:
+                                periodical_id = ''
+                                event_id = ''
 
                     elif 'T2' in each_key:
                         paper_event = each_dict[each_key]
@@ -479,17 +481,21 @@ def add_papers(request):
                 # paper_date = scholar_date(scholar_list, paper_title)
                 paper_date = ''
 
-                paper = {'paper_title': paper_title, 'paper_author': paper_author, 'periodical_id': periodical_id,
-                         'event_id': event_id, 'paper_volume': paper_volume, 'paper_issue': paper_issue,
-                         'paper_start_page': paper_start_page, 'paper_end_page': paper_end_page,
-                         'paper_date': paper_date}
+                paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_volume': paper_volume,
+                         'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
+                         'paper_end_page': paper_end_page, 'paper_date': paper_date}
 
                 if 'JOUR' in paper_type:
                     if paper_journal.startswith('arXiv'):
+                        arxiv = paper_journal.split(':')
+                        arxiv_url = 'http://arxiv.org/abs/'+str(arxiv[1])
+                        paper['arxiv_url'] = arxiv_url
                         periodical_accepted_papers.append(paper)
                     else:
+                        paper['periodical_id'] = periodical_id
                         periodical_published_papers.append(paper)
                 else:
+                    paper['event_id'] = event_id
                     event_papers.append(paper)
 
                 # Wait 5 to 10 seconds to do the next paper.
