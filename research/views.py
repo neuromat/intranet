@@ -300,7 +300,7 @@ def import_papers(request):
 
             periodicals_to_add = []
             for periodical in periodicals:
-                if not Periodical.objects.filter(name=periodical):
+                if not Periodical.objects.filter(name=periodical) and not PeriodicalRISFile.objects.filter(name=periodical):
                     periodicals_to_add.append(periodical)
 
             # Cache the list of papers and the list of periodicals to add
@@ -350,7 +350,7 @@ def add_periodicals(request):
 
             events_to_add = []
             for event in events:
-                if not Event.objects.filter(name=event):
+                if not Event.objects.filter(name=event) and not EventRISFile.objects.filter(name=event):
                     events_to_add.append(event)
 
             cache.set('events', events_to_add, 60 * 10)
@@ -369,7 +369,9 @@ def add_papers(request):
             event_papers = []
             # scholar_list = scholar()
             periodicals = Periodical.objects.all()
+            periodical_ris_file = PeriodicalRISFile.objects.all()
             events = Event.objects.all()
+            events_ris_file = EventRISFile.objects.all()
 
             for each_dict in papers:
                 paper_type = ''
@@ -435,9 +437,15 @@ def add_papers(request):
                         elif periodicals.filter(acronym=paper_journal):
                             get_periodical = periodicals.get(acronym=paper_journal)
                             periodical_id = get_periodical.pk
+                        elif periodical_ris_file.filter(name=paper_journal):
+                            get_periodical = periodical_ris_file.get(name=paper_journal)
+                            periodical_id = get_periodical.periodical_id
                         elif events.filter(name=paper_journal):
                             get_event = events.get(name=paper_journal)
                             event_id = get_event.pk
+                        elif events_ris_file.filter(name=paper_journal):
+                            get_event = events_ris_file.get(name=paper_journal)
+                            event_id = get_event.event_id
                         else:
                             periodical_id = ''
                             event_id = ''
@@ -447,6 +455,9 @@ def add_papers(request):
                         if events.filter(name=paper_event):
                             get_event = events.get(name=paper_event)
                             event_id = get_event.pk
+                        elif events_ris_file.filter(name=paper_event):
+                            get_event = events_ris_file.get(name=paper_event)
+                            event_id = get_event.event_id
                         else:
                             event_id = ''
 
