@@ -2,6 +2,8 @@ from django.contrib import admin
 from research.models import *
 from forms import ArticleAdminForm, BookAdminForm, AuthorsInlineFormset
 from django.db.models import Q
+from django.utils.translation import ugettext_lazy as _
+
 
 admin.site.register(TypeAcademicWork)
 
@@ -39,6 +41,18 @@ class PublishedInPeriodicalInline(admin.StackedInline):
     fields = ['doi', 'volume', 'number', 'start_page', 'end_page', 'date', 'attachment']
 
 
+class PeriodicalRISFileInline(admin.StackedInline):
+    model = PeriodicalRISFile
+    extra = 1
+    verbose_name = _('Periodical name')
+
+
+class EventRISFileInline(admin.StackedInline):
+    model = EventRISFile
+    extra = 1
+    verbose_name = _('Event name')
+
+
 class SuperResearchResult(admin.ModelAdmin):
     # Shows the research result according to the user permission
     # No restriction for users defined as superuser or NIRA Admin
@@ -63,6 +77,7 @@ class EventAdmin(admin.ModelAdmin):
     fields = ['name', 'acronym', 'local', 'start_date', 'end_date', 'publisher', 'volume', 'number']
     list_display = ('name', 'local', 'start_date', 'end_date')
     list_display_links = ('name',)
+    inlines = [EventRISFileInline]
 
 admin.site.register(Event, EventAdmin)
 
@@ -71,6 +86,7 @@ class PeriodicalAdmin(admin.ModelAdmin):
     fields = ['name', 'acronym']
     list_display = ('name',)
     list_display_links = ('name',)
+    inlines = [PeriodicalRISFileInline]
 
 admin.site.register(Periodical, PeriodicalAdmin)
 

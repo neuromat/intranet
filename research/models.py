@@ -118,6 +118,23 @@ class Periodical(models.Model):
         ordering = ('name', )
 
 
+class PeriodicalRISFile(models.Model):
+    """
+    An instance of this class is how the RIS file called a journal or a magazine.
+
+    """
+    periodical = models.ForeignKey(Periodical)
+    name = models.CharField(_('Name'), max_length=255)
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Periodical name on the RIS file')
+        verbose_name_plural = _('Periodical name on the RIS file')
+        ordering = ('name', )
+
+
 class Event(models.Model):
     """
     An instance of this class is a conference, a congress, a meeting or a symposium.
@@ -140,6 +157,23 @@ class Event(models.Model):
     class Meta:
         verbose_name = _('Event')
         verbose_name_plural = _('Events (congress, conference, etc.)')
+        ordering = ('name', )
+
+
+class EventRISFile(models.Model):
+    """
+    An instance of this class is how the RIS file called an event.
+
+    """
+    event = models.ForeignKey(Event)
+    name = models.CharField(_('Name'), max_length=255)
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    class Meta:
+        verbose_name = _('Event name on the RIS file')
+        verbose_name_plural = _('Event name on the RIS file')
         ordering = ('name', )
 
 
