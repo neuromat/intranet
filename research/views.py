@@ -10,7 +10,7 @@ from django.db.models import Q
 from itertools import chain
 from person.models import CitationName
 from django.core.cache import cache
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 import urllib2
 import HTMLParser
 import re
@@ -222,20 +222,22 @@ def academic_works_tex(request):
 
 
 def scholar():
-    html_scholar = urllib2.urlopen(SCHOLAR+SCHOLAR_USER)
+    html_scholar = urllib2.urlopen(SCHOLAR+SCHOLAR_USER).read()
     soup = BeautifulSoup(html_scholar)
 
     scholar_list = []
-    for line in soup.findAll('a'):
+    for line in soup.find_all('a'):
         line = str(line)
         if 'class="gsc_a_at"' in line:
-            result = line.split('class="gsc_a_at">')
-            link = result[0].split('"')
-            link = link[1]
-            title = result[1].split('</a>')
-            title = title[0]
-            paper = {title: link}
-            scholar_list.append(paper)
+            try:
+                link = re.search('href="(.+?)">', line).group(1)
+                title = re.search('">(.+?)</a>', line).group(1)
+            except AttributeError:
+                link = ''
+                title = ''
+            if link != '' and title != '':
+                paper = {title: link}
+                scholar_list.append(paper)
 
     return scholar_list
 
@@ -250,17 +252,36 @@ def scholar_date(scholar_list, paper_title):
     html_parser = HTMLParser.HTMLParser()
     citation_link = html_parser.unescape(paper_url)
 
-    html_paper = urllib2.urlopen(SCHOLAR+citation_link)
+    html_paper = urllib2.urlopen(SCHOLAR+citation_link).read()
     soup = BeautifulSoup(html_paper)
 
     date = ''
     for line in soup:
         line = str(line)
-        if line.startswith('<body>'):
-            try:
-                date = re.search('<div class="gsc_field">Data de publicação</div><div class="gsc_value">(.+?)</div>', line).group(1)
-            except AttributeError:
-                date = ''
+        try:
+            date = re.search('<div class="gsc_field">Data de publicação</div><div class="gsc_value">(.+?)</div>', line).group(1)
+        except AttributeError:
+            date = ''
+
+    return date
+
+
+def arxiv(arxiv_url):
+    html = urllib2.urlopen(arxiv_url).read()
+    soup = BeautifulSoup(html)
+    line = soup.find_all("div", class_="dateline")
+    line = str(line[0])
+
+    if 'last revised' in line:
+        try:
+            date = re.search(' last revised (.+?) \(this version', line).group(1)
+        except AttributeError:
+            date = ''
+    else:
+        try:
+            date = re.search('Submitted on (.+?)\)</div>', line).group(1)
+        except AttributeError:
+            date = ''
 
     return date
 
@@ -368,8 +389,7 @@ def add_papers(request):
             periodical_published_papers = []
             periodical_accepted_papers = []
             event_papers = []
-            paper_journal = ''
-            # scholar_list = scholar()
+            scholar_list = scholar()
             periodicals = Periodical.objects.all()
             periodical_ris_file = PeriodicalRISFile.objects.all()
             events = Event.objects.all()
@@ -477,29 +497,31 @@ def add_papers(request):
                     elif 'EP' in each_key:
                         paper_end_page = each_dict[each_key]
 
-                # To get the date of the paper, we need to access Google Scholar
-                # paper_date = scholar_date(scholar_list, paper_title)
-                paper_date = ''
-
                 paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_volume': paper_volume,
                          'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
-                         'paper_end_page': paper_end_page, 'paper_date': paper_date}
+                         'paper_end_page': paper_end_page}
 
                 if 'JOUR' in paper_type:
                     if paper_journal.startswith('arXiv'):
-                        arxiv = paper_journal.split(':')
-                        arxiv_url = 'http://arxiv.org/abs/'+str(arxiv[1])
+                        arxiv_txt = paper_journal.split(':')
+                        arxiv_url = 'http://arxiv.org/abs/'+str(arxiv_txt[1])
+                        paper_date = arxiv(arxiv_url)
                         paper['arxiv_url'] = arxiv_url
+                        paper['paper_date'] = paper_date
                         periodical_accepted_papers.append(paper)
                     else:
+                        paper_date = scholar_date(scholar_list, paper_title)
                         paper['periodical_id'] = periodical_id
+                        paper['paper_date'] = paper_date
                         periodical_published_papers.append(paper)
                 else:
+                    paper_date = scholar_date(scholar_list, paper_title)
                     paper['event_id'] = event_id
+                    paper['paper_date'] = paper_date
                     event_papers.append(paper)
 
-                # Wait 5 to 10 seconds to do the next paper.
-                # time.sleep(randint(5,10))
+                # Wait 2 to 5 seconds to do the next paper.
+                time.sleep(randint(2, 5))
 
             cache.set('periodical_published_papers', periodical_published_papers, 60 * 10)
             cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)
