@@ -393,151 +393,157 @@ def add_periodicals(request):
 def add_papers(request):
     if request.method == "POST":
         if request.POST['action'] == "next":
-            papers = cache.get('papers')
-            periodical_published_papers = []
-            periodical_accepted_papers = []
-            event_papers = []
-            scholar_list = scholar()
-            periodicals = Periodical.objects.all()
-            periodical_ris_file = PeriodicalRISFile.objects.all()
-            events = Event.objects.all()
-            events_ris_file = EventRISFile.objects.all()
+            if cache.get('periodical_published_papers'):
+                periodical_published_papers = cache.get('periodical_published_papers')
+                periodicals = cache.get('periodicals')
+                context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
+                return render(request, 'report/research/periodical_published_papers.html', context)
+            else:
+                papers = cache.get('papers')
+                periodical_published_papers = []
+                periodical_accepted_papers = []
+                event_papers = []
+                scholar_list = scholar()
+                periodicals = Periodical.objects.all()
+                periodical_ris_file = PeriodicalRISFile.objects.all()
+                events = Event.objects.all()
+                events_ris_file = EventRISFile.objects.all()
 
-            for each_dict in papers:
-                paper_type = ''
-                paper_title = ''
-                paper_author = ''
-                paper_journal = ''
-                periodical_id = ''
-                event_id = ''
-                paper_volume = ''
-                paper_issue = ''
-                paper_start_page = ''
-                paper_end_page = ''
+                for each_dict in papers:
+                    paper_type = ''
+                    paper_title = ''
+                    paper_author = ''
+                    paper_journal = ''
+                    periodical_id = ''
+                    event_id = ''
+                    paper_volume = ''
+                    paper_issue = ''
+                    paper_start_page = ''
+                    paper_end_page = ''
 
-                for each_key in each_dict:
-                    if 'TY' in each_key:
-                        paper_type = each_dict[each_key]
-                    elif 'T1' in each_key:
-                        paper_title = each_dict[each_key]
-                        if paper_title.isupper():
-                            paper_title = paper_title.capitalize()
-                        if ResearchResult.objects.filter(title=paper_title):
-                            get_paper = Article.objects.get(title=paper_title)
-                            get_paper_status = get_paper.current_status()
-                            if get_paper_status == 'Draft' or get_paper_status == 'Submitted':
-                                change_status = True
+                    for each_key in each_dict:
+                        if 'TY' in each_key:
+                            paper_type = each_dict[each_key]
+                        elif 'T1' in each_key:
+                            paper_title = each_dict[each_key]
+                            if paper_title.isupper():
+                                paper_title = paper_title.capitalize()
+                            if ResearchResult.objects.filter(title=paper_title):
+                                get_paper = Article.objects.get(title=paper_title)
+                                get_paper_status = get_paper.current_status()
+                                if get_paper_status == 'Draft' or get_paper_status == 'Submitted':
+                                    change_status = True
 
-                    elif 'A1' in each_key:
-                        paper_author = each_dict[each_key]
-                        known_author = 0
-                        citation_names = ''
-                        for author in paper_author:
-                            if CitationName.objects.filter(name=author):
-                                known_author += 1
-                            if author.isupper():
-                                author = author.title()
-                            names = author.split(',')
-                            last_name = names[0]
-                            other_names = names[1]
-                            names = other_names.split()
-                            invalid_name = ['e', 'da', 'do', 'de', 'dos', 'Da', 'Do', 'De', 'Dos']
-                            letters = ''
-                            for name in names:
-                                if name not in invalid_name:
-                                    letters += name[0]
+                        elif 'A1' in each_key:
+                            paper_author = each_dict[each_key]
+                            known_author = 0
+                            citation_names = ''
+                            for author in paper_author:
+                                if CitationName.objects.filter(name=author):
+                                    known_author += 1
+                                if author.isupper():
+                                    author = author.title()
+                                names = author.split(',')
+                                last_name = names[0]
+                                other_names = names[1]
+                                names = other_names.split()
+                                invalid_name = ['e', 'da', 'do', 'de', 'dos', 'Da', 'Do', 'De', 'Dos']
+                                letters = ''
+                                for name in names:
+                                    if name not in invalid_name:
+                                        letters += name[0]
 
-                            if author.lower() == paper_author[-1].lower():
-                                citation_name = last_name+','+' '+letters+'.'
+                                if author.lower() == paper_author[-1].lower():
+                                    citation_name = last_name+','+' '+letters+'.'
+                                else:
+                                    citation_name = last_name+','+' '+letters+';'+' '
+                                citation_names += citation_name
+
+                            paper_author = citation_names
+
+                            if known_author == 0:
+                                paper_unknown_author = True
                             else:
-                                citation_name = last_name+','+' '+letters+';'+' '
-                            citation_names += citation_name
+                                paper_unknown_author = False
 
-                        paper_author = citation_names
+                        elif 'JO' in each_key:
+                            paper_journal = each_dict[each_key]
+                            if not paper_journal.startswith('arXiv'):
+                                if periodicals.filter(name=paper_journal):
+                                    get_periodical = periodicals.get(name=paper_journal)
+                                    periodical_id = get_periodical.pk
+                                elif periodicals.filter(acronym=paper_journal):
+                                    get_periodical = periodicals.get(acronym=paper_journal)
+                                    periodical_id = get_periodical.pk
+                                elif periodical_ris_file.filter(name=paper_journal):
+                                    get_periodical = periodical_ris_file.get(name=paper_journal)
+                                    periodical_id = get_periodical.periodical_id
+                                elif events.filter(name=paper_journal):
+                                    get_event = events.get(name=paper_journal)
+                                    event_id = get_event.pk
+                                elif events_ris_file.filter(name=paper_journal):
+                                    get_event = events_ris_file.get(name=paper_journal)
+                                    event_id = get_event.event_id
+                                else:
+                                    periodical_id = ''
+                                    event_id = ''
 
-                        if known_author == 0:
-                            paper_unknown_author = True
-                        else:
-                            paper_unknown_author = False
-
-                    elif 'JO' in each_key:
-                        paper_journal = each_dict[each_key]
-                        if not paper_journal.startswith('arXiv'):
-                            if periodicals.filter(name=paper_journal):
-                                get_periodical = periodicals.get(name=paper_journal)
-                                periodical_id = get_periodical.pk
-                            elif periodicals.filter(acronym=paper_journal):
-                                get_periodical = periodicals.get(acronym=paper_journal)
-                                periodical_id = get_periodical.pk
-                            elif periodical_ris_file.filter(name=paper_journal):
-                                get_periodical = periodical_ris_file.get(name=paper_journal)
-                                periodical_id = get_periodical.periodical_id
-                            elif events.filter(name=paper_journal):
-                                get_event = events.get(name=paper_journal)
+                        elif 'T2' in each_key:
+                            paper_event = each_dict[each_key]
+                            if events.filter(name=paper_event):
+                                get_event = events.get(name=paper_event)
                                 event_id = get_event.pk
-                            elif events_ris_file.filter(name=paper_journal):
-                                get_event = events_ris_file.get(name=paper_journal)
+                            elif events_ris_file.filter(name=paper_event):
+                                get_event = events_ris_file.get(name=paper_event)
                                 event_id = get_event.event_id
                             else:
-                                periodical_id = ''
                                 event_id = ''
 
-                    elif 'T2' in each_key:
-                        paper_event = each_dict[each_key]
-                        if events.filter(name=paper_event):
-                            get_event = events.get(name=paper_event)
-                            event_id = get_event.pk
-                        elif events_ris_file.filter(name=paper_event):
-                            get_event = events_ris_file.get(name=paper_event)
-                            event_id = get_event.event_id
+                        elif 'VL' in each_key:
+                            paper_volume = each_dict[each_key]
+
+                        elif 'IS' in each_key:
+                            paper_issue = each_dict[each_key]
+
+                        elif 'SP' in each_key:
+                            paper_start_page = each_dict[each_key]
+
+                        elif 'EP' in each_key:
+                            paper_end_page = each_dict[each_key]
+
+                    paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_volume': paper_volume,
+                             'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
+                             'paper_end_page': paper_end_page}
+
+                    if 'JOUR' in paper_type:
+                        if paper_journal.startswith('arXiv'):
+                            arxiv_txt = paper_journal.split(':')
+                            arxiv_url = 'http://arxiv.org/abs/'+str(arxiv_txt[1])
+                            paper_date = arxiv(arxiv_url)
+                            paper['arxiv_url'] = arxiv_url
+                            paper['paper_date'] = paper_date
+                            periodical_accepted_papers.append(paper)
                         else:
-                            event_id = ''
-
-                    elif 'VL' in each_key:
-                        paper_volume = each_dict[each_key]
-
-                    elif 'IS' in each_key:
-                        paper_issue = each_dict[each_key]
-
-                    elif 'SP' in each_key:
-                        paper_start_page = each_dict[each_key]
-
-                    elif 'EP' in each_key:
-                        paper_end_page = each_dict[each_key]
-
-                paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_volume': paper_volume,
-                         'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
-                         'paper_end_page': paper_end_page}
-
-                if 'JOUR' in paper_type:
-                    if paper_journal.startswith('arXiv'):
-                        arxiv_txt = paper_journal.split(':')
-                        arxiv_url = 'http://arxiv.org/abs/'+str(arxiv_txt[1])
-                        paper_date = arxiv(arxiv_url)
-                        paper['arxiv_url'] = arxiv_url
-                        paper['paper_date'] = paper_date
-                        periodical_accepted_papers.append(paper)
+                            paper_date = scholar_date(scholar_list, paper_title)
+                            paper['periodical_id'] = periodical_id
+                            paper['paper_date'] = paper_date
+                            periodical_published_papers.append(paper)
                     else:
                         paper_date = scholar_date(scholar_list, paper_title)
-                        paper['periodical_id'] = periodical_id
+                        paper['event_id'] = event_id
                         paper['paper_date'] = paper_date
-                        periodical_published_papers.append(paper)
-                else:
-                    paper_date = scholar_date(scholar_list, paper_title)
-                    paper['event_id'] = event_id
-                    paper['paper_date'] = paper_date
-                    event_papers.append(paper)
+                        event_papers.append(paper)
 
-                # Wait 2 to 5 seconds to do the next paper.
-                time.sleep(randint(2, 5))
+                    # Wait 2 to 5 seconds to do the next paper.
+                    time.sleep(randint(2, 5))
 
-            cache.set('periodical_published_papers', periodical_published_papers, 60 * 10)
-            cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)
-            cache.set('periodicals', periodicals, 60 * 10)
-            cache.set('event_papers', event_papers, 60 * 10)
+                cache.set('periodical_published_papers', periodical_published_papers, 60 * 10)
+                cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)
+                cache.set('periodicals', periodicals, 60 * 10)
+                cache.set('event_papers', event_papers, 60 * 10)
 
-            context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
-            return render(request, 'report/research/periodical_published_papers.html', context)
+                context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
+                return render(request, 'report/research/periodical_published_papers.html', context)
 
         # Back to the list of periodicals to add
         elif request.POST['action'] == "back":
