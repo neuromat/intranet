@@ -16,6 +16,7 @@ import HTMLParser
 import re
 import time
 from random import randint
+from datetime import datetime
 
 
 TIME = " 00:00:00"
@@ -282,6 +283,9 @@ def arxiv(arxiv_url):
             date = re.search('Submitted on (.+?)\)</div>', line).group(1)
         except AttributeError:
             date = ''
+
+    if date != '':
+        date = datetime.strptime(date, '%d %b %Y').date()
 
     return date
 
