@@ -34,7 +34,7 @@
                 <tr>
                     <td><input type="checkbox" class="checkbox_periodical_papers" name="papers_to_add" value='{{ paper_title }}'></td>
                     <td><input class="form-control" type="text" name="paper_title" style="width: 300px" value="{{ paper.paper_title }}"></td>
-                    <td><input class="form-control" type="text" name="paper_author" style="width: 220px" value="{{ paper.paper_author }}"></td>
+                    <td><input class="form-control" type="text" name="paper_author" style="width: 200px" value="{{ paper.paper_author }}"></td>
                     <td>
                         <select class="form-control" name="paper_periodical" id="id_periodical" style="width: 160px">
                             <option value="none">-----</option>
@@ -51,7 +51,11 @@
                     <td><input class="form-control" type="text" name="paper_issue" style="width: 40px" value="{{ paper.paper_issue }}"></td>
                     <td><input class="form-control" type="text" name="paper_start_page" style="width: 60px" value="{{ paper.paper_start_page }}"></td>
                     <td><input class="form-control" type="text" name="paper_end_page" style="width: 60px" value="{{ paper.paper_end_page }}"></td>
-                    <td><input class="form-control" type="text" name="paper_date" style="width: 80px" value="{{ paper.paper_date }}"></td>
+                    {% if paper.paper_date|date:"Y-m-d" %}
+                        <td><input class="form-control" type="text" name="paper_date" style="width: 100px" value="{{ paper.paper_date|date:"Y-m-d" }}"></td>
+                    {% else %}
+                        <td><input class="form-control" type="text" name="paper_date" style="width: 100px" value="{{ paper.paper_date }}"></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </table>

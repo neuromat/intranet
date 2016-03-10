@@ -29,10 +29,10 @@
                 {% for paper in periodical_accepted_papers %}
                 <tr>
                     <td><input type="checkbox" class="checkbox_periodical_papers" name="papers_to_add" value='{{ paper_title }}'></td>
-                    <td><input class="form-control" type="text" name="paper_title" style="width: 420px" value="{{ paper.paper_title }}"></td>
+                    <td><input class="form-control" type="text" name="paper_title" style="width: 400px" value="{{ paper.paper_title }}"></td>
                     <td><input class="form-control" type="text" name="paper_author" style="width: 280px" value="{{ paper.paper_author }}"></td>
                     <td><input class="form-control" type="text" name="paper_arxiv" style="width: 240px" value="{{ paper.arxiv_url }}"></td>
-                    <td><input class="form-control" type="text" name="paper_date" style="width: 100px" value="{{ paper.paper_date|date:"Y-m-d" }}"></td>
+                    <td><input class="form-control" type="text" name="paper_date" style="width: 120px" value="{{ paper.paper_date|date:"Y-m-d" }}"></td>
                 </tr>
                 {% endfor %}
             </table>

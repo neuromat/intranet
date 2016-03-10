@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from models import *
-import datetime
 from django.template.loader import render_to_string
 from django.db.models import Q
 from itertools import chain
@@ -263,6 +262,11 @@ def scholar_date(scholar_list, paper_title):
             date = re.search('<div class="gsc_field">Data de publicação</div><div class="gsc_value">(.+?)</div>', line).group(1)
         except AttributeError:
             date = ''
+
+    if date != '':
+        date_format = date.split('/')
+        if len(date_format) == 3:
+            date = datetime.strptime(date, '%Y/%m/%d').date()
 
     return date
 
