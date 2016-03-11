@@ -2,28 +2,29 @@
 {% load i18n admin_static bootstrapped_goodies_tags %}
 
 {% block breadcrumbs %}
-<ul class="breadcrumb">
-<li><a href="/">{% trans 'Home' %}</a></li>
-<li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
-<li>{% trans 'Papers to import' %}</li>
-</ul>
+    <ul class="breadcrumb">
+        <li><a href="/">{% trans 'Home' %}</a></li>
+        <li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
+        <li>{% trans 'Papers to import' %}</li>
+    </ul>
 {% endblock %}
 
 {% block content %}
-<form role="form" method="post" action="{% url 'research.views.add_papers' %}">{% csrf_token %}
-    {% if events_to_add %}
-    <strong>List of events to add:</strong><br>
-    <em>Sorry, events should be add manually. Click <a href="/research/event" target="_blank">here</a> to do it.</em><br><br>
-    <table class="table table-striped">
-        {% for event in events_to_add %}
-            <tr><td>{{ event }}</td></tr>
-        {% endfor %}
-    </table>
-{% endif %}
-<div class="btn-group pull-right">
-    <button type="submit" class="btn btn-default" name="action" value="back">Back</button>
-    <button type="submit" class="btn btn-default" name="action" value="next">Next</button>
-</div>
-</form>
-
+    <form role="form" method="post" action="{% url 'research.views.add_papers' %}">{% csrf_token %}
+        {% if events_to_add %}
+            <strong>{% trans "List of events to add:" %}</strong><br>
+            <em>Sorry, events should be add manually. Click <a href="/research/event" target="_blank">here</a> to do it.</em><br><br>
+            <table class="table table-striped">
+                {% for event in events_to_add %}
+                    <tr><td>{{ event }}</td></tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <strong>{% trans "No events to be added!" %}</strong><br><br>
+        {% endif %}
+        <div class="btn-group pull-right">
+            <button type="submit" class="btn btn-default" name="action" value="back">Back</button>
+            <button type="submit" class="btn btn-default" name="action" value="next">Next</button>
+        </div>
+    </form>
 {% endblock %}

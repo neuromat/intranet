@@ -1,18 +1,26 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
-from models import AcademicWork, PublishedInPeriodical, Published, Accepted, Submitted, Draft, Periodical, Event, \
-    ResearchResult, Article
-import datetime
+from models import *
 from django.template.loader import render_to_string
 from django.db.models import Q
 from itertools import chain
 from person.models import CitationName
 from django.core.cache import cache
+from bs4 import BeautifulSoup
+import urllib2
+import HTMLParser
+import re
+import time
+from random import randint
+from datetime import datetime
 
 
 TIME = " 00:00:00"
+SCHOLAR = 'https://scholar.google.com.br'
+SCHOLAR_USER = '/citations?user=OaY57UIAAAAJ&cstart=00&pagesize=1000'
 
 def valid_date(date):
     day = date[0:2]
@@ -213,6 +221,79 @@ def academic_works_tex(request):
     return response
 
 
+def scholar():
+    html_scholar = urllib2.urlopen(SCHOLAR+SCHOLAR_USER).read()
+    soup = BeautifulSoup(html_scholar)
+
+    scholar_list = []
+    for line in soup.find_all('a'):
+        line = str(line)
+        if 'class="gsc_a_at"' in line:
+            try:
+                link = re.search('href="(.+?)">', line).group(1)
+                title = re.search('">(.+?)</a>', line).group(1)
+            except AttributeError:
+                link = ''
+                title = ''
+            if link != '' and title != '':
+                paper = {title: link}
+                scholar_list.append(paper)
+
+    return scholar_list
+
+
+def scholar_date(scholar_list, paper_title):
+    paper_url = ''
+    for each_dict in scholar_list:
+        for each_key in each_dict:
+            if paper_title in each_key:
+                paper_url = each_dict[each_key]
+
+    html_parser = HTMLParser.HTMLParser()
+    citation_link = html_parser.unescape(paper_url)
+
+    html_paper = urllib2.urlopen(SCHOLAR+citation_link).read()
+    soup = BeautifulSoup(html_paper)
+
+    date = ''
+    for line in soup:
+        line = str(line)
+        try:
+            date = re.search('<div class="gsc_field">Data de publicação</div><div class="gsc_value">(.+?)</div>', line).group(1)
+        except AttributeError:
+            date = ''
+
+    if date != '':
+        date_format = date.split('/')
+        if len(date_format) == 3:
+            date = datetime.strptime(date, '%Y/%m/%d').date()
+
+    return date
+
+
+def arxiv(arxiv_url):
+    html = urllib2.urlopen(arxiv_url).read()
+    soup = BeautifulSoup(html)
+    line = soup.find_all("div", class_="dateline")
+    line = str(line[0])
+
+    if 'last revised' in line:
+        try:
+            date = re.search(' last revised (.+?) \(this version', line).group(1)
+        except AttributeError:
+            date = ''
+    else:
+        try:
+            date = re.search('Submitted on (.+?)\)</div>', line).group(1)
+        except AttributeError:
+            date = ''
+
+    if date != '':
+        date = datetime.strptime(date, '%d %b %Y').date()
+
+    return date
+
+
 @login_required
 def import_papers(request):
     if request.method == 'POST':
@@ -248,12 +329,12 @@ def import_papers(request):
 
             periodicals_to_add = []
             for periodical in periodicals:
-                if not Periodical.objects.filter(name=periodical):
+                if not Periodical.objects.filter(name=periodical) and not PeriodicalRISFile.objects.filter(name=periodical):
                     periodicals_to_add.append(periodical)
 
             # Cache the list of papers and the list of periodicals to add
             cache.set('papers', papers, 60 * 10)
-            cache.set('periodicals', periodicals_to_add, 60 * 10)
+            cache.set('periodicals_to_add', periodicals_to_add, 60 * 10)
 
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
@@ -266,7 +347,7 @@ def add_periodicals(request):
         # Add the selected journals
         if request.POST['action'] == "add":
             periodicals = request.POST.getlist('periodicals_to_add')
-            periodicals_to_add = cache.get('periodicals')
+            periodicals_to_add = cache.get('periodicals_to_add')
 
             if periodicals:
                 num_of_periodicals = len(periodicals)
@@ -283,7 +364,7 @@ def add_periodicals(request):
             else:
                 messages.warning(request, _('You have selected no item. Nothing to be done!'))
 
-            cache.set('periodicals', periodicals_to_add, 60 * 10)
+            cache.set('periodicals_to_add', periodicals_to_add, 60 * 10)
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
 
@@ -298,9 +379,10 @@ def add_periodicals(request):
 
             events_to_add = []
             for event in events:
-                if not Event.objects.filter(name=event):
+                if not Event.objects.filter(name=event) and not EventRISFile.objects.filter(name=event):
                     events_to_add.append(event)
 
+            cache.set('events', events_to_add, 60 * 10)
             context = {'events_to_add': events_to_add}
             return render(request, 'report/research/events_to_import.html', context)
 
@@ -311,90 +393,199 @@ def add_periodicals(request):
 def add_papers(request):
     if request.method == "POST":
         if request.POST['action'] == "next":
-            papers = cache.get('papers')
-            papers_list = []
+            if cache.get('periodical_published_papers'):
+                periodical_published_papers = cache.get('periodical_published_papers')
+                periodicals = cache.get('periodicals')
+                context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
+                return render(request, 'report/research/periodical_published_papers.html', context)
+            else:
+                papers = cache.get('papers')
+                periodical_published_papers = []
+                periodical_accepted_papers = []
+                event_papers = []
+                scholar_list = scholar()
+                periodicals = Periodical.objects.all()
+                periodical_ris_file = PeriodicalRISFile.objects.all()
+                events = Event.objects.all()
+                events_ris_file = EventRISFile.objects.all()
 
-            for each_dict in papers:
-                paper_title = ''
-                paper_author = ''
-                paper_journal = ''
-                paper_volume = ''
-                paper_issue = ''
-                paper_start_page = ''
-                paper_end_page = ''
-                paper_year = ''
-                for each_key in each_dict:
-                    if 'T1' in each_key:
-                        paper_title = each_dict[each_key]
-                        if paper_title.isupper():
-                            paper_title = paper_title.capitalize()
-                        if ResearchResult.objects.filter(title=paper_title):
-                            get_paper = Article.objects.get(title=paper_title)
-                            get_paper_status = get_paper.current_status()
-                            if get_paper_status == 'Draft' or get_paper_status == 'Submitted':
-                                change_status = True
+                for each_dict in papers:
+                    paper_type = ''
+                    paper_title = ''
+                    paper_author = ''
+                    paper_journal = ''
+                    periodical_id = ''
+                    event_id = ''
+                    paper_volume = ''
+                    paper_issue = ''
+                    paper_start_page = ''
+                    paper_end_page = ''
 
-                    elif 'A1' in each_key:
-                        paper_author = each_dict[each_key]
-                        known_author = 0
-                        citation_names = ''
-                        for author in paper_author:
-                            if CitationName.objects.filter(name=author):
-                                known_author += 1
-                            if author.isupper():
-                                author = author.title()
-                            names = author.split(',')
-                            last_name = names[0]
-                            other_names = names[1]
-                            names = other_names.split()
-                            invalid_name = ['e', 'da', 'do', 'de', 'dos', 'Da', 'Do', 'De', 'Dos']
-                            letters = ''
-                            for name in names:
-                                if name not in invalid_name:
-                                    letters += name[0]
+                    for each_key in each_dict:
+                        if 'TY' in each_key:
+                            paper_type = each_dict[each_key]
+                        elif 'T1' in each_key:
+                            paper_title = each_dict[each_key]
+                            if paper_title.isupper():
+                                paper_title = paper_title.capitalize()
+                            if ResearchResult.objects.filter(title=paper_title):
+                                get_paper = Article.objects.get(title=paper_title)
+                                get_paper_status = get_paper.current_status()
+                                if get_paper_status == 'Draft' or get_paper_status == 'Submitted':
+                                    change_status = True
 
-                            if author.lower() == paper_author[-1].lower():
-                                citation_name = last_name+','+' '+letters+'.'
+                        elif 'A1' in each_key:
+                            paper_author = each_dict[each_key]
+                            known_author = 0
+                            citation_names = ''
+                            for author in paper_author:
+                                if CitationName.objects.filter(name=author):
+                                    known_author += 1
+                                if author.isupper():
+                                    author = author.title()
+                                names = author.split(',')
+                                last_name = names[0]
+                                other_names = names[1]
+                                names = other_names.split()
+                                invalid_name = ['e', 'da', 'do', 'de', 'dos', 'Da', 'Do', 'De', 'Dos']
+                                letters = ''
+                                for name in names:
+                                    if name not in invalid_name:
+                                        letters += name[0]
+
+                                if author.lower() == paper_author[-1].lower():
+                                    citation_name = last_name+','+' '+letters+'.'
+                                else:
+                                    citation_name = last_name+','+' '+letters+';'+' '
+                                citation_names += citation_name
+
+                            paper_author = citation_names
+
+                            if known_author == 0:
+                                paper_unknown_author = True
                             else:
-                                citation_name = last_name+','+' '+letters+';'+' '
-                            citation_names += citation_name
+                                paper_unknown_author = False
 
-                        paper_author = citation_names
+                        elif 'JO' in each_key:
+                            paper_journal = each_dict[each_key]
+                            if not paper_journal.startswith('arXiv'):
+                                if periodicals.filter(name=paper_journal):
+                                    get_periodical = periodicals.get(name=paper_journal)
+                                    periodical_id = get_periodical.pk
+                                elif periodicals.filter(acronym=paper_journal):
+                                    get_periodical = periodicals.get(acronym=paper_journal)
+                                    periodical_id = get_periodical.pk
+                                elif periodical_ris_file.filter(name=paper_journal):
+                                    get_periodical = periodical_ris_file.get(name=paper_journal)
+                                    periodical_id = get_periodical.periodical_id
+                                elif events.filter(name=paper_journal):
+                                    get_event = events.get(name=paper_journal)
+                                    event_id = get_event.pk
+                                elif events_ris_file.filter(name=paper_journal):
+                                    get_event = events_ris_file.get(name=paper_journal)
+                                    event_id = get_event.event_id
+                                else:
+                                    periodical_id = ''
+                                    event_id = ''
 
-                        if known_author == 0:
-                            paper_unknown_author = True
+                        elif 'T2' in each_key:
+                            paper_event = each_dict[each_key]
+                            if events.filter(name=paper_event):
+                                get_event = events.get(name=paper_event)
+                                event_id = get_event.pk
+                            elif events_ris_file.filter(name=paper_event):
+                                get_event = events_ris_file.get(name=paper_event)
+                                event_id = get_event.event_id
+                            else:
+                                event_id = ''
+
+                        elif 'VL' in each_key:
+                            paper_volume = each_dict[each_key]
+
+                        elif 'IS' in each_key:
+                            paper_issue = each_dict[each_key]
+
+                        elif 'SP' in each_key:
+                            paper_start_page = each_dict[each_key]
+
+                        elif 'EP' in each_key:
+                            paper_end_page = each_dict[each_key]
+
+                    paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_volume': paper_volume,
+                             'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
+                             'paper_end_page': paper_end_page}
+
+                    if 'JOUR' in paper_type:
+                        if paper_journal.startswith('arXiv'):
+                            arxiv_txt = paper_journal.split(':')
+                            arxiv_url = 'http://arxiv.org/abs/'+str(arxiv_txt[1])
+                            paper_date = arxiv(arxiv_url)
+                            paper['arxiv_url'] = arxiv_url
+                            paper['paper_date'] = paper_date
+                            periodical_accepted_papers.append(paper)
                         else:
-                            paper_unknown_author = False
+                            paper_date = scholar_date(scholar_list, paper_title)
+                            paper['periodical_id'] = periodical_id
+                            paper['paper_date'] = paper_date
+                            periodical_published_papers.append(paper)
+                    else:
+                        paper_date = scholar_date(scholar_list, paper_title)
+                        paper['event_id'] = event_id
+                        paper['paper_date'] = paper_date
+                        event_papers.append(paper)
 
-                    elif 'JO' in each_key:
-                        paper_journal = each_dict[each_key]
+                    # Wait 2 to 5 seconds to do the next paper.
+                    time.sleep(randint(2, 5))
 
-                    elif 'VL' in each_key:
-                        paper_volume = each_dict[each_key]
+                cache.set('periodical_published_papers', periodical_published_papers, 60 * 10)
+                cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)
+                cache.set('periodicals', periodicals, 60 * 10)
+                cache.set('event_papers', event_papers, 60 * 10)
 
-                    elif 'IS' in each_key:
-                        paper_issue = each_dict[each_key]
-
-                    elif 'SP' in each_key:
-                        paper_start_page = each_dict[each_key]
-
-                    elif 'EP' in each_key:
-                        paper_end_page = each_dict[each_key]
-
-                    # Houston, we have a problem here!
-                    elif 'Y1' in each_key:
-                        paper_year = each_dict[each_key]
-
-                paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_journal': paper_journal,
-                         'paper_volume': paper_volume, 'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
-                         'paper_end_page': paper_end_page, 'paper_year': paper_year}
-                papers_list.append(paper)
-
-            context = {'papers_list': papers_list}
-            return render(request, 'report/research/add_papers.html', context)
+                context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
+                return render(request, 'report/research/periodical_published_papers.html', context)
 
         # Back to the list of periodicals to add
         elif request.POST['action'] == "back":
-            periodicals_to_add = cache.get('periodicals')
+            periodicals_to_add = cache.get('periodicals_to_add')
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
+
+
+def periodical_published_papers(request):
+    if request.method == "POST":
+        if request.POST['action'] == "next":
+            periodical_accepted_papers = cache.get('periodical_accepted_papers')
+            context = {'periodical_accepted_papers': periodical_accepted_papers }
+            return render(request, 'report/research/periodical_accepted_papers.html', context)
+
+        # Back to the list of events to add
+        elif request.POST['action'] == "back":
+            events_to_add = cache.get('events')
+            context = {'events_to_add': events_to_add}
+            return render(request, 'report/research/events_to_import.html', context)
+
+
+def periodical_accepted_papers(request):
+    if request.method == "POST":
+        if request.POST['action'] == "next":
+            event_papers = cache.get('event_papers')
+            events = Event.objects.all()
+            context = {'event_papers': event_papers, 'events': events }
+            return render(request, 'report/research/add_event_papers.html', context)
+
+        # Back to the list of published papers to add
+        elif request.POST['action'] == "back":
+            periodical_published_papers = cache.get('periodical_published_papers')
+            periodicals = cache.get('periodicals')
+            context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
+            return render(request, 'report/research/periodical_published_papers.html', context)
+
+
+def event_papers(request):
+    if request.method == "POST":
+        # Back to the list of accepted papers to add
+        if request.POST['action'] == "back":
+            periodical_accepted_papers = cache.get('periodical_accepted_papers')
+            context = {'periodical_accepted_papers': periodical_accepted_papers }
+            return render(request, 'report/research/periodical_accepted_papers.html', context)

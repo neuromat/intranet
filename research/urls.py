@@ -9,4 +9,7 @@ urlpatterns = patterns('',
     url(r'^import_papers/$', views.import_papers, name='import_papers'),
     url(r'^add_periodicals/$', views.add_periodicals, name='add_periodicals'),
     url(r'^add_papers/$', views.add_papers, name='add_papers'),
+    url(r'^periodical_published_papers/$', views.periodical_published_papers, name='periodical_published_papers'),
+    url(r'^periodical_accepted_papers/$', views.periodical_accepted_papers, name='periodical_accepted_papers'),
+    url(r'^event_papers/$', views.event_papers, name='event_papers'),
 )
