@@ -604,26 +604,25 @@ def periodical_accepted_papers(request):
             periodical_accepted_papers = cache.get('periodical_accepted_papers')
             selected_papers = request.POST.getlist('paper_id')
             if selected_papers:
-                papers_to_add = []
                 for paper_arxiv_id in selected_papers:
+                    paper_team = request.POST['paper_team_'+paper_arxiv_id]
                     paper_title = request.POST['paper_title_'+paper_arxiv_id]
                     paper_author = request.POST['paper_author_'+paper_arxiv_id]
                     arxiv_url = request.POST['paper_arxiv_'+paper_arxiv_id]
                     paper_date = request.POST['paper_date_'+paper_arxiv_id]
+
+                    # Adding paper
+                    item = Article(team=paper_team, title=paper_title, ris_file_authors=paper_author, url=arxiv_url,
+                                   status='d')
+                    item.save()
+                    article_id = item.pk
+                    date = Draft(article_id=article_id, date=paper_date)
+                    date.save()
+
+                    # Removing paper from the periodical_accepted_papers list
                     paper = {'paper_arxiv_id': int(paper_arxiv_id), 'paper_title': paper_title.encode('utf-8'),
                              'paper_author': paper_author.encode('utf-8'), 'arxiv_url': arxiv_url.encode('utf-8'),
                              'paper_date': datetime.strptime(paper_date, '%Y-%m-%d').date()}
-                    papers_to_add.append(paper)
-
-                for paper in papers_to_add:
-                    item = Article(team='s', title=paper['paper_title'], ris_file_authors=paper['paper_author'],
-                                   url=paper['arxiv_url'], status='d')
-                    item.save()
-                    article_id = item.pk
-
-                    date = Draft(article_id=article_id, date=paper['paper_date'])
-                    date.save()
-
                     periodical_accepted_papers.remove(paper)
 
                 cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)

@@ -21,6 +21,7 @@
             <table class="table table-striped">
                 <tr>
                     <th></th>
+                    <th>{% trans "Team" %}</th>
                     <th>{% trans "Title" %}</th>
                     <th>{% trans "Authors" %}</th>
                     <th>{% trans "Link to arXiv" %}</th>
@@ -29,9 +30,17 @@
                 {% for paper in periodical_accepted_papers %}
                 <tr>
                     <td><input type="checkbox" class="checkbox_periodical_papers" name="paper_id" value='{{ paper.paper_arxiv_id }}'></td>
-                    <td><input class="form-control" type="text" name="paper_title_{{ paper.paper_arxiv_id }}" style="width: 400px" value="{{ paper.paper_title }}"></td>
-                    <td><input class="form-control" type="text" name="paper_author_{{ paper.paper_arxiv_id }}" style="width: 280px" value="{{ paper.paper_author }}"></td>
-                    <td><input class="form-control" type="text" name="paper_arxiv_{{ paper.paper_arxiv_id }}" style="width: 240px" value="{{ paper.arxiv_url }}"></td>
+                    <td>
+                        <select class="form-control" name="paper_team_{{ paper.paper_arxiv_id }}" id="id_team" style="width: 100px">
+                            <option value="none">-----</option>
+                            <option value="s" selected="selected">{% trans "Scientific" %}</option>
+                            <option value="d">{% trans "Dissemination" %}</option>
+                            <option value="t">{% trans "Technology transfer" %}</option>
+                        </select>
+                    </td>
+                    <td><input class="form-control" type="text" name="paper_title_{{ paper.paper_arxiv_id }}" style="width: 360px" value="{{ paper.paper_title }}"></td>
+                    <td><input class="form-control" type="text" name="paper_author_{{ paper.paper_arxiv_id }}" style="width: 240px" value="{{ paper.paper_author }}"></td>
+                    <td><input class="form-control" type="text" name="paper_arxiv_{{ paper.paper_arxiv_id }}" style="width: 220px" value="{{ paper.arxiv_url }}"></td>
                     <td><input class="form-control" type="text" name="paper_date_{{ paper.paper_arxiv_id }}" style="width: 120px" value="{{ paper.paper_date|date:"Y-m-d" }}"></td>
                 </tr>
                 {% endfor %}
