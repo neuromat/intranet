@@ -408,6 +408,8 @@ def add_papers(request):
                 periodical_ris_file = PeriodicalRISFile.objects.all()
                 events = Event.objects.all()
                 events_ris_file = EventRISFile.objects.all()
+                paper_scholar_id = 0
+                paper_arxiv_id = 0
 
                 for each_dict in papers:
                     paper_type = ''
@@ -439,8 +441,6 @@ def add_papers(request):
                             known_author = 0
                             citation_names = ''
                             for author in paper_author:
-                                if CitationName.objects.filter(name=author):
-                                    known_author += 1
                                 if author.isupper():
                                     author = author.title()
                                 names = author.split(',')
@@ -457,6 +457,10 @@ def add_papers(request):
                                     citation_name = last_name+','+' '+letters+'.'
                                 else:
                                     citation_name = last_name+','+' '+letters+';'+' '
+
+                                if CitationName.objects.filter(name=citation_name):
+                                    known_author += 1
+
                                 citation_names += citation_name
 
                             paper_author = citation_names
@@ -511,12 +515,12 @@ def add_papers(request):
                         elif 'EP' in each_key:
                             paper_end_page = each_dict[each_key]
 
-                    paper = {'paper_title': paper_title, 'paper_author': paper_author, 'paper_volume': paper_volume,
-                             'paper_issue': paper_issue, 'paper_start_page': paper_start_page,
-                             'paper_end_page': paper_end_page}
+                    paper = {'paper_title': paper_title, 'paper_author': paper_author}
 
                     if 'JOUR' in paper_type:
                         if paper_journal.startswith('arXiv'):
+                            paper['paper_arxiv_id'] = paper_arxiv_id
+                            paper_arxiv_id += 1
                             arxiv_txt = paper_journal.split(':')
                             arxiv_url = 'http://arxiv.org/abs/'+str(arxiv_txt[1])
                             paper_date = arxiv(arxiv_url)
@@ -524,11 +528,23 @@ def add_papers(request):
                             paper['paper_date'] = paper_date
                             periodical_accepted_papers.append(paper)
                         else:
+                            paper['paper_volume'] = paper_volume
+                            paper['paper_issue'] = paper_issue
+                            paper['paper_start_page'] = paper_start_page
+                            paper['paper_end_page'] = paper_end_page
+                            paper['paper_scholar_id'] = paper_scholar_id
+                            paper_scholar_id += 1
                             paper_date = scholar_date(scholar_list, paper_title)
                             paper['periodical_id'] = periodical_id
                             paper['paper_date'] = paper_date
                             periodical_published_papers.append(paper)
                     else:
+                        paper['paper_volume'] = paper_volume
+                        paper['paper_issue'] = paper_issue
+                        paper['paper_start_page'] = paper_start_page
+                        paper['paper_end_page'] = paper_end_page
+                        paper['paper_scholar_id'] = paper_scholar_id
+                        paper_scholar_id += 1
                         paper_date = scholar_date(scholar_list, paper_title)
                         paper['event_id'] = event_id
                         paper['paper_date'] = paper_date
@@ -554,7 +570,23 @@ def add_papers(request):
 
 def periodical_published_papers(request):
     if request.method == "POST":
-        if request.POST['action'] == "next":
+        if request.POST['action'] == "add":
+            selected_papers = request.POST.getlist('papers_to_add')
+            periodical_published_papers = cache.get('periodical_published_papers')
+            periodicals = cache.get('periodicals')
+            if selected_papers:
+                pass
+
+            else:
+                messages.warning(request, _('You have selected no item. Nothing to be done!'))
+                context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
+                return render(request, 'report/research/periodical_published_papers.html', context)
+
+            # cache.set('periodicals_to_add', periodicals_to_add, 60 * 10)
+            context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
+            return render(request, 'report/research/periodical_published_papers.html', context)
+
+        elif request.POST['action'] == "next":
             periodical_accepted_papers = cache.get('periodical_accepted_papers')
             context = {'periodical_accepted_papers': periodical_accepted_papers }
             return render(request, 'report/research/periodical_accepted_papers.html', context)
@@ -568,7 +600,42 @@ def periodical_published_papers(request):
 
 def periodical_accepted_papers(request):
     if request.method == "POST":
-        if request.POST['action'] == "next":
+        if request.POST['action'] == "add":
+            periodical_accepted_papers = cache.get('periodical_accepted_papers')
+            selected_papers = request.POST.getlist('paper_id')
+            if selected_papers:
+                papers_to_add = []
+                for paper_arxiv_id in selected_papers:
+                    paper_title = request.POST['paper_title_'+paper_arxiv_id]
+                    paper_author = request.POST['paper_author_'+paper_arxiv_id]
+                    arxiv_url = request.POST['paper_arxiv_'+paper_arxiv_id]
+                    paper_date = request.POST['paper_date_'+paper_arxiv_id]
+                    paper = {'paper_arxiv_id': int(paper_arxiv_id), 'paper_title': paper_title.encode('utf-8'),
+                             'paper_author': paper_author.encode('utf-8'), 'arxiv_url': arxiv_url.encode('utf-8'),
+                             'paper_date': datetime.strptime(paper_date, '%Y-%m-%d').date()}
+                    papers_to_add.append(paper)
+
+                for paper in papers_to_add:
+                    item = Article(team='s', title=paper['paper_title'], ris_file_authors=paper['paper_author'],
+                                   url=paper['arxiv_url'], status='d')
+                    item.save()
+                    article_id = item.pk
+
+                    date = Draft(article_id=article_id, date=paper['paper_date'])
+                    date.save()
+
+                    periodical_accepted_papers.remove(paper)
+
+                cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)
+                context = {'periodical_accepted_papers': periodical_accepted_papers }
+                return render(request, 'report/research/periodical_accepted_papers.html', context)
+
+            else:
+                messages.warning(request, _('You have selected no item. Nothing to be done!'))
+                context = {'periodical_accepted_papers': periodical_accepted_papers }
+                return render(request, 'report/research/periodical_accepted_papers.html', context)
+
+        elif request.POST['action'] == "next":
             event_papers = cache.get('event_papers')
             events = Event.objects.all()
             context = {'event_papers': event_papers, 'events': events }
