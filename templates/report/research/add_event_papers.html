@@ -14,49 +14,55 @@
 {% endblock %}
 
 {% block content %}
-    <form role="form" method="post" action="{% url 'research.views.event_papers' %}">{% csrf_token %}
+    <form role="form" method="post" name="event_form" action="{% url 'research.views.event_papers' %}">{% csrf_token %}
         {% if event_papers %}
             <strong>{% trans "List of papers from events to add:" %}</strong><br><br>
             <span><input type="checkbox" value='all_papers' id="select_all_event_papers"> {% trans 'Select all' %}</span>
             <table class="table table-striped">
                 <tr>
                     <th></th>
+                    <th>{% trans "Team" %}</th>
                     <th>{% trans "Title" %}</th>
                     <th>{% trans "Authors" %}</th>
                     <th>{% trans "Event" %}</th>
-                    <th>{% trans "Vol." %}</th>
                     <th>{% trans "Start pg" %}</th>
                     <th>{% trans "End pg" %}</th>
                 </tr>
                 {% for paper in event_papers %}
                 <tr>
-                    <td><input type="checkbox" class="checkbox_event_papers" name="papers_to_add" value='{{ paper_title }}'></td>
-                    <td><input class="form-control" type="text" name="paper_title" style="width: 320px" value="{{ paper.paper_title }}"></td>
-                    <td><input class="form-control" type="text" name="paper_author" style="width: 260px" value="{{ paper.paper_author }}"></td>
+                    <td><input type="checkbox" class="checkbox_periodical_papers" name="paper_id" value='{{ paper.paper_scholar_id }}'></td>
+                    <td>
+                        <select class="form-control" name="paper_team_{{ paper.paper_scholar_id }}" id="id_team" style="width: 100px">
+                            <option value="none">-----</option>
+                            <option value="s" selected="selected">{% trans "Scientific" %}</option>
+                            <option value="d">{% trans "Dissemination" %}</option>
+                            <option value="t">{% trans "Technology transfer" %}</option>
+                        </select>
+                    </td>
+                    <td><input class="form-control" type="text" name="paper_title_{{ paper.paper_scholar_id }}" style="width: 270px" value="{{ paper.paper_title }}"></td>
+                    <td><input class="form-control" type="text" name="paper_author_{{ paper.paper_scholar_id }}" style="width: 260px" value="{{ paper.paper_author }}"></td>
                     {% if events %}
                     <td>
-                        <select class="form-control" name="paper_event" id="id_event" style="width: 240px">
+                        <select class="form-control" name="paper_event_{{ paper.paper_scholar_id }}" id="id_event" style="width: 240px">
                             <option value="none">-----</option>
                             {% for event in events %}
                                 {% if event.id == paper.event_id %}
-                                    <option value="{{ event.name }}" selected="selected">{{ event.name }}</option>
+                                    <option value="{{ event.id }}" selected="selected">{{ event.name }}</option>
                                 {% else %}
-                                    <option value="{{ event.name }}">{{ event.name }}</option>
+                                    <option value="{{ event.id }}">{{ event.name }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
                     </td>
-                    {% else %}
-                    <td>Oi</td>
                     {% endif %}
-                    <td><input class="form-control" type="text" name="paper_volume" style="width: 60px" value="{{ paper.paper_volume }}"></td>
-                    <td><input class="form-control" type="text" name="paper_start_page" style="width: 60px" value="{{ paper.paper_start_page }}"></td>
-                    <td><input class="form-control" type="text" name="paper_end_page" style="width: 60px" value="{{ paper.paper_end_page }}"></td>
+                    <td><input class="form-control" type="text" name="paper_start_page_{{ paper.paper_scholar_id }}" style="width: 60px" value="{{ paper.paper_start_page }}"></td>
+                    <td><input class="form-control" type="text" name="paper_end_page_{{ paper.paper_scholar_id }}" style="width: 60px" value="{{ paper.paper_end_page }}"></td>
                 </tr>
                 {% endfor %}
             </table>
+            <button type="submit" class="btn btn-primary btn-lg" name="action" value="add" style="font-size:16px;" role="button">{% trans "Add papers" %}</button>
         {% else %}
-            <strong>{% trans "No papers from events to be added!" %}</strong><br><br>
+            <strong><strong></strong><br><br>{% trans "There is no papers from events to be added!" %}</strong><br><br>
         {% endif %}
 
         <div class="btn-group pull-right">
