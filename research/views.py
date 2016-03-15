@@ -674,7 +674,7 @@ def periodical_accepted_papers(request):
 
                 cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)
                 context = {'periodical_accepted_papers': periodical_accepted_papers}
-                return render(request, 'report/research/periodical_published_papers.html', context)
+                return render(request, 'report/research/periodical_accepted_papers.html', context)
 
             else:
                 messages.warning(request, _('You have selected no item. Nothing to be done!'))
