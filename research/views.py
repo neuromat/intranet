@@ -410,6 +410,7 @@ def add_papers(request):
                 periodical_published_papers = []
                 periodical_accepted_papers = []
                 event_papers = []
+                periodical_update_papers = []
                 scholar_list = scholar()
                 periodicals = Periodical.objects.all()
                 periodical_ris_file = PeriodicalRISFile.objects.all()
@@ -429,19 +430,25 @@ def add_papers(request):
                     paper_issue = ''
                     paper_start_page = ''
                     paper_end_page = ''
+                    registered_title = False
+                    get_paper_status = ''
+                    get_paper_id = ''
+                    get_paper_team = ''
 
                     for each_key in each_dict:
                         if 'TY' in each_key:
                             paper_type = each_dict[each_key]
+
                         elif 'T1' in each_key:
                             paper_title = each_dict[each_key]
                             if paper_title.isupper():
                                 paper_title = paper_title.capitalize()
                             if ResearchResult.objects.filter(title=paper_title):
+                                registered_title = True
                                 get_paper = Article.objects.get(title=paper_title)
                                 get_paper_status = get_paper.current_status()
-                                if get_paper_status == 'Draft' or get_paper_status == 'Submitted':
-                                    change_status = True
+                                get_paper_id = get_paper.pk
+                                get_paper_team = get_paper.team
 
                         elif 'A1' in each_key:
                             paper_author = each_dict[each_key]
@@ -524,17 +531,10 @@ def add_papers(request):
 
                     paper = {'paper_title': paper_title, 'paper_author': paper_author}
 
-                    if 'JOUR' in paper_type:
-                        if paper_journal.startswith('arXiv'):
-                            paper['paper_arxiv_id'] = paper_arxiv_id
-                            paper_arxiv_id += 1
-                            arxiv_txt = paper_journal.split(':')
-                            arxiv_url = 'http://arxiv.org/abs/'+str(arxiv_txt[1])
-                            paper_date = arxiv(arxiv_url)
-                            paper['arxiv_url'] = arxiv_url
-                            paper['paper_date'] = paper_date
-                            periodical_accepted_papers.append(paper)
-                        else:
+                    if registered_title:
+                        if get_paper_status != 'Published' and not paper_journal.startswith('arXiv'):
+                            paper['paper_id'] = get_paper_id
+                            paper['paper_team'] = get_paper_team
                             paper['paper_volume'] = paper_volume
                             paper['paper_issue'] = paper_issue
                             paper['paper_start_page'] = paper_start_page
@@ -544,32 +544,44 @@ def add_papers(request):
                             paper_date = scholar_date(scholar_list, paper_title)
                             paper['periodical_id'] = periodical_id
                             paper['paper_date'] = paper_date
-                            periodical_published_papers.append(paper)
-                    elif 'CONF' in paper_type:
-                        paper['paper_start_page'] = paper_start_page
-                        paper['paper_end_page'] = paper_end_page
-                        paper['paper_scholar_id'] = paper_scholar_id
-                        paper_scholar_id += 1
-                        paper['event_id'] = event_id
-                        event_papers.append(paper)
-                    # else:
-                    #     paper['paper_volume'] = paper_volume
-                    #     paper['paper_issue'] = paper_issue
-                    #     paper['paper_start_page'] = paper_start_page
-                    #     paper['paper_end_page'] = paper_end_page
-                    #     paper['paper_scholar_id'] = paper_scholar_id
-                    #     paper_scholar_id += 1
-                    #     paper_date = scholar_date(scholar_list, paper_title)
-                    #     paper['event_id'] = event_id
-                    #     paper['paper_date'] = paper_date
-                    #     event_papers.append(paper)
+                            periodical_update_papers.append(paper)
+
+                    else:
+                        if 'JOUR' in paper_type:
+                            if paper_journal.startswith('arXiv'):
+                                paper['paper_arxiv_id'] = paper_arxiv_id
+                                paper_arxiv_id += 1
+                                arxiv_txt = paper_journal.split(':')
+                                arxiv_url = 'http://arxiv.org/abs/'+str(arxiv_txt[1])
+                                paper_date = arxiv(arxiv_url)
+                                paper['arxiv_url'] = arxiv_url
+                                paper['paper_date'] = paper_date
+                                periodical_accepted_papers.append(paper)
+                            else:
+                                paper['paper_volume'] = paper_volume
+                                paper['paper_issue'] = paper_issue
+                                paper['paper_start_page'] = paper_start_page
+                                paper['paper_end_page'] = paper_end_page
+                                paper['paper_scholar_id'] = paper_scholar_id
+                                paper_scholar_id += 1
+                                paper_date = scholar_date(scholar_list, paper_title)
+                                paper['periodical_id'] = periodical_id
+                                paper['paper_date'] = paper_date
+                                periodical_published_papers.append(paper)
+                        elif 'CONF' in paper_type:
+                            paper['paper_start_page'] = paper_start_page
+                            paper['paper_end_page'] = paper_end_page
+                            paper['paper_scholar_id'] = paper_scholar_id
+                            paper_scholar_id += 1
+                            paper['event_id'] = event_id
+                            event_papers.append(paper)
 
                     # Wait 2 to 5 seconds to do the next paper.
                     time.sleep(randint(2, 5))
 
                 cache.set('periodical_published_papers', periodical_published_papers, 60 * 10)
                 cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)
-                # cache.set('periodicals', periodicals, 60 * 10)
+                cache.set('periodical_update_papers', periodical_update_papers, 60 * 10)
                 cache.set('event_papers', event_papers, 60 * 10)
 
                 context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
@@ -749,7 +761,7 @@ def event_papers(request):
         # Clean the cache. Back to the initial page
         elif request.POST['action'] == "finish":
             cache.delete_many(['papers', 'periodicals_to_add', 'events', 'event_papers', 'periodical_accepted_papers',
-                               'periodical_published_papers'])
+                               'periodical_published_papers', 'periodical_update_papers'])
             return redirect('import_papers')
 
     return redirect('import_papers')
