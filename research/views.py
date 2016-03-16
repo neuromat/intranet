@@ -23,6 +23,7 @@ TIME = " 00:00:00"
 SCHOLAR = 'https://scholar.google.com.br'
 SCHOLAR_USER = '/citations?user=OaY57UIAAAAJ&cstart=00&pagesize=1000'
 
+
 def valid_date(date):
     day = date[0:2]
     month = date[3:5]
@@ -30,6 +31,7 @@ def valid_date(date):
         return True
     else:
         return False
+
 
 def start_date_typed(start_date):
     start_day = start_date[0:2]
@@ -39,6 +41,7 @@ def start_date_typed(start_date):
     start_date = datetime.datetime.strptime(start_date, "%Y%m%d %H:%M:%S").date()
     start_date -= datetime.timedelta(days=1)
     return start_date
+
 
 def end_date_typed(end_date):
     end_day = end_date[0:2]
