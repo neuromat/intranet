@@ -434,6 +434,7 @@ def add_papers(request):
                     get_paper_status = ''
                     get_paper_id = ''
                     get_paper_team = ''
+                    nira_author_list = []
 
                     for each_key in each_dict:
                         if 'TY' in each_key:
@@ -452,7 +453,6 @@ def add_papers(request):
 
                         elif 'A1' in each_key:
                             paper_author = each_dict[each_key]
-                            known_author = 0
                             citation_names = ''
                             for author in paper_author:
                                 if author.isupper():
@@ -472,17 +472,15 @@ def add_papers(request):
                                 else:
                                     citation_name = last_name+','+' '+letters+';'+' '
 
-                                if CitationName.objects.filter(name=citation_name):
-                                    known_author += 1
+                                nira_author = CitationName.objects.all()
+                                if nira_author.filter(name=last_name+','+' '+letters):
+                                    nira_author_name = nira_author.get(name=last_name+','+' '+letters)
+                                    nira_author_name = nira_author_name.person
+                                    nira_author_list.append(nira_author_name)
 
                                 citation_names += citation_name
 
                             paper_author = citation_names
-
-                            if known_author == 0:
-                                paper_unknown_author = True
-                            else:
-                                paper_unknown_author = False
 
                         elif 'JO' in each_key:
                             paper_journal = each_dict[each_key]
@@ -529,7 +527,11 @@ def add_papers(request):
                         elif 'EP' in each_key:
                             paper_end_page = each_dict[each_key]
 
-                    paper = {'paper_title': paper_title, 'paper_author': paper_author}
+                    if nira_author_list:
+                        paper = {'nira_author_list': nira_author_list, 'paper_title': paper_title,
+                                 'paper_author': paper_author}
+                    else:
+                        paper = {'paper_title': paper_title, 'paper_author': paper_author}
 
                     if registered_title:
                         if get_paper_status != 'Published' and not paper_journal.startswith('arXiv'):
