@@ -2,7 +2,7 @@
 {% load i18n admin_static bootstrapped_goodies_tags %}
 
 {% block extrahead %}
-    <script src="{% static 'js/add_periodical_papers.js' %}"></script>
+    <script src="{% static 'js/select_all_papers.js' %}"></script>
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -17,10 +17,11 @@
     <form role="form" method="post" action="{% url 'research.views.periodical_accepted_papers' %}">{% csrf_token %}
         {% if periodical_accepted_papers %}
             <strong>{% trans "List of accepted papers to add:" %}</strong><br><br>
-            <span><input type="checkbox" value='all_papers' id="select_all_periodical_papers"> {% trans 'Select all' %}</span>
+            <span><input type="checkbox" value='all_papers' id="select_all_papers"> {% trans 'Select all' %}</span>
             <table class="table table-striped">
                 <tr>
                     <th></th>
+                    <th>{% trans "Team" %}</th>
                     <th>{% trans "Title" %}</th>
                     <th>{% trans "Authors" %}</th>
                     <th>{% trans "Link to arXiv" %}</th>
@@ -28,16 +29,25 @@
                 </tr>
                 {% for paper in periodical_accepted_papers %}
                 <tr>
-                    <td><input type="checkbox" class="checkbox_periodical_papers" name="papers_to_add" value='{{ paper_title }}'></td>
-                    <td><input class="form-control" type="text" name="paper_title" style="width: 400px" value="{{ paper.paper_title }}"></td>
-                    <td><input class="form-control" type="text" name="paper_author" style="width: 280px" value="{{ paper.paper_author }}"></td>
-                    <td><input class="form-control" type="text" name="paper_arxiv" style="width: 240px" value="{{ paper.arxiv_url }}"></td>
-                    <td><input class="form-control" type="text" name="paper_date" style="width: 120px" value="{{ paper.paper_date|date:"Y-m-d" }}"></td>
+                    <td><input type="checkbox" class="checkbox_ris_paper" name="paper_id" value='{{ paper.paper_arxiv_id }}'></td>
+                    <td>
+                        <select class="form-control" name="paper_team_{{ paper.paper_arxiv_id }}" id="id_team" style="width: 100px">
+                            <option value="none">-----</option>
+                            <option value="s" selected="selected">{% trans "Scientific" %}</option>
+                            <option value="d">{% trans "Dissemination" %}</option>
+                            <option value="t">{% trans "Technology transfer" %}</option>
+                        </select>
+                    </td>
+                    <td><input class="form-control" type="text" name="paper_title_{{ paper.paper_arxiv_id }}" style="width: 360px" value="{{ paper.paper_title }}"></td>
+                    <td><input class="form-control" type="text" name="paper_author_{{ paper.paper_arxiv_id }}" style="width: 240px" value="{{ paper.paper_author }}"></td>
+                    <td><input class="form-control" type="text" name="paper_arxiv_{{ paper.paper_arxiv_id }}" style="width: 220px" value="{{ paper.arxiv_url }}"></td>
+                    <td><input class="form-control" type="text" name="paper_date_{{ paper.paper_arxiv_id }}" style="width: 120px" value="{{ paper.paper_date|date:"Y-m-d" }}"></td>
                 </tr>
                 {% endfor %}
             </table>
+            <button type="submit" class="btn btn-primary btn-lg" name="action" value="add" style="font-size:16px;" role="button">{% trans "Add papers" %}</button>
         {% else %}
-            <strong>{% trans "There is no accepted papers to add!" %}</strong><br><br>
+            <strong>{% trans "There are no accepted papers to add!" %}</strong><br><br>
         {% endif %}
 
         <div class="btn-group pull-right">

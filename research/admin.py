@@ -1,6 +1,7 @@
 from django.contrib import admin
 from research.models import *
-from forms import ArticleAdminForm, BookAdminForm, AuthorsInlineFormset
+#from forms import ArticleAdminForm, BookAdminForm, AuthorsInlineFormset
+from forms import ArticleAdminForm, BookAdminForm
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
@@ -11,7 +12,7 @@ admin.site.register(TypeAcademicWork)
 class AuthorsInline(admin.TabularInline):
     model = Author
     extra = 1
-    formset = AuthorsInlineFormset
+    # formset = AuthorsInlineFormset
 
 
 class DraftInline(admin.StackedInline):
