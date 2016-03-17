@@ -450,8 +450,7 @@ def add_papers(request):
                             if ResearchResult.objects.filter(title=paper_title):
                                 registered_title = True
                                 get_paper = Article.objects.get(title=paper_title)
-                                get_paper_status = get_paper.status.encode('utf8')
-                                get_paper_status = re.findall("u\\'(.+?)\\'", get_paper_status)
+                                get_paper_status = get_paper.status
                                 get_paper_id = get_paper.pk
                                 get_paper_team = get_paper.team
 
@@ -538,8 +537,7 @@ def add_papers(request):
                         paper = {'paper_title': paper_title, 'paper_author': paper_author}
 
                     if registered_title:
-                        if 'p' not in get_paper_status and not paper_journal.startswith('arXiv'):
-                            get_paper_status.append('p')
+                        if u'p' not in get_paper_status and not paper_journal.startswith('arXiv'):
                             paper['paper_nira_id'] = get_paper_id
                             paper['paper_team'] = get_paper_team
                             paper['paper_status'] = get_paper_status
@@ -799,6 +797,8 @@ def update_papers(request):
 
                     # Updating paper in NIRA
                     periodical = Periodical.objects.get(id=int(paper_periodical))
+                    paper_status = re.findall("\\'(.+?)\\'", paper_status)
+                    paper_status.append('p')
                     article = Article(researchresult_ptr_id=paper_nira_id, team=paper_team, title=paper_title,
                                       ris_file_authors=paper_author, status=paper_status, type='p', periodical=periodical)
                     article.save()
