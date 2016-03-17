@@ -1,0 +1,93 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block extrahead %}
+    <script src="{% static 'js/select_all_papers.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li><a href="/">{% trans 'Home' %}</a></li>
+        <li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
+        <li>{% trans 'Papers to import' %}</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <form role="form" method="post" name="published_form" action="{% url 'research.views.update_papers' %}">{% csrf_token %}
+        {% if periodical_update_papers %}
+            <strong>{% trans "List of papers to update:" %}</strong><br><br>
+            <span><input type="checkbox" value='all_papers' id="select_all_papers"> {% trans 'Select all' %}</span>
+            <table class="table table-striped">
+                <tr>
+                    <th></th>
+                    <th>{% trans "Team" %}</th>
+                    <th>{% trans "Title" %}</th>
+                    <th>{% trans "Authors" %}</th>
+                    <th>{% trans "Journal" %}</th>
+                    <th>{% trans "Vol." %}</th>
+                    <th>{% trans "Issue" %}</th>
+                    <th>{% trans "Start pg" %}</th>
+                    <th>{% trans "End pg" %}</th>
+                    <th>{% trans "Date" %}</th>
+                </tr>
+                {% for paper in periodical_update_papers %}
+                <tr>
+                    <td><input type="checkbox" class="checkbox_ris_paper" name="paper_id" value='{{ paper.paper_scholar_id }}'></td>
+                    <td>
+                        <select class="form-control" name="paper_team_{{ paper.paper_scholar_id }}" id="id_team" style="width: 80px">
+                            <option value="none">-----</option>
+                            {% if paper.paper_team == 's' %}
+                                <option value="s" selected="selected">{% trans "Scientific" %}</option>
+                                <option value="d">{% trans "Dissemination" %}</option>
+                                <option value="t">{% trans "Technology transfer" %}</option>
+                            {% elif paper.paper_team == 'd' %}
+                                <option value="s">{% trans "Scientific" %}</option>
+                                <option value="d" selected="selected">{% trans "Dissemination" %}</option>
+                                <option value="t">{% trans "Technology transfer" %}</option>
+                            {% elif paper.paper_team == 't' %}
+                                <option value="s">{% trans "Scientific" %}</option>
+                                <option value="d">{% trans "Dissemination" %}</option>
+                                <option value="t" selected="selected">{% trans "Technology transfer" %}</option>
+                            {% endif %}
+                        </select>
+                    </td>
+                    <td><input class="form-control" type="text" name="paper_title_{{ paper.paper_scholar_id }}" style="width: 270px" value="{{ paper.paper_title }}"></td>
+                    <td><input class="form-control" type="text" name="paper_author_{{ paper.paper_scholar_id }}" style="width: 180px" value="{{ paper.paper_author }}"></td>
+                    <td>
+                        <select class="form-control" name="paper_periodical_{{ paper.paper_scholar_id }}" id="id_periodical" style="width: 145px">
+                            <option value="none">-----</option>
+                            {% for periodical in periodicals %}
+                                {% if periodical.id == paper.periodical_id %}
+                                    <option value="{{ periodical.id }}" selected="selected">{{ periodical.name }}</option>
+                                {% else %}
+                                    <option value="{{ periodical.id }}">{{ periodical.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input class="form-control" type="text" name="paper_volume_{{ paper.paper_scholar_id }}" style="width: 55px" value="{{ paper.paper_volume }}"></td>
+                    <td><input class="form-control" type="text" name="paper_issue_{{ paper.paper_scholar_id }}" style="width: 40px" value="{{ paper.paper_issue }}"></td>
+                    <td><input class="form-control" type="text" name="paper_start_page_{{ paper.paper_scholar_id }}" style="width: 55px" value="{{ paper.paper_start_page }}"></td>
+                    <td><input class="form-control" type="text" name="paper_end_page_{{ paper.paper_scholar_id }}" style="width: 55px" value="{{ paper.paper_end_page }}"></td>
+                    {% if paper.paper_date|date:"Y-m-d" %}
+                        <td><input class="form-control" type="text" name="paper_date_{{ paper.paper_scholar_id }}" style="width: 100px" value="{{ paper.paper_date|date:"Y-m-d" }}"></td>
+                    {% else %}
+                        <td><input class="form-control" type="text" name="paper_date_{{ paper.paper_scholar_id }}" style="width: 100px" value="{{ paper.paper_date }}"></td>
+                    {% endif %}
+                    <td style="display:none;"><input class="form-control" type="text" name="paper_nira_id_{{ paper.paper_scholar_id }}" value="{{ paper.paper_nira_id }}"></td>
+                    <td style="display:none;"><input class="form-control" type="text" name="paper_status_{{ paper.paper_scholar_id }}" value="{{ paper.paper_status }}"></td>
+                </tr>
+                {% endfor %}
+            </table>
+            <button type="submit" class="btn btn-primary btn-lg" name="action" value="update" style="font-size:16px;" role="button">{% trans "Update papers" %}</button>
+        {% else %}
+            <strong>{% trans "There are no update papers!" %}</strong><br><br>
+        {% endif %}
+
+        <div class="btn-group pull-right">
+            <button type="submit" class="btn btn-default" name="action" value="back">Back</button>
+            <button type="submit" class="btn btn-default" name="action" value="finish">Finish</button>
+        </div>
+    </form>
+{% endblock %}
