@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from person.models import Person, Institution
+from person.models import Person, Institution, CitationName
 from django.utils.html import format_html
 
 
@@ -52,6 +52,11 @@ class ResearchResult(models.Model):
         return u'%s' % self.title
 
     def authors(self):
+        # if self.ris_file_authors != '':
+        #     return self.ris_file_authors
+        # else:
+        #     citation_name = CitationName.objects.all()
+        #     return format_html('; '.join([str(name) for name in citation_name.filter(person=self.person.all())]))
         return format_html("; ".join([unicode(person.citation_name if person.citation_name else person.full_name)
                                       for person in self.person.all().order_by('author__order')]))
 
