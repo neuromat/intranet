@@ -621,6 +621,15 @@ def periodical_published_papers(request):
                     paper_end_page = request.POST['paper_end_page_'+paper_scholar_id]
                     paper_date = request.POST['paper_date_'+paper_scholar_id]
 
+                    # Date field validation
+                    try:
+                        datetime.strptime(paper_date, '%Y-%m-%d')
+                    except ValueError:
+                        messages.warning(request, _('Wrong date format! It should be YYYY-MM-DD.'))
+                        context = {'periodical_published_papers': periodical_published_papers,
+                                   'periodicals': periodicals}
+                        return render(request, 'report/research/periodical_published_papers.html', context)
+
                     # Adding paper in NIRA
                     periodical = Periodical.objects.get(id=int(paper_periodical))
                     article = Article(team=paper_team, title=paper_title, ris_file_authors=paper_author, status='p',
@@ -678,6 +687,14 @@ def periodical_accepted_papers(request):
                     paper_author = request.POST['paper_author_'+paper_arxiv_id]
                     arxiv_url = request.POST['paper_arxiv_'+paper_arxiv_id]
                     paper_date = request.POST['paper_date_'+paper_arxiv_id]
+
+                    # Date field validation
+                    try:
+                        datetime.strptime(paper_date, '%Y-%m-%d')
+                    except ValueError:
+                        messages.warning(request, _('Wrong date format! It should be YYYY-MM-DD.'))
+                        context = {'periodical_accepted_papers': periodical_accepted_papers}
+                        return render(request, 'report/research/periodical_accepted_papers.html', context)
 
                     # Adding paper in NIRA
                     item = Article(team=paper_team, title=paper_title, ris_file_authors=paper_author, url=arxiv_url,
@@ -794,6 +811,14 @@ def update_papers(request):
                     paper_start_page = request.POST['paper_start_page_'+paper_scholar_id]
                     paper_end_page = request.POST['paper_end_page_'+paper_scholar_id]
                     paper_date = request.POST['paper_date_'+paper_scholar_id]
+
+                    # Date field validation
+                    try:
+                        datetime.strptime(paper_date, '%Y-%m-%d')
+                    except ValueError:
+                        messages.warning(request, _('Wrong date format! It should be YYYY-MM-DD.'))
+                        context = {'periodical_update_papers': periodical_update_papers, 'periodicals': periodicals}
+                        return render(request, 'report/research/periodical_update_papers.html', context)
 
                     # Updating paper in NIRA
                     periodical = Periodical.objects.get(id=int(paper_periodical))
