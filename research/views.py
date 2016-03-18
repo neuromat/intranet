@@ -343,6 +343,9 @@ def import_papers(request):
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
 
+        else:
+            messages.warning(request, _("You didn't choose a file. Nothing to be done!"))
+
     return render(request, 'report/research/import.html')
 
 
