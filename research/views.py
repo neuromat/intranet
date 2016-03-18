@@ -337,8 +337,8 @@ def import_papers(request):
                     periodicals_to_add.append(periodical)
 
             # Cache the list of papers and the list of periodicals to add
-            cache.set('papers', papers, 60 * 10)
-            cache.set('periodicals_to_add', periodicals_to_add, 60 * 10)
+            cache.set('papers', papers, 60 * 30)
+            cache.set('periodicals_to_add', periodicals_to_add, 60 * 30)
 
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
@@ -368,7 +368,7 @@ def add_periodicals(request):
             else:
                 messages.warning(request, _('You have selected no item. Nothing to be done!'))
 
-            cache.set('periodicals_to_add', periodicals_to_add, 60 * 10)
+            cache.set('periodicals_to_add', periodicals_to_add, 60 * 30)
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
 
@@ -386,7 +386,7 @@ def add_periodicals(request):
                 if not Event.objects.filter(name=event) and not EventRISFile.objects.filter(name=event):
                     events_to_add.append(event)
 
-            cache.set('events', events_to_add, 60 * 10)
+            cache.set('events', events_to_add, 60 * 30)
             context = {'events_to_add': events_to_add}
             return render(request, 'report/research/events_to_import.html', context)
 
@@ -552,6 +552,9 @@ def add_papers(request):
                             paper['paper_date'] = paper_date
                             periodical_update_papers.append(paper)
 
+                            # Wait 2 to 5 seconds to do the next paper.
+                            time.sleep(randint(2, 5))
+
                     else:
                         if 'JOUR' in paper_type:
                             if paper_journal.startswith('arXiv'):
@@ -582,13 +585,13 @@ def add_papers(request):
                             paper['event_id'] = event_id
                             event_papers.append(paper)
 
-                    # Wait 2 to 5 seconds to do the next paper.
-                    time.sleep(randint(2, 5))
+                        # Wait 2 to 5 seconds to do the next paper.
+                        time.sleep(randint(2, 5))
 
-                cache.set('periodical_published_papers', periodical_published_papers, 60 * 10)
-                cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)
-                cache.set('periodical_update_papers', periodical_update_papers, 60 * 10)
-                cache.set('event_papers', event_papers, 60 * 10)
+                cache.set('periodical_published_papers', periodical_published_papers, 60 * 30)
+                cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 30)
+                cache.set('periodical_update_papers', periodical_update_papers, 60 * 30)
+                cache.set('event_papers', event_papers, 60 * 30)
 
                 context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
                 return render(request, 'report/research/periodical_published_papers.html', context)
@@ -654,7 +657,7 @@ def periodical_published_papers(request):
                 if date_error:
                     messages.warning(request, _('Wrong date format! It should be YYYY-MM-DD.'))
 
-                cache.set('periodical_published_papers', periodical_published_papers, 60 * 10)
+                cache.set('periodical_published_papers', periodical_published_papers, 60 * 30)
                 context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
                 return render(request, 'report/research/periodical_published_papers.html', context)
 
@@ -716,7 +719,7 @@ def periodical_accepted_papers(request):
                 if date_error:
                     messages.warning(request, _('Wrong date format! It should be YYYY-MM-DD.'))
 
-                cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 10)
+                cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 30)
                 context = {'periodical_accepted_papers': periodical_accepted_papers}
                 return render(request, 'report/research/periodical_accepted_papers.html', context)
 
@@ -775,7 +778,7 @@ def event_papers(request):
                     # Removing paper from the event_papers list
                     event_papers = [x for x in event_papers if not (int(paper_scholar_id) == x.get('paper_scholar_id'))]
 
-                cache.set('event_papers', event_papers, 60 * 10)
+                cache.set('event_papers', event_papers, 60 * 30)
                 context = {'event_papers': event_papers, 'events': events}
                 return render(request, 'report/research/add_event_papers.html', context)
 
@@ -856,7 +859,7 @@ def update_papers(request):
                 if date_error:
                     messages.warning(request, _('Wrong date format! It should be YYYY-MM-DD.'))
 
-                cache.set('periodical_update_papers', periodical_update_papers, 60 * 10)
+                cache.set('periodical_update_papers', periodical_update_papers, 60 * 30)
                 context = {'periodical_update_papers': periodical_update_papers, 'periodicals': periodicals}
                 return render(request, 'report/research/periodical_update_papers.html', context)
 
