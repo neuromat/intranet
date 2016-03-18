@@ -15,7 +15,7 @@ import HTMLParser
 import re
 import time
 from random import randint
-from datetime import datetime
+import datetime
 from django.shortcuts import redirect
 
 
@@ -270,7 +270,7 @@ def scholar_date(scholar_list, paper_title):
     if date != '':
         date_format = date.split('/')
         if len(date_format) == 3:
-            date = datetime.strptime(date, '%Y/%m/%d').date()
+            date = datetime.datetime.strptime(date, '%Y/%m/%d').date()
 
     return date
 
@@ -293,7 +293,7 @@ def arxiv(arxiv_url):
             date = ''
 
     if date != '':
-        date = datetime.strptime(date, '%d %b %Y').date()
+        date = datetime.datetime.strptime(date, '%d %b %Y').date()
 
     return date
 
@@ -625,7 +625,7 @@ def periodical_published_papers(request):
                     # Date field validation
                     paper_date_error = False
                     try:
-                        datetime.strptime(paper_date, '%Y-%m-%d')
+                        datetime.datetime.strptime(paper_date, '%Y-%m-%d')
                     except ValueError:
                         paper_date_error = True
                         date_error = True
@@ -696,7 +696,7 @@ def periodical_accepted_papers(request):
                     # Date field validation
                     paper_date_error = False
                     try:
-                        datetime.strptime(paper_date, '%Y-%m-%d')
+                        datetime.datetime.strptime(paper_date, '%Y-%m-%d')
                     except ValueError:
                         paper_date_error = True
                         date_error = True
@@ -825,7 +825,7 @@ def update_papers(request):
                     # Date field validation
                     paper_date_error = False
                     try:
-                        datetime.strptime(paper_date, '%Y-%m-%d')
+                        datetime.datetime.strptime(paper_date, '%Y-%m-%d')
                     except ValueError:
                         paper_date_error = True
                         date_error = True
