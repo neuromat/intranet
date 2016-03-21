@@ -24,7 +24,11 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.periodical }},
+                        {% else %}
+                            {{ article.article.authors }} {{ article.article.periodical }},
+                        {% endif %}
                         {% if article.volume %}
                             <strong>{{ article.volume }}</strong>
                         {% endif %}
@@ -51,7 +55,11 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.periodical }},
+                        {% else %}
+                            {{ article.article.authors }} {{ article.article.periodical }},
+                        {% endif %}
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
                     {% endif %}
@@ -72,7 +80,11 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.periodical }},
+                        {% else %}
+                            {{ article.article.authors }} {{ article.article.periodical }},
+                        {% endif %}
                         {% if article.volume %}
                             <strong>{{ article.volume }}</strong>
                         {% endif %}
@@ -99,7 +111,11 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.periodical }},
+                        {% else %}
+                            {{ article.article.authors }} {{ article.article.periodical }},
+                        {% endif %}
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
                     {% endif %}
@@ -120,7 +136,11 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.periodical }},
+                        {% else %}
+                            {{ article.article.authors }} {{ article.article.periodical }},
+                        {% endif %}
                         {% if article.volume %}
                             <strong>{{ article.volume }}</strong>
                         {% endif %}
@@ -147,7 +167,11 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.article.periodical }},
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.periodical }},
+                        {% else %}
+                            {{ article.article.authors }} {{ article.article.periodical }},
+                        {% endif %}
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
                     {% endif %}
@@ -167,7 +191,11 @@
                     {% else %}
                         <strong>{{ article.article.title }}</strong>.
                     {% endif %}
-                    {{ article.article.authors }}
+                    {% if article.article.ris_file_authors  %}
+                        {{ article.article.ris_file_authors }}
+                    {% else %}
+                        {{ article.article.authors }}
+                    {% endif %}
                     {% if article.article.note %}
                         {{ article.article.note }}.
                     {% endif %}
@@ -188,7 +216,11 @@
                     {% else %}
                         <strong>{{ article.article.title }}</strong>.
                     {% endif %}
-                    {{ article.article.authors }}
+                    {% if article.article.ris_file_authors  %}
+                        {{ article.article.ris_file_authors }}
+                    {% else %}
+                        {{ article.article.authors }}
+                    {% endif %}
                     {% if article.article.note %}
                         {{ article.article.note }}.
                     {% endif %}
@@ -209,7 +241,11 @@
                     {% else %}
                         <strong>{{ article.article.title }}</strong>.
                     {% endif %}
-                    {{ article.article.authors }}
+                    {% if article.article.ris_file_authors  %}
+                        {{ article.article.ris_file_authors }}
+                    {% else %}
+                        {{ article.article.authors }}
+                    {% endif %}
                     {% if article.article.note %}
                         {{ article.article.note }}.
                     {% endif %}
@@ -231,7 +267,11 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.article.event }},
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.event }},
+                        {% else %}
+                            {{ article.article.authors }} {{ article.article.event }},
+                        {% endif %}
                         {% if article.article.event.acronym %}
                             {{ article.article.event.acronym }},
                         {% endif %}
@@ -254,7 +294,11 @@
                         {% else %}
                             <strong>{{ article.article.title }}</strong>.
                         {% endif %}
-                        {{ article.article.authors }} {{ article.article.event }},
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.event }},
+                        {% else %}
+                            {{ article.article.authors }} {{ article.article.event }},
+                        {% endif %}
                         {% if article.article.event.acronym %}
                             {{ article.article.event.acronym }},
                         {% endif %}
@@ -277,7 +321,16 @@
             {% for article in draft_scientific %}
                 {% if not article.article.hide %}
                 <li style="text-align: justify">
-                    <strong>{{ article.article.title }}</strong>. {{ article.article.authors }}
+                    {% if article.article.url %}
+                        <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                    {% else %}
+                        <strong>{{ article.article.title }}</strong>.
+                    {% endif %}
+                    {% if article.article.ris_file_authors  %}
+                        {{ article.article.ris_file_authors }}
+                    {% else %}
+                        {{ article.article.authors }}
+                    {% endif %}
                     {% if article.article.note %}
                         {{ article.article.note }}.
                     {% endif %}
@@ -293,7 +346,16 @@
             {% for article in draft_dissemin %}
                 {% if not article.article.hide %}
                 <li style="text-align: justify">
-                    <strong>{{ article.article.title }}</strong>. {{ article.article.authors }}
+                    {% if article.article.url %}
+                        <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                    {% else %}
+                        <strong>{{ article.article.title }}</strong>.
+                    {% endif %}
+                    {% if article.article.ris_file_authors  %}
+                        {{ article.article.ris_file_authors }}
+                    {% else %}
+                        {{ article.article.authors }}
+                    {% endif %}
                     {% if article.article.note %}
                         {{ article.article.note }}.
                     {% endif %}
@@ -309,7 +371,16 @@
             {% for article in draft_tec_trans %}
                 {% if not article.article.hide %}
                 <li style="text-align: justify">
-                    <strong>{{ article.article.title }}</strong>. {{ article.article.authors }}
+                    {% if article.article.url %}
+                        <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                    {% else %}
+                        <strong>{{ article.article.title }}</strong>.
+                    {% endif %}
+                    {% if article.article.ris_file_authors  %}
+                        {{ article.article.ris_file_authors }}
+                    {% else %}
+                        {{ article.article.authors }}
+                    {% endif %}
                     {% if article.article.note %}
                         {{ article.article.note }}.
                     {% endif %}
@@ -320,7 +391,7 @@
     {% endif %}
 
 {%  else %}
-    {% trans "No articles found!" %}
+    <strong>{% trans "No articles found!" %}</strong>
 {% endif %}
 
 
