@@ -438,7 +438,6 @@ def add_papers(request):
                     paper_end_page = ''
                     registered_title = False
                     get_paper_status = ''
-                    get_paper_id = ''
                     get_paper_team = ''
                     nira_author_list = []
 
@@ -454,7 +453,6 @@ def add_papers(request):
                                 registered_title = True
                                 get_paper = Article.objects.get(title=paper_title)
                                 get_paper_status = get_paper.status
-                                get_paper_id = get_paper.pk
                                 get_paper_team = get_paper.team
 
                         elif 'A1' in each_key:
@@ -541,9 +539,7 @@ def add_papers(request):
 
                     if registered_title:
                         if u'p' not in get_paper_status and not paper_journal.startswith('arXiv'):
-                            paper['paper_nira_id'] = get_paper_id
                             paper['paper_team'] = get_paper_team
-                            paper['paper_status'] = get_paper_status
                             paper['paper_volume'] = paper_volume
                             paper['paper_issue'] = paper_issue
                             paper['paper_start_page'] = paper_start_page
@@ -816,9 +812,7 @@ def update_papers(request):
             if selected_papers:
                 date_error = False
                 for paper_scholar_id in selected_papers:
-                    paper_nira_id = request.POST['paper_nira_id_'+paper_scholar_id]
                     paper_team = request.POST['paper_team_'+paper_scholar_id]
-                    paper_status = request.POST['paper_status_'+paper_scholar_id]
                     paper_title = request.POST['paper_title_'+paper_scholar_id]
                     paper_author = request.POST['paper_author_'+paper_scholar_id]
                     paper_periodical = request.POST['paper_periodical_'+paper_scholar_id]
@@ -827,6 +821,12 @@ def update_papers(request):
                     paper_start_page = request.POST['paper_start_page_'+paper_scholar_id]
                     paper_end_page = request.POST['paper_end_page_'+paper_scholar_id]
                     paper_date = request.POST['paper_date_'+paper_scholar_id]
+
+                    # Get ID, URL and staus info
+                    paper = Article.objects.get(title=paper_title)
+                    paper_id = paper.pk
+                    paper_url = paper.url
+                    paper_status = paper.status
 
                     # Date field validation
                     paper_date_error = False
@@ -841,18 +841,18 @@ def update_papers(request):
                         periodical = Periodical.objects.get(id=int(paper_periodical))
                         paper_status = re.findall("\\'(.+?)\\'", paper_status)
                         paper_status.append('p')
-                        article = Article(researchresult_ptr_id=paper_nira_id, team=paper_team, title=paper_title,
-                                          ris_file_authors=paper_author, status=paper_status, type='p',
+                        article = Article(researchresult_ptr_id=paper_id, team=paper_team, title=paper_title,
+                                          ris_file_authors=paper_author, url=paper_url, status=paper_status, type='p',
                                           periodical=periodical)
                         article.save()
                         # start_page and end_page are integers, so they can't be blank
                         if paper_start_page and paper_end_page:
-                            published = PublishedInPeriodical(article_id=paper_nira_id, volume=paper_volume,
+                            published = PublishedInPeriodical(article_id=paper_id, volume=paper_volume,
                                                               number=paper_issue, date=paper_date,
                                                               start_page=paper_start_page, end_page=paper_end_page)
                             published.save()
                         else:
-                            published = PublishedInPeriodical(article_id=paper_nira_id, volume=paper_volume,
+                            published = PublishedInPeriodical(article_id=paper_id, volume=paper_volume,
                                                               number=paper_issue, date=paper_date)
                             published.save()
 
