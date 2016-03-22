@@ -15,7 +15,7 @@ class UserManager(BaseUserManager):
         """
         now = timezone.now()
         if not username:
-            raise ValueError(_('The given username must be set'))
+            raise ValueError(_('The username must be set'))
 
         user = self.model(username=username, is_staff=is_staff, is_active=False, is_superuser=is_superuser,
                           last_login=now, date_joined=now)
@@ -58,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_nira_admin = models.BooleanField(_('NIRA admin'), default=False,
                                         help_text=_('Designates whether this user has special permissions, '
                                                     'e.g. see all orders, create order on behalf of another user.'))
-    date_joined = models.DateTimeField(_('Date joined'), default=timezone.now)
+    date_joined = models.DateTimeField(_('Registration date'), default=timezone.now)
     user_profile = models.OneToOneField(Person, verbose_name=_('User profile'), blank=True, null=True)
 
     USERNAME_FIELD = 'username'

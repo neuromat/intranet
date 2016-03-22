@@ -129,7 +129,7 @@ class ServiceAdmin(SuperOrder):
         (None, {
             'fields': ['status']
         }),
-        (_('Service Info'), {
+        (_('Information about the service'), {
             'fields': ('type',)
         }),
         (_('Purpose'), {
@@ -158,7 +158,7 @@ class TicketAdmin(SuperOrder):
         (None, {
             'fields': ['status']
         }),
-        (_('Ticket Info'), {
+        (_('Information about the ticket'), {
             'fields': ('type_transportation', 'type', 'origin', 'destination', 'outbound_date',
                        'outbound_date_preference', 'inbound_date', 'inbound_date_preference', 'note')
         }),
