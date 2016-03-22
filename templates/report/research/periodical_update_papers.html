@@ -75,8 +75,6 @@
                     {% else %}
                         <td><input class="form-control" type="text" name="paper_date_{{ paper.paper_scholar_id }}" style="width: 100px" value="{{ paper.paper_date }}"></td>
                     {% endif %}
-                    <td style="display:none;"><input class="form-control" type="text" name="paper_nira_id_{{ paper.paper_scholar_id }}" value="{{ paper.paper_nira_id }}"></td>
-                    <td style="display:none;"><input class="form-control" type="text" name="paper_status_{{ paper.paper_scholar_id }}" value="{{ paper.paper_status }}"></td>
                 </tr>
                 {% endfor %}
             </table>
