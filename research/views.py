@@ -224,7 +224,7 @@ def academic_works_tex(request):
     response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
     return response
 
-
+# Gets all articles on Neuromat's google scholar account
 def scholar():
     html_scholar = urllib2.urlopen(SCHOLAR+SCHOLAR_USER).read()
     soup = BeautifulSoup(html_scholar)
@@ -245,7 +245,7 @@ def scholar():
 
     return scholar_list
 
-
+# From Neuromat's google scholar, retrieve date from specific paper
 def scholar_date(scholar_list, paper_title):
     paper_url = ''
     for each_dict in scholar_list:
@@ -297,9 +297,14 @@ def arxiv(arxiv_url):
 
     return date
 
-
 @login_required
 def import_papers(request):
+    """
+
+    This method imports papers from Google Scholar and stores them on cache.
+
+    """
+
     if request.method == 'POST':
         if request.FILES:
             file = request.FILES['file'].read().splitlines()
@@ -350,7 +355,15 @@ def import_papers(request):
 
 
 def add_periodicals(request):
+
+    """
+
+    This method adds periodicals to NIRA's database using date obtained from Google Scholar
+
+    """
+
     if request.method == "POST":
+
         # Add the selected journals
         if request.POST['action'] == "add":
             periodicals = request.POST.getlist('periodicals_to_add')
@@ -375,7 +388,7 @@ def add_periodicals(request):
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
 
-        # Go to the page that shows the events
+        # Go to the page that shows the events, with cache properly setted
         elif request.POST['action'] == "next":
             papers = cache.get('papers')
             # Look for event to be registered. Remove duplicates
@@ -384,6 +397,7 @@ def add_periodicals(request):
             events = events_ty_jour + events_ty_chap
             events = list(set(events))
 
+            # Which events need to be added
             events_to_add = []
             for event in events:
                 if not Event.objects.filter(name=event) and not EventRISFile.objects.filter(name=event):
@@ -402,15 +416,25 @@ def add_periodicals(request):
 
 
 def add_papers(request):
+    """
+    Adding papers to NIRA's database using date obtained from Google Scholar
+    """
+
+    # If user wants to add papers
     if request.method == "POST":
+
         # Do the list of papers to add
         if request.POST['action'] == "next":
+
             # If already is in cache, do not make a new search
             if cache.get('periodical_published_papers'):
                 periodical_published_papers = cache.get('periodical_published_papers')
                 periodicals = Periodical.objects.all()
                 context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
+                # If you have the published papers, go to the next step
                 return render(request, 'report/research/periodical_published_papers.html', context)
+
+            # Let's read the papers
             else:
                 papers = cache.get('papers')
                 periodical_published_papers = []
@@ -580,6 +604,10 @@ def add_papers(request):
                                 paper['periodical_id'] = periodical_id
                                 paper['paper_date'] = paper_date
                                 periodical_published_papers.append(paper)
+
+                            # Wait 2 to 5 seconds to do the next paper.
+                            time.sleep(randint(2, 5))
+
                         elif 'CONF' in paper_type:
                             paper['paper_start_page'] = paper_start_page
                             paper['paper_end_page'] = paper_end_page
@@ -587,9 +615,6 @@ def add_papers(request):
                             paper_scholar_id += 1
                             paper['event_id'] = event_id
                             event_papers.append(paper)
-
-                        # Wait 2 to 5 seconds to do the next paper.
-                        time.sleep(randint(2, 5))
 
                 cache.set('periodical_published_papers', periodical_published_papers, 60 * 30)
                 cache.set('periodical_accepted_papers', periodical_accepted_papers, 60 * 30)
