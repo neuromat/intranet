@@ -224,8 +224,14 @@ def academic_works_tex(request):
     response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
     return response
 
-# Gets all articles on Neuromat's google scholar account
+
 def scholar():
+    """
+
+    This method gets all articles on Neuromat's google scholar account
+
+    """
+
     html_scholar = urllib2.urlopen(SCHOLAR+SCHOLAR_USER).read()
     soup = BeautifulSoup(html_scholar)
 
@@ -245,8 +251,12 @@ def scholar():
 
     return scholar_list
 
-# From Neuromat's google scholar, retrieve date from specific paper
-def scholar_date(scholar_list, paper_title):
+
+def scholar_info(scholar_list, paper_title):
+    """
+    From Neuromat's google scholar, this method retrieves the date and link of a specific paper, returning a tuple
+
+    """
     paper_url = ''
     for each_dict in scholar_list:
         for each_key in each_dict:
@@ -272,7 +282,11 @@ def scholar_date(scholar_list, paper_title):
         if len(date_format) == 3:
             date = datetime.datetime.strptime(date, '%Y/%m/%d').date()
 
-    return date
+    url = ''
+    gsc_class = str(soup.find(class_=re.compile("gsc_title_link")))
+    url = re.search('href="(.+?)"', gsc_class).group(1)
+
+    return date, url
 
 
 def arxiv(arxiv_url):
@@ -300,8 +314,7 @@ def arxiv(arxiv_url):
 @login_required
 def import_papers(request):
     """
-
-    This method imports papers from Google Scholar and stores them on cache.
+    This method imports papers from a RIS file and stores them on cache.
 
     """
 
@@ -364,7 +377,7 @@ def add_periodicals(request):
 
     if request.method == "POST":
 
-        # Add the selected journals
+        # Add the journals selected by the user
         if request.POST['action'] == "add":
             periodicals = request.POST.getlist('periodicals_to_add')
             periodicals_to_add = cache.get('periodicals_to_add')
@@ -397,7 +410,7 @@ def add_periodicals(request):
             events = events_ty_jour + events_ty_chap
             events = list(set(events))
 
-            # Which events need to be added
+            # Events that need to be added
             events_to_add = []
             for event in events:
                 if not Event.objects.filter(name=event) and not EventRISFile.objects.filter(name=event):
@@ -449,6 +462,7 @@ def add_papers(request):
                 paper_scholar_id = 0
                 paper_arxiv_id = 0
 
+                # For each paper...
                 for each_dict in papers:
                     paper_type = ''
                     paper_title = ''
@@ -466,9 +480,12 @@ def add_papers(request):
                     nira_author_list = []
 
                     for each_key in each_dict:
+
+                        # Paper type
                         if 'TY' in each_key:
                             paper_type = each_dict[each_key]
 
+                        # Paper title
                         elif 'T1' in each_key:
                             paper_title = each_dict[each_key]
                             if paper_title.isupper():
@@ -479,6 +496,7 @@ def add_papers(request):
                                 get_paper_status = get_paper.status
                                 get_paper_team = get_paper.team
 
+                        # Paper authors and citation names
                         elif 'A1' in each_key:
                             paper_author = each_dict[each_key]
                             citation_names = ''
@@ -510,6 +528,7 @@ def add_papers(request):
 
                             paper_author = citation_names
 
+                        # Journal of publication
                         elif 'JO' in each_key:
                             paper_journal = each_dict[each_key]
                             if not paper_journal.startswith('arXiv'):
@@ -532,6 +551,7 @@ def add_papers(request):
                                     periodical_id = ''
                                     event_id = ''
 
+                        # Event of paper
                         elif 'T2' in each_key:
                             paper_event = each_dict[each_key]
                             if events.filter(name=paper_event):
@@ -543,15 +563,19 @@ def add_papers(request):
                             else:
                                 event_id = ''
 
+                        # Volume of paper publication
                         elif 'VL' in each_key:
                             paper_volume = each_dict[each_key]
 
+                        # Issue of paper publication
                         elif 'IS' in each_key:
                             paper_issue = each_dict[each_key]
 
+                        # Starting page of paper in publication
                         elif 'SP' in each_key:
                             paper_start_page = each_dict[each_key]
 
+                        # Last page of paper in publication
                         elif 'EP' in each_key:
                             paper_end_page = each_dict[each_key]
 
@@ -561,6 +585,7 @@ def add_papers(request):
                     else:
                         paper = {'paper_title': paper_title, 'paper_author': paper_author}
 
+                    # If the paper wasn't published before, get the date of publication using Google Scholar
                     if registered_title:
                         if u'p' not in get_paper_status and not paper_journal.startswith('arXiv'):
                             paper['paper_team'] = get_paper_team
@@ -570,9 +595,12 @@ def add_papers(request):
                             paper['paper_end_page'] = paper_end_page
                             paper['paper_scholar_id'] = paper_scholar_id
                             paper_scholar_id += 1
-                            paper_date = scholar_date(scholar_list, paper_title)
+                            paper_info = scholar_info(scholar_list, paper_title)
+                            paper_date = paper_info[0]
+                            paper_url = paper_info[1]
                             paper['periodical_id'] = periodical_id
                             paper['paper_date'] = paper_date
+                            paper['url'] = paper_url
                             periodical_update_papers.append(paper)
 
                             # Wait 2 to 5 seconds to do the next paper.
@@ -596,9 +624,12 @@ def add_papers(request):
                                 paper['paper_end_page'] = paper_end_page
                                 paper['paper_scholar_id'] = paper_scholar_id
                                 paper_scholar_id += 1
-                                paper_date = scholar_date(scholar_list, paper_title)
+                                paper_info = scholar_info(scholar_list, paper_title)
+                                paper_date = paper_info[0]
+                                paper_url = paper_info[1]
                                 paper['periodical_id'] = periodical_id
                                 paper['paper_date'] = paper_date
+                                paper['url'] = paper_url
                                 periodical_published_papers.append(paper)
 
                             # Wait 2 to 5 seconds to do the next paper.
@@ -636,9 +667,17 @@ def periodical_published_papers(request):
             selected_papers = request.POST.getlist('paper_id')
             periodical_published_papers = cache.get('periodical_published_papers')
             periodicals = Periodical.objects.all()
+
             if selected_papers:
                 date_error = False
+
                 for paper_scholar_id in selected_papers:
+
+                    for paper in periodical_published_papers:
+                        if paper['paper_scholar_id'] == int(paper_scholar_id):
+                            paper_url = paper['url']
+
+
                     paper_team = request.POST['paper_team_'+paper_scholar_id]
                     paper_title = request.POST['paper_title_'+paper_scholar_id]
                     paper_author = request.POST['paper_author_'+paper_scholar_id]
@@ -661,7 +700,7 @@ def periodical_published_papers(request):
                         # Adding paper in NIRA
                         periodical = Periodical.objects.get(id=int(paper_periodical))
                         article = Article(team=paper_team, title=paper_title, ris_file_authors=paper_author, status='p',
-                                          type='p', periodical=periodical)
+                                          type='p', periodical=periodical, url=paper_url)
                         article.save()
                         article_id = article.pk
                         # start_page and end_page are integers, so they can't be blank

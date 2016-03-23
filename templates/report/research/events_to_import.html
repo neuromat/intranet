@@ -13,7 +13,7 @@
     <form role="form" method="post" action="{% url 'research.views.add_papers' %}">{% csrf_token %}
         {% if events_to_add %}
             <strong>{% trans "List of events to add:" %}</strong><br>
-            <em>Sorry, events should be add manually. Click <a href="/research/event" target="_blank">here</a> to do it.</em><br><br>
+            <em>Sorry, events should be added manually. Click <a href="/research/event" target="_blank">here</a> to do it.</em><br><br>
             <table class="table table-striped">
                 {% for event in events_to_add %}
                     <tr><td>{{ event }}</td></tr>
