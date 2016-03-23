@@ -324,7 +324,7 @@ class ScholarTest(TestCase):
     def setUp(self):
         self.papers_list = scholar()
         self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
-        self.specific_paper_date = '2014/1/17'
+        self.specific_paper_date = datetime.date(2014, 1, 17)
         self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
 
     def test_get_papers(self):
