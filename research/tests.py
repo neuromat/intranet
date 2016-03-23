@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, Periodical
 from views import scholar, scholar_info
+import datetime
 
 
 USERNAME = 'myuser'
