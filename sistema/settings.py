@@ -45,7 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cep',
-    #'django_jenkins',
+    'django_jenkins',
 )
 
 # Possible tasks for Jenkins
