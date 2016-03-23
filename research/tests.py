@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
 from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, Periodical
+from views import scholar, scholar_info
 
 
 USERNAME = 'myuser'
@@ -43,7 +44,6 @@ def createSubmitted(article, date):
 
 def createAccepted(article, date):
     accepted = Accepted(article=article, date=date)
-    # Why is this necessary?
     article.type = 'p'
     article.save()
     accepted.save()
@@ -57,7 +57,7 @@ def createPublishedInPeriodical(article, date, placeOfPublication):
     article.save()
     return published
 
-class ResearchValidation(TestCase):
+class ResearchTestsBasedOnTimeline(TestCase):
     academic_work = None
     advisee = None
     advisor = None
@@ -203,6 +203,7 @@ class ResearchValidation(TestCase):
         self.draft_09 = createDraft(self.article_09, '2014-06-30')
 
     def test_current_academic_works_report(self):
+        """ Report of current academic works is fine """
         start_date = '01-07-2014'
         end_date = '31-07-2015'
 
@@ -222,6 +223,7 @@ class ResearchValidation(TestCase):
         self.assertTrue(self.postdoc_08.title in titles_in_progress)
 
     def test_previous_academic_works_report(self):
+        """ Report of previous academic works is fine """
         start_date = '01-07-2013'
         end_date = '01-07-2014'
 
@@ -240,6 +242,7 @@ class ResearchValidation(TestCase):
         self.assertTrue(self.postdoc_08.title in titles_in_progress)
 
     def test_current_articles_report(self):
+        """ Report of current articles is fine """
         start_date = '01-07-2014'
         end_date = '31-07-2015'
 
@@ -275,6 +278,7 @@ class ResearchValidation(TestCase):
         self.assertTrue(self.article_07.title in published_articles)
 
     def test_previous_articles_report(self):
+        """ Report of previous articles is fine """
         start_date = '01-07-2013'
         end_date = '31-07-2014'
 
@@ -309,3 +313,24 @@ class ResearchValidation(TestCase):
         published_articles = [item.article.title for item in response.context['published_scientific']]
         self.assertTrue(self.article_06.title in published_articles)
         self.assertTrue(self.article_07.title in published_articles)
+
+class ScholarTest(TestCase):
+    """ Functions that get data from google scholar """
+
+    papers_list = []
+    specific_paper_title = ''
+    specific_paper_date = ''
+
+    def setUp(self):
+        self.papers_list = scholar()
+        self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
+        self.specific_paper_date = '2014/1/17'
+        self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
+
+    def test_get_papers(self):
+        self.assertEqual(scholar(), self.papers_list)
+
+    def test_get_paper_info(self):
+        result = scholar_info(self.papers_list, self.specific_paper_title)
+        self.assertEqual(result[0], self.specific_paper_date)
+        self.assertEqual(result[1], self.specific_paper_link)
