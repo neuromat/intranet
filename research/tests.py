@@ -383,7 +383,7 @@ class ScholarTest(TestCase):
 
 class DateTest(TestCase):
     """
-    Methods that handle dates
+    Testing methods that handle dates
     """
 
     def setUp(self):
@@ -411,3 +411,24 @@ class DateTest(TestCase):
         date = datetime.datetime.strptime(date, '%Y%m%d %H:%M:%S').date()
         npfy = now_plus_five_years()
         self.assertEqual(npfy, date)
+
+
+class ArticlesTest(TestCase):
+    """
+    Testing things about the Articles model
+    """
+
+    def setUp(self):
+        title = "Test article"
+        team = "Test team"
+        self.published = Article(title=title, team=team, status='Published')
+        self.accepted = Article(title=title, team=team, status='Accepted')
+        self.submitted = Article(title=title, team=team, status='Submitted')
+        self.draft = Article(title=title, team=team, status='Draft')
+
+    def current_status_test(self):
+        self.assertEqual('Published',self.published.current_status())
+        self.assertEqual('Accepted',self.accepted.current_status())
+        self.assertEqual('Submitted',self.submitted.current_status())
+        self.assertEqual('Draft',self.draft.current_status())
+        self.assertNotEqual('Published',self.accepted.current_status())
