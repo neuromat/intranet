@@ -58,7 +58,7 @@ def createPublishedInPeriodical(article, date, placeOfPublication):
     article.save()
     return published
 
-class ResearchTestsBasedOnTimeline(TestCase):
+class ResearchTimelineTest(TestCase):
     academic_work = None
     advisee = None
     advisor = None
@@ -317,21 +317,54 @@ class ResearchTestsBasedOnTimeline(TestCase):
 
 class ScholarTest(TestCase):
     """ Functions that get data from google scholar """
-
     papers_list = []
     specific_paper_title = ''
     specific_paper_date = ''
+    wrong_paper_title = ''
+    wrong_paper_date = ''
+    valid_scholar_list = []
+    valid_scholar = False
 
     def setUp(self):
-        self.papers_list = scholar()
+        self.papers_list = [{'Hydrodynamic limit for interacting neurons': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u-x6o8ySG0sC'},
+                            {'The solution of the complete nontrivial cycle intersection problem for permutations': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'},
+                            {'Infinite systems of interacting chains with memory of variable length\xe2\x80\x94a stochastic model for biological neural nets': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
         self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
         self.specific_paper_date = datetime.date(2014, 1, 17)
         self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
+        self.wrong_paper_title = 'Hydrodynamics limits for interactings neuron'
+        self.wrong_paper_date = datetime.date(2010, 1, 15)
 
     def test_get_papers(self):
-        self.assertEqual(scholar(), self.papers_list)
+        """
+        Are we taking the papers successfully?
+        Well, if we find our little list in the list from Scholar, the function is working fine
+        i.e. Google hasn't changed the names of the classes from Scholar.
+        """
+        ret = False
+        scholar_list = scholar()
+        scholar_titles = []
+
+        for paper in scholar_list:
+            scholar_titles.append(paper.keys()[0])
+
+        for paper in self.papers_list:
+            if paper.keys()[0] in scholar_titles:
+                ret = True
+            else:
+                ret = False
+
+        self.valid_scholar_list.extend(scholar_list)
+        self.assertTrue(ret)
 
     def test_get_paper_info(self):
-        result = scholar_info(self.papers_list, self.specific_paper_title)
+        """
+        Are we getting the paper date and url successfully?
+        Obs: this test depends on test_get_papers
+        """
+        scholar_list = scholar()
+        result = scholar_info(scholar_list, self.specific_paper_title)
         self.assertEqual(result[0], self.specific_paper_date)
         self.assertEqual(result[1], self.specific_paper_link)
+        self.assertNotEqual(result[0], self.wrong_paper_date)
+        self.assertNotEqual(result[1], self.wrong_paper_date)

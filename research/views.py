@@ -263,6 +263,7 @@ def scholar_info(scholar_list, paper_title):
             if paper_title in each_key:
                 paper_url = each_dict[each_key]
 
+
     html_parser = HTMLParser.HTMLParser()
     citation_link = html_parser.unescape(paper_url)
 
@@ -282,7 +283,6 @@ def scholar_info(scholar_list, paper_title):
         if len(date_format) == 3:
             date = datetime.datetime.strptime(date, '%Y/%m/%d').date()
 
-    url = ''
     gsc_class = str(soup.find(class_=re.compile("gsc_title_link")))
     url = re.search('href="(.+?)"', gsc_class).group(1)
 
