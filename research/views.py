@@ -27,7 +27,8 @@ SCHOLAR_USER = '/citations?user=OaY57UIAAAAJ&cstart=00&pagesize=1000'
 def valid_date(date):
     day = date[0:2]
     month = date[3:5]
-    if (01 <= int(day) <= 31) and (01 <= int(month) <= 12):
+    year = date[6:]
+    if (01 <= int(day) <= 31) and (01 <= int(month) <= 12) and (0 <= int(year)):
         return True
     else:
         return False

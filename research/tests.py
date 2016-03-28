@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
 from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, Periodical
-from views import scholar, scholar_info
+from views import scholar, scholar_info, valid_date, now_plus_five_years
 import datetime
 
 
@@ -11,7 +11,6 @@ USERNAME = 'myuser'
 PASSWORD = 'mypassword'
 
 # DRY way for testing
-
 def createPostdoc(type, title, advisee, advisor, start_date, end_date):
         postdoc = AcademicWork()
         postdoc.type = type
@@ -23,25 +22,30 @@ def createPostdoc(type, title, advisee, advisor, start_date, end_date):
         postdoc.save()
         return postdoc
 
+
 def createArticle(title, team):
    article = Article(title=title, team=team)
    article.save()
    return article
+
 
 def createHiddenArticle(title, team):
    article = Article(title=title, team=team, hide=True)
    article.save()
    return article
 
+
 def createDraft(article, date):
     draft = Draft(article=article, date=date)
     draft.save()
     return draft
 
+
 def createSubmitted(article, date):
     submitted = Submitted(article=article, date=date)
     submitted.save()
     return submitted
+
 
 def createAccepted(article, date):
     accepted = Accepted(article=article, date=date)
@@ -50,6 +54,7 @@ def createAccepted(article, date):
     accepted.save()
     return accepted
 
+
 def createPublishedInPeriodical(article, date, placeOfPublication):
     published = PublishedInPeriodical(article=article, date=date)
     published.save()
@@ -57,6 +62,7 @@ def createPublishedInPeriodical(article, date, placeOfPublication):
     article.type = 'p'
     article.save()
     return published
+
 
 class ResearchTimelineTest(TestCase):
     academic_work = None
@@ -315,8 +321,11 @@ class ResearchTimelineTest(TestCase):
         self.assertTrue(self.article_06.title in published_articles)
         self.assertTrue(self.article_07.title in published_articles)
 
+
 class ScholarTest(TestCase):
-    """ Functions that get data from google scholar """
+    """
+    Methods that get data from google scholar
+    """
     papers_list = []
     specific_paper_title = ''
     specific_paper_date = ''
@@ -334,6 +343,7 @@ class ScholarTest(TestCase):
         self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
         self.wrong_paper_title = 'Hydrodynamics limits for interactings neuron'
         self.wrong_paper_date = datetime.date(2010, 1, 15)
+
 
     def test_get_papers(self):
         """
@@ -357,6 +367,7 @@ class ScholarTest(TestCase):
         self.valid_scholar_list.extend(scholar_list)
         self.assertTrue(ret)
 
+
     def test_get_paper_info(self):
         """
         Are we getting the paper date and url successfully?
@@ -368,3 +379,35 @@ class ScholarTest(TestCase):
         self.assertEqual(result[1], self.specific_paper_link)
         self.assertNotEqual(result[0], self.wrong_paper_date)
         self.assertNotEqual(result[1], self.wrong_paper_date)
+
+
+class DateTest(TestCase):
+    """
+    Methods that handle dates
+    """
+
+    def setUp(self):
+        self.date = "29/12/1995"
+        self.invalid_day = "32/12/1995"
+        self.invalid_month = "20/13/1995"
+        self.invalid_year = "20/12/-1000"
+
+    def test_valid_dates(self):
+        """
+        Test if date is valid
+        """
+        self.assertTrue(valid_date(self.date))
+        self.assertFalse(valid_date(self.invalid_day))
+        self.assertFalse(valid_date(self.invalid_month))
+        self.assertFalse(valid_date(self.invalid_year))
+
+    def test_now_plus_five_years(self):
+        """
+        Test if helper method works
+        """
+
+        date = datetime.datetime.now() + datetime.timedelta(days=5*365)
+        date = date.strftime("%Y%m%d %H:%M:%S")
+        date = datetime.datetime.strptime(date, '%Y%m%d %H:%M:%S').date()
+        npfy = now_plus_five_years()
+        self.assertEqual(npfy, date)
