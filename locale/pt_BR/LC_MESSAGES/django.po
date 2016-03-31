@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-31 11:23-0300\n"
+"POT-Creation-Date: 2016-03-31 13:22-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1049,8 +1049,8 @@ msgid "Invalid end date!"
 msgstr "Término inválido"
 
 #: research/views.py:373
-msgid "You didn't choose a file. Nothing to be done!"
-msgstr "Você não selecionou nenhum item. Não há nada para fazer!"
+msgid "Please, select a .ris file to upload."
+msgstr "Por favor, selecione um arquivo .ris para fazer o upload."
 
 #: research/views.py:401
 msgid "Successfully added one Periodical."

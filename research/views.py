@@ -325,7 +325,7 @@ def import_papers(request):
     """
 
     if request.method == 'POST':
-        if request.FILES:
+        if request.FILES and request.FILES['file'].name.endswith('.ris'):
             file_uploaded = request.FILES['file'].read().splitlines()
             paper = {}
             papers = []
@@ -370,7 +370,7 @@ def import_papers(request):
             return render(request, 'report/research/periodicals_to_import.html', context)
 
         else:
-            messages.warning(request, _("You didn't choose a file. Nothing to be done!"))
+            messages.warning(request, _("Please, select a .ris file to upload."))
 
     return render(request, 'report/research/import.html')
 
