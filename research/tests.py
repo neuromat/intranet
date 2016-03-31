@@ -2,13 +2,24 @@ from custom_auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
+from django.utils.translation import ugettext_lazy as _
 from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, Periodical
 from views import scholar, scholar_info, valid_date, now_plus_five_years
+
 import datetime
+
 
 
 USERNAME = 'myuser'
 PASSWORD = 'mypassword'
+
+PERIODICAL = 'p'
+EVENT = 'e'
+
+ARTICLE_TYPE = (
+    (PERIODICAL, _('Periodical (Journal or magazine)')),
+    (EVENT, _('Event (Conference, congress, meeting, etc)')),
+)
 
 # DRY way for testing
 def createPostdoc(type, title, advisee, advisor, start_date, end_date):
@@ -364,7 +375,6 @@ class ScholarTest(TestCase):
             else:
                 ret = False
 
-        self.valid_scholar_list.extend(scholar_list)
         self.assertTrue(ret)
 
 
@@ -405,7 +415,6 @@ class DateTest(TestCase):
         """
         Test if helper method works
         """
-
         date = datetime.datetime.now() + datetime.timedelta(days=5*365)
         date = date.strftime("%Y%m%d %H:%M:%S")
         date = datetime.datetime.strptime(date, '%Y%m%d %H:%M:%S').date()
@@ -421,14 +430,27 @@ class ArticlesTest(TestCase):
     def setUp(self):
         title = "Test article"
         team = "Test team"
-        self.published = Article(title=title, team=team, status='Published')
-        self.accepted = Article(title=title, team=team, status='Accepted')
-        self.submitted = Article(title=title, team=team, status='Submitted')
-        self.draft = Article(title=title, team=team, status='Draft')
+        # Is this kind of creation correct?
+        self.published = Article(title=title, team=team, status=u'p')
+        self.accepted = Article(title=title, team=team, status=u'a')
+        self.submitted = Article(title=title, team=team, status=u's')
+        self.draft = Article(title=title, team=team, status=u'd')
+        self.periodical = Article(title=title, team=team, status=u'p', type='p')
+        self.event = Article(title=title, team=team, status=u'p', type='e')
+        self.factory = RequestFactory()
 
-    def current_status_test(self):
-        self.assertEqual('Published',self.published.current_status())
-        self.assertEqual('Accepted',self.accepted.current_status())
-        self.assertEqual('Submitted',self.submitted.current_status())
-        self.assertEqual('Draft',self.draft.current_status())
-        self.assertNotEqual('Published',self.accepted.current_status())
+
+    def create_request_mock(self):
+        request = self.factory.get(reverse('articles'), args=[(method, 'POST')])
+        return request
+
+
+    def test_current_status(self):
+        self.assertEqual('Published', self.published.current_status())
+        self.assertEqual('Accepted', self.accepted.current_status())
+        self.assertEqual('Submitted', self.submitted.current_status())
+        self.assertEqual('Draft', self.draft.current_status())
+        self.assertNotEqual('Published', self.accepted.current_status())
+
+    def test_type_of_article(self):
+        self.assertEqual('Periodical', self.periodical.type_of_article())
