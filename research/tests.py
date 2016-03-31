@@ -2,7 +2,8 @@ from custom_auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
-from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, Periodical
+from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, \
+    Periodical
 from views import scholar, scholar_info, valid_date, now_plus_five_years
 import datetime
 
@@ -10,44 +11,45 @@ import datetime
 USERNAME = 'myuser'
 PASSWORD = 'mypassword'
 
+
 # DRY way for testing
-def createPostdoc(type, title, advisee, advisor, start_date, end_date):
-        postdoc = AcademicWork()
-        postdoc.type = type
-        postdoc.title = title
-        postdoc.advisee = advisee
-        postdoc.advisor = advisor
-        postdoc.start_date = start_date
-        postdoc.end_date = end_date
-        postdoc.save()
-        return postdoc
+def create_postdoc(type, title, advisee, advisor, start_date, end_date):
+    postdoc = AcademicWork()
+    postdoc.type = type
+    postdoc.title = title
+    postdoc.advisee = advisee
+    postdoc.advisor = advisor
+    postdoc.start_date = start_date
+    postdoc.end_date = end_date
+    postdoc.save()
+    return postdoc
 
 
-def createArticle(title, team):
-   article = Article(title=title, team=team)
-   article.save()
-   return article
+def create_article(title, team):
+    article = Article(title=title, team=team)
+    article.save()
+    return article
 
 
-def createHiddenArticle(title, team):
-   article = Article(title=title, team=team, hide=True)
-   article.save()
-   return article
+def create_hidden_article(title, team):
+    article = Article(title=title, team=team, hide=True)
+    article.save()
+    return article
 
 
-def createDraft(article, date):
+def create_draft(article, date):
     draft = Draft(article=article, date=date)
     draft.save()
     return draft
 
 
-def createSubmitted(article, date):
+def create_submitted(article, date):
     submitted = Submitted(article=article, date=date)
     submitted.save()
     return submitted
 
 
-def createAccepted(article, date):
+def create_accepted(article, date):
     accepted = Accepted(article=article, date=date)
     article.type = 'p'
     article.save()
@@ -55,10 +57,10 @@ def createAccepted(article, date):
     return accepted
 
 
-def createPublishedInPeriodical(article, date, placeOfPublication):
+def create_published_in_periodical(article, date, place_of_publication):
     published = PublishedInPeriodical(article=article, date=date)
     published.save()
-    article.periodical = placeOfPublication
+    article.periodical = place_of_publication
     article.type = 'p'
     article.save()
     return published
@@ -112,7 +114,6 @@ class ResearchTimelineTest(TestCase):
     published_06 = None
     published_07 = None
 
-
     def setUp(self):
         self.user = User.objects.create_user(username=USERNAME, password=PASSWORD)
         self.user.is_active = True
@@ -142,72 +143,72 @@ class ResearchTimelineTest(TestCase):
         # List of academic works
 
         # First academic work
-        self.postdoc_01 = createPostdoc(academic_work, 'postdoc_01', advisee, advisor, '2013-08-20', '2014-08-26')
+        self.postdoc_01 = create_postdoc(academic_work, 'postdoc_01', advisee, advisor, '2013-08-20', '2014-08-26')
 
         # Second academic work
-        self.postdoc_02 = createPostdoc(academic_work,'postdoc_02', advisee, advisor, '2013-07-01', '2014-05-26')
+        self.postdoc_02 = create_postdoc(academic_work, 'postdoc_02', advisee, advisor, '2013-07-01', '2014-05-26')
 
         # Third academic work
-        self.postdoc_03 = createPostdoc(academic_work, 'postdoc_03', advisee, advisor, '2014-08-05', '2015-06-20')
+        self.postdoc_03 = create_postdoc(academic_work, 'postdoc_03', advisee, advisor, '2014-08-05', '2015-06-20')
 
         # Fourth academic work
-        self.postdoc_04 = createPostdoc(academic_work, 'postdoc_04', advisee, advisor, '2015-06-25', '2016-01-01')
+        self.postdoc_04 = create_postdoc(academic_work, 'postdoc_04', advisee, advisor, '2015-06-25', '2016-01-01')
 
         # Fifth academic work
-        self.postdoc_05 = createPostdoc(academic_work, 'postdoc_05', advisee, advisor, '2015-08-26', '2016-01-01')
+        self.postdoc_05 = create_postdoc(academic_work, 'postdoc_05', advisee, advisor, '2015-08-26', '2016-01-01')
 
         # Sixth academic work
-        self.postdoc_06 = createPostdoc(academic_work, 'postdoc_06', advisee, advisor, '2013-05-20', '2016-01-01')
+        self.postdoc_06 = create_postdoc(academic_work, 'postdoc_06', advisee, advisor, '2013-05-20', '2016-01-01')
 
         # Seventh academic work
-        self.postdoc_07 = createPostdoc(academic_work, 'postdoc_07', advisee, advisor, '2013-07-01', '2014-07-01')
+        self.postdoc_07 = create_postdoc(academic_work, 'postdoc_07', advisee, advisor, '2013-07-01', '2014-07-01')
 
         # Eighth academic work
-        self.postdoc_08 = createPostdoc(academic_work, 'postdoc_08', advisee, advisor, '2014-07-01', '2016-01-01')
+        self.postdoc_08 = create_postdoc(academic_work, 'postdoc_08', advisee, advisor, '2014-07-01', '2016-01-01')
 
         # List of articles
 
         # First Article: Draft(20/12/12), Submitted(05/01/14), Accepted(05/01/15), Published(05/11/15)
-        self.article_01 = createArticle('Artigo 01', team)
-        self.draft_01 = createDraft(self.article_01, '2012-12-20')
-        self.submitted_01 = createSubmitted(self.article_01, '2014-01-05')
-        self.accepted_01 = createAccepted(self.article_01, '2015-01-05')
-        self.published_01 = createPublishedInPeriodical(self.article_01, '2015-11-05', place_of_publication)
+        self.article_01 = create_article('Artigo 01', team)
+        self.draft_01 = create_draft(self.article_01, '2012-12-20')
+        self.submitted_01 = create_submitted(self.article_01, '2014-01-05')
+        self.accepted_01 = create_accepted(self.article_01, '2015-01-05')
+        self.published_01 = create_published_in_periodical(self.article_01, '2015-11-05', place_of_publication)
 
         # Second Article: Submitted(31/07/14)
-        self.article_02 = createArticle('Article 02', team)
-        self.submitted_02 = createSubmitted(self.article_02, '2014-07-31')
+        self.article_02 = create_article('Article 02', team)
+        self.submitted_02 = create_submitted(self.article_02, '2014-07-31')
 
         # Third Article: Accepted(31/07/14), Published(05/11/15)
-        self.article_03 = createArticle('Article 03', team)
-        self.accepted_03 = createAccepted(self.article_03,'2014-07-31')
-        self.published_03 = createPublishedInPeriodical(self.article_03, '2015-11-15', place_of_publication)
+        self.article_03 = create_article('Article 03', team)
+        self.accepted_03 = create_accepted(self.article_03, '2014-07-31')
+        self.published_03 = create_published_in_periodical(self.article_03, '2015-11-15', place_of_publication)
 
         # Fourth Article: Draft(01/06/14), Published(01/08/15)
-        self.article_04 = createArticle('Article 04', team)
-        self.draft_04 = createDraft(self.article_04, '2014-06-01')
-        self.published_04 = createPublishedInPeriodical(self.article_04, '2015-08-01', place_of_publication)
+        self.article_04 = create_article('Article 04', team)
+        self.draft_04 = create_draft(self.article_04, '2014-06-01')
+        self.published_04 = create_published_in_periodical(self.article_04, '2015-08-01', place_of_publication)
 
         # Fifth Article: Draft(01/06/14), Published(01/08/15)
-        self.article_05 = createArticle('Article 05', team)
-        self.draft_05 = createDraft(self.article_05, '2014-06-01')
-        self.published_05 = createPublishedInPeriodical(self.article_05,'2015-08-01', place_of_publication)
+        self.article_05 = create_article('Article 05', team)
+        self.draft_05 = create_draft(self.article_05, '2014-06-01')
+        self.published_05 = create_published_in_periodical(self.article_05, '2015-08-01', place_of_publication)
 
         # Sixth Article: Published(30/06/14)
-        self.article_06 = createArticle('Article 06', team)
-        self.published_06 = createPublishedInPeriodical(self.article_06, '2014-06-30', place_of_publication)
+        self.article_06 = create_article('Article 06', team)
+        self.published_06 = create_published_in_periodical(self.article_06, '2014-06-30', place_of_publication)
 
         # Seventh Article: Published(01/07/14)
-        self.article_07 = createArticle('Article 07', team)
-        self.published_07 = createPublishedInPeriodical(self.article_07, '2014-07-01', place_of_publication)
+        self.article_07 = create_article('Article 07', team)
+        self.published_07 = create_published_in_periodical(self.article_07, '2014-07-01', place_of_publication)
 
         # Eighth Article: Draft(30/06/14)
-        self.article_08 = createArticle('Article 08', team)
-        self.draft_08 = createDraft(self.article_08, '2014-06-30')
+        self.article_08 = create_article('Article 08', team)
+        self.draft_08 = create_draft(self.article_08, '2014-06-30')
 
         # Nineth Article: Draft(30/06/14)
-        self.article_09 = createHiddenArticle('Article 09', team)
-        self.draft_09 = createDraft(self.article_09, '2014-06-30')
+        self.article_09 = create_hidden_article('Article 09', team)
+        self.draft_09 = create_draft(self.article_09, '2014-06-30')
 
     def test_current_academic_works_report(self):
         """ Report of current academic works is fine """
@@ -344,7 +345,6 @@ class ScholarTest(TestCase):
         self.wrong_paper_title = 'Hydrodynamics limits for interactings neuron'
         self.wrong_paper_date = datetime.date(2010, 1, 15)
 
-
     def test_get_papers(self):
         """
         Are we taking the papers successfully?
@@ -366,7 +366,6 @@ class ScholarTest(TestCase):
 
         self.valid_scholar_list.extend(scholar_list)
         self.assertTrue(ret)
-
 
     def test_get_paper_info(self):
         """
@@ -427,8 +426,8 @@ class ArticlesTest(TestCase):
         self.draft = Article(title=title, team=team, status='Draft')
 
     def current_status_test(self):
-        self.assertEqual('Published',self.published.current_status())
-        self.assertEqual('Accepted',self.accepted.current_status())
-        self.assertEqual('Submitted',self.submitted.current_status())
-        self.assertEqual('Draft',self.draft.current_status())
-        self.assertNotEqual('Published',self.accepted.current_status())
+        self.assertEqual('Published', self.published.current_status())
+        self.assertEqual('Accepted', self.accepted.current_status())
+        self.assertEqual('Submitted', self.submitted.current_status())
+        self.assertEqual('Draft', self.draft.current_status())
+        self.assertNotEqual('Published', self.accepted.current_status())

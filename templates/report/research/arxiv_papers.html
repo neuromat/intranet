@@ -14,8 +14,8 @@
 {% endblock %}
 
 {% block content %}
-    <form role="form" method="post" action="{% url 'research.views.periodical_accepted_papers' %}">{% csrf_token %}
-        {% if periodical_accepted_papers %}
+    <form role="form" method="post" action="{% url 'research.views.arxiv_papers' %}">{% csrf_token %}
+        {% if arxiv_papers %}
             <strong>{% trans "List of accepted papers to add:" %}</strong><br><br>
             <span><input type="checkbox" value='all_papers' id="select_all_papers"> {% trans 'Select all' %}</span>
             <table class="table table-striped">
@@ -27,7 +27,7 @@
                     <th>{% trans "Link to arXiv" %}</th>
                     <th>{% trans "Date" %}</th>
                 </tr>
-                {% for paper in periodical_accepted_papers %}
+                {% for paper in arxiv_papers %}
                 <tr>
                     <td><input type="checkbox" class="checkbox_ris_paper" name="paper_id" value='{{ paper.paper_arxiv_id }}'></td>
                     <td>
@@ -47,7 +47,7 @@
             </table>
             <button type="submit" class="btn btn-primary btn-lg" name="action" value="add" style="font-size:16px;" role="button">{% trans "Add papers" %}</button>
         {% else %}
-            <strong>{% trans "There are no accepted papers to add!" %}</strong><br><br>
+            <strong>{% trans "There are no papers from arXiv to add!" %}</strong><br><br>
         {% endif %}
 
         <div class="btn-group pull-right">
