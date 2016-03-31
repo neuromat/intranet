@@ -196,7 +196,7 @@ def academic_works(request):
             end_date = now_plus_five_years()
 
         postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, \
-        msc_in_progress = search_academic_works(start_date, end_date)
+            msc_in_progress = search_academic_works(start_date, end_date)
 
         if end_date >= start_date:
             context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
@@ -218,7 +218,7 @@ def academic_works_tex(request):
     end_date = request.GET.get('end_date')
 
     postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, \
-    msc_in_progress = search_academic_works(start_date, end_date)
+        msc_in_progress = search_academic_works(start_date, end_date)
 
     context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
                'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
