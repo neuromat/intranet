@@ -6,6 +6,7 @@ from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submi
     Periodical
 from views import scholar, scholar_info, valid_date, now_plus_five_years
 import datetime
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 USERNAME = 'myuser'
@@ -13,6 +14,17 @@ PASSWORD = 'mypassword'
 
 
 # DRY way for testing
+def system_authentication(instance):
+    user = User.objects.create_user(username=USERNAME, password=PASSWORD)
+    user.is_active = True
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
+    factory = RequestFactory()
+    logged = instance.client.login(username=USERNAME, password=PASSWORD)
+    return logged, user, factory
+
+
 def create_postdoc(type, title, advisee, advisor, start_date, end_date):
     postdoc = AcademicWork()
     postdoc.type = type
@@ -115,15 +127,7 @@ class ResearchTimelineTest(TestCase):
     published_07 = None
 
     def setUp(self):
-        self.user = User.objects.create_user(username=USERNAME, password=PASSWORD)
-        self.user.is_active = True
-        self.user.is_staff = True
-        self.user.is_superuser = True
-        self.user.save()
-
-        self.factory = RequestFactory()
-
-        logged = self.client.login(username=USERNAME, password=PASSWORD)
+        logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
         academic_work = TypeAcademicWork.objects.create(name='Post-doctoral')
@@ -431,3 +435,22 @@ class ArticlesTest(TestCase):
         self.assertEqual('Submitted', self.submitted.current_status())
         self.assertEqual('Draft', self.draft.current_status())
         self.assertNotEqual('Published', self.accepted.current_status())
+
+
+class ImportPaper(TestCase):
+
+    def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
+    def test_import_file(self):
+        response = self.client.get(reverse('import_papers'))
+        self.assertEqual(response.status_code, 200)
+
+        ris_file = SimpleUploadedFile('citations.ris', b'rb')
+        response = self.client.post(reverse('import_papers'), {'file': ris_file})
+        self.assertEqual(response.status_code, 200)
+
+        not_ris_file = SimpleUploadedFile('citations.jpg', b'rb', content_type='image/jpeg')
+        response = self.client.post(reverse('import_papers'), {'file': not_ris_file})
+        self.assertEqual(response.status_code, 200)
