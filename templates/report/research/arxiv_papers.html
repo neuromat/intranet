@@ -16,7 +16,7 @@
 {% block content %}
     <form role="form" method="post" action="{% url 'research.views.arxiv_papers' %}">{% csrf_token %}
         {% if arxiv_papers %}
-            <strong>{% trans "List of accepted papers to add:" %}</strong><br><br>
+            <strong>{% trans "List of papers from arXiv to add:" %}</strong><br><br>
             <span><input type="checkbox" value='all_papers' id="select_all_papers"> {% trans 'Select all' %}</span>
             <table class="table table-striped">
                 <tr>
