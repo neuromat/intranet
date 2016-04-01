@@ -437,6 +437,18 @@ class ArticlesTest(TestCase):
         self.assertNotEqual('Published', self.accepted.current_status())
 
 
+class ArXivTest(TestCase):
+    """ Test method for ArXiv handler. This should work if arxiv doesn't change it's classes """
+
+    def setUp(self):
+        self.arxiv_url = 'http://arxiv.org/abs/1601.03704'
+        self.date = datetime.date(2016, 1, 14)
+
+    def test_arxiv(self):
+        date = arxiv(self.arxiv_url)
+        self.assertEqual(self.date, date)
+
+
 class ImportPaper(TestCase):
 
     def setUp(self):
