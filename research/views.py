@@ -61,6 +61,64 @@ def now_plus_five_years():
     return date
 
 
+def search_articles(start_date, end_date):
+    # List of articles
+    published_periodical = PublishedInPeriodical.objects.filter(article__type='p', date__gt=start_date,
+                                                                date__lt=end_date).order_by('date')
+    published_event = Published.objects.filter(article__type='e', article__event__start_date__lt=end_date,
+                                               article__event__end_date__gt=start_date).order_by('article__event__start_date')
+    accepted = Accepted.objects.filter(date__lt=end_date).order_by('date')
+    submitted = Submitted.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
+    draft = Draft.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
+
+    # Articles IDs
+    published_periodical_ids = published_periodical.values_list('article_id', flat=True)
+    published_event_ids = published_event.values_list('article_id', flat=True)
+    published_ids = list(chain(published_periodical_ids, published_event_ids))
+    accepted_ids = accepted.values_list('article_id', flat=True).exclude(article_id__in=published_ids)
+    submitted_ids = submitted.values_list('article_id', flat=True).exclude(Q(article_id__in=published_ids) |
+                                                                           Q(article_id__in=accepted_ids))
+    draft_ids = draft.values_list('article_id', flat=True).exclude(Q(article_id__in=published_ids) |
+                                                                   Q(article_id__in=accepted_ids) |
+                                                                   Q(article_id__in=submitted_ids))
+
+    # Articles from the scientific team
+    published_scientific = published_periodical.filter(article__team='s')
+    accepted_scientific = accepted.filter(article__type='p', article__team='s', article_id__in=accepted_ids)
+    submitted_scientific = submitted.filter(article__team='s', article_id__in=submitted_ids)
+    draft_scientific = draft.filter(article__team='s', article_id__in=draft_ids)
+
+    # Articles from the dissemination team
+    published_dissemin = published_periodical.filter(article__team='d')
+    accepted_dissemin = accepted.filter(article__type='p', article__team='d', article_id__in=accepted_ids)
+    submitted_dissemin = submitted.filter(article__team='d', article_id__in=submitted_ids)
+    draft_dissemin = draft.filter(article__team='d', article_id__in=draft_ids)
+
+    # Articles from the technology transfer team
+    published_tec_trans = published_periodical.filter(article__team='t')
+    accepted_tec_trans = accepted.filter(article__type='p', article__team='t', article_id__in=accepted_ids)
+    submitted_tec_trans = submitted.filter(article__team='t', article_id__in=submitted_ids)
+    draft_tec_trans = draft.filter(article__team='t', article_id__in=draft_ids)
+
+    # Event articles from the scientific team
+    published_scientific_in_event = published_event.filter(article__team='s')
+    accepted_scientific_in_event = accepted.filter(article__type='e', article__team='s', article_id__in=accepted_ids)
+
+    # Event articles from the dissemination team
+    published_dissemin_in_event = published_event.filter(article__team='d')
+    accepted_dissemin_in_event = accepted.filter(article__type='e', article__team='d', article_id__in=accepted_ids)
+
+    # Event articles from the technology transfer team
+    published_tec_trans_in_event = published_event.filter(article__team='t')
+    accepted_tec_trans_in_event = accepted.filter(article__type='e', article__team='t', article_id__in=accepted_ids)
+
+    return published_scientific, accepted_scientific, submitted_scientific, draft_scientific, published_dissemin, \
+        accepted_dissemin, submitted_dissemin, draft_dissemin, published_tec_trans, accepted_tec_trans, \
+        submitted_tec_trans, draft_tec_trans, published_scientific_in_event, accepted_scientific_in_event, \
+        published_dissemin_in_event, accepted_dissemin_in_event, published_tec_trans_in_event, \
+        accepted_tec_trans_in_event
+
+
 @login_required
 def articles(request):
     if request.method == 'POST':
@@ -85,56 +143,11 @@ def articles(request):
         else:
             end_date = now_plus_five_years()
 
-        # List of articles
-        published_periodical = PublishedInPeriodical.objects.filter(article__type='p', date__gt=start_date,
-                                                                    date__lt=end_date).order_by('date')
-        published_event = Published.objects.filter(article__type='e', article__event__start_date__lt=end_date,
-                                                   article__event__end_date__gt=start_date).order_by('article__event__start_date')
-        accepted = Accepted.objects.filter(date__lt=end_date).order_by('date')
-        submitted = Submitted.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
-        draft = Draft.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
-
-        # Articles IDs
-        published_periodical_ids = published_periodical.values_list('article_id', flat=True)
-        published_event_ids = published_event.values_list('article_id', flat=True)
-        published_ids = list(chain(published_periodical_ids, published_event_ids))
-        accepted_ids = accepted.values_list('article_id', flat=True).exclude(article_id__in=published_ids)
-        submitted_ids = submitted.values_list('article_id', flat=True).exclude(Q(article_id__in=published_ids) |
-                                                                               Q(article_id__in=accepted_ids))
-        draft_ids = draft.values_list('article_id', flat=True).exclude(Q(article_id__in=published_ids) |
-                                                                       Q(article_id__in=accepted_ids) |
-                                                                       Q(article_id__in=submitted_ids))
-
-        # Articles from the scientific team
-        published_scientific = published_periodical.filter(article__team='s')
-        accepted_scientific = accepted.filter(article__type='p', article__team='s', article_id__in=accepted_ids)
-        submitted_scientific = submitted.filter(article__team='s', article_id__in=submitted_ids)
-        draft_scientific = draft.filter(article__team='s', article_id__in=draft_ids)
-
-        # Articles from the dissemination team
-        published_dissemin = published_periodical.filter(article__team='d')
-        accepted_dissemin = accepted.filter(article__type='p', article__team='d', article_id__in=accepted_ids)
-        submitted_dissemin = submitted.filter(article__team='d', article_id__in=submitted_ids)
-        draft_dissemin = draft.filter(article__team='d', article_id__in=draft_ids)
-
-        # Articles from the technology transfer team
-        published_tec_trans = published_periodical.filter(article__team='t')
-        accepted_tec_trans = accepted.filter(article__type='p', article__team='t', article_id__in=accepted_ids)
-        submitted_tec_trans = submitted.filter(article__team='t', article_id__in=submitted_ids)
-        draft_tec_trans = draft.filter(article__team='t', article_id__in=draft_ids)
-
-        # Event articles from the scientific team
-        published_scientific_in_event = published_event.filter(article__team='s')
-        accepted_scientific_in_event = accepted.filter(article__type='e', article__team='s',
-                                                       article_id__in=accepted_ids)
-
-        # Event articles from the dissemination team
-        published_dissemin_in_event = published_event.filter(article__team='d')
-        accepted_dissemin_in_event = accepted.filter(article__type='e', article__team='d', article_id__in=accepted_ids)
-
-        # Event articles from the technology transfer team
-        published_tec_trans_in_event = published_event.filter(article__team='t')
-        accepted_tec_trans_in_event = accepted.filter(article__type='e', article__team='t', article_id__in=accepted_ids)
+        published_scientific, accepted_scientific, submitted_scientific, draft_scientific, published_dissemin, \
+            accepted_dissemin, submitted_dissemin, draft_dissemin, published_tec_trans, accepted_tec_trans, \
+            submitted_tec_trans, draft_tec_trans, published_scientific_in_event, accepted_scientific_in_event, \
+            published_dissemin_in_event, accepted_dissemin_in_event, published_tec_trans_in_event, \
+            accepted_tec_trans_in_event = search_articles(start_date, end_date)
 
         if start_date < end_date:
             context = {'published_scientific': published_scientific, 'accepted_scientific': accepted_scientific,
@@ -148,13 +161,44 @@ def articles(request):
                        'published_dissemin_in_event': published_dissemin_in_event,
                        'accepted_dissemin_in_event': accepted_dissemin_in_event,
                        'published_tec_trans_in_event': published_tec_trans_in_event,
-                       'accepted_tec_trans_in_event': accepted_tec_trans_in_event}
+                       'accepted_tec_trans_in_event': accepted_tec_trans_in_event,
+                       'start_date': start_date, 'end_date': end_date}
             return render(request, 'report/research/articles_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/research/articles.html')
 
     return render(request, 'report/research/articles.html')
+
+
+@login_required
+def articles_tex(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    published_scientific, accepted_scientific, submitted_scientific, draft_scientific, published_dissemin, \
+        accepted_dissemin, submitted_dissemin, draft_dissemin, published_tec_trans, accepted_tec_trans, \
+        submitted_tec_trans, draft_tec_trans, published_scientific_in_event, accepted_scientific_in_event, \
+        published_dissemin_in_event, accepted_dissemin_in_event, published_tec_trans_in_event, \
+        accepted_tec_trans_in_event = search_articles(start_date, end_date)
+
+    context = {'published_scientific': published_scientific, 'accepted_scientific': accepted_scientific,
+               'submitted_scientific': submitted_scientific, 'draft_scientific': draft_scientific,
+               'published_dissemin': published_dissemin, 'accepted_dissemin': accepted_dissemin,
+               'submitted_dissemin': submitted_dissemin, 'draft_dissemin': draft_dissemin,
+               'published_tec_trans': published_tec_trans, 'accepted_tec_trans': accepted_tec_trans,
+               'submitted_tec_trans': submitted_tec_trans, 'draft_tec_trans': draft_tec_trans,
+               'published_scientific_in_event': published_scientific_in_event,
+               'accepted_scientific_in_event': accepted_scientific_in_event,
+               'published_dissemin_in_event': published_dissemin_in_event,
+               'accepted_dissemin_in_event': accepted_dissemin_in_event,
+               'published_tec_trans_in_event': published_tec_trans_in_event,
+               'accepted_tec_trans_in_event': accepted_tec_trans_in_event}
+
+    response = HttpResponse(render_to_string('report/research/tex/articles.tex', context),
+                            content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="articles.tex"'
+    return response
 
 
 def search_academic_works(start_date, end_date):
@@ -203,7 +247,6 @@ def academic_works(request):
                        'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
                        'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress,
                        'start_date': start_date, 'end_date': end_date}
-
             return render(request, 'report/research/academic_works_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
