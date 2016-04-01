@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-21 10:50-0300\n"
+"POT-Creation-Date: 2016-03-31 13:22-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,7 @@ msgstr "Seminário"
 #: templates/report/dissemination/dissemination_report.html:52
 #: templates/report/dissemination/dissemination_report.html:65
 #: templates/report/research/add_event_papers.html:25
-#: templates/report/research/periodical_accepted_papers.html:25
+#: templates/report/research/arxiv_papers.html:25
 #: templates/report/research/periodical_published_papers.html:25
 #: templates/report/research/periodical_update_papers.html:25
 msgid "Title"
@@ -197,7 +197,7 @@ msgstr "Resumo"
 #: templates/report/dissemination/dissemination_report.html:22
 #: templates/report/dissemination/dissemination_report.html:52
 #: templates/report/dissemination/dissemination_report.html:66
-#: templates/report/research/periodical_accepted_papers.html:28
+#: templates/report/research/arxiv_papers.html:28
 #: templates/report/research/periodical_published_papers.html:32
 #: templates/report/research/periodical_update_papers.html:32
 msgid "Date"
@@ -221,7 +221,7 @@ msgid "Seminars"
 msgstr "Seminários"
 
 #: activity/views.py:99 activity/views.py:179 activity/views.py:223
-#: dissemination/views.py:71 research/views.py:152 research/views.py:206
+#: dissemination/views.py:71 research/views.py:154 research/views.py:209
 msgid "End date should be equal or greater than start date."
 msgstr "A data de término deve ser igual ou superior a data inicial."
 
@@ -318,7 +318,7 @@ msgstr "Usuários"
 
 #: dissemination/apps.py:9 research/models.py:21
 #: templates/report/research/add_event_papers.html:38
-#: templates/report/research/periodical_accepted_papers.html:37
+#: templates/report/research/arxiv_papers.html:37
 #: templates/report/research/periodical_published_papers.html:41
 #: templates/report/research/periodical_update_papers.html:42
 #: templates/report/research/periodical_update_papers.html:46
@@ -835,7 +835,7 @@ msgid "Book"
 msgstr "Livro"
 
 #: research/models.py:20 templates/report/research/add_event_papers.html:37
-#: templates/report/research/periodical_accepted_papers.html:36
+#: templates/report/research/arxiv_papers.html:36
 #: templates/report/research/periodical_published_papers.html:40
 #: templates/report/research/periodical_update_papers.html:41
 #: templates/report/research/periodical_update_papers.html:45
@@ -844,7 +844,7 @@ msgid "Scientific"
 msgstr "Evento"
 
 #: research/models.py:22 templates/report/research/add_event_papers.html:39
-#: templates/report/research/periodical_accepted_papers.html:38
+#: templates/report/research/arxiv_papers.html:38
 #: templates/report/research/periodical_published_papers.html:42
 #: templates/report/research/periodical_update_papers.html:43
 #: templates/report/research/periodical_update_papers.html:47
@@ -865,7 +865,7 @@ msgid "Event (Conference, congress, meeting, etc)"
 msgstr "Evento"
 
 #: research/models.py:43 templates/report/research/add_event_papers.html:24
-#: templates/report/research/periodical_accepted_papers.html:24
+#: templates/report/research/arxiv_papers.html:24
 #: templates/report/research/periodical_published_papers.html:24
 #: templates/report/research/periodical_update_papers.html:24
 msgid "Team"
@@ -883,7 +883,7 @@ msgstr "Data/hora do pedido"
 #: templates/report/dissemination/dissemination_report.html:20
 #: templates/report/dissemination/dissemination_report.html:65
 #: templates/report/research/add_event_papers.html:26
-#: templates/report/research/periodical_accepted_papers.html:26
+#: templates/report/research/arxiv_papers.html:26
 #: templates/report/research/periodical_published_papers.html:26
 #: templates/report/research/periodical_update_papers.html:26
 msgid "Authors"
@@ -1040,32 +1040,32 @@ msgstr "Trabalho acadêmico"
 msgid "Academic Works"
 msgstr "Trabalhos acadêmicos"
 
-#: research/views.py:72
+#: research/views.py:73
 msgid "Invalid start date!"
 msgstr "Início inválido"
 
-#: research/views.py:82
+#: research/views.py:83
 msgid "Invalid end date!"
 msgstr "Término inválido"
 
-#: research/views.py:347
-msgid "You didn't choose a file. Nothing to be done!"
-msgstr "Você não selecionou nenhum item. Não há nada para fazer!"
+#: research/views.py:373
+msgid "Please, select a .ris file to upload."
+msgstr "Por favor, selecione um arquivo .ris para fazer o upload."
 
-#: research/views.py:367
+#: research/views.py:401
 msgid "Successfully added one Periodical."
 msgstr "Periódico adicionado com sucesso"
 
-#: research/views.py:369
+#: research/views.py:403
 msgid "Successfully added all the Periodicals."
 msgstr "Todos os periódicos foram adicionados com sucesso"
 
-#: research/views.py:372 research/views.py:668 research/views.py:730
-#: research/views.py:789 research/views.py:870
+#: research/views.py:406 research/views.py:737 research/views.py:799
+#: research/views.py:859 research/views.py:945
 msgid "You have selected no item. Nothing to be done!"
 msgstr "Você não selecionou nenhum item. Não há nada para fazer!"
 
-#: research/views.py:661 research/views.py:723 research/views.py:863
+#: research/views.py:730 research/views.py:792 research/views.py:938
 msgid "Wrong date format! It should be YYYY-MM-DD."
 msgstr "Formato de data errado! Deveria ser AAAA-MM-DD"
 
@@ -1101,9 +1101,9 @@ msgstr "Administração"
 #: templates/report/research/add_event_papers.html:10
 #: templates/report/research/articles.html:11
 #: templates/report/research/articles_report.html:6
+#: templates/report/research/arxiv_papers.html:10
 #: templates/report/research/events_to_import.html:6
 #: templates/report/research/import.html:11
-#: templates/report/research/periodical_accepted_papers.html:10
 #: templates/report/research/periodical_published_papers.html:10
 #: templates/report/research/periodical_update_papers.html:10
 #: templates/report/research/periodicals_to_import.html:10
@@ -1133,9 +1133,9 @@ msgstr "Trabalhos acadêmicos"
 
 #: templates/admin/index.html:63
 #: templates/report/research/add_event_papers.html:11
+#: templates/report/research/arxiv_papers.html:11
 #: templates/report/research/events_to_import.html:7
 #: templates/report/research/import.html:12
-#: templates/report/research/periodical_accepted_papers.html:11
 #: templates/report/research/periodical_published_papers.html:11
 #: templates/report/research/periodical_update_papers.html:11
 #: templates/report/research/periodicals_to_import.html:11
@@ -1427,8 +1427,8 @@ msgid "No academic works found!"
 msgstr "Nenhum trabalho acadêmico encontrado!"
 
 #: templates/report/research/add_event_papers.html:12
+#: templates/report/research/arxiv_papers.html:12
 #: templates/report/research/events_to_import.html:8
-#: templates/report/research/periodical_accepted_papers.html:12
 #: templates/report/research/periodical_published_papers.html:12
 #: templates/report/research/periodical_update_papers.html:12
 #: templates/report/research/periodicals_to_import.html:12
@@ -1437,10 +1437,10 @@ msgstr "Papers para importar"
 
 #: templates/report/research/add_event_papers.html:19
 msgid "List of papers from events to add:"
-msgstr "Lista de papers dos eventos para serem adicionados"
+msgstr "Lista de artigos de eventos para serem adicionados"
 
 #: templates/report/research/add_event_papers.html:20
-#: templates/report/research/periodical_accepted_papers.html:20
+#: templates/report/research/arxiv_papers.html:20
 #: templates/report/research/periodical_published_papers.html:20
 #: templates/report/research/periodical_update_papers.html:20
 #: templates/report/research/periodicals_to_import.html:21
@@ -1460,18 +1460,30 @@ msgid "End pg"
 msgstr "Página final"
 
 #: templates/report/research/add_event_papers.html:63
-#: templates/report/research/periodical_accepted_papers.html:48
+#: templates/report/research/arxiv_papers.html:48
 #: templates/report/research/periodical_published_papers.html:71
 msgid "Add papers"
 msgstr "Adicionar papers"
 
 #: templates/report/research/add_event_papers.html:65
 msgid "There are no papers from events to add!"
-msgstr "Não há papers dos eventos para serem adicionados!"
+msgstr "Não há artigos de eventos para serem adicionados!"
 
 #: templates/report/research/articles_report.html:394
 msgid "No articles found!"
 msgstr "Nenhum artigo encontrado!"
+
+#: templates/report/research/arxiv_papers.html:19
+msgid "List of papers from arXiv to add:"
+msgstr "Lista de artigos do arXiv para serem adicionados"
+
+#: templates/report/research/arxiv_papers.html:27
+msgid "Link to arXiv"
+msgstr "Link para o arXiv"
+
+#: templates/report/research/arxiv_papers.html:50
+msgid "There are no papers from arXiv to add!"
+msgstr "Não há artigos do arXiv para serem adicionados!"
 
 #: templates/report/research/events_to_import.html:15
 msgid "List of events to add:"
@@ -1483,27 +1495,15 @@ msgstr "Nenhum evento para adicionar!"
 
 #: templates/report/research/import.html:22
 msgid "Add a .ris file to import papers"
-msgstr "Adicione um arquivo .ris para importar papers"
+msgstr "Adicione um arquivo .ris para importar artigos"
 
 #: templates/report/research/import.html:29
 msgid "Submit"
 msgstr "Enviar"
 
-#: templates/report/research/periodical_accepted_papers.html:19
-msgid "List of accepted papers to add:"
-msgstr "Lista de papers aceitos para adicionar:"
-
-#: templates/report/research/periodical_accepted_papers.html:27
-msgid "Link to arXiv"
-msgstr "Link para o arXiv"
-
-#: templates/report/research/periodical_accepted_papers.html:50
-msgid "There are no accepted papers to add!"
-msgstr "Não há papers aceitos para serem adicionados!"
-
 #: templates/report/research/periodical_published_papers.html:19
 msgid "List of published papers to add:"
-msgstr "Lista de papers publicados para adicionar:"
+msgstr "Lista de artigos publicados para adicionar:"
 
 #: templates/report/research/periodical_published_papers.html:27
 #: templates/report/research/periodical_update_papers.html:27
@@ -1522,19 +1522,19 @@ msgstr "Número"
 
 #: templates/report/research/periodical_published_papers.html:73
 msgid "There are no published papers to add!"
-msgstr "Não há papers publicados para adicionar!"
+msgstr "Não há artigos publicados para adicionar!"
 
 #: templates/report/research/periodical_update_papers.html:19
 msgid "List of papers to update:"
-msgstr "Lista de papers para atualizar:"
+msgstr "Lista de artigos para atualizar:"
+
+#: templates/report/research/periodical_update_papers.html:81
+msgid "Update papers"
+msgstr "Atualizar artigos"
 
 #: templates/report/research/periodical_update_papers.html:83
-msgid "Update papers"
-msgstr "Atualizar papers"
-
-#: templates/report/research/periodical_update_papers.html:85
 msgid "There are no papers to update!"
-msgstr "Não há papers para atualizar!"
+msgstr "Não há artigos para atualizar!"
 
 #: templates/report/research/periodicals_to_import.html:19
 msgid "List of periodicals to add:"
