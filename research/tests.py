@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, \
     Periodical
-from views import scholar, scholar_info, valid_date, now_plus_five_years
+from views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv
 import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -439,7 +439,6 @@ class ArticlesTest(TestCase):
 
 class ArXivTest(TestCase):
     """ Test method for ArXiv handler. This should work if arxiv doesn't change it's classes """
-
     def setUp(self):
         self.arxiv_url = 'http://arxiv.org/abs/1601.03704'
         self.date = datetime.date(2016, 1, 14)
