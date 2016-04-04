@@ -2,8 +2,8 @@ import datetime
 from custom_auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
-from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, \
-    Periodical
+from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, \
+PublishedInPeriodical, Periodical
 from research.views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -470,9 +470,9 @@ class ImportPaperTest(TestCase):
         response = self.client.post(reverse('add_periodicals'), {'action': 'add'})
         self.assertEqual(response.status_code, 200)
 
-        #Problems with cache on this step
-        #response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
-        #self.assertEqual(response.status_code, 200)
+        # Problems with cache on this step
+        # response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
+        # self.assertEqual(response.status_code, 200)
 
 
 class AddPeriodicalsTest(TestCase):
@@ -497,8 +497,8 @@ class AddPapersTest(TestCase):
     def test_add_papers(self):
 
         # Cache problems
-        #response = self.client.post(reverse('add_papers'), {'action': 'next'})
-        #self.assertEqual(response.status_code, 200)
+        # response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        # self.assertEqual(response.status_code, 200)
 
         response = self.client.post(reverse('add_papers'), {'action': 'back'})
         self.assertEqual(response.status_code, 200)
@@ -562,6 +562,7 @@ class UpdatePapersTest(TestCase):
         self.assertEqual(logged, True)
 
     def test_update_papers(self):
+
         response = self.client.post(reverse('update_papers'), {'action': 'update'})
         self.assertEqual(response.status_code, 200)
 
