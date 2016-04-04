@@ -524,7 +524,7 @@ class ImportPaperTest(TestCase):
         response = self.client.get(reverse('import_papers'))
         self.assertEqual(response.status_code, 200)
 
-        ris_file = SimpleUploadedFile('citations.ris', b'rb', content=self.paper_list)
+        ris_file = SimpleUploadedFile('citations.ris', content=self.paper_list)
         response = self.client.post(reverse('import_papers'), {'file': ris_file})
         self.assertEqual(response.status_code, 200)
 
