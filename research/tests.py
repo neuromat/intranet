@@ -474,6 +474,100 @@ class ImportPaperTest(TestCase):
         #response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
         #self.assertEqual(response.status_code, 200)
 
+
+class AddPeriodicalsTest(TestCase):
+
+    def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
+    def test_add_periodicals(self):
+
         # Redirect status
         response = self.client.post(reverse('add_periodicals'), {'action': 'back'})
+        self.assertEqual(response.status_code, 302)
+
+
+class AddPapersTest(TestCase):
+
+    def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
+    def test_add_papers(self):
+
+        # Cache problems
+        #response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        #self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('add_papers'), {'action': 'back'})
+        self.assertEqual(response.status_code, 200)
+
+
+class PeriodicalPublishedTest(TestCase):
+
+    def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
+    def test_periodical_published_papers(self):
+
+        response = self.client.post(reverse('periodical_published_papers'), {'action': 'add'})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('periodical_published_papers'), {'action': 'next'})
+        self.assertEqual(response.status_code, 200)
+
+
+class ArxivPapersTest(TestCase):
+
+    def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
+    def test_arxiv_papers(self):
+
+        response = self.client.post(reverse('arxiv_papers'), {'action': 'add'})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('arxiv_papers'), {'action': 'next'})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('arxiv_papers'), {'action': 'back'})
+        self.assertEqual(response.status_code, 200)
+
+
+class EventPapersTest(TestCase):
+
+    def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
+    def test_event_papers(self):
+
+        response = self.client.post(reverse('event_papers'), {'action': 'add'})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('event_papers'), {'action': 'next'})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('event_papers'), {'action': 'back'})
+        self.assertEqual(response.status_code, 200)
+
+
+class UpdatePapersTest(TestCase):
+
+    def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
+    def test_update_papers(self):
+        response = self.client.post(reverse('update_papers'), {'action': 'update'})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('update_papers'), {'action': 'back'})
+        self.assertEqual(response.status_code, 200)
+
+        # Redirect status
+        response = self.client.post(reverse('update_papers'), {'action': 'finish'})
         self.assertEqual(response.status_code, 302)
