@@ -15,7 +15,7 @@
     <a href="{% url 'articles_tex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}">{% trans 'Download .tex file' %}</a>
 </p>
 
-{% if published_scientific or accepted_scientific or submitted_scientific or draft_scientific or published_dissemin or accepted_dissemin or submitted_dissemin or draft_dissemin or published_tec_trans or accepted_tec_trans or submitted_tec_trans or draft_tec_trans or published_scientific_in_event or accepted_scientific_in_event or published_dissemin_in_event or accepted_dissemin_in_event or published_tec_trans_in_event or accepted_tec_trans_in_event%}
+{% if published_scientific or accepted_scientific or submitted_scientific or draft_scientific or published_dissemin or accepted_dissemin or submitted_dissemin or draft_dissemin or published_tec_trans or accepted_tec_trans or submitted_tec_trans or draft_tec_trans or published_scientific_in_event or accepted_scientific_in_event or published_dissemin_in_event or accepted_dissemin_in_event or published_tec_trans_in_event or accepted_tec_trans_in_event %}
     {% if published_scientific or accepted_scientific %}
         <p><strong>Published or accepted</strong></p>
         <ol type="1">
@@ -291,6 +291,126 @@
             {% endif %}
             {% if accepted_scientific_in_event %}
                 {% for article in accepted_scientific_in_event %}
+                    {% if not article.article.hide %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.event }},
+                        {% else %}
+                            {{ article.article.authors }}. {{ article.article.event }},
+                        {% endif %}
+                        {% if article.article.event.acronym %}
+                            {{ article.article.event.acronym }},
+                        {% endif %}
+                        {{ article.article.event.local }},
+                        {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}, to be held..
+                        {% else %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held.
+                        {% endif %}
+                    </li><br>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ol>
+    {% endif %}
+
+    {% if published_dissemin_in_event or accepted_dissemin_in_event %}
+        <p><strong>Communications in meetings with referee from the dissemination team</strong></p>
+        <ol type="1">
+            {% if published_dissemin_in_event %}
+                {% for article in published_dissemin_in_event %}
+                    {% if not article.article.hide %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.event }},
+                        {% else %}
+                            {{ article.article.authors }}. {{ article.article.event }},
+                        {% endif %}
+                        {% if article.article.event.acronym %}
+                            {{ article.article.event.acronym }},
+                        {% endif %}
+                        {{ article.article.event.local }},
+                        {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}.
+                        {% else %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.
+                        {% endif %}
+                    </li><br>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if accepted_dissemin_in_event %}
+                {% for article in accepted_dissemin_in_event %}
+                    {% if not article.article.hide %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.event }},
+                        {% else %}
+                            {{ article.article.authors }}. {{ article.article.event }},
+                        {% endif %}
+                        {% if article.article.event.acronym %}
+                            {{ article.article.event.acronym }},
+                        {% endif %}
+                        {{ article.article.event.local }},
+                        {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}, to be held..
+                        {% else %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held.
+                        {% endif %}
+                    </li><br>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ol>
+    {% endif %}
+
+    {% if published_tec_trans_in_event or accepted_tec_trans_in_event %}
+        <p><strong>Communications in meetings with referee from the technological transfer team</strong></p>
+        <ol type="1">
+            {% if published_tec_trans_in_event %}
+                {% for article in published_tec_trans_in_event %}
+                    {% if not article.article.hide %}
+                    <li style="text-align: justify">
+                        {% if article.article.url %}
+                            <a href="{{ article.article.url }}" target="_blank"><strong>{{ article.article.title }}</strong></a>.
+                        {% else %}
+                            <strong>{{ article.article.title }}</strong>.
+                        {% endif %}
+                        {% if article.article.ris_file_authors  %}
+                            {{ article.article.ris_file_authors }} {{ article.article.event }},
+                        {% else %}
+                            {{ article.article.authors }}. {{ article.article.event }},
+                        {% endif %}
+                        {% if article.article.event.acronym %}
+                            {{ article.article.event.acronym }},
+                        {% endif %}
+                        {{ article.article.event.local }},
+                        {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}.
+                        {% else %}
+                            {{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.
+                        {% endif %}
+                    </li><br>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if accepted_tec_trans_in_event %}
+                {% for article in accepted_tec_trans_in_event %}
                     {% if not article.article.hide %}
                     <li style="text-align: justify">
                         {% if article.article.url %}
