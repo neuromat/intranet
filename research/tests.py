@@ -1,6 +1,6 @@
 from custom_auth.models import User
 from django.core.urlresolvers import reverse
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, \
     Periodical
 from views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv
