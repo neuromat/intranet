@@ -1,7 +1,6 @@
 from custom_auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test.client import RequestFactory
 from models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, PublishedInPeriodical, \
     Periodical
 from views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv
@@ -457,6 +456,7 @@ class ImportPaperTest(TestCase):
         self.assertEqual(logged, True)
 
     def test_import_file(self):
+
         response = self.client.get(reverse('import_papers'))
         self.assertEqual(response.status_code, 200)
 
@@ -466,3 +466,14 @@ class ImportPaperTest(TestCase):
         not_ris_file = SimpleUploadedFile('citations.jpg', b'rb', content_type='image/jpeg')
         response = self.client.post(reverse('import_papers'), {'file': not_ris_file})
         self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('add_periodicals'), {'action': 'add'})
+        self.assertEqual(response.status_code, 200)
+
+        #Problems with cache on this step
+        #response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
+        #self.assertEqual(response.status_code, 200)
+
+        # Redirect status
+        response = self.client.post(reverse('add_periodicals'), {'action': 'back'})
+        self.assertEqual(response.status_code, 302)
