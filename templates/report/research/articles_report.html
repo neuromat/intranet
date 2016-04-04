@@ -31,7 +31,7 @@
                         {% if article.article.ris_file_authors  %}
                             {{ article.article.ris_file_authors }} {{ article.article.periodical }},
                         {% else %}
-                            {{ article.article.authors }} {{ article.article.periodical }},
+                            {{ article.article.authors }}. {{ article.article.periodical }},
                         {% endif %}
                         {% if article.volume %}
                             <strong>{{ article.volume }}</strong>
@@ -62,7 +62,7 @@
                         {% if article.article.ris_file_authors  %}
                             {{ article.article.ris_file_authors }} {{ article.article.periodical }},
                         {% else %}
-                            {{ article.article.authors }} {{ article.article.periodical }},
+                            {{ article.article.authors }}. {{ article.article.periodical }},
                         {% endif %}
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
@@ -87,7 +87,7 @@
                         {% if article.article.ris_file_authors  %}
                             {{ article.article.ris_file_authors }} {{ article.article.periodical }},
                         {% else %}
-                            {{ article.article.authors }} {{ article.article.periodical }},
+                            {{ article.article.authors }}. {{ article.article.periodical }},
                         {% endif %}
                         {% if article.volume %}
                             <strong>{{ article.volume }}</strong>
@@ -118,7 +118,7 @@
                         {% if article.article.ris_file_authors  %}
                             {{ article.article.ris_file_authors }} {{ article.article.periodical }},
                         {% else %}
-                            {{ article.article.authors }} {{ article.article.periodical }},
+                            {{ article.article.authors }}. {{ article.article.periodical }},
                         {% endif %}
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
@@ -143,7 +143,7 @@
                         {% if article.article.ris_file_authors  %}
                             {{ article.article.ris_file_authors }} {{ article.article.periodical }},
                         {% else %}
-                            {{ article.article.authors }} {{ article.article.periodical }},
+                            {{ article.article.authors }}. {{ article.article.periodical }},
                         {% endif %}
                         {% if article.volume %}
                             <strong>{{ article.volume }}</strong>
@@ -174,7 +174,7 @@
                         {% if article.article.ris_file_authors  %}
                             {{ article.article.ris_file_authors }} {{ article.article.periodical }},
                         {% else %}
-                            {{ article.article.authors }} {{ article.article.periodical }},
+                            {{ article.article.authors }}. {{ article.article.periodical }},
                         {% endif %}
                         {{ article.date|date:"Y" }}, to appear.
                     </li><br>
@@ -274,7 +274,7 @@
                         {% if article.article.ris_file_authors  %}
                             {{ article.article.ris_file_authors }} {{ article.article.event }},
                         {% else %}
-                            {{ article.article.authors }} {{ article.article.event }},
+                            {{ article.article.authors }}. {{ article.article.event }},
                         {% endif %}
                         {% if article.article.event.acronym %}
                             {{ article.article.event.acronym }},
@@ -301,7 +301,7 @@
                         {% if article.article.ris_file_authors  %}
                             {{ article.article.ris_file_authors }} {{ article.article.event }},
                         {% else %}
-                            {{ article.article.authors }} {{ article.article.event }},
+                            {{ article.article.authors }}. {{ article.article.event }},
                         {% endif %}
                         {% if article.article.event.acronym %}
                             {{ article.article.event.acronym }},
