@@ -442,23 +442,89 @@ class ArXivTest(TestCase):
     def setUp(self):
         self.arxiv_url = 'http://arxiv.org/abs/1601.03704'
         self.date = datetime.date(2016, 1, 14)
+        self.wrong_date = datetime.date(2015, 1, 14)
 
     def test_arxiv(self):
         date = arxiv(self.arxiv_url)
         self.assertEqual(self.date, date)
+        self.assertNotEqual(self.wrong_date, date)
 
 
-class ImportPaper(TestCase):
+class ImportPaperTest(TestCase):
 
     def setUp(self):
         logged, self.user, self.factory = system_authentication(self)
+        self.paper_list = ['TY  - JOUR',
+                       'T1  - Infinite systems of interacting chains with memory of variable length\xe2\x80\x94a stochastic model for biological neural nets',
+                       'A1  - Galves, Antonio',
+                       'A1  - L\xc3\xb6cherbach, Eva',
+                       'JO  - Journal of Statistical Physics',
+                       'VL  - 151',
+                       'IS  - 5',
+                       'SP  - 896',
+                       'EP  - 921',
+                       'SN  - 0022-4715',
+                       'Y1  - 2013',
+                       'PB  - Springer',
+                       'ER  - ',
+                       '',
+                       '',
+                       'TY  - CONF',
+                       'T1  - Combining multivariate Markov chains',
+                       'A1  - Garc\xc3\xada, Jes\xc3\xbas E',
+                       'JO  - PROCEEDINGS OF THE INTERNATIONAL CONFERENCE ON NUMERICAL ANALYSIS AND APPLIED MATHEMATICS 2014 (ICNAAM-2014)',
+                       'VL  - 1648',
+                       'SP  - 060003',
+                       'SN  - 0094-243X',
+                       'Y1  - 2015',
+                       'PB  - AIP Publishing',
+                       'ER  - ',
+                       '',
+                       '',
+                       'TY  - JOUR',
+                       'T1  - Hydrodynamic limit for interacting neurons',
+                       'A1  - De Masi, Anna', 'A1  - Galves, Antonio',
+                       'A1  - L\xc3\xb6cherbach, Eva',
+                       'A1  - Presutti, Errico',
+                       'JO  - Journal of Statistical Physics',
+                       'VL  - 158',
+                       'IS  - 4',
+                       'SP  - 866',
+                       'EP  - 902',
+                       'SN  - 0022-4715',
+                       'Y1  - 2014',
+                       'PB  - Springer',
+                       'ER  - ',
+                       '',
+                       '',
+                       'TY  - JOUR',
+                       'T1  - Computationally efficient change point detection for high-dimensional regression',
+                       'A1  - Leonardi, Florencia',
+                       'A1  - B\xc3\xbchlmann, Peter',
+                       'JO  - arXiv preprint arXiv:1601.03704',
+                       'Y1  - 2016',
+                       'ER  -',
+                       '',
+                       '', 'TY  - JOUR',
+                       'T1  - Identifying interacting pairs of sites in Ising models on a countable set',
+                       'A1  - Galves, Antonio',
+                       'A1  - Orlandi, Enza',
+                       'A1  - Takahashi, Daniel Y',
+                       'JO  - Brazilian Journal of Probability and Statistics',
+                       'VL  - 29',
+                       'IS  - 2',
+                       'SP  - 443',
+                       'EP  - 459',
+                       'SN  - 0103-0752',
+                       'Y1  - 2015',
+                       'PB  - Brazilian Statistical Association', 'ER  - ']
         self.assertEqual(logged, True)
 
     def test_import_file(self):
         response = self.client.get(reverse('import_papers'))
         self.assertEqual(response.status_code, 200)
 
-        ris_file = SimpleUploadedFile('citations.ris', b'rb')
+        ris_file = SimpleUploadedFile('citations.ris', b'rb', content=self.paper_list)
         response = self.client.post(reverse('import_papers'), {'file': ris_file})
         self.assertEqual(response.status_code, 200)
 
