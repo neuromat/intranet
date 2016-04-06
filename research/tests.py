@@ -463,6 +463,13 @@ class ImportPaperTest(TestCase):
         response = self.client.post(reverse('import_papers'), {'file': './research/citations.ris'})
         self.assertEqual(response.status_code, 200)
 
+        with open('./research/citations.ris') as file:
+            req = RequestFactory()
+            request = req.post(reverse('import_papers'), {'file': file})
+            request.user = self.user
+            response = import_papers(request)
+            self.assertEqual(response.status_code, 200)
+
         not_ris_file = SimpleUploadedFile('citations.jpg', b'rb', content_type='image/jpeg')
         response = self.client.post(reverse('import_papers'), {'file': not_ris_file})
         self.assertEqual(response.status_code, 200)
