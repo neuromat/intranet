@@ -460,9 +460,7 @@ class ImportPaperTest(TestCase):
         response = self.client.get(reverse('import_papers'))
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('import_papers'), {'file': './research/citations.ris'})
-        self.assertEqual(response.status_code, 200)
-
+        # Testing import_papers using an example of .ris
         with open('./research/citations.ris') as file:
             req = RequestFactory()
             request = req.post(reverse('import_papers'), {'file': file})
