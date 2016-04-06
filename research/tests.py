@@ -1,10 +1,10 @@
-import datetime
+import datetime, os
 from custom_auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, \
 PublishedInPeriodical, Periodical
-from research.views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv
+from research.views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv, import_papers
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 
@@ -460,7 +460,7 @@ class ImportPaperTest(TestCase):
         response = self.client.get(reverse('import_papers'))
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('import_papers'), {'file': 'citations.ris'})
+        response = self.client.post(reverse('import_papers'), {'file': './research/citations.ris'})
         self.assertEqual(response.status_code, 200)
 
         not_ris_file = SimpleUploadedFile('citations.jpg', b'rb', content_type='image/jpeg')
@@ -571,4 +571,7 @@ class UpdatePapersTest(TestCase):
 
         # Redirect status
         response = self.client.post(reverse('update_papers'), {'action': 'finish'})
+        self.assertEqual(response.status_code, 302)
+
+        response = self.client.post(reverse('update_papers'), {'action': 'none'})
         self.assertEqual(response.status_code, 302)
