@@ -572,13 +572,9 @@ class UpdatePapersTest(TestCase):
 
 
 class CacheTest(TestCase):
-
     """
-
     Tests for the methods that use the same cache
-
     """
-
     def setUp(self):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
