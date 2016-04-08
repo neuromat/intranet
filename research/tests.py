@@ -568,7 +568,7 @@ class CacheTest(TestCase):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-    def major_cache_test(self):
+    def test_major_cache(self):
 
         req = RequestFactory()
         request = req.post(reverse('import_papers'), {'file': TEST_FILE})
