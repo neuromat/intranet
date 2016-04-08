@@ -595,3 +595,4 @@ class CacheTest(TestCase):
         # Action next, in add_periodicals
         response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
         self.assertEqual(response.status_code, 200)
+
