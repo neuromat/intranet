@@ -506,9 +506,6 @@ class PeriodicalPublishedTest(TestCase):
 
     def test_periodical_published_papers(self):
 
-        response = self.client.post(reverse('periodical_published_papers'), {'action': 'add'})
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.post(reverse('periodical_published_papers'), {'action': 'next'})
         self.assertEqual(response.status_code, 200)
 
@@ -539,9 +536,6 @@ class EventPapersTest(TestCase):
 
     def test_event_papers(self):
 
-        response = self.client.post(reverse('event_papers'), {'action': 'add'})
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.post(reverse('event_papers'), {'action': 'next'})
         self.assertEqual(response.status_code, 200)
 
@@ -557,9 +551,6 @@ class UpdatePapersTest(TestCase):
 
     def test_update_papers(self):
 
-        response = self.client.post(reverse('update_papers'), {'action': 'update'})
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.post(reverse('update_papers'), {'action': 'back'})
         self.assertEqual(response.status_code, 200)
 
@@ -572,16 +563,13 @@ class UpdatePapersTest(TestCase):
 
 
 class CacheTest(TestCase):
-    """
-    Tests for the methods that use the same cache
-    """
+
     def setUp(self):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
     def major_cache_test(self):
 
-        # Testing import_papers using the same example of .ris
         req = RequestFactory()
         request = req.post(reverse('import_papers'), {'file': TEST_FILE})
         request.user = self.user
@@ -596,3 +584,23 @@ class CacheTest(TestCase):
         response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
         self.assertEqual(response.status_code, 200)
 
+        # Action next, in add_papers
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertEqual(response.status_code, 200)
+
+        # Action add, in periodical_published_papers: needs paper_ids of the selected papers to add
+        response = self.client.post(reverse('periodical_published_papers'), {'action': 'add', 'paper_id': [u'1']})
+        self.assertEqual(response.status_code, 200)
+
+        # Action add, in arxiv_papers, needs paper_id of the selected papers
+        # 'selected_papers': u'0'
+        response = self.client.post(reverse('arxiv_papers'), {'action': 'add', 'paper_id': [u'0']})
+        self.assertEqual(response.status_code, 200)
+
+        # Action add, in event_papers: needs paper_id of the selected papers to add
+        response = self.client.post(reverse('event_papers'), {'action': 'add', 'paper_id': u'0'})
+        self.assertEqual(response.status_code, 200)
+
+        # Action update, in update_papers: needs paper_id of the selected papers to update
+        response = self.client.post(reverse('update_papers'), {'action': 'update'})
+        self.assertEqual(response.status_code, 200)
