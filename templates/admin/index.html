@@ -56,47 +56,70 @@
 {% block content %}
     <div class="row">
         <div id="content-main" class="col-md-12">
-            <div class="jumbotron">
-                <p align="justify" style="font-size:16px;">{% trans "Doubts and Suggestions: nira at numec dot prp dot usp dot br" %}</p>
-            </div>
+            <p align="justify">{% trans "NeuroMat Individual Report of Activities (NIRA) is an open-source software, that should go through continuing updates, and its source-code is available on the NeuroMat github account:" %} <a href="https://github.com/neuromat">github.com/neuromat</a></p>
+            <p align="justify">{% trans "If you have any questions, please contact us at nira at numec dot prp dot usp dot br" %}</p>
+            <br>
         </div>
+    </div>
 
-        <div class="container">
+    <div class="row">
+        <div class="col-sm-12">
             <div class="row">
                 <div class="col-md-3">
-                    <h3>{% trans "Reports" %}</h3>
-                    <ul>
-                        <li><a href="research/academic_works/">{% trans "Academic works" %}</a></li>
-                        <li><a href="research/articles/">{% trans "Articles" %}</a></li>
-                        <li><a href="dissemination/dissemination_report">{% trans "Disseminations" %}</a></li>
-                        <li><a href="activity/meetings">{% trans "Meetings" %}</a></li>
-                        <li><a href="order/scientific_missions">{% trans "Scientific missions" %}</a></li>
-                        <li><a href="activity/seminars">{% trans "Seminars" %}</a></li>
-                        <li><a href="activity/training_programs">{% trans "Training programs" %}</a></li>
-                    </ul>
+                    <div class="well">
+                        <h3>{% trans "Reports" %}</h3>
+                        <ul>
+                            <li><a href="research/academic_works/">{% trans "Academic works" %}</a></li>
+                            <li><a href="research/articles/">{% trans "Articles" %}</a></li>
+                            <li><a href="dissemination/dissemination_report">{% trans "Disseminations" %}</a></li>
+                            <li><a href="activity/meetings">{% trans "Meetings" %}</a></li>
+                            <li><a href="order/list_order">{% trans "Orders" %}</a></li>
+                            <li><a href="order/scientific_missions">{% trans "Scientific missions" %}</a></li>
+                            <li><a href="activity/seminars">{% trans "Seminars" %}</a></li>
+                            <li><a href="activity/training_programs">{% trans "Training programs" %}</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    <h3>{% trans "Documents" %}</h3>
-                    <ul>
-                        <li>{% trans "FAPESP - appendix 5" %}</li>
-                        <li><a href="activity/seminar_poster">{% trans "Seminar poster" %}</a></li>
-                    </ul>
+                    <div class="well">
+                        <h3>{% trans "Documents" %}</h3>
+                        <ul>
+{#                            <li>{% trans "FAPESP - appendix 5" %}</li>#}
+                            <li><a href="activity/seminar_poster">{% trans "Seminar poster" %}</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    <h3>{% trans "Upload contents" %}</h3>
-                    <ul>
-                        <li><a href="research/import_papers">{% trans "Import papers" %}</a></li>
-                    </ul>
+                    <div class="well">
+                        <h3>{% trans "Upload contents" %}</h3>
+                        <ul>
+                            <li><a href="research/import_papers">{% trans "Import papers" %}</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    <h3>{% trans "About NIRA" %}</h3>
-                    <p align="justify">{% trans "The NeuroMat Individual Report of Activities (NIRA) has the goal to automatically feed NeuroMat's annual Report of Activities, a document that is submitted annually to the São Paulo Research Foundation (FAPESP). See more on " %} <a href="http://neuromat.numec.prp.usp.br" target="_blank">{% trans "NeuroMat's webpage" %}</a></p>
+                    <div class="well">
+                        <h3>{% trans "About NIRA" %}</h3>
+                        <p align="justify">{% trans "The NeuroMat Individual Report of Activities (NIRA) has the goal to automatically feed NeuroMat's annual Report of Activities, a document that is submitted annually to the São Paulo Research Foundation (FAPESP). See more on " %} <a href="http://neuromat.numec.prp.usp.br" target="_blank">{% trans "NeuroMat's webpage" %}</a></p>
+                    </div>
                 </div>
             </div>
 
             <hr>
 
-            <footer><p><strong>{% trans "NIRA version:" %} </strong>0.3</p></footer>
+            <div class="col-md-4">
+                <p><strong>{% trans "Supported by" %}</strong></p>
+                <a href="http://www.fapesp.br"><img alt="Logo da FAPESP" src="media/images/logo-fapesp.jpg"></a>
+            </div>
+
+            <div class="col-md-4">
+                <p><strong>{% trans "Developed by" %}</strong></p>
+                <a href="http://neuromat.numec.prp.usp.br"><img alt="Logo do NeuroMat" src="media/images/logo-neuromat.jpg"></a>
+            </div>
+
+            <div class="col-md-4">
+                <footer class="text-right"><p><strong>{% trans "NIRA version:" %} </strong>0.3</p></footer>
+            </div>
         </div>
     </div>
 {% endblock %}
