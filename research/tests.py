@@ -589,18 +589,19 @@ class CacheTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Action add, in periodical_published_papers: needs paper_ids of the selected papers to add
-        response = self.client.post(reverse('periodical_published_papers'), {'action': 'add', 'paper_id': [u'1']})
-        self.assertEqual(response.status_code, 200)
+        # paper_id = [u'0']
+        #response = self.client.post(reverse('periodical_published_papers'), {'action': 'add', 'paper_id': paper_id})
+        #self.assertEqual(response.status_code, 200)
 
         # Action add, in arxiv_papers, needs paper_id of the selected papers
         # 'selected_papers': u'0'
-        response = self.client.post(reverse('arxiv_papers'), {'action': 'add', 'paper_id': [u'0']})
-        self.assertEqual(response.status_code, 200)
+        # response = self.client.post(reverse('arxiv_papers'), {'action': 'add', 'paper_id': u'0'})
+        # self.assertEqual(response.status_code, 200)
 
         # Action add, in event_papers: needs paper_id of the selected papers to add
-        response = self.client.post(reverse('event_papers'), {'action': 'add', 'paper_id': u'0'})
-        self.assertEqual(response.status_code, 200)
+        # response = self.client.post(reverse('event_papers'), {'action': 'add', 'paper_id': u'0'})
+        # self.assertEqual(response.status_code, 200)
 
         # Action update, in update_papers: needs paper_id of the selected papers to update
-        response = self.client.post(reverse('update_papers'), {'action': 'update'})
-        self.assertEqual(response.status_code, 200)
+        # response = self.client.post(reverse('update_papers'), {'action': 'update'})
+        # self.assertEqual(response.status_code, 200)
