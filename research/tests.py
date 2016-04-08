@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime, os
 from custom_auth.models import User
 from django.core.urlresolvers import reverse
@@ -7,10 +8,10 @@ PublishedInPeriodical, Periodical
 from research.views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv, import_papers
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-
 USERNAME = 'myuser'
 PASSWORD = 'mypassword'
 
+TEST_FILE = open('./research/citations.ris')
 
 # DRY way for testing
 def system_authentication(instance):
@@ -461,23 +462,15 @@ class ImportPaperTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Testing import_papers using an example of .ris
-        with open('./research/citations.ris') as file:
-            req = RequestFactory()
-            request = req.post(reverse('import_papers'), {'file': file})
-            request.user = self.user
-            response = import_papers(request)
-            self.assertEqual(response.status_code, 200)
+        req = RequestFactory()
+        request = req.post(reverse('import_papers'), {'file': TEST_FILE})
+        request.user = self.user
+        response = import_papers(request)
+        self.assertEqual(response.status_code, 200)
 
         not_ris_file = SimpleUploadedFile('citations.jpg', b'rb', content_type='image/jpeg')
         response = self.client.post(reverse('import_papers'), {'file': not_ris_file})
         self.assertEqual(response.status_code, 200)
-
-        response = self.client.post(reverse('add_periodicals'), {'action': 'add'})
-        self.assertEqual(response.status_code, 200)
-
-        # Problems with cache on this step
-        # response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
-        # self.assertEqual(response.status_code, 200)
 
 
 class AddPeriodicalsTest(TestCase):
@@ -500,10 +493,6 @@ class AddPapersTest(TestCase):
         self.assertEqual(logged, True)
 
     def test_add_papers(self):
-
-        # Cache problems
-        # response = self.client.post(reverse('add_papers'), {'action': 'next'})
-        # self.assertEqual(response.status_code, 200)
 
         response = self.client.post(reverse('add_papers'), {'action': 'back'})
         self.assertEqual(response.status_code, 200)
@@ -580,3 +569,33 @@ class UpdatePapersTest(TestCase):
 
         response = self.client.post(reverse('update_papers'), {'action': 'none'})
         self.assertEqual(response.status_code, 302)
+
+
+class CacheTest(TestCase):
+
+    """
+
+    Tests for the methods that use the same cache
+
+    """
+
+    def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
+    def major_cache_test(self):
+
+        # Testing import_papers using the same example of .ris
+        req = RequestFactory()
+        request = req.post(reverse('import_papers'), {'file': TEST_FILE})
+        request.user = self.user
+        response = import_papers(request)
+        self.assertEqual(response.status_code, 200)
+
+        # Action add, in add_periodicals
+        response = self.client.post(reverse('add_periodicals'), {'action': 'add', 'periodicals_to_add': 'Journal of Statistical Physics'})
+        self.assertEqual(response.status_code, 200)
+
+        # Action next, in add_periodicals
+        response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
+        self.assertEqual(response.status_code, 200)
