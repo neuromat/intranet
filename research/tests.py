@@ -3,7 +3,7 @@ import datetime, os
 from custom_auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
-from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Submitted, Accepted, \
+from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
 PublishedInPeriodical, Periodical
 from research.views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv, import_papers
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -621,8 +621,19 @@ class CacheTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Action add, in event_papers: needs paper_id of the selected papers to add
-        # response = self.client.post(reverse('event_papers'), {'action': 'add', 'paper_id': u'0'})
-        # self.assertEqual(response.status_code, 200)
+        event = Event(name='PROCEEDINGS OF THE INTERNATIONAL CONFERENCE ON NUMERICAL ANALYSIS AND APPLIED MATHEMATICS 2014 (ICNAAM-2014)', \
+                      start_date='2014-09-22', end_date='2014-09-28')
+        event.save()
+
+        response = self.client.post(reverse('event_papers'), {'action': 'add', 'paper_id': u'0', \
+                                                              'paper_team_0': [u's'],
+                                                              'paper_title_0': [u'Combining multivariate Markov chains'],
+                                                              'paper_author_0': [u'García, JE'],
+                                                              'paper_event_0': [u'1'],
+                                                              'paper_start_page_0': [u'60003'],
+                                                              'paper_end_page_0': [u'60004']})
+
+        self.assertEqual(response.status_code, 200)
 
 
         # Action update, in update_papers: needs paper_id of the selected papers to update
