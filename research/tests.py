@@ -576,8 +576,17 @@ class CacheTest(TestCase):
         response = import_papers(request)
         self.assertEqual(response.status_code, 200)
 
+        # We need a paper as a draft in our base for update
+        base_article = Article(team='s', title='Identifying interacting pairs of sites in Ising models on a countable set', research_result_type='a')
+        base_article.save()
+        base_draft = Draft(article = base_article, date = '2014-07-01')
+        base_draft.save()
+
         # Action add, in add_periodicals
         response = self.client.post(reverse('add_periodicals'), {'action': 'add', 'periodicals_to_add': 'Journal of Statistical Physics'})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('add_periodicals'), {'action': 'add', 'periodicals_to_add': 'Brazilian Journal of Probability and Statistics'})
         self.assertEqual(response.status_code, 200)
 
         # Action next, in add_periodicals
@@ -589,19 +598,44 @@ class CacheTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Action add, in periodical_published_papers: needs paper_ids of the selected papers to add
-        # paper_id = [u'0']
-        #response = self.client.post(reverse('periodical_published_papers'), {'action': 'add', 'paper_id': paper_id})
-        #self.assertEqual(response.status_code, 200)
+        paper_periodical = Periodical.objects.get(name='Journal of Statistical Physics')
+        paper_periodical_id = paper_periodical.id
+        response = self.client.post(reverse('periodical_published_papers'), {'action': 'add', 'paper_id': u'0', \
+                                                                             'paper_team_0': [u's'], \
+                                                                             'paper_title_0': [u'Infinite systems of interacting chains with memory of variable length\u2014a stochastic model for biological neural nets'], \
+                                                                             'paper_author_0': [u'Galves, A; L\xf6cherbach, E.'], \
+                                                                             'paper_periodical_0': paper_periodical_id, \
+                                                                             'paper_volume_0': [u'151'], \
+                                                                             'paper_issue_0': [u'5'], \
+                                                                             'paper_start_page_0': [u'896'], \
+                                                                             'paper_end_page_0': [u'921'], \
+                                                                             'paper_date_0': [u'2013-06-01']})
+        self.assertEqual(response.status_code, 200)
 
         # Action add, in arxiv_papers, needs paper_id of the selected papers
-        # 'selected_papers': u'0'
-        # response = self.client.post(reverse('arxiv_papers'), {'action': 'add', 'paper_id': u'0'})
-        # self.assertEqual(response.status_code, 200)
+        response = self.client.post(reverse('arxiv_papers'), {'action': 'add', 'paper_id': u'0', 'paper_team_0': [u's'], \
+                                                              'paper_title_0': [u'Computationally efficient change point detection for high-dimensional regression'],
+                                                              'paper_author_0': [u'Leonardi, F; B\xfchlmann, P.'], \
+                                                              'paper_arxiv_0': [u'http://arxiv.org/abs/1601.03704'], \
+                                                              'paper_date_0': [u'2016-01-14']})
+        self.assertEqual(response.status_code, 200)
 
         # Action add, in event_papers: needs paper_id of the selected papers to add
         # response = self.client.post(reverse('event_papers'), {'action': 'add', 'paper_id': u'0'})
         # self.assertEqual(response.status_code, 200)
 
+
         # Action update, in update_papers: needs paper_id of the selected papers to update
-        # response = self.client.post(reverse('update_papers'), {'action': 'update'})
-        # self.assertEqual(response.status_code, 200)
+        paper_periodical = Periodical.objects.get(name='Brazilian Journal of Probability and Statistics')
+        paper_periodical_id = paper_periodical.id
+        response = self.client.post(reverse('update_papers'), {'action': 'update', 'paper_id': u'0', \
+                                                               'paper_team_0': [u's'], \
+                                                               'paper_title_0': [u'Identifying interacting pairs of sites in Ising models on a countable set'],
+                                                               'paper_author_0': [u'Galves, A; Orlandi, E; Takahashi, DY.'], \
+                                                               'paper_periodical_0': paper_periodical_id, \
+                                                               'paper_volume_0': [u'29'], \
+                                                               'paper_issue_0': [u'2'], \
+                                                               'paper_start_page_0': [u'443'], \
+                                                               'paper_end_page_0': [u'459'], \
+                                                               'paper_date_0': [u'2015-01-06']})
+        self.assertEqual(response.status_code, 200)
