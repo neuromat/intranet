@@ -51,8 +51,8 @@ admin.site.register(Institution, InstitutionAdmin)
 
 
 class CitationNameAdmin(admin.ModelAdmin):
-    fields = ['person', 'name']
-    list_display = ('person', 'name')
+    fields = ['person', 'name', 'default_name']
+    list_display = ('person', 'name', 'default_name')
     list_display_links = ('name',)
 
 admin.site.register(CitationName, CitationNameAdmin)

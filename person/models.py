@@ -5,6 +5,9 @@ from django.core.exceptions import ValidationError
 from validation import CPF
 
 
+DEFAULT_CHOICES = ((True, 'Yes'), (False, 'No'))
+
+
 def validate_cpf(value):
     """
     Check if the CPF is valid
@@ -172,9 +175,22 @@ class CitationName(models.Model):
     """
     person = models.ForeignKey(Person, verbose_name=_('Name'))
     name = models.CharField(_('Name in bibliographic citation'), max_length=255)
+    default_name = models.BooleanField(_('Default name?'), choices=DEFAULT_CHOICES, max_length=3, default=False)
 
     def __unicode__(self):
         return u'%s' % self.name
+
+    def save(self, *args, **kwargs):
+        if self.default_name:
+            try:
+                citations = CitationName.objects.filter(person=self.person)
+                citation_default = citations.get(default_name=True)
+                if citation_default:
+                    citation_default.default_name = False
+                    citation_default.save()
+            except CitationName.DoesNotExist:
+                pass
+        super(CitationName, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = _('Citation name')
