@@ -10,7 +10,7 @@ admin.site.register(InstitutionType)
 class PersonAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['full_name', 'email', 'citation_name', 'role', 'institution']
+            'fields': ['full_name', 'email', 'role', 'institution']
         }),
         (None, {
             'fields': ('rg', 'cpf', 'passport')
