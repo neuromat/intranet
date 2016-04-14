@@ -19,6 +19,7 @@ urlpatterns = patterns(
     url(r'^order/', include('order.urls')),
     url(r'^activity/', include('activity.urls')),
     url(r'^research/', include('research.urls')),
+    url(r'^person/', include('person.urls')),
     url(r'^dissemination/', include('dissemination.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
