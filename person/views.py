@@ -93,9 +93,14 @@ def generate_citation_names(person):
 
     # Imagine a person called João Carlos da Silva.
     # Here the citation would be "Silva, JC"
-    citation_name_01 = CitationName(person_id=person_id, name=citation_01)
-    if CitationName.objects.filter(person_id=person_id, name=citation_name_01).exists() is False:
-        citation_name_01.save()
+    if citation_default:
+        citation_name_01 = CitationName(person_id=person_id, name=citation_01)
+        if CitationName.objects.filter(person_id=person_id, name=citation_name_01).exists() is False:
+            citation_name_01.save()
+    else:
+        citation_name_01 = CitationName(person_id=person_id, name=citation_01, default_name=True)
+        if CitationName.objects.filter(person_id=person_id, name=citation_name_01).exists() is False:
+            citation_name_01.save()
 
     # Here the citation would be "Silva, João Carlos"
     citation_name_02 = CitationName(person_id=person_id, name=citation_02)
