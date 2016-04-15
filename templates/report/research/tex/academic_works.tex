@@ -13,7 +13,9 @@
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
 		\item Institution: {{ result.advisee.institution }}
-		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+		{% if result.funding_agency %}\item Funding: {{ result.funding_agency }}{% endif %}
+		{% if result.url %}\item Funding information: {{ result.url }}{% endif %}
+		\item Abstract: {{ result.abstract }}
 	\end{itemize}
              {% endfor %}
 \end{enumerate}
@@ -24,12 +26,14 @@
 			{% for result in postdoc_in_progress %}
 	\item Title of the project: {{ result.title }}
 	\begin{itemize}
-		\item Period: {{ result.start_date }} - ongoing
+		\item Period: {{ result.start_date }} - ongoing {% if result.end_date %}(as of {{ result.end_date }}){% endif %}
 		\item Advisee: {{ result.advisee }}
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
 		\item Institution: {{ result.advisee.institution }}
-		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+		{% if result.funding_agency %}\item Funding: {{ result.funding_agency }}{% endif %}
+		{% if result.url %}\item Funding information: {{ result.url }}{% endif %}
+		\item Abstract: {{ result.abstract }}
 	\end{itemize}
              {% endfor %}
 \end{enumerate}
@@ -49,7 +53,9 @@
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
 		\item Institution: {{ result.advisee.institution }}
-		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+		{% if result.funding_agency %}\item Funding: {{ result.funding_agency }}{% endif %}
+		{% if result.url %}\item Funding information: {{ result.url }}{% endif %}
+		\item Abstract: {{ result.abstract }}
 	\end{itemize}
              {% endfor %}
 \end{enumerate}
@@ -60,12 +66,14 @@
 			{% for result in phd_in_progress %}
 	\item Title of the project: {{ result.title }}
 	\begin{itemize}
-		\item Period: {{ result.start_date }} - ongoing
+		\item Period: {{ result.start_date }} - ongoing {% if result.end_date %}(as of {{ result.end_date }}){% endif %}
 		\item Advisee: {{ result.advisee }}
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
 		\item Institution: {{ result.advisee.institution }}
-		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+		{% if result.funding_agency %}\item Funding: {{ result.funding_agency }}{% endif %}
+		{% if result.url %}\item Funding information: {{ result.url }}{% endif %}
+		\item Abstract: {{ result.abstract }}
 	\end{itemize}
              {% endfor %}
 \end{enumerate}
@@ -85,7 +93,9 @@
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
 		\item Institution: {{ result.advisee.institution }}
-		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+		{% if result.funding_agency %}\item Funding: {{ result.funding_agency }}{% endif %}
+		{% if result.url %}\item Funding information: {{ result.url }}{% endif %}
+		\item Abstract: {{ result.abstract }}
 	\end{itemize}
              {% endfor %}
 \end{enumerate}
@@ -96,12 +106,14 @@
 			{% for result in msc_in_progress %}
 	\item Title of the project: {{ result.title }}
 	\begin{itemize}
-		\item Period: {{ result.start_date }} - ongoing
+		\item Period: {{ result.start_date }} - ongoing {% if result.end_date %}(as of {{ result.end_date }}){% endif %}
 		\item Advisee: {{ result.advisee }}
 		\item Advisor: {{ result.advisor }}
 		{% if result.co_advisors %}\item Co-advisor: {{ result.co_advisors }}{% endif %}
 		\item Institution: {{ result.advisee.institution }}
-		{% if result.schollarship %}\item Schollarship: {{ result.schollarship }}{% endif %}
+		{% if result.funding_agency %}\item Funding: {{ result.funding_agency }}{% endif %}
+		{% if result.url %}\item Funding information: {{ result.url }}{% endif %}
+		\item Abstract: {{ result.abstract }}
 	\end{itemize}
              {% endfor %}
 \end{enumerate}

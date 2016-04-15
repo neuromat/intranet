@@ -31,9 +31,13 @@
                             <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
                         <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.schollarship %}
-                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
+                        {% if result.funding_agency %}
+                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
                         {% endif %}
+                        {% if result.url %}
+                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
+                        {% endif %}
+                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
                     </ul>
                     <br>
                 {% endfor %}
@@ -45,16 +49,20 @@
                 {% for result in postdoc_in_progress %}
                     <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
                     <ul>
-                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing</li>
+                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing {% if result.end_date %}(as of {{ result.end_date }}){% endif %}</li>
                         <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
                         <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
                             <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
                         <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.schollarship %}
-                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
+                        {% if result.funding_agency %}
+                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
                         {% endif %}
+                        {% if result.url %}
+                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
+                        {% endif %}
+                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
                     </ul>
                     <br>
                 {% endfor %}
@@ -76,9 +84,13 @@
                             <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
                         <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.schollarship %}
-                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
+                        {% if result.funding_agency %}
+                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
                         {% endif %}
+                        {% if result.url %}
+                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
+                        {% endif %}
+                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
                     </ul>
                     <br>
                 {% endfor %}
@@ -90,16 +102,20 @@
                 {% for result in phd_in_progress %}
                     <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
                     <ul>
-                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing</li>
+                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing {% if result.end_date %}(as of {{ result.end_date }}){% endif %}</li>
                         <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
                         <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
                             <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
                         <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.schollarship %}
-                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
+                        {% if result.funding_agency %}
+                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
                         {% endif %}
+                        {% if result.url %}
+                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
+                        {% endif %}
+                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
                     </ul>
                     <br>
                 {% endfor %}
@@ -121,9 +137,13 @@
                             <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
                         <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.schollarship %}
-                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
+                        {% if result.funding_agency %}
+                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
                         {% endif %}
+                        {% if result.url %}
+                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
+                        {% endif %}
+                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
                     </ul>
                     <br>
                 {% endfor %}
@@ -135,16 +155,20 @@
                 {% for result in msc_in_progress %}
                     <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
                     <ul>
-                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing</li>
+                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing {% if result.end_date %}(as of {{ result.end_date }}){% endif %}</li>
                         <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
                         <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
                         {% if result.co_advisors %}
                             <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
                         {% endif %}
                         <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.schollarship %}
-                            <li>{% trans 'Schollarship' %}: {{ result.schollarship }}</li>
+                        {% if result.funding_agency %}
+                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
                         {% endif %}
+                        {% if result.url %}
+                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
+                        {% endif %}
+                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
                     </ul>
                     <br>
                 {% endfor %}
