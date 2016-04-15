@@ -1,9 +1,8 @@
 from django.contrib import admin
-from research.models import *
-#from forms import ArticleAdminForm, BookAdminForm, AuthorsInlineFormset
-from forms import ArticleAdminForm, BookAdminForm
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
+from forms import ArticleAdminForm, BookAdminForm, AcademicWorkAdminForm
+from research.models import *
 
 
 admin.site.register(TypeAcademicWork)
@@ -68,7 +67,8 @@ class ArticleAdmin(SuperResearchResult):
     fields = ['team', 'title', 'status', 'type', 'periodical', 'event', 'url', 'ris_file_authors', 'hide', 'note']
     list_display = ('team', 'title', 'authors', 'current_status', 'type_of_article')
     list_display_links = ('title',)
-    inlines = (AuthorsInline, DraftInline, SubmittedInline, AcceptedInline, PublishedInline, PublishedInPeriodicalInline)
+    inlines = (AuthorsInline, DraftInline, SubmittedInline, AcceptedInline, PublishedInline,
+               PublishedInPeriodicalInline)
     form = ArticleAdminForm
 
 admin.site.register(Article, ArticleAdmin)
@@ -104,9 +104,11 @@ admin.site.register(Book, BookAdmin)
 
 
 class AcademicWorkAdmin(admin.ModelAdmin):
-    fields = ['type', 'title', 'advisee', 'advisor', 'co_advisor', 'schollarship', 'start_date', 'end_date']
+    fields = ['type', 'title', 'advisee', 'advisor', 'co_advisor', 'funding', 'funding_agency', 'start_date',
+              'end_date', 'url', 'abstract']
     list_display = ('title', 'advisee', 'advisor', 'type', 'start_date', 'end_date')
     list_display_links = ('title',)
+    form = AcademicWorkAdminForm
 
     # Shows the academic work according to the user permission
     # No restriction for users defined as superuser or NIRA Admin

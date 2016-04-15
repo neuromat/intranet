@@ -37,6 +37,8 @@ ARTICLE_TYPE = (
     (EVENT, _('Event (Conference, congress, meeting, etc)')),
 )
 
+FUNDING_CHOICES = ((True,'Yes'), (False, 'No'))
+
 
 class ResearchResult(models.Model):
     team = models.CharField(_('Team'), max_length=1, choices=TEAMS)
@@ -297,9 +299,12 @@ class AcademicWork(models.Model):
     advisor = models.ForeignKey(Person, verbose_name=_('Advisor'), related_name='advisor_academic_work')
     co_advisor = models.ManyToManyField(Person, verbose_name=_('Co-Advisor'), related_name='co_advisor_academic_work',
                                         blank=True, null=True)
-    schollarship = models.CharField(_('Schollarship'), max_length=255, blank=True, null=True)
+    funding = models.BooleanField(_('Financially supported?'), choices=FUNDING_CHOICES, max_length=3)
+    funding_agency = models.CharField(_('Funding agency'), max_length=255, blank=True)
+    url = models.URLField(_('URL'), max_length=255, blank=True, null=True, help_text='URL to funding information.')
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
+    abstract = models.TextField(_('Abstract'))
 
     def __unicode__(self):
         return u'%s' % self.title
