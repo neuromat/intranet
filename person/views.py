@@ -73,9 +73,6 @@ def generate_citation_names(person):
     # Split the full name.
     split_name = full_name.split()
 
-    # Get the last name
-    last_name = split_name[-1]
-
     # Maybe the user has a default citation
     citation_default = CitationName.objects.filter(person_id=person_id, default_name=True)
 
