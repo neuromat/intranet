@@ -9,7 +9,7 @@ environ['DJANGO_SETTINGS_MODULE'] = 'sistema.settings'
 from research.models import TypeAcademicWork
 
 # Types of academic work
-type = TypeAcademicWork(name="Postdoc")
+type = TypeAcademicWork(name="Post-doctoral")
 type.save()
 type = TypeAcademicWork(name="PhD")
 type.save()

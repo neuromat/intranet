@@ -71,6 +71,13 @@ class ArticleAdmin(SuperResearchResult):
                PublishedInPeriodicalInline)
     form = ArticleAdminForm
 
+    # If not superuser or NIRA Admin, the ris_file_authors field becomes read-only.
+    def get_readonly_fields(self, request, obj=None):
+        ro_fields = super(ArticleAdmin, self).get_readonly_fields(request, obj)
+        if not request.user.is_superuser and not request.user.is_nira_admin:
+            ro_fields = list(ro_fields) + ['ris_file_authors']
+        return ro_fields
+
 admin.site.register(Article, ArticleAdmin)
 
 
