@@ -558,7 +558,7 @@ def add_papers(request):
                                 last_name = names[0]
                                 other_names = names[1]
                                 names = other_names.split()
-                                invalid_name = ['e', 'da', 'do', 'de', 'dos', 'Da', 'Do', 'De', 'Dos']
+                                invalid_name = ['e', 'da', 'do', 'de', 'dos', 'E', 'Da', 'Do', 'De', 'Dos']
                                 letters = ''
                                 for name in names:
                                     if name not in invalid_name:

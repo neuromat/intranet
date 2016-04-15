@@ -1,20 +1,142 @@
-from person.models import University, Institute
+# -*- coding: utf-8 -*-
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-import json as simplejson
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
+from django.utils.translation import ugettext_lazy as _
+from person.models import Person, CitationName
+
+prep = ['e', 'da', 'do', 'de', 'dos', 'E', 'Da', 'Do', 'De', 'Dos']
+
+
+def name_with_first_letters(names, with_prep):
+    letters = ''
+    last_name = names[-1]
+    last_name_with_prep = names[-2]+' '+last_name
+
+    for name in names:
+        if name != last_name and name not in prep:
+            letters += name[0]
+
+    if not with_prep:
+        return last_name+','+' '+letters
+    else:
+        return last_name_with_prep+','+' '+letters
+
+
+def names_without_last_name(names, with_prep):
+    last_name = names[-1]
+    last_name_with_prep = names[-2]+' '+last_name
+    citation_name = [name for name in names if name != last_name and name not in prep]
+    citation_name = ' '.join(citation_name)
+
+    if not with_prep:
+        return last_name+','+' '+citation_name
+
+    else:
+        return last_name_with_prep+','+' '+citation_name
+
+
+def first_name_and_first_letter(names, with_prep):
+    first_letter = ''
+    first_name = names[0]
+    last_name = names[-1]
+    last_name_with_prep = names[-2]+' '+last_name
+
+    for name in names:
+        if name != first_name and name != last_name and name not in prep:
+            first_letter += name[0]
+
+    if not with_prep:
+        if first_letter != '':
+            citation_name = first_name+' '+first_letter
+            return last_name+','+' '+citation_name
+        else:
+            citation_name = first_name
+            return last_name+','+' '+citation_name
+
+    else:
+        if first_letter != '':
+            citation_name = first_name+' '+first_letter
+            return last_name_with_prep+','+' '+citation_name
+        else:
+            citation_name = first_name
+            return last_name_with_prep+','+' '+citation_name
+
+
+def generate_citation_names(person):
+
+    # Get full name and id from person.
+    full_name = person.full_name
+    person_id = person.pk
+
+    # Split the full name.
+    split_name = full_name.split()
+
+    # Get the last name
+    last_name = split_name[-1]
+
+    # Maybe the user has a default citation
+    citation_default = CitationName.objects.filter(person_id=person_id, default_name=True)
+
+    # Get the first letter of the name except the last name
+    # letters = name_with_first_letters(split_name)
+    citation_01 = name_with_first_letters(split_name, False)
+
+    # Get names without last name
+    # almost_full_name = names_without_last_name(split_name)
+    citation_02 = names_without_last_name(split_name, False)
+
+    # Get first name and first letter of the middle name
+    # first_name_letter_middle_name = first_name_and_first_letter(split_name)
+    citation_03 = first_name_and_first_letter(split_name, False)
+
+    # Imagine a person called João Carlos da Silva.
+    # Here the citation would be "Silva, JC"
+    citation_name_01 = CitationName(person_id=person_id, name=citation_01)
+    if CitationName.objects.filter(person_id=person_id, name=citation_name_01).exists() is False:
+        citation_name_01.save()
+
+    # Here the citation would be "Silva, João Carlos"
+    citation_name_02 = CitationName(person_id=person_id, name=citation_02)
+    if CitationName.objects.filter(person_id=person_id, name=citation_name_02).exists() is False:
+        citation_name_02.save()
+
+    # Here the citation would be "Silva, João C"
+    citation_name_03 = CitationName(person_id=person_id, name=citation_03)
+    if CitationName.objects.filter(person_id=person_id, name=citation_name_03).exists() is False:
+        citation_name_03.save()
+
+    # Here the last name will be "da Silva"
+    if split_name[-2] in prep:
+
+        # last_name_with_prep = split_name[-2]+' '+last_name
+        prep_01 = name_with_first_letters(split_name, True)
+        prep_02 = names_without_last_name(split_name, True)
+        prep_03 = first_name_and_first_letter(split_name, True)
+
+        # Here the citation would be "da Silva, JC"
+        citation_name_prep = CitationName(person_id=person_id, name=prep_01)
+        if CitationName.objects.filter(person_id=person_id, name=citation_name_prep).exists() is False:
+            citation_name_prep.save()
+
+        # Here the citation would be "da Silva, João Carlos"
+        citation_name_prep_02 = CitationName(person_id=person_id, name=prep_02)
+        if CitationName.objects.filter(person_id=person_id, name=citation_name_prep_02).exists() is False:
+            citation_name_prep_02.save()
+
+        # Here the citation would be "da Silva, João C"
+        citation_name_prep_03 = CitationName(person_id=person_id, name=prep_03)
+        if CitationName.objects.filter(person_id=person_id, name=citation_name_prep_03).exists() is False:
+            citation_name_prep_03.save()
 
 
 @login_required
-def show_institute(request):
-    if request.method == 'GET':
-        university_id = request.GET.get('university')
-        university = get_object_or_404(University, id=university_id)
+def citation_names(request):
+    # Create citation names for each person
+    for person in Person.objects.all():
+        generate_citation_names(person)
 
-        select = Institute.objects.filter(university=university)
-        institute = []
-        for inst in select:
-            institute.append({'pk': inst.id, 'valor': inst.__unicode__()})
+    messages.success(request, _('Successfully updated citation names.'))
+    return redirect(reverse('admin:index'))
 
-        json = simplejson.dumps(institute)
-        return HttpResponse(json, content_type="application/json")
