@@ -25,7 +25,7 @@ def system_authentication(instance):
     return logged, user, factory
 
 
-def create_postdoc(type, title, advisee, advisor, start_date, end_date):
+def create_postdoc(type, title, advisee, advisor, start_date, end_date, abstract):
     postdoc = AcademicWork()
     postdoc.type = type
     postdoc.title = title
@@ -33,6 +33,7 @@ def create_postdoc(type, title, advisee, advisor, start_date, end_date):
     postdoc.advisor = advisor
     postdoc.start_date = start_date
     postdoc.end_date = end_date
+    postdoc.abstract = abstract
     postdoc.save()
     return postdoc
 
@@ -82,7 +83,7 @@ class ResearchTimelineTest(TestCase):
     academic_work = None
     advisee = None
     advisor = None
-
+    abstract = None
     team = None
 
     place_of_publication = None
@@ -139,6 +140,9 @@ class ResearchTimelineTest(TestCase):
         advisor = Person.objects.create(full_name='Emma Miller')
         advisor.save()
 
+        abstract = 'Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis ' \
+                   'porris, paradis. Paisis, filhis, espiritis santis.'
+
         team = "s"
 
         place_of_publication = Periodical.objects.create(name="Scientific America")
@@ -147,28 +151,36 @@ class ResearchTimelineTest(TestCase):
         # List of academic works
 
         # First academic work
-        self.postdoc_01 = create_postdoc(academic_work, 'postdoc_01', advisee, advisor, '2013-08-20', '2014-08-26')
+        self.postdoc_01 = create_postdoc(academic_work, 'postdoc_01', advisee, advisor, '2013-08-20', '2014-08-26',
+                                         abstract)
 
         # Second academic work
-        self.postdoc_02 = create_postdoc(academic_work, 'postdoc_02', advisee, advisor, '2013-07-01', '2014-05-26')
+        self.postdoc_02 = create_postdoc(academic_work, 'postdoc_02', advisee, advisor, '2013-07-01', '2014-05-26',
+                                         abstract)
 
         # Third academic work
-        self.postdoc_03 = create_postdoc(academic_work, 'postdoc_03', advisee, advisor, '2014-08-05', '2015-06-20')
+        self.postdoc_03 = create_postdoc(academic_work, 'postdoc_03', advisee, advisor, '2014-08-05', '2015-06-20',
+                                         abstract)
 
         # Fourth academic work
-        self.postdoc_04 = create_postdoc(academic_work, 'postdoc_04', advisee, advisor, '2015-06-25', '2016-01-01')
+        self.postdoc_04 = create_postdoc(academic_work, 'postdoc_04', advisee, advisor, '2015-06-25', '2016-01-01',
+                                         abstract)
 
         # Fifth academic work
-        self.postdoc_05 = create_postdoc(academic_work, 'postdoc_05', advisee, advisor, '2015-08-26', '2016-01-01')
+        self.postdoc_05 = create_postdoc(academic_work, 'postdoc_05', advisee, advisor, '2015-08-26', '2016-01-01',
+                                         abstract)
 
         # Sixth academic work
-        self.postdoc_06 = create_postdoc(academic_work, 'postdoc_06', advisee, advisor, '2013-05-20', '2016-01-01')
+        self.postdoc_06 = create_postdoc(academic_work, 'postdoc_06', advisee, advisor, '2013-05-20', '2016-01-01',
+                                         abstract)
 
         # Seventh academic work
-        self.postdoc_07 = create_postdoc(academic_work, 'postdoc_07', advisee, advisor, '2013-07-01', '2014-07-01')
+        self.postdoc_07 = create_postdoc(academic_work, 'postdoc_07', advisee, advisor, '2013-07-01', '2014-07-01',
+                                         abstract)
 
         # Eighth academic work
-        self.postdoc_08 = create_postdoc(academic_work, 'postdoc_08', advisee, advisor, '2014-07-01', '2016-01-01')
+        self.postdoc_08 = create_postdoc(academic_work, 'postdoc_08', advisee, advisor, '2014-07-01', '2016-01-01',
+                                         abstract)
 
         # List of articles
 
