@@ -31,6 +31,7 @@ def create_postdoc(type, title, advisee, advisor, start_date, end_date, abstract
     postdoc.title = title
     postdoc.advisee = advisee
     postdoc.advisor = advisor
+    postdoc.funding = False
     postdoc.start_date = start_date
     postdoc.end_date = end_date
     postdoc.abstract = abstract
