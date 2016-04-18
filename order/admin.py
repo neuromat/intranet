@@ -1,8 +1,8 @@
-from django.contrib import admin
-from order.models import *
-from forms import *
-from django.utils.translation import ugettext_lazy as _
 import copy
+from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
+from order.models import *
+from order.forms import *
 
 # Register your models here.
 

@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-import datetime, os
+import datetime
+import os
 from custom_auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
-PublishedInPeriodical, Periodical
+                            PublishedInPeriodical, Periodical
 from research.views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv, import_papers
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -14,6 +15,8 @@ PASSWORD = 'mypassword'
 TEST_FILE = open('./research/citations.ris')
 
 # DRY way for testing
+
+
 def system_authentication(instance):
     user = User.objects.create_user(username=USERNAME, password=PASSWORD)
     user.is_active = True
@@ -376,10 +379,7 @@ class ScholarTest(TestCase):
             scholar_titles.append(paper.keys()[0])
 
         for paper in self.papers_list:
-            if paper.keys()[0] in scholar_titles:
-                ret = True
-            else:
-                ret = False
+            ret = paper.keys()[0] in scholar_titles
 
         self.valid_scholar_list.extend(scholar_list)
         self.assertTrue(ret)

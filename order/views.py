@@ -11,7 +11,7 @@ from django.contrib import messages
 
 
 @login_required
-#@permission_required('is_superuser', raise_exception=True)
+# @permission_required('is_superuser', raise_exception=True)
 def scientific_missions_report(request):
 
     if request.method == 'POST':

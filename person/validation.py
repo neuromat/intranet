@@ -6,17 +6,21 @@ import re
 # traduz 123.456.789-10 para 12345678910
 _translate = lambda cpf: ''.join(re.findall("\d", cpf))
 
+
 def _exceptions(cpf):
     """Se o número de CPF estiver dentro das exceções é inválido
 
     """
-    if len(cpf)!=11:
+    if len(cpf) != 11:
         return True
     else:
-        s=''.join(str(x) for x in cpf)
-        if s=='00000000000' or s=='11111111111' or s=='22222222222' or s=='33333333333' or s=='44444444444' or s=='55555555555' or s=='66666666666' or s=='77777777777' or s=='88888888888' or s=='99999999999':
+        s = ''.join(str(x) for x in cpf)
+        if s == '00000000000' or s == '11111111111' or s == '22222222222' or s == '33333333333' or s == '44444444444' \
+                or s == '55555555555' or s == '66666666666' or s == '77777777777' or s == '88888888888' \
+                or s == '99999999999':
             return True
     return False
+
 
 def _gen(cpf):
     """Gera o próximo dígito do número de CPF
@@ -39,7 +43,7 @@ class CPF(object):
 
     _gen = staticmethod(_gen)
     _translate = staticmethod(_translate)
-    
+
     def __init__(self, cpf):
         """O argumento cpf pode ser uma string nas formas:
 
@@ -51,18 +55,18 @@ class CPF(object):
         (1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 0)
 
         """
-        
+
         if isinstance(cpf, basestring):
             if not cpf.isdigit():
-               cpf = self._translate(cpf)
-            
+                cpf = self._translate(cpf)
+
         self.cpf = [int(x) for x in cpf]
 
     def __getitem__(self, index):
         """Retorna o dígito em index como string
 
         """
-        
+
         return self.cpf[index]
 
     def __repr__(self):
@@ -71,7 +75,7 @@ class CPF(object):
         eval(repr(cpf)) == cpf
         
         """
-        
+
         return "CPF('%s')" % ''.join(str(x) for x in self.cpf)
 
     def __eq__(self, other):
@@ -80,7 +84,7 @@ class CPF(object):
         """
 
         return isinstance(other, CPF) and self.cpf == other.cpf
-    
+
     def __str__(self):
         """Retorna uma representação do CPF na forma:
 
@@ -99,7 +103,7 @@ class CPF(object):
         """Valida o número de cpf
 
         """
-        
+
         if _exceptions(self.cpf):
             return False
 

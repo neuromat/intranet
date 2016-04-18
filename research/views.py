@@ -4,13 +4,11 @@ import urllib2
 import HTMLParser
 import re
 import time
-
-from bs4 import BeautifulSoup
 from itertools import chain
 from random import randint
+from bs4 import BeautifulSoup
 from research.models import *
 from person.models import CitationName
-
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.cache import cache
@@ -29,7 +27,7 @@ def valid_date(date):
     day = date[0:2]
     month = date[3:5]
     year = date[6:]
-    if (01 <= int(day) <= 31) and (01 <= int(month) <= 12) and (0 <= int(year)):
+    if (01 <= int(day) <= 31) and (01 <= int(month) <= 12) and (int(year) >= 0):
         return True
     else:
         return False

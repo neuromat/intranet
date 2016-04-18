@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
-from validation import CPF
+from person.validation import CPF
 
 
 DEFAULT_CHOICES = ((True, 'Yes'), (False, 'No'))

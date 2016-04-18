@@ -4,11 +4,13 @@ from django.test import TestCase
 from person.models import Person, CitationName
 from person.views import name_with_first_letters, names_without_last_name, first_name_and_first_letter, \
     generate_citation_names
-from validation import CPF
+from person.validation import CPF
 
 prep = ['e', 'da', 'do', 'de', 'dos', 'E', 'Da', 'Do', 'De', 'Dos']
 
+
 class CpfValidationTest(TestCase):
+
     """
     The following tests are performed:
     1 - Valid CPFs with dot and dash;
@@ -20,6 +22,7 @@ class CpfValidationTest(TestCase):
     6 - CPF with special character;
     7 - CPF with long string.
     """
+
     good_values = (
         '288.666.827-30',
         '597.923.110-25',
@@ -139,10 +142,10 @@ class CitationsTest(TestCase):
     def test_first_name_and_first_letter(self):
 
         result = first_name_and_first_letter(self.person1.full_name.split(), False)
-        self.assertEqual(result,'Silva, João C')
+        self.assertEqual(result, 'Silva, João C')
 
         result = first_name_and_first_letter(self.person1.full_name.split(), True)
-        self.assertEqual(result,'da Silva, João C')
+        self.assertEqual(result, 'da Silva, João C')
 
     def test_generate_citation_names(self):
 

@@ -1,9 +1,10 @@
-from django.contrib import admin
 from activity.models import *
-from forms import *
+from activity.forms import *
+from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 admin.site.register(SeminarType)
+
 
 class NewsInline(admin.StackedInline):
     model = News
