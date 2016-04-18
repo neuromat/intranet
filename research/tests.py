@@ -355,16 +355,7 @@ class ScholarTest(TestCase):
     valid_scholar = False
 
     def setUp(self):
-        self.papers_list = [{'Hydrodynamic limit for interacting neurons': \
-                            '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;\
-                            pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u-x6o8ySG0sC'},
-                            {'The solution of the complete nontrivial cycle intersection problem for permutations':
-                            '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;\
-                            user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'},
-                            {'Infinite systems of interacting chains with memory of variable length\xe2\x80\x94a \
-                            stochastic model for biological neural nets': '/citations?view_op=view_citation&amp;\
-                            hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;\
-                            citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
+        self.papers_list = [{'Hydrodynamic limit for interacting neurons': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u-x6o8ySG0sC'}, {'The solution of the complete nontrivial cycle intersection problem for permutations':'/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'}, {'Infinite systems of interacting chains with memory of variable length\xe2\x80\x94a stochastic model for biological neural nets': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
         self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
         self.specific_paper_date = datetime.date(2014, 1, 17)
         self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
@@ -385,7 +376,10 @@ class ScholarTest(TestCase):
             scholar_titles.append(paper.keys()[0])
 
         for paper in self.papers_list:
-            ret = paper.keys()[0] in scholar_titles
+            if paper.keys()[0] in scholar_titles:
+                ret = True
+            else:
+                ret = False
 
         self.valid_scholar_list.extend(scholar_list)
         self.assertTrue(ret)
@@ -596,20 +590,22 @@ class CacheTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # We need a paper as a draft in our base for update
-        base_article = Article(team='s', title='Identifying interacting pairs of sites in \
-        Ising models on a countable set', research_result_type='a')
+        base_article = Article(team='s',
+                               title='Identifying interacting pairs of sites in Ising models on a countable set',
+                               research_result_type='a')
         base_article.save()
         base_draft = Draft(article = base_article, date = '2014-07-01')
         base_draft.save()
 
         # Action add, in add_periodicals
-        response = self.client.post(reverse('add_periodicals'), {'action': 'add', 'periodicals_to_add': \
-                                                                 'Journal of Statistical Physics'})
+        response = self.client.post(reverse('add_periodicals'),
+                                    {'action': 'add',
+                                    'periodicals_to_add': 'Journal of Statistical Physics'})
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('add_periodicals'), {'action': 'add',
-                                                                 'periodicals_to_add': \
-                                                                 'Brazilian Journal of Probability and Statistics'})
+        response = self.client.post(reverse('add_periodicals'),
+                                    {'action': 'add',
+                                    'periodicals_to_add': 'Brazilian Journal of Probability and Statistics'})
         self.assertEqual(response.status_code, 200)
 
         # Action next, in add_periodicals
@@ -623,46 +619,42 @@ class CacheTest(TestCase):
         # Action add, in periodical_published_papers: needs paper_ids of the selected papers to add
         paper_periodical = Periodical.objects.get(name='Journal of Statistical Physics')
         paper_periodical_id = paper_periodical.id
-        response = self.client.post(reverse('periodical_published_papers'), {'action': 'add', 'paper_id': u'0',
-                                                                             'paper_team_0': [u's'],
-                                                                             'paper_title_0': \
-                                                                             [u'Infinite systems of interacting \
-                                                                             chains with memory of variable \
-                                                                             length\u2014a stochastic model \
-                                                                             for biological neural nets'],
-                                                                             'paper_author_0': [u'Galves, A;\
-                                                                              L\xf6cherbach, E.'],
-                                                                             'paper_periodical_0': paper_periodical_id,
-                                                                             'paper_volume_0': [u'151'],
-                                                                             'paper_issue_0': [u'5'],
-                                                                             'paper_start_page_0': [u'896'],
-                                                                             'paper_end_page_0': [u'921'],
-                                                                             'paper_date_0': [u'2013-06-01']})
+        response = self.client.post(reverse('periodical_published_papers'),
+                                    {'action': 'add',
+                                     'paper_id': u'0',
+                                     'paper_team_0': [u's'],
+                                     'paper_title_0': [u'Infinite systems of interacting chains with memory of variable for biological neural nets'],
+                                     'paper_author_0': [u'Galves, A; L\xf6cherbach, E.'],
+                                     'paper_periodical_0': paper_periodical_id,
+                                     'paper_volume_0': [u'151'],
+                                     'paper_issue_0': [u'5'],
+                                     'paper_start_page_0': [u'896'],
+                                     'paper_end_page_0': [u'921'],
+                                     'paper_date_0': [u'2013-06-01']})
         self.assertEqual(response.status_code, 200)
 
         # Action add, in arxiv_papers, needs paper_id of the selected papers
-        response = self.client.post(reverse('arxiv_papers'), {'action': 'add', 'paper_id': u'0', 'paper_team_0': [u's'],
-                                                              'paper_title_0': [u'Computationally efficient change \
-                                                              point detection for high-dimensional regression'],
-                                                              'paper_author_0': [u'Leonardi, F; B\xfchlmann, P.'],
-                                                              'paper_arxiv_0': [u'http://arxiv.org/abs/1601.03704'],
-                                                              'paper_date_0': [u'2016-01-14']})
+        response = self.client.post(reverse('arxiv_papers'),
+                                    {'action': 'add', 'paper_id': u'0', 'paper_team_0': [u's'],
+                                     'paper_title_0': [u'Computationally efficient change point detection for high-dimensional regression'],
+                                     'paper_author_0': [u'Leonardi, F; B\xfchlmann, P.'],
+                                     'paper_arxiv_0': [u'http://arxiv.org/abs/1601.03704'],
+                                     'paper_date_0': [u'2016-01-14']})
         self.assertEqual(response.status_code, 200)
 
         # Action add, in event_papers: needs paper_id of the selected papers to add
-        event = Event(name='PROCEEDINGS OF THE INTERNATIONAL CONFERENCE ON NUMERICAL ANALYSIS AND APPLIED\
-         MATHEMATICS 2014 (ICNAAM-2014)',
+        event = Event(name='PROCEEDINGS OF THE INTERNATIONAL CONFERENCE ON NUMERICAL ANALYSIS AND APPLIED MATHEMATICS 2014 (ICNAAM-2014)',
                       start_date='2014-09-22', end_date='2014-09-28')
         event.save()
 
-        response = self.client.post(reverse('event_papers'), {'action': 'add', 'paper_id': u'0',
-                                                              'paper_team_0': [u's'],
-                                                              'paper_title_0': [u'Combining multivariate\
-                                                               Markov chains'],
-                                                              'paper_author_0': [u'García, JE'],
-                                                              'paper_event_0': [u'1'],
-                                                              'paper_start_page_0': [u'60003'],
-                                                              'paper_end_page_0': [u'60004']})
+        response = self.client.post(reverse('event_papers'),
+                                    {'action': 'add', 'paper_id': u'0',
+                                     'paper_team_0': [u's'],
+                                     'paper_title_0': [u'Combining multivariate Markov chains'],
+                                     'paper_author_0': [u'García, JE'],
+                                     'paper_event_0': [u'1'],
+                                     'paper_start_page_0': [u'60003'],
+                                     'paper_end_page_0': [u'60004']})
 
         self.assertEqual(response.status_code, 200)
 
@@ -670,16 +662,16 @@ class CacheTest(TestCase):
         # Action update, in update_papers: needs paper_id of the selected papers to update
         paper_periodical = Periodical.objects.get(name='Brazilian Journal of Probability and Statistics')
         paper_periodical_id = paper_periodical.id
-        response = self.client.post(reverse('update_papers'), {'action': 'update', 'paper_id': u'0',
-                                                               'paper_team_0': [u's'],
-                                                               'paper_title_0': [u'Identifying interacting pairs \
-                                                               of sites in Ising models on a countable set'],
-                                                               'paper_author_0': [u'Galves, A; Orlandi, E; \
-                                                               Takahashi, DY.'],
-                                                               'paper_periodical_0': paper_periodical_id,
-                                                               'paper_volume_0': [u'29'],
-                                                               'paper_issue_0': [u'2'],
-                                                               'paper_start_page_0': [u'443'],
-                                                               'paper_end_page_0': [u'459'],
-                                                               'paper_date_0': [u'2015-01-06']})
+        response = self.client.post(reverse('update_papers'),
+                                    {'action': 'update', 'paper_id': u'0',
+                                     'paper_team_0': [u's'],
+                                     'paper_title_0':
+                                         [u'Identifying interacting pairs of sites in Ising models on a countable set'],
+                                     'paper_author_0': [u'Galves, A; Orlandi, E; Takahashi, DY.'],
+                                     'paper_periodical_0': paper_periodical_id,
+                                     'paper_volume_0': [u'29'],
+                                     'paper_issue_0': [u'2'],
+                                     'paper_start_page_0': [u'443'],
+                                     'paper_end_page_0': [u'459'],
+                                     'paper_date_0': [u'2015-01-06']})
         self.assertEqual(response.status_code, 200)
