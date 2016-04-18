@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, HttpResponse
-from django.contrib.auth.decorators import login_required
-from django.utils.translation import ugettext_lazy as _
-from django.contrib import messages
-from models import *
-from django.template.loader import render_to_string
-from django.db.models import Q
-from itertools import chain
-from person.models import CitationName
-from django.core.cache import cache
-from bs4 import BeautifulSoup
+import datetime
 import urllib2
 import HTMLParser
 import re
 import time
+
+from bs4 import BeautifulSoup
+from itertools import chain
 from random import randint
-import datetime
-from django.shortcuts import redirect
+from research.models import *
+from person.models import CitationName
+
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.cache import cache
+from django.db.models import Q
+from django.shortcuts import render, HttpResponse, redirect
+from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy as _
 
 
 TIME = " 00:00:00"
