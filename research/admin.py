@@ -1,7 +1,8 @@
+import copy
 from django.contrib import admin
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-from forms import ArticleAdminForm, BookAdminForm, AcademicWorkAdminForm
+from research.forms import ArticleAdminForm, BookAdminForm, AcademicWorkAdminForm
 from research.models import *
 
 
@@ -64,19 +65,20 @@ class SuperResearchResult(admin.ModelAdmin):
 
 
 class ArticleAdmin(SuperResearchResult):
-    fields = ['team', 'title', 'status', 'type', 'periodical', 'event', 'url', 'ris_file_authors', 'hide', 'note']
+    fields = ['team', 'title', 'status', 'type', 'periodical', 'event', 'url', 'note']
     list_display = ('team', 'title', 'authors', 'current_status', 'type_of_article')
     list_display_links = ('title',)
     inlines = (AuthorsInline, DraftInline, SubmittedInline, AcceptedInline, PublishedInline,
                PublishedInPeriodicalInline)
     form = ArticleAdminForm
 
-    # If not superuser or NIRA Admin, the ris_file_authors field becomes read-only.
-    def get_readonly_fields(self, request, obj=None):
-        ro_fields = super(ArticleAdmin, self).get_readonly_fields(request, obj)
-        if not request.user.is_superuser and not request.user.is_nira_admin:
-            ro_fields = list(ro_fields) + ['ris_file_authors']
-        return ro_fields
+    # If superuser or NIRA Admin, show "ris_file_authors" and "hide" fields.
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = copy.deepcopy(super(ArticleAdmin, self).get_fieldsets(request, obj))
+        if request.user.is_nira_admin or request.user.is_superuser:
+            fieldsets[0][1]['fields'].append('ris_file_authors')
+            fieldsets[0][1]['fields'].append('hide')
+        return fieldsets
 
 admin.site.register(Article, ArticleAdmin)
 
