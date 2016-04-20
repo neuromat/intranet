@@ -448,7 +448,7 @@ def add_periodicals(request):
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
 
-        # Go to the page that shows the events, with cache properly setted
+        # Go to the page that shows the events, with cache properly set
         elif request.POST['action'] == "next":
             papers = cache.get('papers')
             # Look for event to be registered. Remove duplicates
@@ -496,6 +496,7 @@ def add_papers(request):
 
             # Let's read the papers
             else:
+                citations = CitationName.objects.all()
                 papers = cache.get('papers')
                 periodical_published_papers = []
                 arxiv_papers = []
@@ -565,9 +566,8 @@ def add_papers(request):
                                 else:
                                     citation_name = last_name+','+' '+letters+';'+' '
 
-                                nira_author = CitationName.objects.all()
-                                if nira_author.filter(name=last_name+','+' '+letters):
-                                    nira_author_name = nira_author.get(name=last_name+','+' '+letters)
+                                if citations.filter(name=last_name+','+' '+letters):
+                                    nira_author_name = citations.get(name=last_name+','+' '+letters)
                                     nira_author_name = nira_author_name.person
                                     nira_author_list.append(nira_author_name)
 
@@ -720,14 +720,20 @@ def periodical_published_papers(request):
 
                 for paper_scholar_id in selected_papers:
 
+                    paper_author = []
                     paper_url = ''
+
                     for paper in periodical_published_papers:
                         if paper['paper_scholar_id'] == int(paper_scholar_id):
                             paper_url = paper['url']
+                            try:
+                                paper_author = paper['nira_author_list']
+                            except KeyError:
+                                pass
 
                     paper_team = request.POST['paper_team_'+paper_scholar_id]
                     paper_title = request.POST['paper_title_'+paper_scholar_id]
-                    paper_author = request.POST['paper_author_'+paper_scholar_id]
+                    paper_ris_author = request.POST['paper_author_'+paper_scholar_id]
                     paper_periodical = request.POST['paper_periodical_'+paper_scholar_id]
                     paper_volume = request.POST['paper_volume_'+paper_scholar_id]
                     paper_issue = request.POST['paper_issue_'+paper_scholar_id]
@@ -746,8 +752,8 @@ def periodical_published_papers(request):
                     if not paper_date_error:
                         # Adding paper in NIRA
                         periodical = Periodical.objects.get(id=int(paper_periodical))
-                        article = Article(team=paper_team, title=paper_title, ris_file_authors=paper_author, status='p',
-                                          type='p', periodical=periodical, url=paper_url)
+                        article = Article(team=paper_team, title=paper_title, ris_file_authors=paper_ris_author,
+                                          status='p', type='p', periodical=periodical, url=paper_url)
                         article.save()
                         article_id = article.pk
                         # start_page and end_page are integers, so they can't be blank
@@ -756,10 +762,21 @@ def periodical_published_papers(request):
                                                               number=paper_issue, date=paper_date,
                                                               start_page=paper_start_page, end_page=paper_end_page)
                             published.save()
+
+                            if paper_author:
+                                for author in range(0, len(paper_author)):
+                                    person_id = paper_author[author].pk
+                                    Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
+
                         else:
                             published = PublishedInPeriodical(article_id=article_id, volume=paper_volume,
                                                               number=paper_issue, date=paper_date)
                             published.save()
+
+                            if paper_author:
+                                for author in range(0, len(paper_author)):
+                                    person_id = paper_author[author].pk
+                                    Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
 
                         # Removing paper from the periodical_published_papers list
                         periodical_published_papers = [x for x in periodical_published_papers if
@@ -799,8 +816,20 @@ def arxiv_papers(request):
             arxiv_papers = cache.get('arxiv_papers')
             selected_papers = request.POST.getlist('paper_id')
             if selected_papers:
+
                 date_error = False
+
                 for paper_arxiv_id in selected_papers:
+
+                    paper_x_author = []
+
+                    for paper in arxiv_papers:
+                        if paper['paper_arxiv_id'] == int(paper_arxiv_id):
+                            try:
+                                paper_x_author = paper['nira_author_list']
+                            except KeyError:
+                                pass
+
                     paper_team = request.POST['paper_team_'+paper_arxiv_id]
                     paper_title = request.POST['paper_title_'+paper_arxiv_id]
                     paper_author = request.POST['paper_author_'+paper_arxiv_id]
@@ -823,6 +852,11 @@ def arxiv_papers(request):
                         article_id = item.pk
                         date = Draft(article_id=article_id, date=paper_date)
                         date.save()
+
+                        if paper_x_author:
+                            for author in range(0, len(paper_x_author)):
+                                person_id = paper_x_author[author].pk
+                                Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
 
                         # Removing paper from the arxiv_papers list
                         arxiv_papers = [x for x in arxiv_papers if not (int(paper_arxiv_id) == x.get('paper_arxiv_id'))]
@@ -865,6 +899,16 @@ def event_papers(request):
             events = Event.objects.all()
             if selected_papers:
                 for paper_scholar_id in selected_papers:
+
+                    paper_event_author = []
+
+                    for paper in event_papers:
+                        if paper['paper_scholar_id'] == int(paper_scholar_id):
+                            try:
+                                paper_event_author = paper['nira_author_list']
+                            except KeyError:
+                                pass
+
                     paper_team = request.POST['paper_team_'+paper_scholar_id]
                     paper_title = request.POST['paper_title_'+paper_scholar_id]
                     paper_author = request.POST['paper_author_'+paper_scholar_id]
@@ -883,9 +927,21 @@ def event_papers(request):
                         published = Published(article_id=article_id, start_page=paper_start_page,
                                               end_page=paper_end_page)
                         published.save()
+
+                        if paper_event_author:
+                            for author in range(0, len(paper_event_author)):
+                                person_id = paper_event_author[author].pk
+                                Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
+
                     else:
                         published = Published(article_id=article_id)
                         published.save()
+
+                        if paper_event_author:
+                            for author in range(0, len(paper_event_author)):
+                                person_id = paper_event_author[author].pk
+                                Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
+
 
                     # Removing paper from the event_papers list
                     event_papers = [x for x in event_papers if not (int(paper_scholar_id) == x.get('paper_scholar_id'))]
@@ -919,12 +975,26 @@ def update_papers(request):
     if request.method == "POST":
         # Update papers
         if request.POST['action'] == "update":
+            authors = Author.objects.all()
             selected_papers = request.POST.getlist('paper_id')
             periodical_update_papers = cache.get('periodical_update_papers')
             periodicals = Periodical.objects.all()
+
             if selected_papers:
+
                 date_error = False
+
                 for paper_scholar_id in selected_papers:
+
+                    paper_update_author = []
+
+                    for paper in periodical_update_papers:
+                        if paper['paper_scholar_id'] == int(paper_scholar_id):
+                            try:
+                                paper_update_author = paper['nira_author_list']
+                            except KeyError:
+                                pass
+
                     paper_team = request.POST['paper_team_'+paper_scholar_id]
                     paper_title = request.POST['paper_title_'+paper_scholar_id]
                     paper_author = request.POST['paper_author_'+paper_scholar_id]
@@ -958,8 +1028,20 @@ def update_papers(request):
                                           ris_file_authors=paper_author, url=paper_url, status=paper_status, type='p',
                                           periodical=periodical)
                         article.save()
+                        article_id = article.pk
+
+                        if paper_update_author:
+
+                            if authors.filter(research_result_id=article_id):
+                                authors.filter(research_result_id=article_id).delete()
+
+                            for author in range(0, len(paper_update_author)):
+                                person_id = paper_update_author[author].pk
+                                Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
+
                         # start_page and end_page are integers, so they can't be blank
                         if paper_start_page and paper_end_page:
+                            x = PublishedInPeriodical.objects.all()
                             published = PublishedInPeriodical(article_id=paper_id, volume=paper_volume,
                                                               number=paper_issue, date=paper_date,
                                                               start_page=paper_start_page, end_page=paper_end_page)
