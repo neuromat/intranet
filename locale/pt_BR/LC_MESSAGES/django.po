@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-31 13:22-0300\n"
+"POT-Creation-Date: 2016-04-25 09:59-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: activity/admin.py:11 activity/models.py:87
+#: activity/admin.py:12 activity/models.py:87
 msgid "Link"
 msgstr "Link"
 
@@ -43,8 +43,8 @@ msgstr "Reunião"
 msgid "Seminar"
 msgstr "Seminário"
 
-#: activity/models.py:63 dissemination/models.py:39 research/models.py:45
-#: research/models.py:298 templates/report/activity/meetings_report.html:16
+#: activity/models.py:63 dissemination/models.py:39 research/models.py:46
+#: research/models.py:297 templates/report/activity/meetings_report.html:16
 #: templates/report/activity/seminars_report.html:16
 #: templates/report/activity/seminars_report.html:34
 #: templates/report/activity/training_programs_report.html:17
@@ -60,7 +60,7 @@ msgstr "Seminário"
 msgid "Title"
 msgstr "Título"
 
-#: activity/models.py:64 research/models.py:154
+#: activity/models.py:64 research/models.py:153
 #: templates/report/activity/scientific_missions_report.html:17
 #: templates/report/activity/scientific_missions_report.html:84
 msgid "Local"
@@ -71,7 +71,7 @@ msgid "Type of activity"
 msgstr "Tipo de atividade"
 
 #: activity/models.py:81 dissemination/models.py:42 order/models.py:204
-#: order/models.py:227 research/models.py:46
+#: order/models.py:227 research/models.py:47 research/models.py:304
 #: templates/report/activity/meetings_report.html:24
 #: templates/report/dissemination/dissemination_report.html:18
 #: templates/report/dissemination/dissemination_report.html:22
@@ -104,7 +104,7 @@ msgid "Description"
 msgstr "Descrição"
 
 #: activity/models.py:106 activity/models.py:130 order/models.py:206
-#: research/models.py:304 templates/report/activity/meetings.html:29
+#: research/models.py:305 templates/report/activity/meetings.html:29
 #: templates/report/activity/scientific_missions.html:21
 #: templates/report/activity/scientific_missions_report.html:18
 #: templates/report/activity/scientific_missions_report.html:85
@@ -117,7 +117,7 @@ msgid "Start date"
 msgstr "Início"
 
 #: activity/models.py:107 activity/models.py:131 order/models.py:207
-#: research/models.py:305 templates/report/activity/meetings.html:33
+#: research/models.py:306 templates/report/activity/meetings.html:33
 #: templates/report/activity/scientific_missions.html:26
 #: templates/report/activity/scientific_missions_report.html:18
 #: templates/report/activity/scientific_missions_report.html:85
@@ -129,7 +129,7 @@ msgstr "Início"
 msgid "End date"
 msgstr "Término"
 
-#: activity/models.py:111 templates/admin/index.html:64
+#: activity/models.py:111 templates/admin/index.html:76
 msgid "Meetings"
 msgstr "Reuniões"
 
@@ -157,10 +157,10 @@ msgid "Training Programs"
 msgstr "Programas de treinamento"
 
 #: activity/models.py:161 dissemination/models.py:21 dissemination/models.py:62
-#: dissemination/models.py:104 order/models.py:203 person/models.py:24
-#: person/models.py:42 person/models.py:63 person/models.py:173
-#: research/models.py:112 research/models.py:130 research/models.py:147
-#: research/models.py:172 research/models.py:281
+#: dissemination/models.py:104 order/models.py:203 person/models.py:27
+#: person/models.py:45 person/models.py:66 person/models.py:174
+#: research/models.py:111 research/models.py:129 research/models.py:146
+#: research/models.py:171 research/models.py:280
 msgid "Name"
 msgstr "Nome"
 
@@ -183,13 +183,19 @@ msgstr "Categoria"
 msgid "International guest lecturer?"
 msgstr "Palestrante de uma instituição do exterior?"
 
-#: activity/models.py:183
+#: activity/models.py:183 research/models.py:307
+#: templates/report/research/academic_works_report.html:40
+#: templates/report/research/academic_works_report.html:65
+#: templates/report/research/academic_works_report.html:93
+#: templates/report/research/academic_works_report.html:118
+#: templates/report/research/academic_works_report.html:146
+#: templates/report/research/academic_works_report.html:171
 msgid "Abstract"
 msgstr "Resumo"
 
-#: activity/models.py:184 dissemination/models.py:40 research/models.py:88
-#: research/models.py:231 research/models.py:241 research/models.py:251
-#: research/models.py:273 templates/report/activity/seminars_report.html:17
+#: activity/models.py:184 dissemination/models.py:40 research/models.py:87
+#: research/models.py:230 research/models.py:240 research/models.py:250
+#: research/models.py:272 templates/report/activity/seminars_report.html:17
 #: templates/report/activity/seminars_report.html:34
 #: templates/report/activity/training_programs_report.html:17
 #: templates/report/activity/training_programs_report.html:49
@@ -207,8 +213,8 @@ msgstr "Data"
 msgid "Time"
 msgstr "Hora"
 
-#: activity/models.py:186 research/models.py:230 research/models.py:240
-#: research/models.py:250 research/models.py:263
+#: activity/models.py:186 research/models.py:229 research/models.py:239
+#: research/models.py:249 research/models.py:262
 msgid "Attachment"
 msgstr "Anexo"
 
@@ -216,12 +222,12 @@ msgstr "Anexo"
 msgid "Room"
 msgstr "Sala"
 
-#: activity/models.py:191 templates/admin/index.html:67
+#: activity/models.py:191 templates/admin/index.html:78
 msgid "Seminars"
 msgstr "Seminários"
 
 #: activity/views.py:99 activity/views.py:179 activity/views.py:223
-#: dissemination/views.py:71 research/views.py:154 research/views.py:209
+#: dissemination/views.py:71 research/views.py:164 research/views.py:248
 msgid "End date should be equal or greater than start date."
 msgstr "A data de término deve ser igual ou superior a data inicial."
 
@@ -264,7 +270,7 @@ msgstr "Entre com um nome de usuário válido."
 msgid "invalid"
 msgstr "inválido"
 
-#: custom_auth/models.py:52 person/models.py:132
+#: custom_auth/models.py:52 person/models.py:135
 msgid "Email"
 msgstr "Email"
 
@@ -288,7 +294,7 @@ msgstr ""
 "Determina se este usuário deve ser tratado como ativo. Remova essa seleçã ao "
 "invés de deletar as contas."
 
-#: custom_auth/models.py:58 sistema/urls.py:26 templates/admin/base_site.html:4
+#: custom_auth/models.py:58 sistema/urls.py:27 templates/admin/base_site.html:4
 msgid "NIRA admin"
 msgstr "Admin do NIRA"
 
@@ -316,7 +322,7 @@ msgstr "Usuário"
 msgid "Users"
 msgstr "Usuários"
 
-#: dissemination/apps.py:9 research/models.py:21
+#: dissemination/apps.py:9 research/models.py:20
 #: templates/report/research/add_event_papers.html:38
 #: templates/report/research/arxiv_papers.html:37
 #: templates/report/research/periodical_published_papers.html:41
@@ -326,7 +332,7 @@ msgstr "Usuários"
 msgid "Dissemination"
 msgstr "Difusão"
 
-#: dissemination/apps.py:10 templates/admin/index.html:62
+#: dissemination/apps.py:10 templates/admin/index.html:75
 msgid "Disseminations"
 msgstr "Difusões"
 
@@ -370,7 +376,7 @@ msgstr "Meios de comunicação interna"
 msgid "Media outlet"
 msgstr "Meio de comunicação"
 
-#: dissemination/models.py:81 dissemination/models.py:123 research/models.py:70
+#: dissemination/models.py:81 dissemination/models.py:123 research/models.py:69
 msgid "Author"
 msgstr "Autor"
 
@@ -562,7 +568,7 @@ msgstr "Tipo de pedido"
 msgid "Protocol"
 msgstr "Protocolo"
 
-#: order/models.py:96 templates/admin/index.html:65
+#: order/models.py:96
 msgid "Orders"
 msgstr "Pedidos"
 
@@ -602,13 +608,13 @@ msgstr ""
 msgid "Origin"
 msgstr "Origem"
 
-#: order/models.py:232 person/models.py:114 person/models.py:130
-#: templates/report/research/academic_works_report.html:34
-#: templates/report/research/academic_works_report.html:55
-#: templates/report/research/academic_works_report.html:79
-#: templates/report/research/academic_works_report.html:100
-#: templates/report/research/academic_works_report.html:124
-#: templates/report/research/academic_works_report.html:145
+#: order/models.py:232 person/models.py:117 person/models.py:133
+#: templates/report/research/academic_works_report.html:33
+#: templates/report/research/academic_works_report.html:58
+#: templates/report/research/academic_works_report.html:86
+#: templates/report/research/academic_works_report.html:111
+#: templates/report/research/academic_works_report.html:139
+#: templates/report/research/academic_works_report.html:164
 msgid "Institution"
 msgstr "Instituição"
 
@@ -644,7 +650,7 @@ msgstr "Tipo de viagem"
 msgid "Type of transportation"
 msgstr "Tipo de transporte"
 
-#: order/models.py:275 research/models.py:47
+#: order/models.py:275 research/models.py:48
 msgid "Note"
 msgstr "Observação"
 
@@ -688,111 +694,119 @@ msgstr "Informações de Contato"
 msgid "Personal Info"
 msgstr "Informações pessoais"
 
-#: person/models.py:14
+#: person/models.py:17
 #, python-format
 msgid "%s is not a valid CPF"
 msgstr "%s não é um CPF válido"
 
-#: person/models.py:30 person/models.py:129
+#: person/models.py:33 person/models.py:132
 msgid "Role"
 msgstr "Perfil"
 
-#: person/models.py:31
+#: person/models.py:34
 msgid "Roles"
 msgstr "Perfis"
 
-#: person/models.py:48
+#: person/models.py:51
 msgid "Type of institution"
 msgstr "Tipo de instituição"
 
-#: person/models.py:49
+#: person/models.py:52
 msgid "Types of institution"
 msgstr "Tipos de instituição"
 
-#: person/models.py:64 research/models.py:113 research/models.py:148
+#: person/models.py:67 research/models.py:112 research/models.py:147
 msgid "Acronym"
 msgstr "Sigla"
 
-#: person/models.py:65 research/models.py:48 research/models.py:81
-#: research/models.py:297 templates/report/dissemination/dissemination.html:21
+#: person/models.py:68 research/models.py:49 research/models.py:80
+#: research/models.py:296 templates/report/dissemination/dissemination.html:21
 msgid "Type"
 msgstr "Tipo"
 
-#: person/models.py:66
+#: person/models.py:69
 msgid "Belongs to"
 msgstr "Pertence a"
 
-#: person/models.py:115
+#: person/models.py:118
 msgid "Institutions"
 msgstr "Instituições"
 
-#: person/models.py:131
+#: person/models.py:134
 msgid "Full name"
 msgstr "Nome completo"
 
-#: person/models.py:133 person/models.py:174
-msgid "Name in bibliographic citation"
-msgstr "Nome em citação bibliográfica"
-
-#: person/models.py:135
+#: person/models.py:136
 msgid "RG"
 msgstr "RG"
 
-#: person/models.py:136
+#: person/models.py:137
 msgid "CPF"
 msgstr "CPF"
 
-#: person/models.py:137
+#: person/models.py:138
 msgid "Passport"
 msgstr "Passaporte"
 
-#: person/models.py:138
+#: person/models.py:139
 msgid "Phone"
 msgstr "Telefone"
 
-#: person/models.py:139
+#: person/models.py:140
 msgid "Cell Phone"
 msgstr "Celular"
 
-#: person/models.py:140
+#: person/models.py:141
 msgid "Zip Code"
 msgstr "CEP"
 
-#: person/models.py:141
+#: person/models.py:142
 msgid "Address"
 msgstr "Endereço"
 
-#: person/models.py:142
+#: person/models.py:143
 msgid "Complement"
 msgstr "Complemento"
 
-#: person/models.py:143 research/models.py:151 research/models.py:272
+#: person/models.py:144 research/models.py:150 research/models.py:271
 msgid "Number"
 msgstr "Número"
 
-#: person/models.py:144
+#: person/models.py:145
 msgid "District"
 msgstr "Bairro"
 
-#: person/models.py:145
+#: person/models.py:146
 msgid "City"
 msgstr "Cidade"
 
-#: person/models.py:146
+#: person/models.py:147
 msgid "State"
 msgstr "Estado"
 
-#: person/models.py:147
+#: person/models.py:148
 msgid "Country"
 msgstr "País"
 
-#: person/models.py:164 person/models.py:165
+#: person/models.py:165 person/models.py:166
 msgid "Person"
 msgstr "Pessoa"
 
-#: person/models.py:180 person/models.py:181
+#: person/models.py:175
+msgid "Name in bibliographic citation"
+msgstr "Nome em citação bibliográfica"
+
+#: person/models.py:176
+msgid "Default name?"
+msgstr "Nome default?"
+
+#: person/models.py:194 person/models.py:195
 msgid "Citation name"
 msgstr "Nome de citação"
+
+#: person/views.py:142
+msgid "Successfully updated citation names."
+msgstr "Nomes de citação atualizados com sucesso."
 
 #: research/admin.py:48
 msgid "Periodical name"
@@ -806,35 +820,35 @@ msgstr "Nome do Evento"
 msgid "Research results"
 msgstr "Resultados de pesquisa"
 
-#: research/forms.py:12 research/models.py:206 research/models.py:234
-#: research/models.py:235
+#: research/forms.py:12 research/models.py:205 research/models.py:233
+#: research/models.py:234
 msgid "Draft"
 msgstr "Rascunho"
 
-#: research/forms.py:13 research/models.py:204 research/models.py:244
-#: research/models.py:245
+#: research/forms.py:13 research/models.py:203 research/models.py:243
+#: research/models.py:244
 msgid "Submitted"
 msgstr "Submetido"
 
-#: research/forms.py:14 research/models.py:202 research/models.py:254
-#: research/models.py:255
+#: research/forms.py:14 research/models.py:201 research/models.py:253
+#: research/models.py:254
 msgid "Accepted"
 msgstr "Aceito"
 
-#: research/forms.py:15 research/models.py:200 research/models.py:266
-#: research/models.py:267
+#: research/forms.py:15 research/models.py:199 research/models.py:265
+#: research/models.py:266
 msgid "Published"
 msgstr "Publicado"
 
-#: research/models.py:11 research/models.py:217 research/models.py:259
+#: research/models.py:10 research/models.py:216 research/models.py:258
 msgid "Article"
 msgstr "Artigo"
 
-#: research/models.py:12 research/models.py:29
+#: research/models.py:11 research/models.py:28
 msgid "Book"
 msgstr "Livro"
 
-#: research/models.py:20 templates/report/research/add_event_papers.html:37
+#: research/models.py:19 templates/report/research/add_event_papers.html:37
 #: templates/report/research/arxiv_papers.html:36
 #: templates/report/research/periodical_published_papers.html:40
 #: templates/report/research/periodical_update_papers.html:41
@@ -843,7 +857,7 @@ msgstr "Livro"
 msgid "Scientific"
 msgstr "Evento"
 
-#: research/models.py:22 templates/report/research/add_event_papers.html:39
+#: research/models.py:21 templates/report/research/add_event_papers.html:39
 #: templates/report/research/arxiv_papers.html:38
 #: templates/report/research/periodical_published_papers.html:42
 #: templates/report/research/periodical_update_papers.html:43
@@ -852,34 +866,34 @@ msgstr "Evento"
 msgid "Technology transfer"
 msgstr "Transferência de tecnologia"
 
-#: research/models.py:30 research/models.py:89
+#: research/models.py:29 research/models.py:88
 msgid "Chapter"
 msgstr "Capítulo"
 
-#: research/models.py:37
+#: research/models.py:36
 msgid "Periodical (Journal or magazine)"
 msgstr "Periódico"
 
-#: research/models.py:38
+#: research/models.py:37
 msgid "Event (Conference, congress, meeting, etc)"
 msgstr "Evento"
 
-#: research/models.py:43 templates/report/research/add_event_papers.html:24
+#: research/models.py:44 templates/report/research/add_event_papers.html:24
 #: templates/report/research/arxiv_papers.html:24
 #: templates/report/research/periodical_published_papers.html:24
 #: templates/report/research/periodical_update_papers.html:24
 msgid "Team"
 msgstr "Time"
 
-#: research/models.py:49
+#: research/models.py:50
 msgid "RIS file authors"
 msgstr "Autores do arquivo RIS"
 
-#: research/models.py:67
+#: research/models.py:66
 msgid "Order of author"
 msgstr "Data/hora do pedido"
 
-#: research/models.py:71
+#: research/models.py:70
 #: templates/report/dissemination/dissemination_report.html:20
 #: templates/report/dissemination/dissemination_report.html:65
 #: templates/report/research/add_event_papers.html:26
@@ -889,191 +903,189 @@ msgstr "Data/hora do pedido"
 msgid "Authors"
 msgstr "Autores"
 
-#: research/models.py:82 research/models.py:149
+#: research/models.py:81 research/models.py:148
 msgid "Publisher"
 msgstr "Editor"
 
-#: research/models.py:83
+#: research/models.py:82
 msgid "ISBN"
 msgstr "ISBN"
 
-#: research/models.py:84
+#: research/models.py:83
 msgid "Volume/Number"
 msgstr "Número"
 
-#: research/models.py:85
+#: research/models.py:84
 msgid "Serie"
 msgstr "Série"
 
-#: research/models.py:86
+#: research/models.py:85
 msgid "Edition"
 msgstr "Edição"
 
-#: research/models.py:87 research/models.py:260
+#: research/models.py:86 research/models.py:259
 msgid "DOI"
 msgstr "DOI"
 
-#: research/models.py:90 research/models.py:261
+#: research/models.py:89 research/models.py:260
 msgid "Start page"
 msgstr "Página inicial"
 
-#: research/models.py:91 research/models.py:262
+#: research/models.py:90 research/models.py:261
 msgid "End page"
 msgstr "Página final"
 
-#: research/models.py:97
+#: research/models.py:96
 msgid "Book and chapter"
 msgstr "Livro e capítulo"
 
-#: research/models.py:98
+#: research/models.py:97 templates/admin/index.html:74
 msgid "Books and chapters"
 msgstr "Livros e capítulos"
 
-#: research/models.py:119 research/models.py:188 research/models.py:210
+#: research/models.py:118 research/models.py:187 research/models.py:209
 msgid "Periodical"
 msgstr "Periódico"
 
-#: research/models.py:120
+#: research/models.py:119
 msgid "Periodicals"
 msgstr "Periódicos"
 
-#: research/models.py:136 research/models.py:137
+#: research/models.py:135 research/models.py:136
 msgid "Periodical name on the RIS file"
 msgstr "Nome do periódico no arquivo RIS"
 
-#: research/models.py:150 research/models.py:271
+#: research/models.py:149 research/models.py:270
 msgid "Volume"
 msgstr "Volume"
 
-#: research/models.py:152
+#: research/models.py:151
 msgid "Start date of the event"
 msgstr "Início do evento"
 
-#: research/models.py:153
+#: research/models.py:152
 msgid "End date of the event"
 msgstr "Término do evento"
 
-#: research/models.py:161 research/models.py:189 research/models.py:212
+#: research/models.py:160 research/models.py:188 research/models.py:211
 #: templates/report/research/add_event_papers.html:27
 msgid "Event"
 msgstr "Evento"
 
-#: research/models.py:162
+#: research/models.py:161
 msgid "Events (congress, conference, etc.)"
 msgstr "Eventos"
 
-#: research/models.py:178 research/models.py:179
+#: research/models.py:177 research/models.py:178
 msgid "Event name on the RIS file"
 msgstr "Nome do evento no arquivo RIS"
 
-#: research/models.py:191
+#: research/models.py:190
 msgid "Where?"
 msgstr "Onde?"
 
-#: research/models.py:192
+#: research/models.py:191
 #: templates/report/order/list_equipment_supplies_msc.html:17
 #: templates/report/order/list_order.html:30
 msgid "Status"
 msgstr "Status"
 
-#: research/models.py:193
+#: research/models.py:192
 msgid "Hide this paper in the report"
 msgstr "Esconder esse paper no relatório"
 
-#: research/models.py:214
+#: research/models.py:213
 msgid "Not defined"
 msgstr "Não definido"
 
-#: research/models.py:218 templates/admin/index.html:61
+#: research/models.py:217 templates/admin/index.html:73
 #: templates/report/research/articles.html:12
 #: templates/report/research/articles_report.html:7
 msgid "Articles"
 msgstr "Artigos"
 
-#: research/models.py:287
+#: research/models.py:286
 msgid "Type of Academic Work"
 msgstr "Tipo de trabalho acadêmico"
 
-#: research/models.py:288
+#: research/models.py:287
 msgid "Types of Academic Work"
 msgstr "Tipos de trabalho acadêmico"
 
-#: research/models.py:299
-#: templates/report/research/academic_works_report.html:29
-#: templates/report/research/academic_works_report.html:50
-#: templates/report/research/academic_works_report.html:74
-#: templates/report/research/academic_works_report.html:95
-#: templates/report/research/academic_works_report.html:119
-#: templates/report/research/academic_works_report.html:140
+#: research/models.py:298
+#: templates/report/research/academic_works_report.html:28
+#: templates/report/research/academic_works_report.html:53
+#: templates/report/research/academic_works_report.html:81
+#: templates/report/research/academic_works_report.html:106
+#: templates/report/research/academic_works_report.html:134
+#: templates/report/research/academic_works_report.html:159
 msgid "Advisee"
 msgstr "Orientado"
 
-#: research/models.py:300
-#: templates/report/research/academic_works_report.html:30
-#: templates/report/research/academic_works_report.html:51
-#: templates/report/research/academic_works_report.html:75
-#: templates/report/research/academic_works_report.html:96
-#: templates/report/research/academic_works_report.html:120
-#: templates/report/research/academic_works_report.html:141
+#: research/models.py:299
+#: templates/report/research/academic_works_report.html:29
+#: templates/report/research/academic_works_report.html:54
+#: templates/report/research/academic_works_report.html:82
+#: templates/report/research/academic_works_report.html:107
+#: templates/report/research/academic_works_report.html:135
+#: templates/report/research/academic_works_report.html:160
 msgid "Advisor"
 msgstr "Orientador"
 
-#: research/models.py:301
+#: research/models.py:300
 msgid "Co-Advisor"
 msgstr "Coorientador"
 
-#: research/models.py:303
-#: templates/report/research/academic_works_report.html:36
-#: templates/report/research/academic_works_report.html:57
-#: templates/report/research/academic_works_report.html:81
-#: templates/report/research/academic_works_report.html:102
-#: templates/report/research/academic_works_report.html:126
-#: templates/report/research/academic_works_report.html:147
-msgid "Schollarship"
-msgstr "Bolsa"
+#: research/models.py:302
+msgid "Financially supported?"
+msgstr "Possui bolsa de estudo?"
 
-#: research/models.py:314
+#: research/models.py:303
+msgid "Funding agency"
+msgstr "Agência financiadora"
+
+#: research/models.py:316
 msgid "Academic Work"
 msgstr "Trabalho acadêmico"
 
-#: research/models.py:315
+#: research/models.py:317
 msgid "Academic Works"
 msgstr "Trabalhos acadêmicos"
 
-#: research/views.py:73
+#: research/views.py:127
 msgid "Invalid start date!"
 msgstr "Início inválido"
 
-#: research/views.py:83
+#: research/views.py:137
 msgid "Invalid end date!"
 msgstr "Término inválido"
 
-#: research/views.py:373
+#: research/views.py:412
 msgid "Please, select a .ris file to upload."
 msgstr "Por favor, selecione um arquivo .ris para fazer o upload."
 
-#: research/views.py:401
+#: research/views.py:440
 msgid "Successfully added one Periodical."
 msgstr "Periódico adicionado com sucesso"
 
-#: research/views.py:403
+#: research/views.py:442
 msgid "Successfully added all the Periodicals."
 msgstr "Todos os periódicos foram adicionados com sucesso"
 
-#: research/views.py:406 research/views.py:737 research/views.py:799
-#: research/views.py:859 research/views.py:945
+#: research/views.py:445 research/views.py:793 research/views.py:872
+#: research/views.py:954 research/views.py:1066
 msgid "You have selected no item. Nothing to be done!"
 msgstr "Você não selecionou nenhum item. Não há nada para fazer!"
 
-#: research/views.py:730 research/views.py:792 research/views.py:938
+#: research/views.py:786 research/views.py:865 research/views.py:1059
 msgid "Wrong date format! It should be YYYY-MM-DD."
 msgstr "Formato de data errado! Deveria ser AAAA-MM-DD"
 
-#: sistema/urls.py:25
+#: sistema/urls.py:26
 msgid "NeuroMat Individual Report of Activities"
 msgstr "Relatório de atividades individuais do Neuromat"
 
-#: sistema/urls.py:27
+#: sistema/urls.py:28
 msgid "Administration"
 msgstr "Administração"
 
@@ -1123,15 +1135,60 @@ msgstr "Adicionar"
 msgid "Change"
 msgstr "Alterar"
 
-#: templates/admin/index.html:57
+#: templates/admin/index.html:59
+msgid ""
+"NeuroMat Individual Report of Activities (NIRA) is an open-source software, "
+"that should go through continuing updates, and its source-code is available "
+"on the NeuroMat github account:"
+msgstr "O NeuroMat Individual Report of Activities (NIRA) é um software de código aberto, "
+"que receberá atualizações contínuas, e seu código-fonte está disponível na conta do NeuroMat no Github:"
+
+#: templates/admin/index.html:60
+msgid ""
+"If you have any questions, please contact us at nira at numec dot prp dot "
+"usp dot br"
+msgstr ""
+"Se você tiver alguma dúvida, por favor, "
+"entre em contato conosco pelo email nira arroba numec ponto prp ponto usp ponto br"
+
+#: templates/admin/index.html:70
 msgid "Reports"
 msgstr "Relatórios"
 
-#: templates/admin/index.html:60
+#: templates/admin/index.html:72
 msgid "Academic works"
 msgstr "Trabalhos acadêmicos"
 
-#: templates/admin/index.html:63
+#: templates/admin/index.html:77
+msgid "Scientific missions"
+msgstr "Missões científicas"
+
+#: templates/admin/index.html:79
+msgid "Training programs"
+msgstr "Programas de treinamento"
+
+#: templates/admin/index.html:85
+msgid "Documents"
+msgstr "Documentos"
+
+#: templates/admin/index.html:87
+msgid "FAPESP - appendix 5"
+msgstr "FAPESP - anexo 5"
+
+#: templates/admin/index.html:88 templates/poster/seminar.html:11
+#: templates/poster/seminar_poster.html:7
+msgid "Seminar poster"
+msgstr "Poster de um seminário"
+
+#: templates/admin/index.html:94
+msgid "Upload contents"
+msgstr "Upload de conteúdos"
+
+#: templates/admin/index.html:96
+msgid "Create citation name"
+msgstr "Criar nome de citação"
+
+#: templates/admin/index.html:97
 #: templates/report/research/add_event_papers.html:11
 #: templates/report/research/arxiv_papers.html:11
 #: templates/report/research/events_to_import.html:7
@@ -1142,58 +1199,35 @@ msgstr "Trabalhos acadêmicos"
 msgid "Import papers"
 msgstr "Importar papers"
 
-#: templates/admin/index.html:66
-msgid "Scientific missions"
-msgstr "Missões científicas"
-
-#: templates/admin/index.html:68 templates/poster/seminar.html:11
-#: templates/poster/seminar_poster.html:7
-msgid "Seminar poster"
-msgstr "Poster de um seminário"
-
-#: templates/admin/index.html:69
-msgid "Training programs"
-msgstr "Programas de treinamento"
-
-#: templates/admin/index.html:81
+#: templates/admin/index.html:103
 msgid "About NIRA"
 msgstr "Sobre o NIRA"
 
-#: templates/admin/index.html:82
+#: templates/admin/index.html:104
 msgid ""
-"Main goals of the NeuroMat Individual Report of Activities (NIRA) are "
-"twofold. Firstly, it will automatically feed NeuroMat's annual Report of "
-"Activities, a document that is submitted annually to the São Paulo Research "
-"Foundation (FAPESP). Secondly, it will serve as a direct liaison of each "
-"investigator and NeuroMat's administrative body, especially in the "
-"identifying and processing of needs for the course of NeuroMat-related "
-"activities."
+"The NeuroMat Individual Report of Activities (NIRA) has the goal to "
+"automatically feed NeuroMat's annual Report of Activities, a document that "
+"is submitted annually to the São Paulo Research Foundation (FAPESP). See "
+"more on "
 msgstr ""
-"O NeuroMat Individual Report of Activities (NIRA) possui dois objetivos. "
-"Primeiro, ele irá alimentar automaticamente o relatório anual de atividades "
-"do NeuroMat, um documento  obrigatório que é apresentado anualmente à "
-"Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP). Segundo, ele "
-"vai servir como um elo de ligação entre cada investigador e o corpo "
-"administrativo do NeuroMat, especialmente na identificação e no tratamento "
-"das necessidades para o curso das atividades relacionadas com o NeuroMat."
+"O NeuroMat Individual Report of Activities (NIRA) tem como objetivo alimentar "
+"automaticamente o relatório anual de atividades do NeuroMat, um documento "
+"obrigatório que é apresentado anualmente à Fundação de Amparo à Pesquisa do "
+"Estado de São Paulo (FAPESP). Veja mais na"
 
-#: templates/admin/index.html:87
-msgid "See your orders"
-msgstr "Veja seus pedidos"
+#: templates/admin/index.html:104
+msgid "NeuroMat's webpage"
+msgstr "página do NeuroMat"
 
-#: templates/admin/index.html:88
-msgid ""
-"Track the status of your order, if you have any questions, please contact us "
-"at nira@numec.prp.usp.br."
-msgstr ""
-"Acompanhe o status do seu pedido, se você tiver alguma dúvida, por favor, "
-"entre em contato conosco pelo email nira@numec.prp.usp.br."
+#: templates/admin/index.html:112 templates/poster/seminar_poster_pdf.html:52
+msgid "Supported by"
+msgstr "Apoiado por"
 
-#: templates/admin/index.html:89
-msgid "Check"
-msgstr "Verificar"
+#: templates/admin/index.html:117
+msgid "Developed by"
+msgstr "Desenvolvido por"
 
-#: templates/admin/index.html:93
+#: templates/admin/index.html:122
 msgid "NIRA version:"
 msgstr "Versão do NIRA:"
 
@@ -1218,10 +1252,6 @@ msgstr "Organizado pelo"
 #: templates/poster/seminar_poster_pdf.html:89
 msgid "No seminar found!"
 msgstr "Nenhum seminário encontrado!"
-
-#: templates/poster/seminar_poster_pdf.html:52
-msgid "Supported by"
-msgstr "Apoiado por"
 
 #: templates/poster/seminar_poster_pdf.html:70
 msgid "(International guest lecturer)"
@@ -1260,12 +1290,12 @@ msgid "Results"
 msgstr "Resultados"
 
 #: templates/report/activity/meetings_report.html:18
-#: templates/report/research/academic_works_report.html:28
-#: templates/report/research/academic_works_report.html:49
-#: templates/report/research/academic_works_report.html:73
-#: templates/report/research/academic_works_report.html:94
-#: templates/report/research/academic_works_report.html:118
-#: templates/report/research/academic_works_report.html:139
+#: templates/report/research/academic_works_report.html:27
+#: templates/report/research/academic_works_report.html:52
+#: templates/report/research/academic_works_report.html:80
+#: templates/report/research/academic_works_report.html:105
+#: templates/report/research/academic_works_report.html:133
+#: templates/report/research/academic_works_report.html:158
 msgid "Period"
 msgstr "Período"
 
@@ -1373,56 +1403,71 @@ msgid "Report of academic works"
 msgstr "Tipo de trabalho acadêmico"
 
 #: templates/report/research/academic_works_report.html:15
+#: templates/report/research/articles_report.html:15
 msgid "Download .tex file"
 msgstr "Download arquivo .tex"
 
-#: templates/report/research/academic_works_report.html:16
-msgid "Download .ris file"
-msgstr "Download arquivo .ris"
-
-#: templates/report/research/academic_works_report.html:21
+#: templates/report/research/academic_works_report.html:20
 msgid "Post-doctoral fellows"
 msgstr "Pós-doutorandos"
 
-#: templates/report/research/academic_works_report.html:23
-#: templates/report/research/academic_works_report.html:68
-#: templates/report/research/academic_works_report.html:113
+#: templates/report/research/academic_works_report.html:22
+#: templates/report/research/academic_works_report.html:75
+#: templates/report/research/academic_works_report.html:128
 msgid "Concluded"
 msgstr "Concluído"
 
-#: templates/report/research/academic_works_report.html:26
-#: templates/report/research/academic_works_report.html:47
-#: templates/report/research/academic_works_report.html:71
-#: templates/report/research/academic_works_report.html:92
-#: templates/report/research/academic_works_report.html:116
-#: templates/report/research/academic_works_report.html:137
+#: templates/report/research/academic_works_report.html:25
+#: templates/report/research/academic_works_report.html:50
+#: templates/report/research/academic_works_report.html:78
+#: templates/report/research/academic_works_report.html:103
+#: templates/report/research/academic_works_report.html:131
+#: templates/report/research/academic_works_report.html:156
 msgid "Title of the project"
 msgstr "Título do projeto"
 
-#: templates/report/research/academic_works_report.html:32
-#: templates/report/research/academic_works_report.html:53
-#: templates/report/research/academic_works_report.html:77
-#: templates/report/research/academic_works_report.html:98
-#: templates/report/research/academic_works_report.html:122
-#: templates/report/research/academic_works_report.html:143
+#: templates/report/research/academic_works_report.html:31
+#: templates/report/research/academic_works_report.html:56
+#: templates/report/research/academic_works_report.html:84
+#: templates/report/research/academic_works_report.html:109
+#: templates/report/research/academic_works_report.html:137
+#: templates/report/research/academic_works_report.html:162
 msgid "Co-advisor"
 msgstr "Coorientador"
 
-#: templates/report/research/academic_works_report.html:44
-#: templates/report/research/academic_works_report.html:89
-#: templates/report/research/academic_works_report.html:134
+#: templates/report/research/academic_works_report.html:35
+#: templates/report/research/academic_works_report.html:60
+#: templates/report/research/academic_works_report.html:88
+#: templates/report/research/academic_works_report.html:113
+#: templates/report/research/academic_works_report.html:141
+#: templates/report/research/academic_works_report.html:166
+msgid "Funding"
+msgstr "Agência financiadora"
+
+#: templates/report/research/academic_works_report.html:38
+#: templates/report/research/academic_works_report.html:63
+#: templates/report/research/academic_works_report.html:91
+#: templates/report/research/academic_works_report.html:116
+#: templates/report/research/academic_works_report.html:144
+#: templates/report/research/academic_works_report.html:169
+msgid "Funding information"
+msgstr "Informações sobre o financiamento"
+
+#: templates/report/research/academic_works_report.html:47
+#: templates/report/research/academic_works_report.html:100
+#: templates/report/research/academic_works_report.html:153
 msgid "In progress"
 msgstr "Em andamento"
 
-#: templates/report/research/academic_works_report.html:66
+#: templates/report/research/academic_works_report.html:73
 msgid "PhD thesis"
 msgstr "Tese de PhD"
 
-#: templates/report/research/academic_works_report.html:111
+#: templates/report/research/academic_works_report.html:126
 msgid "MSc dissertations"
 msgstr "Dissertações de mestrado"
 
-#: templates/report/research/academic_works_report.html:157
+#: templates/report/research/academic_works_report.html:180
 msgid "No academic works found!"
 msgstr "Nenhum trabalho acadêmico encontrado!"
 
@@ -1469,7 +1514,7 @@ msgstr "Adicionar papers"
 msgid "There are no papers from events to add!"
 msgstr "Não há artigos de eventos para serem adicionados!"
 
-#: templates/report/research/articles_report.html:394
+#: templates/report/research/articles_report.html:495
 msgid "No articles found!"
 msgstr "Nenhum artigo encontrado!"
 
