@@ -883,7 +883,7 @@ msgstr "Evento"
 #: templates/report/research/periodical_published_papers.html:24
 #: templates/report/research/periodical_update_papers.html:24
 msgid "Team"
-msgstr "Time"
+msgstr "Equipe"
 
 #: research/models.py:50
 msgid "RIS file authors"
