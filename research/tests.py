@@ -2,11 +2,12 @@
 import datetime
 from custom_auth.models import User
 from django.core.urlresolvers import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
                             PublishedInPeriodical, Periodical
 from research.views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv, import_papers
-from django.core.files.uploadedfile import SimpleUploadedFile
+
 
 USERNAME = 'myuser'
 PASSWORD = 'mypassword'

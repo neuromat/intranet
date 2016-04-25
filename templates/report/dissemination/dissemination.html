@@ -2,8 +2,7 @@
 {% load i18n admin_static bootstrapped_goodies_tags %}
 
 {% block extrahead %}
-<script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
-<script src="{% static 'js/scientific_mission_report.js' %}"></script>
+<script src="{% static 'js/dissemination.js' %}"></script>
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -17,10 +16,20 @@
 <form role="form" method="post">{% csrf_token %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-4 col-sm-4">
+        <div class="col-xs-2 col-sm-2">
             <label>{% trans "Type" %}</label>
             <select class="form-control" name="type" id="id_type">
+                <option value="0">-------</option>
                 {% for type in types %}
+                    <option value="{{ type.value }}">{{ type.display }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-xs-2 col-sm-2" id="id_class_internal_field">
+            <label>{% trans "Internal type" %}</label>
+            <select class="form-control" name="internal_type" id="id_internal_type">
+                {% for type in internal_types %}
                     <option value="{{ type.value }}">{{ type.display }}</option>
                 {% endfor %}
             </select>
@@ -28,21 +37,24 @@
 
         <div class="col-xs-2 col-sm-2">
             <label>{% trans "Start date" %}</label>
-            <input class="form-control" name="start_date" id="id_start_date">
+            <input class="form-control" name="start_date" id="id_start_date" placeholder="DD-MM-YYYY">
         </div>
 
         <div class="col-xs-2 col-sm-2">
             <label>{% trans "End date" %}</label>
-            <input class="form-control" name="end_date" id="id_end_date">
+            <input class="form-control" name="end_date" id="id_end_date" placeholder="DD-MM-YYYY">
         </div>
 
         <div class="col-xs-3 col-sm-3">
             <br>
             <div class="btn-group">
-                <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get report" %}</button>
+                <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" \
+                        id="submit">{% trans "Get report" %}</button>
              </div>
         </div>
     </div>
+
+
 </div>
 </form>
 
