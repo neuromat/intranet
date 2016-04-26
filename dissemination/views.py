@@ -60,11 +60,11 @@ def dissemination_report(request):
             end_date = now_plus_thirty()
 
         type = request.POST['type']
-        internal_type = request.POST['internal_type']
 
         if type == 'i':
+            internal_type = request.POST['internal_type']
             disseminations = Internal.objects.filter(media_outlet_id=internal_type, date__gt=start_date,
-                                                          date__lt=end_date).order_by('-date')
+                                                     date__lt=end_date).order_by('-date')
 
         else:
             disseminations = Dissemination.objects.filter(type_of_media='e', date__gt=start_date,
