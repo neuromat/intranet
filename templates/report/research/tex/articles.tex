@@ -1,6 +1,5 @@
+{% autoescape off %}
 {% block content %}
-
-{% with lb="{" rb="}" %}
 
 {% if published_scientific or accepted_scientific or submitted_scientific or draft_scientific or published_dissemin or accepted_dissemin or submitted_dissemin or draft_dissemin or published_tec_trans or accepted_tec_trans or submitted_tec_trans or draft_tec_trans or published_scientific_in_event or accepted_scientific_in_event or published_dissemin_in_event or accepted_dissemin_in_event or published_tec_trans_in_event or accepted_tec_trans_in_event%}
 	{% if published_scientific or accepted_scientific %}
@@ -8,29 +7,27 @@
 \begin{enumerate}
 		{% if published_scientific %}
 			{% for article in published_scientific %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{{ '{' }}{{ article.article.url }}{{ '}' }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %}{% if article.volume %}\textbf{ {{ article.volume }} }{% endif %}{% if article.number %} ({{ article.number }}),{% endif %}{% if article.start_page and article.end_page %} {{ article.start_page }}-{{ article.end_page }},{% endif %} {% if article.doi %}DOI: {{ article.doi }},{% endif %} {{ article.date|date:"Y" }}.{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %}  \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %} {% if article.volume %}\textbf{ {{ article.volume }} }{% endif %}{% if article.number %} ({{ article.number }}),{% endif %}{% if article.start_page and article.end_page %} {{ article.start_page }}-{{ article.end_page }},{% endif %} {% if article.doi %}DOI: {{ article.doi }},{% endif %} {{ article.date|date:"Y" }}.{% endif %}
 			{% endfor %}
 		{% endif %}
 		{% if accepted_scientific %}
 			{% for article in accepted_scientific %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %} {{ article.date|date:"Y" }}, to appear.{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %} {{ article.date|date:"Y" }}, to appear.{% endif %}
 			{% endfor %}
 		{% endif %}
 	{% endif %}
-
-
 
 	{% if published_dissemin or accepted_dissemin %}
 \vspace{0.5cm}
 \hspace{-1cm}\noindent{\bf Published or accepted from the dissemination team}
 		{% if published_dissemin %}
 			{% for article in published_dissemin %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %}{% if article.volume %}\textbf{ {{ article.volume }} }{% endif %}{% if article.number %} ({{ article.number }}),{% endif %}{% if article.start_page and article.end_page %} {{ article.start_page }}-{{ article.end_page }},{% endif %} {% if article.doi %}DOI: {{ article.doi }},{% endif %} {{ article.date|date:"Y" }}.{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %} {% if article.volume %}\textbf{ {{ article.volume }} }{% endif %}{% if article.number %} ({{ article.number }}),{% endif %}{% if article.start_page and article.end_page %} {{ article.start_page }}-{{ article.end_page }},{% endif %} {% if article.doi %}DOI: {{ article.doi }},{% endif %} {{ article.date|date:"Y" }}.{% endif %}
 			{% endfor %}
 		{% endif %}
 		{% if accepted_dissemin %}
 			{% for article in accepted_dissemin %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %} {{ article.date|date:"Y" }}, to appear.{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %} {{ article.date|date:"Y" }}, to appear.{% endif %}
 			{% endfor %}
 		{% endif %}
 	{% endif %}
@@ -40,12 +37,12 @@
 \hspace{-1cm}\noindent{\bf Published or accepted from the technological transfer team}
 		{% if published_tec_trans %}
 			{% for article in published_tec_trans %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %}{% if article.volume %}\textbf{ {{ article.volume }} }{% endif %}{% if article.number %} ({{ article.number }}),{% endif %}{% if article.start_page and article.end_page %} {{ article.start_page }}-{{ article.end_page }},{% endif %} {% if article.doi %}DOI: {{ article.doi }},{% endif %} {{ article.date|date:"Y" }}.{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %} {% if article.volume %}\textbf{ {{ article.volume }} }{% endif %}{% if article.number %} ({{ article.number }}),{% endif %}{% if article.start_page and article.end_page %} {{ article.start_page }}-{{ article.end_page }},{% endif %} {% if article.doi %}DOI: {{ article.doi }},{% endif %} {{ article.date|date:"Y" }}.{% endif %}
 			{% endfor %}
 		{% endif %}
 		{% if accepted_tec_trans %}
 			{% for article in accepted_tec_trans %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %} {{ article.date|date:"Y" }}, to appear.{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.periodical }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.periodical }},{% endif %} {{ article.date|date:"Y" }}, to appear.{% endif %}
 			{% endfor %}
 		{% endif %}
 	{% endif %}
@@ -54,7 +51,7 @@
 \vspace{0.5cm}
 \hspace{-1cm}\noindent{\bf Submitted}
 		{% for article in submitted_scientific %}
-			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
+			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
 		{% endfor %}
 	{% endif %}
 
@@ -62,7 +59,7 @@
 \vspace{0.5cm}
 \hspace{-1cm}\noindent{\bf Submitted from the dissemination team}
 		{% for article in submitted_dissemin %}
-			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
+			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
 		{% endfor %}
 	{% endif %}
 
@@ -70,7 +67,7 @@
 \vspace{0.5cm}
 \hspace{-1cm}\noindent{\bf Submitted from the technological transfer team}
 		{% for article in submitted_tec_trans %}
-			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
+			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
 		{% endfor %}
 	{% endif %}
 
@@ -79,12 +76,12 @@
 \hspace{-1cm}\noindent{\bf Communications in meetings with referee}
 		{% if published_scientific_in_event %}
 			{% for article in published_scientific_in_event %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.{% endif %}{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.{% endif %}{% endif %}
 			{% endfor %}
 		{% endif %}
 		{% if accepted_scientific_in_event %}
 			{% for article in published_scientific_in_event %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}, to be held{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held{% endif %}.{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}, to be held{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held{% endif %}.{% endif %}
 			{% endfor %}
 		{% endif %}
 	{% endif %}
@@ -94,12 +91,12 @@
 \hspace{-1cm}\noindent{\bf Communications in meetings with referee from the dissemination team}
 		{% if published_dissemin_in_event %}
 			{% for article in published_dissemin_in_event %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.{% endif %}{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.{% endif %}{% endif %}
 			{% endfor %}
 		{% endif %}
 		{% if accepted_dissemin_in_event %}
 			{% for article in accepted_dissemin_in_event %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}, to be held{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held{% endif %}.{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}, to be held{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held{% endif %}.{% endif %}
 			{% endfor %}
 		{% endif %}
 	{% endif %}
@@ -109,12 +106,12 @@
 \hspace{-1cm}\noindent{\bf Communications in meetings with referee from the technological transfer team}
 		{% if published_tec_trans_in_event %}
 			{% for article in published_tec_trans_in_event %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.{% endif %}{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}.{% endif %}{% endif %}
 			{% endfor %}
 		{% endif %}
 		{% if accepted_tec_trans_in_event %}
 			{% for article in accepted_tec_trans_in_event %}
-				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}, to be held{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held{% endif %}.{% endif %}
+				{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} } {{ article.article.event }},{% else %}\textit{ {{ article.article.authors }}.} {{ article.article.event }},{% endif %}{% if article.article.event.acronym %} {{ article.article.event.acronym }}{% endif %}, {{ article.article.event.local }}, {% if article.article.event.start_date|date:"M" == article.article.event.end_date|date:"M" %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"d, Y" }}, to be held{% else %}{{ article.article.event.start_date|date:"M d" }}-{{ article.article.event.end_date|date:"M d, Y" }}, to be held{% endif %}.{% endif %}
 			{% endfor %}
 		{% endif %}
 	{% endif %}
@@ -123,7 +120,7 @@
 \vspace{0.5cm}
 \hspace{-1cm}\noindent{\bf Drafts}
 		{% for article in draft_scientific %}
-			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
+			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
 		{% endfor %}
 	{% endif %}
 
@@ -131,7 +128,7 @@
 \vspace{0.5cm}
 \hspace{-1cm}\noindent{\bf Drafts from the dissemination team}
 		{% for article in draft_dissemin %}
-			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
+			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
 		{% endfor %}
 	{% endif %}
 
@@ -139,7 +136,7 @@
 \vspace{0.5cm}
 \hspace{-1cm}\noindent{\bf Drafts from the technological transfer team}
 		{% for article in draft_tec_trans %}
-			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} {{ article.article.title }}.{% endif %}{% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
+			{% if not article.article.hide %} \item{% if article.article.url %} \textbf{\href{ {{ article.article.url }} }{ {{ article.article.title }}.} }{% else %} \textbf{ {{ article.article.title }} }.{% endif %} {% if article.article.ris_file_authors %}\textit{ {{ article.article.ris_file_authors }} }{% else %}\textit{ {{ article.article.authors }}.}{% endif %}{% endif %}
 		{% endfor %}
 	{% endif %}
 \end{enumerate}
@@ -148,5 +145,5 @@
 	No articles found!
 {% endif %}
 
-{% endwith %}
 {% endblock %}
+{% endautoescape %}

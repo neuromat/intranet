@@ -167,6 +167,30 @@ def articles(request):
     return render(request, 'report/research/articles.html')
 
 
+def tex_escape(response):
+    """
+        :param: a plain text message
+        :return: the message escaped to appear correctly in LaTeX
+    """
+    conv = {
+        '{ ': '{',
+        ' }': '}',
+        '&': r'\&',
+        '%': r'\%',
+        '$': r'\$',
+        '#': r'\#',
+        '_': r'\_',
+        '<': r'\textless',
+        '>': r'\textgreater',
+    }
+
+    for key in conv:
+        if key in response:
+            response = re.sub(key, conv[key], response)
+
+    return response
+
+
 @login_required
 def articles_tex(request):
     start_date = request.GET.get('start_date')
@@ -191,10 +215,12 @@ def articles_tex(request):
                'published_tec_trans_in_event': published_tec_trans_in_event,
                'accepted_tec_trans_in_event': accepted_tec_trans_in_event}
 
-    response = HttpResponse(render_to_string('report/research/tex/articles.tex', context),
-                            content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename="articles.tex"'
-    return response
+    response = render_to_string('report/research/tex/articles.tex', context)
+    response = tex_escape(response)
+    latex_response = HttpResponse(response, content_type='text/plain')
+    latex_response['Content-Disposition'] = 'attachment; filename="articles.tex"'
+
+    return latex_response
 
 
 def search_academic_works(start_date, end_date):
