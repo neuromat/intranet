@@ -13,7 +13,8 @@ class DisseminationTest(TestCase):
     2 - Dissemination report for external without date;
     3 - Dissemination report for internal with date;
     4 - Dissemination report for internal without date;
-    5 - Dissemination report without type selected.
+    5 - Dissemination report without type selected;
+    6 - Dissemination report with invalid dates selected.
     """
 
     def setUp(self):
@@ -91,4 +92,11 @@ class DisseminationTest(TestCase):
 
     def test_without_type(self):
         response = self.client.get(reverse('dissemination_report'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_dissemination_report_invalid_dates(self):
+        # With type external selected
+        response = self.client.post(reverse('dissemination_report'), {'type': 'e',
+                                                                      'start_date': '01-01-2019',
+                                                                      'end_date': '01-02-2017'})
         self.assertEqual(response.status_code, 200)
