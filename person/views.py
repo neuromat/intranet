@@ -141,4 +141,3 @@ def citation_names(request):
 
     messages.success(request, _('Successfully updated citation names.'))
     return redirect(reverse('admin:index'))
-
