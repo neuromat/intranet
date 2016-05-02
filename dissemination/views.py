@@ -65,13 +65,15 @@ def dissemination_report(request):
             internal_type = request.POST['internal_type']
             disseminations = Internal.objects.filter(media_outlet_id=internal_type, date__gt=start_date,
                                                      date__lt=end_date).order_by('-date')
+            media_name = InternalMediaOutlet.objects.get(id=internal_type).name
 
         else:
             disseminations = Dissemination.objects.filter(type_of_media='e', date__gt=start_date,
                                                           date__lt=end_date).order_by('-date')
+            media_name = ''
 
         if end_date >= start_date:
-            context = {'disseminations': disseminations, 'type': type}
+            context = {'disseminations': disseminations, 'type': type, 'media_name': media_name}
             return render(request, 'report/dissemination/dissemination_report.html', context)
         else:
             context = {'types': types, 'internal_types': internal_types}

@@ -33,6 +33,9 @@
         </table>
     {% elif type == 'i'%}
         <table class="table table-striped table-bordered">
+        {% if media_name  %}
+            <div class="text-center">{{ media_name }}</div>
+        {% endif %}
         <tr>
             <th width="20%">{% trans "Title" %}</th><th width="20%">{% trans "Authors" %}</th>
             <th width="20%">{% trans "Topics" %}</th><th width="15%">{% trans "URL" %}</th>
