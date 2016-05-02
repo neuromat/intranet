@@ -1,0 +1,27 @@
+{% autoescape off %}
+{% block content %}
+
+{% if type == 'i' %}
+    \begin{longtable}{ |p{4cm}|p{4cm}|p{5cm}|p{2cm}| }
+    Title & Topics & URL & Date \\
+    \hline
+    {% for dissemination in disseminations %}
+        {{ dissemination.title }} & {{ dissemination.topics }} & {{ dissemination.link }} & {{ dissemination.date|date:"M d, Y" }} \\
+    \hline
+    {% endfor %}
+    \end{longtable}
+
+{% elif type == 'e' %}
+    \begin{longtable}{ |p{3cm}|p{2,3cm}|p{2cm}|p{3cm}|p{3,5cm}|p{1,2cm}| }
+    \hline
+    \textbf{Title} & \textbf{Authors} & Media outlet & Topics & URL & Date \\
+    \hline
+    {% for dissemination in disseminations %}
+        {{ dissemination.title }} & {{ dissemination.external.authors }} & {{ dissemination.external.media_outlet }} & {{ dissemination.topics }} & {{ dissemination.link }}&#125; & {{ dissemination.date|date:"M d, Y" }} \\
+    \hline
+    {% endfor %}
+    \end{longtable}
+{% endif %}
+
+{% endblock %}
+{% endautoescape %}
