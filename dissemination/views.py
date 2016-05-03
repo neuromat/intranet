@@ -30,6 +30,8 @@ def dissemination_report(request):
 
     if request.method == 'POST':
 
+        media_type = request.POST['type']
+
         start_date = request.POST['start_date']
 
         if start_date:
@@ -44,29 +46,35 @@ def dissemination_report(request):
         else:
             end_date = now_plus_thirty()
 
-        media_type = request.POST['type']
-
+        # Internal, external or no type selected
+        type_selected = True
         if media_type == 'i':
             internal_type = request.POST['internal_type']
             disseminations = internal_filter(internal_type, start_date, end_date)
             media_name = InternalMediaOutlet.objects.get(id=internal_type).name
 
-        else:
+        elif media_type == 'e':
             disseminations = external_filter(start_date, end_date)
             media_name = ''
 
-        if end_date >= start_date:
-            context = {'start_date': start_date,
-                       'end_date': end_date,
-                       'disseminations': disseminations,
-                       'type': media_type,
-                       'media_name': media_name,
-                       'internal_type': internal_type}
-            return render(request, 'report/dissemination/dissemination_report.html', context)
         else:
-            context = {'types': types, 'internal_types': internal_types}
-            messages.error(request, _('End date should be equal or greater than start date.'))
-            return render(request, 'report/dissemination/dissemination.html', context)
+            type_selected = False
+
+        if type_selected:
+            if end_date >= start_date:
+                context = {'start_date': start_date,
+                           'end_date': end_date,
+                           'disseminations': disseminations,
+                           'type': media_type,
+                           'media_name': media_name,
+                           'internal_type': internal_type}
+                return render(request, 'report/dissemination/dissemination_report.html', context)
+            else:
+                context = {'types': types, 'internal_types': internal_types}
+                messages.error(request, _('End date should be equal or greater than start date.'))
+                return render(request, 'report/dissemination/dissemination.html', context)
+        else:
+            messages.error(request, _('You should choose a type.'))
 
     context = {'types': types, 'internal_types': internal_types}
 
