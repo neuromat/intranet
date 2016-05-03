@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'cep',
     'django_jenkins',
+    'cities_light',
 )
 
 # Possible tasks for Jenkins
@@ -64,6 +65,7 @@ PROJECT_APPS = (
     'activity',
     'dissemination',
     'research',
+    'scientific_mission',
 )
 
 
@@ -108,6 +110,8 @@ LANGUAGES = (
     ('pt-br', u'Português'),
     ('en', u'English'),
 )
+
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['en', 'pt', 'abbr']
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
