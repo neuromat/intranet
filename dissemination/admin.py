@@ -1,7 +1,6 @@
 from django.contrib import admin
 from dissemination.models import *
 from dissemination.forms import *
-from django.utils.translation import ugettext_lazy as _
 
 admin.site.register(Topic)
 admin.site.register(InternalMediaOutlet)

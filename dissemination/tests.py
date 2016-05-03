@@ -40,22 +40,20 @@ class DisseminationTest(TestCase):
         dissemination3 = External(title='Hello, external blog!', date='2015-01-03', media_outlet=external_media)
         dissemination3.save()
 
-    def test_dissemination_report_without_date (self):
+    def test_dissemination_report_without_date(self):
 
         # With type external selected
-        response = self.client.post(reverse('dissemination_report'), {'type': 'e',
-                                                                     'start_date': '',
-                                                                     'end_date': ''})
+        response = self.client.post(reverse('dissemination_report'), {'type': 'e', 'start_date': '', 'end_date': ''})
         cont = response.context['disseminations']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
         # With type internal selected
         internal_types = InternalMediaOutlet.objects.all()
-        internal_types = [{'value': type.id, 'display': type.name} for type in internal_types]
+        internal_types = [{'value': media.id, 'display': media.name} for media in internal_types]
 
-        for type in internal_types:
-            value = type['value']
+        for media in internal_types:
+            value = media['value']
             response = self.client.post(reverse('dissemination_report'), {'type': 'i',
                                                                           'internal_type': value,
                                                                           'start_date': '',
@@ -66,7 +64,7 @@ class DisseminationTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_dissemination_report_with_date (self):
+    def test_dissemination_report_with_date(self):
 
         # With type external selected
         response = self.client.post(reverse('dissemination_report'), {'type': 'e',
@@ -78,10 +76,10 @@ class DisseminationTest(TestCase):
 
         # With type internal selected
         internal_types = InternalMediaOutlet.objects.all()
-        internal_types = [{'value': type.id, 'display': type.name} for type in internal_types]
+        internal_types = [{'value': media.id, 'display': media.name} for media in internal_types]
 
-        for type in internal_types:
-            value = type['value']
+        for media in internal_types:
+            value = media['value']
             response = self.client.post(reverse('dissemination_report'), {'type': 'i',
                                                                           'internal_type': value,
                                                                           'start_date': '01-01-2015',
