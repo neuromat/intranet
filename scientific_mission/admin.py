@@ -9,7 +9,7 @@ admin.site.register(Type)
 class ScientificMissionAdmin(admin.ModelAdmin):
     fields = ['person', 'mission', 'project_activity', 'origin_country', 'origin_city', 'destination_country',
               'destination_city', 'departure', 'arrival', 'value']
-    list_display = ('person', 'mission', 'destination_city', 'departure', 'arrival', 'value')
-    list_display_links = ('person',)
+    list_display = ('id', 'person', 'mission', 'destination_city', 'departure', 'arrival', 'value')
+    list_display_links = ('id',)
     form = ScientificMissionForm
 admin.site.register(ScientificMission, ScientificMissionAdmin)
