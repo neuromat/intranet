@@ -7,11 +7,11 @@ from django.shortcuts import get_object_or_404
 
 def select_cities(country_field):
     select = City.objects.filter(country_id=country_field)
-    countries = []
-    for country in select:
-        countries.append({'pk': country.id, 'name': country.__unicode__()})
+    cities = []
+    for city in select:
+        cities.append({'pk': city.id, 'name': city.__unicode__()})
 
-    json = simplejson.dumps(countries)
+    json = simplejson.dumps(cities)
     return json
 
 
