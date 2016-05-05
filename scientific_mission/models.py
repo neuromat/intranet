@@ -38,7 +38,7 @@ class ScientificMission(models.Model):
     destination_city = models.ForeignKey(City, verbose_name=_('City of destination'), related_name='destination_city')
     departure = models.DateTimeField(_('Departure'))
     arrival = models.DateTimeField(_('Arrival'))
-    value = models.CharField(_('Value'), max_length=50, blank=True, null=True)
+    amount_paid = models.DecimalField(_('Amount paid'), max_digits=10, decimal_places=2)
 
     def __unicode__(self):
         return u'%s' % self.person
@@ -47,3 +47,7 @@ class ScientificMission(models.Model):
         verbose_name = _('Daily stipend')
         verbose_name_plural = _('Daily stipends')
         ordering = ('person', )
+
+    def value(self):
+        return "R$ %s" % self.amount_paid
+

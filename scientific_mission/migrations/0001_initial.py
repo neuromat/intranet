@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('departure', models.DateTimeField(verbose_name='Departure')),
                 ('arrival', models.DateTimeField(verbose_name='Arrival')),
-                ('value', models.CharField(max_length=50, null=True, verbose_name='Value', blank=True)),
+                ('amount_paid', models.DecimalField(verbose_name='Amount paid', max_digits=10, decimal_places=2)),
                 ('destination_city', models.ForeignKey(related_name='destination_city', verbose_name='City of destination', to='cities_light.City')),
                 ('destination_country', models.ForeignKey(related_name='destination_country', verbose_name='Country of destination', to='cities_light.Country')),
             ],
