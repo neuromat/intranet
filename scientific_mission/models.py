@@ -41,7 +41,7 @@ class ScientificMission(models.Model):
     amount_paid = models.DecimalField(_('Amount paid'), max_digits=10, decimal_places=2)
 
     def __unicode__(self):
-        return u'%s' % self.person
+        return u'%s - %s' % (self.person, self.amount_paid)
 
     class Meta:
         verbose_name = _('Daily stipend')
