@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.template.loader import render_to_string
 
 
 def select_cities(country_field):
@@ -42,6 +43,7 @@ def load_destination_cities(request):
 def missions_report(request):
 
     if request.method == 'POST':
+
         start_date = request.POST['start_date']
         if start_date:
             start_date = start_date_typed(start_date)
@@ -58,10 +60,28 @@ def missions_report(request):
                                                     arrival__lt=end_date).order_by('-departure')
 
         if end_date >= start_date:
-            context = {'missions': missions}
+            context = {'start_date': start_date, 'end_date': end_date, 'missions': missions}
             return render(request, 'report/scientific_mission/scientific_missions_report.html', context)
         else:
             messages.error(request, 'End date should be equal or greater than start date.')
             return render(request, 'report/scientific_mission/scientific_missions.html')
 
     return render(request, 'report/scientific_mission/scientific_missions.html')
+
+
+@login_required
+def missions_tex(request):
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    missions = ScientificMission.objects.filter(departure__gt=start_date,
+                                                arrival__lt=end_date).order_by('-departure')
+
+    context = {'missions': missions}
+
+    response = HttpResponse(render_to_string('report/scientific_mission/tex/scientific_missions.tex', context),
+                            content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="scientific_missions.tex"'
+
+    return response

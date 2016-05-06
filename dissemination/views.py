@@ -81,6 +81,7 @@ def dissemination_report(request):
     return render(request, 'report/dissemination/dissemination.html', context)
 
 
+@login_required
 def dissemination_tex(request):
 
     start_date = request.GET.get('start_date')
