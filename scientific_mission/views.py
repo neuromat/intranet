@@ -55,7 +55,7 @@ def missions_report(request):
             end_date = now_plus_thirty()
 
         missions = ScientificMission.objects.filter(departure__gt=start_date,
-                                                    arrival__lt=end_date).order_by('departure')
+                                                    arrival__lt=end_date).order_by('-departure')
 
         if end_date >= start_date:
             context = {'missions': missions}
