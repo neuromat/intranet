@@ -1,0 +1,40 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static bootstrapped_goodies_tags %}
+
+{% block extrahead %}
+<script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
+<script src="{% static 'js/scientific_mission_report.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a></li>
+<li>{% trans 'Scientific mission report' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<form role="form" method="post">{% csrf_token %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-2 col-sm-2">
+            <label>{% trans "Start date" %}</label>
+            <input class="form-control" name="start_date" id="id_start_date">
+        </div>
+
+        <div class="col-xs-2 col-sm-2">
+            <label>{% trans "End date" %}</label>
+            <input class="form-control" name="end_date" id="id_end_date">
+        </div>
+
+        <div class="col-xs-2 col-sm-2">
+            <br>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get report" %}</button>
+             </div>
+        </div>
+    </div>
+</div>
+</form>
+
+{% endblock %}
