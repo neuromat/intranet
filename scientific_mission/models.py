@@ -46,7 +46,7 @@ class ScientificMission(models.Model):
     class Meta:
         verbose_name = _('Daily stipend')
         verbose_name_plural = _('Daily stipends')
-        ordering = ('person', )
+        ordering = ('-departure', )
 
     def value(self):
         return "R$ %s" % self.amount_paid
