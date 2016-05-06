@@ -11,6 +11,11 @@
 
 {% block content %}
 {% if seminars %}
+
+    <p>
+        <a href="{% url 'seminar_latex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}">{% trans 'Download .tex file' %}</a>
+    </p>
+
     <table class="table table-striped table-bordered">
     <tr>
         <th width="40%">{% trans "Title" %}</th><th width="25%">{% trans "Speaker" %}</th>

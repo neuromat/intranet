@@ -1,0 +1,5 @@
+{% autoescape off %}{% block content %}\begin{longtable}{ |p{5,5cm}|p{5cm}|p{2cm}|p{1,5cm}| }
+\hline
+Title & Speaker & Date & Duration \\ \hline
+{% for training in training_programs %}{{ training.trainingprogram.title }} & {{ training.trainingprogram.speakers }} & {% if training.trainingprogram.end_date %}{{ training.trainingprogram.start_date|date:"M d, Y" }} - {{ training.trainingprogram.end_date|date:"M d, Y" }} & {% else %}{{ training.trainingprogram.start_date|date:"M d, Y" }} & {% endif %}{% if training.trainingprogram.duration == 'Other' %}{{ training.trainingprogram.other_duration }}  \\ \hline {% else %}{{ training.trainingprogram.duration }}  \\ \hline {% endif %}{% endfor %}
+\end{longtable}{% endblock %}{% endautoescape %}

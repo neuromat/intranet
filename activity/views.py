@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import Context
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -62,7 +62,7 @@ def seminars_report(request):
                                                         seminar__date__lt=end_date).order_by('-seminar__date')
 
         if end_date >= start_date:
-            context = {'seminars': seminars, 'category': category}
+            context = {'start_date': start_date, 'end_date': end_date, 'seminars': seminars, 'category': category}
             return render(request, 'report/activity/seminars_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
@@ -71,6 +71,25 @@ def seminars_report(request):
     context = {'categories': categories}
 
     return render(request, 'report/activity/seminars.html', context)
+
+
+@login_required
+def seminar_latex(request):
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    seminars = ProjectActivities.objects.filter(type_of_activity='s',
+                                                seminar__date__gt=start_date,
+                                                seminar__date__lt=end_date).order_by('-seminar__date')
+
+    context = {'seminars': seminars}
+
+    response = HttpResponse(render_to_string('report/activity/tex/seminars.tex', context),
+                            content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="seminars.tex"'
+
+    return response
 
 
 @login_required
@@ -140,13 +159,33 @@ def training_programs_report(request):
                                                              trainingprogram__start_date__lt=end_date).order_by('trainingprogram__start_date')
 
         if end_date >= start_date:
-            context = {'training_programs': training_programs}
+            context = {'start_date': start_date, 'end_date': end_date, 'training_programs': training_programs}
             return render(request, 'report/activity/training_programs_report.html', context)
         else:
             messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/activity/training_programs.html')
 
     return render(request, 'report/activity/training_programs.html')
+
+
+@login_required
+def training_programs_latex(request):
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    tp = ProjectActivities.objects.filter(type_of_activity='t',
+                                          trainingprogram__start_date__gt=start_date,
+                                          trainingprogram__start_date__lt=end_date).order_by(
+        'trainingprogram__start_date')
+
+    context = {'training_programs': tp}
+
+    response = HttpResponse(render_to_string('report/activity/tex/training_programs.tex', context),
+                            content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="training_programs.tex"'
+
+    return response
 
 
 @login_required

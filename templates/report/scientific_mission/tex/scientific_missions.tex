@@ -2,7 +2,4 @@
 \hline
 Researcher & Scientific mission & Local & Start date & End date \\ \hline
 {% for mission in missions %}{% if mission.person and mission.person.institution == None %}{{ mission.person }}{% elif mission.person and mission.person.institution != None %}{{ mission.person }} / {{ mission.person.institution.get_person_institution }}{% endif %} &{% if mission.mission != None and mission.project_activity != None %}{{ mission.mission }}{{ mission.project_activity.title }}{% elif mission.mission != None %}{{ mission.mission }}{% elif mission.project_activity != None %}{{ mission.project_activity.title }}{% else %}No scientific missions found!{% endif %} &{{ mission.destination_city }} &  {{ mission.departure|date:"M d, Y" }} & {{ mission.arrival|date:"M d, Y" }}\\ \hline {% endfor %}
-\end{longtable}
-
-{% endblock %}
-{% endautoescape %}
+\end{longtable}{% endblock %}{% endautoescape %}

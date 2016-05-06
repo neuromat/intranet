@@ -1,0 +1,5 @@
+{% autoescape off %}{% block content %}\begin{longtable}{ |p{7cm}|p{6cm}|p{2cm}| }
+\hline
+Title & Speaker & Date \\ \hline
+{% for seminar in seminars %}{{ seminar.seminar.title }} & {{ seminar.seminar.speakers }} & {{ seminar.seminar.date|date:"M d, Y" }} \\ \hline {% endfor %}
+\end{longtable}{% endblock %}{% endautoescape %}
