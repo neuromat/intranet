@@ -87,6 +87,7 @@ def dissemination_tex(request):
     end_date = request.GET.get('end_date')
     media_type = request.GET.get('type')
     internal_type = request.GET.get('internal_type')
+    filename = request.GET.get('filename')
 
     if media_type == 'i':
         disseminations = internal_filter(internal_type, start_date, end_date)
@@ -98,6 +99,6 @@ def dissemination_tex(request):
 
     response = HttpResponse(render_to_string('report/dissemination/tex/disseminations.tex', context),
                             content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename="disseminations.tex"'
+    response['Content-Disposition'] = 'attachment; filename="%s.tex"' % filename
 
     return response
