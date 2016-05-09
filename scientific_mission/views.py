@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.template.loader import render_to_string
+from helper_functions.latex import generate_latex
 
 
 def select_cities(country_field):
@@ -80,8 +80,4 @@ def missions_tex(request):
 
     context = {'missions': missions}
 
-    response = HttpResponse(render_to_string('report/scientific_mission/tex/scientific_missions.tex', context),
-                            content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename="scientific_missions.tex"'
-
-    return response
+    return generate_latex('report/scientific_mission/tex/scientific_missions.tex', context, 'scientific_missions')

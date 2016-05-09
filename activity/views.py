@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import Context
-from django.template.loader import get_template, render_to_string
+from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 
 
