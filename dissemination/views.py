@@ -98,4 +98,4 @@ def dissemination_tex(request):
 
     context = {'disseminations': disseminations, 'type': media_type}
 
-    return generate_latex('report/dissemination/tex/disseminations.tex', context, 'dissemination')
+    return generate_latex('report/dissemination/tex/disseminations.tex', context, filename)
