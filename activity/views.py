@@ -6,6 +6,7 @@ from cgi import escape  # PDF file
 from xhtml2pdf import pisa  # PDF file
 from helper_functions.date import *
 from activity.models import ProjectActivities, Seminar, SeminarType
+from helper_functions.latex import generate_latex
 from person.models import Person
 from django.conf import settings
 from django.contrib import messages
@@ -32,6 +33,24 @@ def render_to_pdf(template_src, context_dict):
     return HttpResponse('_(We had some errors<pre>%s</pre>)' % escape(html))
 
 
+def training_programs_search(start_date, end_date):
+    return ProjectActivities.objects.filter(type_of_activity='t',
+                                            trainingprogram__start_date__gt=start_date,
+                                            trainingprogram__start_date__lt=end_date).order_by(
+            'trainingprogram__start_date')
+
+
+def seminars_search(start_date, end_date, category):
+    if category == "All":
+        return ProjectActivities.objects.filter(type_of_activity='s',
+                                                seminar__date__gt=start_date,
+                                                seminar__date__lt=end_date).order_by('-seminar__date')
+    else:
+        return ProjectActivities.objects.filter(type_of_activity='s', seminar__category=category,
+                                                seminar__date__gt=start_date,
+                                                seminar__date__lt=end_date).order_by('-seminar__date')
+
+
 @login_required
 def seminars_report(request):
 
@@ -52,14 +71,14 @@ def seminars_report(request):
 
         category = request.POST['category']
 
+        # All seminars
         if category == '0':
-            seminars = ProjectActivities.objects.filter(type_of_activity='s',
-                                                        seminar__date__gt=start_date,
-                                                        seminar__date__lt=end_date).order_by('-seminar__date')
+            seminars = seminars_search(start_date, end_date, 'All')
+            category = "All"
+
+        # Specific category
         else:
-            seminars = ProjectActivities.objects.filter(type_of_activity='s', seminar__category=category,
-                                                        seminar__date__gt=start_date,
-                                                        seminar__date__lt=end_date).order_by('-seminar__date')
+            seminars = seminars_search(start_date, end_date, category)
 
         if end_date >= start_date:
             context = {'start_date': start_date, 'end_date': end_date, 'seminars': seminars, 'category': category}
@@ -78,18 +97,12 @@ def seminar_latex(request):
 
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
+    category = request.GET.get('category')
 
-    seminars = ProjectActivities.objects.filter(type_of_activity='s',
-                                                seminar__date__gt=start_date,
-                                                seminar__date__lt=end_date).order_by('-seminar__date')
-
+    seminars = seminars_search(start_date, end_date, category)
     context = {'seminars': seminars}
 
-    response = HttpResponse(render_to_string('report/activity/tex/seminars.tex', context),
-                            content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename="seminars.tex"'
-
-    return response
+    return generate_latex('report/activity/tex/seminars.tex', context, 'seminars')
 
 
 @login_required
@@ -154,9 +167,7 @@ def training_programs_report(request):
         else:
             end_date = now_plus_thirty()
 
-        training_programs = ProjectActivities.objects.filter(type_of_activity='t',
-                                                             trainingprogram__start_date__gt=start_date,
-                                                             trainingprogram__start_date__lt=end_date).order_by('trainingprogram__start_date')
+        training_programs = training_programs_search(start_date, end_date)
 
         if end_date >= start_date:
             context = {'start_date': start_date, 'end_date': end_date, 'training_programs': training_programs}
@@ -174,18 +185,11 @@ def training_programs_latex(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
 
-    tp = ProjectActivities.objects.filter(type_of_activity='t',
-                                          trainingprogram__start_date__gt=start_date,
-                                          trainingprogram__start_date__lt=end_date).order_by(
-        'trainingprogram__start_date')
+    training_programs = training_programs_search(start_date, end_date)
 
-    context = {'training_programs': tp}
+    context = {'training_programs': training_programs}
 
-    response = HttpResponse(render_to_string('report/activity/tex/training_programs.tex', context),
-                            content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename="training_programs.tex"'
-
-    return response
+    return generate_latex('report/activity/tex/training_programs.tex', context, 'training_programs')
 
 
 @login_required

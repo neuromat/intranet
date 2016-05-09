@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from helper_functions.date import *
+from helper_functions.latex import generate_latex
 from dissemination.models import Dissemination, Internal, InternalMediaOutlet, TYPE_OF_MEDIA
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, HttpResponse
-from django.template.loader import render_to_string
+from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -98,8 +98,4 @@ def dissemination_tex(request):
 
     context = {'disseminations': disseminations, 'type': media_type}
 
-    response = HttpResponse(render_to_string('report/dissemination/tex/disseminations.tex', context),
-                            content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename="%s.tex"' % filename
-
-    return response
+    return generate_latex('report/dissemination/tex/disseminations.tex', context, 'dissemination')
