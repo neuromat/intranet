@@ -54,6 +54,10 @@ class ScientificMissionsTest(TestCase):
 
     def test_report(self):
 
+        # With nothing
+        response = self.client.get(reverse('missions_report'))
+        self.assertEqual(response.status_code, 200)
+
         # With date
         response = self.client.post(reverse('missions_report'), {'start_date': '01-01-2015',
                                                                  'end_date': '03-05-2017'})
@@ -68,10 +72,20 @@ class ScientificMissionsTest(TestCase):
         self.assertEqual(len(cont), 2)
         self.assertEqual(response.status_code, 200)
 
+        # Wrong dates
+        response = self.client.post(reverse('missions_report'), {'start_date': '01-01-2016',
+                                                                 'end_date': '03-05-2015'})
+        self.assertEqual(response.status_code, 200)
+
     def test_load_cities(self):
 
         response = self.client.get(reverse('load_origin_cities'), {'origin_country': 31})
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get(reverse('load_destination_cities'), {'destination_country': 31})
+        self.assertEqual(response.status_code, 200)
+
+    def test_tex(self):
+        response = self.client.get(reverse('scientific_missions_tex'), {'start_date': '2015-03-01',
+                                                                        'end_date': '2017-03-05'})
         self.assertEqual(response.status_code, 200)
