@@ -9,6 +9,9 @@ def seminar(title, seminar_type, date):
     return Seminar(title=title, type_of_activity='s', category=seminar_type, date=date)
 
 
+#class HelperTest(TestCase):
+# get queryset and use isInstanceof( ) nos helpers
+
 class ActivityTest(TestCase):
 
     def setUp(self):
@@ -42,7 +45,7 @@ class ActivityTest(TestCase):
         # With date and all categories
         response = self.client.post(reverse('seminars_report'), {'start_date': '01-01-2015',
                                                                  'end_date': '03-05-2017',
-                                                                 'category': 'All'})
+                                                                 'category': '0'})
         cont = response.context['seminars']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
@@ -58,7 +61,7 @@ class ActivityTest(TestCase):
         # Without date
         response = self.client.post(reverse('seminars_report'), {'start_date': '',
                                                                  'end_date': '',
-                                                                 'category': 'All'})
+                                                                 'category': '0'})
         cont = response.context['seminars']
         self.assertEqual(len(cont), 2)
         self.assertEqual(response.status_code, 200)
@@ -67,6 +70,22 @@ class ActivityTest(TestCase):
         response = self.client.post(reverse('seminars_report'), {'start_date': '01-01-2016',
                                                                  'end_date': '03-05-2015',
                                                                  'category': 'All'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_poster(self):
+
+        # Just load the page
+        response = self.client.get(reverse('seminar_poster'))
+        self.assertEqual(response.status_code, 200)
+
+        # Test creation of seminar poster..
+        response = self.client.post(reverse('seminar_poster'), {'title': ''})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('seminar_poster'), {'title': 0})
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.post(reverse('seminar_poster'), {'title': 1})
         self.assertEqual(response.status_code, 200)
 
     def test_tex(self):
