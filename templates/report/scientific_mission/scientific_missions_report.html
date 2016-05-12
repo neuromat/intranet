@@ -42,8 +42,13 @@
             {% else %}
                 <td>{% trans "No scientific missions found!" %}</td>
             {% endif %}
-
-            <td>{{ mission.destination_city }}</td>
+            {% if mission.destination_city.country_id == 31 %}
+                <td>{{ mission.destination_city.name }},
+                    {% if mission.destination_city.region_id == 355 %} SP {% endif %}
+                </td>
+            {% else %}
+                <td>{{ mission.destination_city.name }}, {{ mission.destination_city.country }}</td>
+            {% endif %}
             <td>{{ mission.departure|date:"M d, Y" }}</td>
             <td>{{ mission.arrival|date:"M d, Y" }}</td>
         </tr>
