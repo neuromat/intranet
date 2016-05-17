@@ -63,7 +63,6 @@ JENKINS_TASKS = (
 PROJECT_APPS = (
     'custom_auth',
     'person',
-    'order',
     'activity',
     'dissemination',
     'research',
