@@ -14,4 +14,5 @@ class ScientificMissionForm(forms.ModelForm):
 
     class Meta:
         model = ScientificMission
+        fields = '__all__'
         localized_fields = ('amount_paid',)
