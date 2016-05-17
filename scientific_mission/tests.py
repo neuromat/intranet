@@ -8,10 +8,9 @@ from research.tests import system_authentication
 
 
 # Create a scientific mission for testing
-def scientific_mission(person, city, country, departure, arrival, amount_paid):
+def scientific_mission(person, city, departure, arrival, amount_paid):
     return ScientificMission(person=person,
-                             origin_country=country, origin_city=city,
-                             destination_country=country, destination_city=city,
+                             origin_city=city, destination_city=city,
                              departure=departure, arrival=arrival, amount_paid=amount_paid)
 
 
@@ -46,10 +45,10 @@ class ScientificMissionsTest(TestCase):
 
         amount_paid = 666
 
-        mission1 = scientific_mission(person, city, country, departure1, arrival1, amount_paid)
+        mission1 = scientific_mission(person, city, departure1, arrival1, amount_paid)
         mission1.save()
 
-        mission2 = scientific_mission(person, city, country, departure2, arrival2, amount_paid)
+        mission2 = scientific_mission(person, city, departure2, arrival2, amount_paid)
         mission2.save()
 
     def test_report(self):
@@ -75,14 +74,6 @@ class ScientificMissionsTest(TestCase):
         # Wrong dates
         response = self.client.post(reverse('missions_report'), {'start_date': '01-01-2016',
                                                                  'end_date': '03-05-2015'})
-        self.assertEqual(response.status_code, 200)
-
-    def test_load_cities(self):
-
-        response = self.client.get(reverse('load_origin_cities'), {'origin_country': 31})
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.get(reverse('load_destination_cities'), {'destination_country': 31})
         self.assertEqual(response.status_code, 200)
 
     def test_tex(self):

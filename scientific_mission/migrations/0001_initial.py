@@ -21,10 +21,9 @@ class Migration(migrations.Migration):
                 ('arrival', models.DateTimeField(verbose_name='Arrival')),
                 ('amount_paid', models.DecimalField(verbose_name='Amount paid', max_digits=10, decimal_places=2)),
                 ('destination_city', models.ForeignKey(related_name='destination_city', verbose_name='City of destination', to='cities_light.City')),
-                ('destination_country', models.ForeignKey(related_name='destination_country', verbose_name='Country of destination', to='cities_light.Country')),
             ],
             options={
-                'ordering': ('person',),
+                'ordering': ('-departure',),
                 'verbose_name': 'Daily stipend',
                 'verbose_name_plural': 'Daily stipends',
             },
@@ -53,12 +52,6 @@ class Migration(migrations.Migration):
             model_name='scientificmission',
             name='origin_city',
             field=models.ForeignKey(verbose_name='City of origin', to='cities_light.City'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='scientificmission',
-            name='origin_country',
-            field=models.ForeignKey(verbose_name='Country of origin', to='cities_light.Country'),
             preserve_default=True,
         ),
         migrations.AddField(

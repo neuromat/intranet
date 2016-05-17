@@ -31,10 +31,7 @@ class ScientificMission(models.Model):
     person = models.ForeignKey(Person, verbose_name=_('Paid to'))
     mission = models.ForeignKey(Type, verbose_name=_('Mission'), blank=True, null=True)
     project_activity = models.ForeignKey(ProjectActivities, verbose_name=_('Project activity'), blank=True, null=True)
-    origin_country = models.ForeignKey(Country, verbose_name=_('Country of origin'))
     origin_city = models.ForeignKey(City, verbose_name=_('City of origin'))
-    destination_country = models.ForeignKey(Country, verbose_name=_('Country of destination'),
-                                            related_name='destination_country')
     destination_city = models.ForeignKey(City, verbose_name=_('City of destination'), related_name='destination_city')
     departure = models.DateTimeField(_('Departure'))
     arrival = models.DateTimeField(_('Arrival'))
