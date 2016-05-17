@@ -15,6 +15,3 @@ class ScientificMissionForm(forms.ModelForm):
     class Meta:
         model = ScientificMission
         localized_fields = ('amount_paid',)
-
-    class Media:
-        js = ('/static/js/load_cities.js',)
