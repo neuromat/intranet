@@ -47,4 +47,3 @@ class ScientificMission(models.Model):
 
     def value(self):
         return "R$ %s" % self.amount_paid
-
