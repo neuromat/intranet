@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-25 09:59-0300\n"
+"POT-Creation-Date: 2016-05-18 11:35-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,14 +45,12 @@ msgstr "Seminário"
 
 #: activity/models.py:63 dissemination/models.py:39 research/models.py:46
 #: research/models.py:297 templates/report/activity/meetings_report.html:16
-#: templates/report/activity/seminars_report.html:16
-#: templates/report/activity/seminars_report.html:34
-#: templates/report/activity/training_programs_report.html:17
-#: templates/report/activity/training_programs_report.html:49
-#: templates/report/dissemination/dissemination_report.html:17
-#: templates/report/dissemination/dissemination_report.html:20
-#: templates/report/dissemination/dissemination_report.html:52
-#: templates/report/dissemination/dissemination_report.html:65
+#: templates/report/activity/seminars_report.html:21
+#: templates/report/activity/seminars_report.html:39
+#: templates/report/activity/training_programs_report.html:22
+#: templates/report/activity/training_programs_report.html:54
+#: templates/report/dissemination/dissemination_report.html:22
+#: templates/report/dissemination/dissemination_report.html:49
 #: templates/report/research/add_event_papers.html:25
 #: templates/report/research/arxiv_papers.html:25
 #: templates/report/research/periodical_published_papers.html:25
@@ -63,6 +61,7 @@ msgstr "Título"
 #: activity/models.py:64 research/models.py:153
 #: templates/report/activity/scientific_missions_report.html:17
 #: templates/report/activity/scientific_missions_report.html:84
+#: templates/report/scientific_mission/scientific_missions_report.html:22
 msgid "Local"
 msgstr "Local"
 
@@ -70,13 +69,10 @@ msgstr "Local"
 msgid "Type of activity"
 msgstr "Tipo de atividade"
 
-#: activity/models.py:81 dissemination/models.py:42 order/models.py:204
-#: order/models.py:227 research/models.py:47 research/models.py:304
-#: templates/report/activity/meetings_report.html:24
-#: templates/report/dissemination/dissemination_report.html:18
-#: templates/report/dissemination/dissemination_report.html:22
-#: templates/report/dissemination/dissemination_report.html:52
-#: templates/report/dissemination/dissemination_report.html:66
+#: activity/models.py:81 dissemination/models.py:42 research/models.py:47
+#: research/models.py:304 templates/report/activity/meetings_report.html:24
+#: templates/report/dissemination/dissemination_report.html:24
+#: templates/report/dissemination/dissemination_report.html:50
 msgid "URL"
 msgstr "URL"
 
@@ -96,55 +92,57 @@ msgstr "Organizado por "
 msgid "Participant"
 msgstr "Participante"
 
-#: activity/models.py:105 activity/models.py:129 order/models.py:225
-#: order/models.py:249 order/models.py:315
+#: activity/models.py:105 activity/models.py:129
 #: templates/report/activity/meetings_report.html:17
-#: templates/report/order/list_equipment_supplies_msc.html:50
 msgid "Description"
 msgstr "Descrição"
 
-#: activity/models.py:106 activity/models.py:130 order/models.py:206
-#: research/models.py:305 templates/report/activity/meetings.html:29
+#: activity/models.py:106 activity/models.py:130 research/models.py:305
+#: templates/report/activity/meetings.html:29
 #: templates/report/activity/scientific_missions.html:21
 #: templates/report/activity/scientific_missions_report.html:18
 #: templates/report/activity/scientific_missions_report.html:85
 #: templates/report/activity/seminars.html:31
 #: templates/report/activity/training_programs.html:21
-#: templates/report/dissemination/dissemination.html:30
+#: templates/report/dissemination/dissemination.html:39
 #: templates/report/research/academic_works.html:21
 #: templates/report/research/articles.html:21
+#: templates/report/scientific_mission/scientific_missions.html:21
+#: templates/report/scientific_mission/scientific_missions_report.html:23
 msgid "Start date"
 msgstr "Início"
 
-#: activity/models.py:107 activity/models.py:131 order/models.py:207
-#: research/models.py:306 templates/report/activity/meetings.html:33
+#: activity/models.py:107 activity/models.py:131 research/models.py:306
+#: templates/report/activity/meetings.html:33
 #: templates/report/activity/scientific_missions.html:26
 #: templates/report/activity/scientific_missions_report.html:18
 #: templates/report/activity/scientific_missions_report.html:85
 #: templates/report/activity/seminars.html:36
 #: templates/report/activity/training_programs.html:26
-#: templates/report/dissemination/dissemination.html:35
+#: templates/report/dissemination/dissemination.html:44
 #: templates/report/research/academic_works.html:26
 #: templates/report/research/articles.html:26
+#: templates/report/scientific_mission/scientific_missions.html:26
+#: templates/report/scientific_mission/scientific_missions_report.html:23
 msgid "End date"
 msgstr "Término"
 
-#: activity/models.py:111 templates/admin/index.html:76
+#: activity/models.py:111 templates/admin/index.html:77
 msgid "Meetings"
 msgstr "Reuniões"
 
 #: activity/models.py:127 activity/models.py:179
 #: templates/poster/seminar.html:21
-#: templates/report/activity/seminars_report.html:16
-#: templates/report/activity/seminars_report.html:34
-#: templates/report/activity/training_programs_report.html:17
-#: templates/report/activity/training_programs_report.html:49
+#: templates/report/activity/seminars_report.html:21
+#: templates/report/activity/seminars_report.html:39
+#: templates/report/activity/training_programs_report.html:22
+#: templates/report/activity/training_programs_report.html:54
 msgid "Speaker"
 msgstr "Palestrante"
 
 #: activity/models.py:132
-#: templates/report/activity/training_programs_report.html:18
-#: templates/report/activity/training_programs_report.html:49
+#: templates/report/activity/training_programs_report.html:23
+#: templates/report/activity/training_programs_report.html:54
 msgid "Duration"
 msgstr "Duração"
 
@@ -157,10 +155,10 @@ msgid "Training Programs"
 msgstr "Programas de treinamento"
 
 #: activity/models.py:161 dissemination/models.py:21 dissemination/models.py:62
-#: dissemination/models.py:104 order/models.py:203 person/models.py:27
-#: person/models.py:45 person/models.py:66 person/models.py:174
-#: research/models.py:111 research/models.py:129 research/models.py:146
-#: research/models.py:171 research/models.py:280
+#: dissemination/models.py:103 person/models.py:27 person/models.py:45
+#: person/models.py:66 person/models.py:174 research/models.py:111
+#: research/models.py:129 research/models.py:146 research/models.py:171
+#: research/models.py:280
 msgid "Name"
 msgstr "Nome"
 
@@ -172,10 +170,7 @@ msgstr "Tipo de seminário"
 msgid "Types of seminar"
 msgstr "Tipos de seminário"
 
-#: activity/models.py:181 order/models.py:231
-#: templates/report/activity/seminars.html:21
-#: templates/report/order/list_equipment_supplies_msc.html:32
-#: templates/report/order/list_order.html:41
+#: activity/models.py:181 templates/report/activity/seminars.html:21
 msgid "Category"
 msgstr "Categoria"
 
@@ -195,14 +190,12 @@ msgstr "Resumo"
 
 #: activity/models.py:184 dissemination/models.py:40 research/models.py:87
 #: research/models.py:230 research/models.py:240 research/models.py:250
-#: research/models.py:272 templates/report/activity/seminars_report.html:17
-#: templates/report/activity/seminars_report.html:34
-#: templates/report/activity/training_programs_report.html:17
-#: templates/report/activity/training_programs_report.html:49
-#: templates/report/dissemination/dissemination_report.html:18
-#: templates/report/dissemination/dissemination_report.html:22
-#: templates/report/dissemination/dissemination_report.html:52
-#: templates/report/dissemination/dissemination_report.html:66
+#: research/models.py:272 templates/report/activity/seminars_report.html:22
+#: templates/report/activity/seminars_report.html:39
+#: templates/report/activity/training_programs_report.html:22
+#: templates/report/activity/training_programs_report.html:54
+#: templates/report/dissemination/dissemination_report.html:24
+#: templates/report/dissemination/dissemination_report.html:51
 #: templates/report/research/arxiv_papers.html:28
 #: templates/report/research/periodical_published_papers.html:32
 #: templates/report/research/periodical_update_papers.html:32
@@ -222,20 +215,20 @@ msgstr "Anexo"
 msgid "Room"
 msgstr "Sala"
 
-#: activity/models.py:191 templates/admin/index.html:78
+#: activity/models.py:191 templates/admin/index.html:79
 msgid "Seminars"
 msgstr "Seminários"
 
-#: activity/views.py:99 activity/views.py:179 activity/views.py:223
-#: dissemination/views.py:71 research/views.py:164 research/views.py:248
+#: activity/views.py:87 activity/views.py:176 activity/views.py:233
+#: dissemination/views.py:74 research/views.py:130 research/views.py:216
 msgid "End date should be equal or greater than start date."
 msgstr "A data de término deve ser igual ou superior a data inicial."
 
-#: activity/views.py:117
+#: activity/views.py:118
 msgid "You have to choose a seminar!"
 msgstr "Você tem que escolher um seminário!"
 
-#: activity/views.py:124
+#: activity/views.py:125
 msgid "No seminar matches the given query."
 msgstr "Nenhum seminário corresponde a esta consulta."
 
@@ -307,8 +300,8 @@ msgstr ""
 "pedidos, criar pedido no lugar de outro usuário."
 
 #: custom_auth/models.py:61
-msgid "Registration date"
-msgstr "Data de inscrição"
+msgid "Date joined"
+msgstr ""
 
 #: custom_auth/models.py:62
 msgid "User profile"
@@ -332,17 +325,17 @@ msgstr "Usuários"
 msgid "Dissemination"
 msgstr "Difusão"
 
-#: dissemination/apps.py:10 templates/admin/index.html:75
+#: dissemination/apps.py:10 templates/admin/index.html:76
 msgid "Disseminations"
 msgstr "Difusões"
 
-#: dissemination/models.py:10 dissemination/models.py:85
-#: dissemination/models.py:86
+#: dissemination/models.py:10 dissemination/models.py:84
+#: dissemination/models.py:85
 msgid "Internal"
 msgstr "Interno"
 
-#: dissemination/models.py:11 dissemination/models.py:126
-#: dissemination/models.py:127
+#: dissemination/models.py:11 dissemination/models.py:125
+#: dissemination/models.py:126
 msgid "External"
 msgstr "Externo"
 
@@ -351,10 +344,8 @@ msgid "Topic"
 msgstr "Tópico"
 
 #: dissemination/models.py:28
-#: templates/report/dissemination/dissemination_report.html:17
-#: templates/report/dissemination/dissemination_report.html:21
-#: templates/report/dissemination/dissemination_report.html:52
-#: templates/report/dissemination/dissemination_report.html:65
+#: templates/report/dissemination/dissemination_report.html:23
+#: templates/report/dissemination/dissemination_report.html:50
 msgid "Topics"
 msgstr "Tópicos"
 
@@ -370,321 +361,27 @@ msgstr "Meio de comunicação interna"
 msgid "Internal media outlets"
 msgstr "Meios de comunicação interna"
 
-#: dissemination/models.py:80 dissemination/models.py:122
-#: templates/report/dissemination/dissemination_report.html:21
-#: templates/report/dissemination/dissemination_report.html:65
+#: dissemination/models.py:80 dissemination/models.py:121
+#: templates/report/dissemination/dissemination.html:30
+#: templates/report/dissemination/dissemination_report.html:23
 msgid "Media outlet"
 msgstr "Meio de comunicação"
 
-#: dissemination/models.py:81 dissemination/models.py:123 research/models.py:69
+#: dissemination/models.py:81 dissemination/models.py:122 research/models.py:69
 msgid "Author"
 msgstr "Autor"
 
-#: dissemination/models.py:110
+#: dissemination/models.py:109
 msgid "External media outlet"
 msgstr "Meio de comunicação externa"
 
-#: dissemination/models.py:111
+#: dissemination/models.py:110
 msgid "External media outlets"
 msgstr "Meios de comunicação externa"
 
-#: order/admin.py:40
-msgid "Administrative system"
-msgstr "Sistema Administrativo"
-
-#: order/admin.py:79
-msgid "Event Info"
-msgstr "Informações do Evento"
-
-#: order/admin.py:82 order/admin.py:104 order/admin.py:135 order/admin.py:189
-#: order/admin.py:218
-msgid "Purpose"
-msgstr "Finalidade"
-
-#: order/admin.py:101
-msgid "Info about the equipment, supplies or miscellaneous"
-msgstr "Informações sobre os equipamentos ou bens de consumo"
-
-#: order/admin.py:132
-msgid "Information about the service"
-msgstr "Informações sobre o serviço"
-
-#: order/admin.py:161
-msgid "Information about the ticket"
-msgstr "Informações sobre a passagem"
-
-#: order/admin.py:165
-msgid "Purpose of the trip"
-msgstr "Finalidade da viagem"
-
-#: order/admin.py:186
-msgid "Daily stipend Info"
-msgstr "Informações sobre a diária"
-
-#: order/admin.py:215
-msgid "Reimbursement Info"
-msgstr "Informações sobre o reembolso"
-
-#: order/apps.py:9 order/models.py:95
-msgid "Order"
-msgstr "Pedido"
-
-#: order/forms.py:8
-msgid "Round Trip"
-msgstr "Ida e Volta"
-
-#: order/forms.py:9
-msgid "One Way"
-msgstr "Só ida"
-
-#: order/forms.py:13
-msgid "Aerial "
-msgstr "Aéreo"
-
-#: order/forms.py:14
-msgid "Terrestrial"
-msgstr "Terrestre"
-
-#: order/forms.py:18
-msgid "-------------------"
-msgstr "-------------------"
-
-#: order/forms.py:19
-msgid "Morning (6am - 12pm)"
-msgstr "Manhã (06:00 - 12:00)"
-
-#: order/forms.py:20
-msgid "Afternoon (12pm - 6pm)"
-msgstr "Tarde (12:00 - 18:00)"
-
-#: order/forms.py:21
-msgid "Evening (6pm - 12am)"
-msgstr "Noite (18:00 - 00:00)"
-
-#: order/forms.py:22
-msgid "Night (12am - 6am)"
-msgstr "Madrugada (00:00 - 06:00)"
-
-#: order/forms.py:26 templates/report/order/list_equipment_supplies_msc.html:45
-msgid "National"
-msgstr "Nacional"
-
-#: order/forms.py:27 templates/report/order/list_equipment_supplies_msc.html:47
-msgid "Imported"
-msgstr "Importado"
-
-#: order/forms.py:31 templates/report/order/list_equipment_supplies_msc.html:36
-msgid "Permanent material"
-msgstr "Material permanente"
-
-#: order/forms.py:32 templates/report/order/list_equipment_supplies_msc.html:38
-msgid "Consumption items"
-msgstr "Material de consumo"
-
-#: order/models.py:23 order/models.py:211
-msgid "Scientific event"
-msgstr "Evento"
-
-#: order/models.py:24 order/models.py:235 order/models.py:236
-#: templates/report/order/list_equipment_supplies_msc.html:16
-msgid "Equipment / Supplies / Miscellaneous"
-msgstr "Equipamentos e bens de consumo"
-
-#: order/models.py:25 order/models.py:253
-msgid "Service"
-msgstr "Serviço"
-
-#: order/models.py:26 order/models.py:278
-msgid "Ticket"
-msgstr "Passagem"
-
-#: order/models.py:27 order/models.py:301
-msgid "Daily stipend"
-msgstr "Diária"
-
-#: order/models.py:28 order/models.py:318
-msgid "Reimbursement"
-msgstr "Reembolso"
-
-#: order/models.py:39
-#: templates/report/order/list_equipment_supplies_msc.html:19
-msgid "Open"
-msgstr "Aberto"
-
-#: order/models.py:40
-#: templates/report/order/list_equipment_supplies_msc.html:21
-msgid "Pending"
-msgstr "Pendente"
-
-#: order/models.py:41
-#: templates/report/order/list_equipment_supplies_msc.html:23
-msgid "Canceled"
-msgstr "Cancelado"
-
-#: order/models.py:42
-#: templates/report/order/list_equipment_supplies_msc.html:25
-msgid "Approved"
-msgstr "Aprovado"
-
-#: order/models.py:43
-#: templates/report/order/list_equipment_supplies_msc.html:27
-msgid "Denied"
-msgstr "Negado"
-
-#: order/models.py:44
-msgid "Finished"
-msgstr "Finalizado"
-
-#: order/models.py:55 order/models.py:61
-msgid "Scientific Mission"
-msgstr "Missão científica"
-
-#: order/models.py:62
-msgid "Scientific Missions"
-msgstr "Missões científicas"
-
-#: order/models.py:82
-msgid " member"
-msgstr " (solicitante)"
-
-#: order/models.py:83
-#: templates/report/order/list_equipment_supplies_msc.html:51
-msgid "Justification"
-msgstr "Justificativa"
-
-#: order/models.py:84
-msgid "Order date"
-msgstr "Data/hora do pedido"
-
-#: order/models.py:85
-msgid "Modified"
-msgstr "Alterado em"
-
-#: order/models.py:86
-msgid "Type of order"
-msgstr "Tipo de pedido"
-
-#: order/models.py:88
-msgid "Protocol"
-msgstr "Protocolo"
-
-#: order/models.py:96
-msgid "Orders"
-msgstr "Pedidos"
-
-#: order/models.py:105 order/models.py:110
-msgid "Order number"
-msgstr "Nº do pedido"
-
-#: order/models.py:205
-msgid "Value"
-msgstr "Valor"
-
-#: order/models.py:208
-msgid "Invitation"
-msgstr "Convite"
-
-#: order/models.py:212
-msgid "Scientific events"
-msgstr "Eventos"
-
-#: order/models.py:226
-#: templates/report/order/list_equipment_supplies_msc.html:51
-msgid "Quantity"
-msgstr "Quantidade"
-
-#: order/models.py:228
-msgid ""
-"Link to the product details. You may suggest an URL address of the "
-"manufacturer of the product or any store that sells this product."
-msgstr ""
-"Link para detalhes do produto. Você pode sugerir o endereço de alguma página "
-"WEB que descreva o material ou que comercialize o material solicitado."
-
-#: order/models.py:230 order/models.py:250 order/models.py:267
-#: order/models.py:292
-#: templates/report/order/list_equipment_supplies_msc.html:41
-#: templates/report/order/list_order.html:50
-msgid "Origin"
-msgstr "Origem"
-
-#: order/models.py:232 person/models.py:117 person/models.py:133
-#: templates/report/research/academic_works_report.html:33
-#: templates/report/research/academic_works_report.html:58
-#: templates/report/research/academic_works_report.html:86
-#: templates/report/research/academic_works_report.html:111
-#: templates/report/research/academic_works_report.html:139
-#: templates/report/research/academic_works_report.html:164
-msgid "Institution"
-msgstr "Instituição"
-
-#: order/models.py:254
-msgid "Services"
-msgstr "Serviços"
-
-#: order/models.py:268 order/models.py:293
-msgid "Destination"
-msgstr "Destino"
-
-#: order/models.py:269
-msgid "Outbound Date"
-msgstr "Data de saída"
-
-#: order/models.py:270
-msgid "Outbound Preferred time"
-msgstr "Período de preferência"
-
-#: order/models.py:271
-msgid "Inbound Date"
-msgstr "Data de retorno"
-
-#: order/models.py:272
-msgid "Inbound Preferred time"
-msgstr "Período de preferência"
-
-#: order/models.py:273
-msgid "Type of Trip"
-msgstr "Tipo de viagem"
-
-#: order/models.py:274
-msgid "Type of transportation"
-msgstr "Tipo de transporte"
-
-#: order/models.py:275 research/models.py:48
-msgid "Note"
-msgstr "Observação"
-
-#: order/models.py:279
-msgid "Tickets"
-msgstr "Passagens"
-
-#: order/models.py:294
-msgid "Departure"
-msgstr "Partida"
-
-#: order/models.py:295
-msgid "Arrival"
-msgstr "Chegada"
-
-#: order/models.py:296
-msgid "Who will receive?"
-msgstr "Quem receberá a diária?"
-
-#: order/models.py:297
-msgid "Mission"
-msgstr "Missão"
-
-#: order/models.py:298
-msgid "Project activity"
-msgstr "Atividade do projeto"
-
-#: order/models.py:302
-msgid "Daily stipends"
-msgstr "Diárias"
-
-#: order/models.py:319
-msgid "Reimbursements"
-msgstr "Reembolsos"
+#: dissemination/views.py:77
+msgid "You should choose a type."
+msgstr "Você deve escolher um tipo."
 
 #: person/admin.py:18
 msgid "Contact Info"
@@ -720,13 +417,23 @@ msgid "Acronym"
 msgstr "Sigla"
 
 #: person/models.py:68 research/models.py:49 research/models.py:80
-#: research/models.py:296 templates/report/dissemination/dissemination.html:21
+#: research/models.py:296 templates/report/dissemination/dissemination.html:20
 msgid "Type"
 msgstr "Tipo"
 
 #: person/models.py:69
 msgid "Belongs to"
 msgstr "Pertence a"
+
+#: person/models.py:117 person/models.py:133
+#: templates/report/research/academic_works_report.html:33
+#: templates/report/research/academic_works_report.html:58
+#: templates/report/research/academic_works_report.html:86
+#: templates/report/research/academic_works_report.html:111
+#: templates/report/research/academic_works_report.html:139
+#: templates/report/research/academic_works_report.html:164
+msgid "Institution"
+msgstr "Instituição"
 
 #: person/models.py:118
 msgid "Institutions"
@@ -885,6 +592,10 @@ msgstr "Evento"
 msgid "Team"
 msgstr "Equipe"
 
+#: research/models.py:48
+msgid "Note"
+msgstr "Observação"
+
 #: research/models.py:50
 msgid "RIS file authors"
 msgstr "Autores do arquivo RIS"
@@ -894,8 +605,8 @@ msgid "Order of author"
 msgstr "Data/hora do pedido"
 
 #: research/models.py:70
-#: templates/report/dissemination/dissemination_report.html:20
-#: templates/report/dissemination/dissemination_report.html:65
+#: templates/report/dissemination/dissemination_report.html:22
+#: templates/report/dissemination/dissemination_report.html:49
 #: templates/report/research/add_event_papers.html:26
 #: templates/report/research/arxiv_papers.html:26
 #: templates/report/research/periodical_published_papers.html:26
@@ -939,7 +650,7 @@ msgstr "Página final"
 msgid "Book and chapter"
 msgstr "Livro e capítulo"
 
-#: research/models.py:97 templates/admin/index.html:74
+#: research/models.py:97 templates/admin/index.html:75
 msgid "Books and chapters"
 msgstr "Livros e capítulos"
 
@@ -985,8 +696,6 @@ msgid "Where?"
 msgstr "Onde?"
 
 #: research/models.py:191
-#: templates/report/order/list_equipment_supplies_msc.html:17
-#: templates/report/order/list_order.html:30
 msgid "Status"
 msgstr "Status"
 
@@ -998,7 +707,7 @@ msgstr "Esconder esse paper no relatório"
 msgid "Not defined"
 msgstr "Não definido"
 
-#: research/models.py:217 templates/admin/index.html:73
+#: research/models.py:217 templates/admin/index.html:74
 #: templates/report/research/articles.html:12
 #: templates/report/research/articles_report.html:7
 msgid "Articles"
@@ -1052,34 +761,86 @@ msgstr "Trabalho acadêmico"
 msgid "Academic Works"
 msgstr "Trabalhos acadêmicos"
 
-#: research/views.py:127
+#: research/views.py:93
 msgid "Invalid start date!"
 msgstr "Início inválido"
 
-#: research/views.py:137
+#: research/views.py:103
 msgid "Invalid end date!"
 msgstr "Término inválido"
 
-#: research/views.py:412
+#: research/views.py:380
 msgid "Please, select a .ris file to upload."
 msgstr "Por favor, selecione um arquivo .ris para fazer o upload."
 
-#: research/views.py:440
+#: research/views.py:408
 msgid "Successfully added one Periodical."
 msgstr "Periódico adicionado com sucesso"
 
-#: research/views.py:442
+#: research/views.py:410
 msgid "Successfully added all the Periodicals."
 msgstr "Todos os periódicos foram adicionados com sucesso"
 
-#: research/views.py:445 research/views.py:793 research/views.py:872
-#: research/views.py:954 research/views.py:1066
+#: research/views.py:413 research/views.py:761 research/views.py:840
+#: research/views.py:922 research/views.py:1034
 msgid "You have selected no item. Nothing to be done!"
 msgstr "Você não selecionou nenhum item. Não há nada para fazer!"
 
-#: research/views.py:786 research/views.py:865 research/views.py:1059
+#: research/views.py:754 research/views.py:833 research/views.py:1027
 msgid "Wrong date format! It should be YYYY-MM-DD."
 msgstr "Formato de data errado! Deveria ser AAAA-MM-DD"
+
+#: scientific_mission/forms.py:10 scientific_mission/models.py:34
+msgid "City of origin"
+msgstr "Cidade de origem"
+
+#: scientific_mission/forms.py:12 scientific_mission/models.py:35
+msgid "City of destination"
+msgstr "Cidade de destino"
+
+#: scientific_mission/models.py:15
+msgid "Scientific Mission"
+msgstr "Missão científica"
+
+#: scientific_mission/models.py:21
+msgid "Type of scientific mission"
+msgstr "Tipo de missão científica"
+
+#: scientific_mission/models.py:22
+msgid "Types of scientific mission"
+msgstr "Tipos de missão científica"
+
+#: scientific_mission/models.py:31
+msgid "Paid to"
+msgstr "Pago para"
+
+#: scientific_mission/models.py:32
+msgid "Mission"
+msgstr "Missão"
+
+#: scientific_mission/models.py:33
+msgid "Project activity"
+msgstr "Atividade do projeto"
+
+#: scientific_mission/models.py:36
+msgid "Departure"
+msgstr "Partida"
+
+#: scientific_mission/models.py:37
+msgid "Arrival"
+msgstr "Chegada"
+
+#: scientific_mission/models.py:38
+msgid "Amount paid"
+msgstr "Valor pago"
+
+#: scientific_mission/models.py:44
+msgid "Daily stipend"
+msgstr "Diária"
+
+#: scientific_mission/models.py:45
+msgid "Daily stipends"
+msgstr "Diárias"
 
 #: sistema/urls.py:26
 msgid "NeuroMat Individual Report of Activities"
@@ -1099,15 +860,8 @@ msgstr "Administração"
 #: templates/report/activity/seminars_report.html:6
 #: templates/report/activity/training_programs.html:11
 #: templates/report/activity/training_programs_report.html:6
-#: templates/report/dissemination/dissemination.html:11
+#: templates/report/dissemination/dissemination.html:10
 #: templates/report/dissemination/dissemination_report.html:6
-#: templates/report/order/list_daily_stipend.html:6
-#: templates/report/order/list_equipment_supplies_msc.html:6
-#: templates/report/order/list_events.html:7
-#: templates/report/order/list_order.html:10
-#: templates/report/order/list_reimbursement.html:7
-#: templates/report/order/list_services.html:7
-#: templates/report/order/list_tickets.html:7
 #: templates/report/research/academic_works.html:11
 #: templates/report/research/academic_works_report.html:6
 #: templates/report/research/add_event_papers.html:10
@@ -1119,6 +873,8 @@ msgstr "Administração"
 #: templates/report/research/periodical_published_papers.html:10
 #: templates/report/research/periodical_update_papers.html:10
 #: templates/report/research/periodicals_to_import.html:10
+#: templates/report/scientific_mission/scientific_missions.html:11
+#: templates/report/scientific_mission/scientific_missions_report.html:6
 msgid "Home"
 msgstr "Início"
 
@@ -1140,55 +896,57 @@ msgid ""
 "NeuroMat Individual Report of Activities (NIRA) is an open-source software, "
 "that should go through continuing updates, and its source-code is available "
 "on the NeuroMat github account:"
-msgstr "O NeuroMat Individual Report of Activities (NIRA) é um software de código aberto, "
-"que receberá atualizações contínuas, e seu código-fonte está disponível na conta do NeuroMat no Github:"
+msgstr ""
+"O NeuroMat Individual Report of Activities (NIRA) é um software de código "
+"aberto, que receberá atualizações contínuas, e seu código-fonte está "
+"disponível na conta do NeuroMat no Github:"
 
 #: templates/admin/index.html:60
 msgid ""
 "If you have any questions, please contact us at nira at numec dot prp dot "
 "usp dot br"
 msgstr ""
-"Se você tiver alguma dúvida, por favor, "
-"entre em contato conosco pelo email nira arroba numec ponto prp ponto usp ponto br"
+"Se você tiver alguma dúvida, por favor, entre em contato conosco pelo email "
+"nira arroba numec ponto prp ponto usp ponto br"
 
-#: templates/admin/index.html:70
+#: templates/admin/index.html:71
 msgid "Reports"
 msgstr "Relatórios"
 
-#: templates/admin/index.html:72
+#: templates/admin/index.html:73
 msgid "Academic works"
 msgstr "Trabalhos acadêmicos"
 
-#: templates/admin/index.html:77
+#: templates/admin/index.html:78
 msgid "Scientific missions"
 msgstr "Missões científicas"
 
-#: templates/admin/index.html:79
+#: templates/admin/index.html:80
 msgid "Training programs"
 msgstr "Programas de treinamento"
 
-#: templates/admin/index.html:85
+#: templates/admin/index.html:86
 msgid "Documents"
 msgstr "Documentos"
 
-#: templates/admin/index.html:87
+#: templates/admin/index.html:88
 msgid "FAPESP - appendix 5"
 msgstr "FAPESP - anexo 5"
 
-#: templates/admin/index.html:88 templates/poster/seminar.html:11
+#: templates/admin/index.html:89 templates/poster/seminar.html:11
 #: templates/poster/seminar_poster.html:7
 msgid "Seminar poster"
 msgstr "Poster de um seminário"
 
-#: templates/admin/index.html:94
+#: templates/admin/index.html:95
 msgid "Upload contents"
 msgstr "Upload de conteúdos"
 
-#: templates/admin/index.html:96
+#: templates/admin/index.html:97
 msgid "Create citation name"
 msgstr "Criar nome de citação"
 
-#: templates/admin/index.html:97
+#: templates/admin/index.html:98
 #: templates/report/research/add_event_papers.html:11
 #: templates/report/research/arxiv_papers.html:11
 #: templates/report/research/events_to_import.html:7
@@ -1199,35 +957,35 @@ msgstr "Criar nome de citação"
 msgid "Import papers"
 msgstr "Importar papers"
 
-#: templates/admin/index.html:103
+#: templates/admin/index.html:104
 msgid "About NIRA"
 msgstr "Sobre o NIRA"
 
-#: templates/admin/index.html:104
+#: templates/admin/index.html:105
 msgid ""
 "The NeuroMat Individual Report of Activities (NIRA) has the goal to "
 "automatically feed NeuroMat's annual Report of Activities, a document that "
 "is submitted annually to the São Paulo Research Foundation (FAPESP). See "
 "more on "
 msgstr ""
-"O NeuroMat Individual Report of Activities (NIRA) tem como objetivo alimentar "
-"automaticamente o relatório anual de atividades do NeuroMat, um documento "
-"obrigatório que é apresentado anualmente à Fundação de Amparo à Pesquisa do "
-"Estado de São Paulo (FAPESP). Veja mais na"
+"O NeuroMat Individual Report of Activities (NIRA) tem como objetivo "
+"alimentar automaticamente o relatório anual de atividades do NeuroMat, um "
+"documento obrigatório que é apresentado anualmente à Fundação de Amparo à "
+"Pesquisa do Estado de São Paulo (FAPESP). Veja mais na"
 
-#: templates/admin/index.html:104
+#: templates/admin/index.html:105
 msgid "NeuroMat's webpage"
 msgstr "página do NeuroMat"
 
-#: templates/admin/index.html:112 templates/poster/seminar_poster_pdf.html:52
+#: templates/admin/index.html:113 templates/poster/seminar_poster_pdf.html:52
 msgid "Supported by"
 msgstr "Apoiado por"
 
-#: templates/admin/index.html:117
+#: templates/admin/index.html:118
 msgid "Developed by"
 msgstr "Desenvolvido por"
 
-#: templates/admin/index.html:122
+#: templates/admin/index.html:123
 msgid "NIRA version:"
 msgstr "Versão do NIRA:"
 
@@ -1266,10 +1024,10 @@ msgstr "Relatório de conferências"
 #: templates/report/activity/scientific_missions.html:33
 #: templates/report/activity/seminars.html:43
 #: templates/report/activity/training_programs.html:33
-#: templates/report/dissemination/dissemination.html:42
-#: templates/report/order/list_order.html:60
+#: templates/report/dissemination/dissemination.html:52
 #: templates/report/research/academic_works.html:33
 #: templates/report/research/articles.html:33
+#: templates/report/scientific_mission/scientific_missions.html:33
 msgid "Get report"
 msgstr "Obter relatório"
 
@@ -1278,14 +1036,9 @@ msgstr "Obter relatório"
 #: templates/report/activity/seminars_report.html:8
 #: templates/report/activity/training_programs_report.html:8
 #: templates/report/dissemination/dissemination_report.html:8
-#: templates/report/order/list_daily_stipend.html:8
-#: templates/report/order/list_equipment_supplies_msc.html:8
-#: templates/report/order/list_events.html:9
-#: templates/report/order/list_reimbursement.html:9
-#: templates/report/order/list_services.html:9
-#: templates/report/order/list_tickets.html:9
 #: templates/report/research/academic_works_report.html:8
 #: templates/report/research/articles_report.html:8
+#: templates/report/scientific_mission/scientific_missions_report.html:8
 msgid "Results"
 msgstr "Resultados"
 
@@ -1305,29 +1058,34 @@ msgstr "Nenhuma conferência encontrada!"
 
 #: templates/report/activity/scientific_missions.html:12
 #: templates/report/activity/scientific_missions_report.html:7
+#: templates/report/scientific_mission/scientific_missions.html:12
+#: templates/report/scientific_mission/scientific_missions_report.html:7
 msgid "Scientific mission report"
 msgstr "Relatório de missões científicas"
 
 #: templates/report/activity/scientific_missions_report.html:17
 #: templates/report/activity/scientific_missions_report.html:84
+#: templates/report/scientific_mission/scientific_missions_report.html:22
 msgid "Researcher"
 msgstr "Pesquisador"
 
 #: templates/report/activity/scientific_missions_report.html:17
 #: templates/report/activity/scientific_missions_report.html:84
+#: templates/report/scientific_mission/scientific_missions_report.html:22
 msgid "Scientific mission"
 msgstr "Missão científica"
 
 #: templates/report/activity/scientific_missions_report.html:66
 #: templates/report/activity/scientific_missions_report.html:121
 #: templates/report/activity/scientific_missions_report.html:133
+#: templates/report/scientific_mission/scientific_missions_report.html:43
+#: templates/report/scientific_mission/scientific_missions_report.html:85
 msgid "No scientific missions found!"
 msgstr "Nenhuma missão científica encontrada!"
 
 #: templates/report/activity/scientific_missions_report.html:79
-#: templates/report/activity/seminars_report.html:30
-#: templates/report/activity/training_programs_report.html:45
-#: templates/report/dissemination/dissemination_report.html:46
+#: templates/report/activity/seminars_report.html:35
+#: templates/report/activity/training_programs_report.html:50
 msgid "Latex version:"
 msgstr "Versão em Latex:"
 
@@ -1342,7 +1100,17 @@ msgstr "e"
 msgid "Seminars report"
 msgstr "Relatório de seminários"
 
-#: templates/report/activity/seminars_report.html:44
+#: templates/report/activity/seminars_report.html:16
+#: templates/report/activity/training_programs_report.html:17
+#: templates/report/dissemination/dissemination_report.html:17
+#: templates/report/dissemination/dissemination_report.html:41
+#: templates/report/research/academic_works_report.html:15
+#: templates/report/research/articles_report.html:15
+#: templates/report/scientific_mission/scientific_missions_report.html:17
+msgid "Download .tex file"
+msgstr "Download arquivo .tex"
+
+#: templates/report/activity/seminars_report.html:49
 msgid "No seminars found!"
 msgstr "Nenhum seminário encontrado!"
 
@@ -1351,61 +1119,23 @@ msgstr "Nenhum seminário encontrado!"
 msgid "Training programs report"
 msgstr "Relatório de programas de treinamento"
 
-#: templates/report/activity/training_programs_report.html:69
+#: templates/report/activity/training_programs_report.html:74
 msgid "No training programs found!"
 msgstr "Nenhum programa de treinamento encontrado!"
 
-#: templates/report/dissemination/dissemination.html:12
+#: templates/report/dissemination/dissemination.html:11
 #: templates/report/dissemination/dissemination_report.html:7
 msgid "Dissemination report"
 msgstr "Relatório de difusão"
 
-#: templates/report/dissemination/dissemination_report.html:79
+#: templates/report/dissemination/dissemination_report.html:66
 msgid "No disseminations found!"
 msgstr "Nenhuma difusão encontrada!"
-
-#: templates/report/order/list_daily_stipend.html:7
-#: templates/report/order/list_equipment_supplies_msc.html:7
-#: templates/report/order/list_events.html:8
-#: templates/report/order/list_order.html:11
-#: templates/report/order/list_reimbursement.html:8
-#: templates/report/order/list_services.html:8
-#: templates/report/order/list_tickets.html:8
-msgid "Orders report"
-msgstr "Relatório de pedidos"
-
-#: templates/report/order/list_equipment_supplies_msc.html:16
-#: templates/report/order/list_order.html:21
-msgid "order type"
-msgstr "tipo de pedido"
-
-#: templates/report/order/list_equipment_supplies_msc.html:29
-#: templates/report/order/list_equipment_supplies_msc.html:34
-#: templates/report/order/list_equipment_supplies_msc.html:43
-msgid "All"
-msgstr "Todos"
-
-#: templates/report/order/list_equipment_supplies_msc.html:50
-msgid "Requester"
-msgstr "Solicitante"
-
-#: templates/report/order/list_equipment_supplies_msc.html:50
-msgid "order date"
-msgstr "data do pedido"
-
-#: templates/report/order/list_equipment_supplies_msc.html:62
-msgid "No equipment / supplies / miscellaneous found!"
-msgstr "Nenhum equipamento ou bem de consumo encontrado"
 
 #: templates/report/research/academic_works.html:12
 #: templates/report/research/academic_works_report.html:7
 msgid "Report of academic works"
 msgstr "Tipo de trabalho acadêmico"
-
-#: templates/report/research/academic_works_report.html:15
-#: templates/report/research/articles_report.html:15
-msgid "Download .tex file"
-msgstr "Download arquivo .tex"
 
 #: templates/report/research/academic_works_report.html:20
 msgid "Post-doctoral fellows"
