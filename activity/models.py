@@ -101,7 +101,7 @@ class Meeting(ProjectActivities):
     # fields
     broad_audience = models.BooleanField(_('Broad audience?'), default=False)
     cepid_event = models.BooleanField(_('Organized by '+cepid_name+'?'), default=False)
-    participant = models.ManyToManyField(Person, verbose_name=_('Participant'), blank=True, null=True)
+    participant = models.ManyToManyField(Person, verbose_name=_('Participant'), blank=True)
     description = models.TextField(_('Description'), blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'))
@@ -125,7 +125,7 @@ class TrainingProgram(ProjectActivities):
     'speakers'          Get the speakers of the training program and their institutions.
     """
     speaker = models.ManyToManyField(Person, verbose_name=_('Speaker'))
-    meeting = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
+    belongs_to = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
     description = models.TextField(_('Description'), blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
@@ -177,7 +177,7 @@ class Seminar(ProjectActivities):
     'speakers'          Get the speakers of the seminar and their institutions.
     """
     speaker = models.ManyToManyField(Person, verbose_name=_('Speaker'))
-    meeting = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
+    belongs_to = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
     category = models.ForeignKey(SeminarType, verbose_name=_('Category'))
     international_guest_lecturer = models.BooleanField(_('International guest lecturer?'), default=False)
     abstract = models.TextField(_('Abstract'), blank=True, null=True)

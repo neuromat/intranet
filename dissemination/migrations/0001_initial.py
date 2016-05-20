@@ -18,7 +18,8 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=255, verbose_name='Title')),
                 ('date', models.DateField(verbose_name='Date')),
                 ('link', models.URLField(null=True, verbose_name='URL', blank=True)),
-                ('type_of_media', models.CharField(blank=True, max_length=1, verbose_name='Type of media', choices=[(b'i', 'Internal'), (b'e', 'External')])),
+                ('type_of_media', models.CharField(blank=True, max_length=1, verbose_name='Type of media',
+                                                   choices=[(b'i', 'Internal'), (b'e', 'External')])),
             ],
             options={
                 'ordering': ('title',),
@@ -28,7 +29,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='External',
             fields=[
-                ('dissemination_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='dissemination.Dissemination')),
+                ('dissemination_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True,
+                                                           serialize=False, to='dissemination.Dissemination')),
                 ('author', models.ManyToManyField(to='person.Person', verbose_name='Author')),
             ],
             options={
@@ -53,7 +55,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Internal',
             fields=[
-                ('dissemination_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='dissemination.Dissemination')),
+                ('dissemination_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True,
+                                                           serialize=False, to='dissemination.Dissemination')),
                 ('author', models.ManyToManyField(to='person.Person', null=True, verbose_name='Author', blank=True)),
             ],
             options={

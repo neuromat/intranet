@@ -1,12 +1,11 @@
 from django.conf import settings
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.utils.translation import ugettext_lazy as _
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^', include(admin.site.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^i18n/', include('django.conf.urls.i18n')),
@@ -21,7 +20,7 @@ urlpatterns = patterns(
     url(r'^person/', include('person.urls')),
     url(r'^dissemination/', include('dissemination.urls')),
     url(r'^scientific_mission/', include('scientific_mission.urls')),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = _('NeuroMat Individual Report of Activities')
 admin.site.site_title = _('NIRA admin')

@@ -20,7 +20,8 @@ class Migration(migrations.Migration):
                 ('departure', models.DateTimeField(verbose_name='Departure')),
                 ('arrival', models.DateTimeField(verbose_name='Arrival')),
                 ('amount_paid', models.DecimalField(verbose_name='Amount paid', max_digits=10, decimal_places=2)),
-                ('destination_city', models.ForeignKey(related_name='destination_city', verbose_name='City of destination', to='cities_light.City')),
+                ('destination_city', models.ForeignKey(related_name='destination_city',
+                                                       verbose_name='City of destination', to='cities_light.City')),
             ],
             options={
                 'ordering': ('-departure',),
@@ -63,7 +64,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='scientificmission',
             name='project_activity',
-            field=models.ForeignKey(verbose_name='Project activity', blank=True, to='activity.ProjectActivities', null=True),
+            field=models.ForeignKey(verbose_name='Project activity', blank=True, to='activity.ProjectActivities',
+                                    null=True),
             preserve_default=True,
         ),
     ]

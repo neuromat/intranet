@@ -20,7 +20,7 @@ class UserCreationForm(forms.ModelForm):
             User._default_manager.get(username=username)
         except User.DoesNotExist:
             return username
-        raise forms.ValidationError("Duplicate username") # something went wrong around here...
+        raise forms.ValidationError("Duplicate username")  # something went wrong around here...
 
     def clean_password2(self):
         # Check that the two password entries match

@@ -595,7 +595,7 @@ class CacheTest(TestCase):
                                title='Identifying interacting pairs of sites in Ising models on a countable set',
                                research_result_type='a')
         base_article.save()
-        base_draft = Draft(article = base_article, date = '2014-07-01')
+        base_draft = Draft(article=base_article, date='2014-07-01')
         base_draft.save()
 
         # Action add, in add_periodicals
@@ -658,7 +658,6 @@ class CacheTest(TestCase):
                                      'paper_end_page_0': [u'60004']})
 
         self.assertEqual(response.status_code, 200)
-
 
         # Action update, in update_papers: needs paper_id of the selected papers to update
         paper_periodical = Periodical.objects.get(name='Brazilian Journal of Probability and Statistics')

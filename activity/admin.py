@@ -31,8 +31,8 @@ admin.site.register(Meeting, MeetingAdmin)
 class TrainingProgramAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['meeting',  'speaker', 'title', 'local', 'description', 'number_of_participants', 'start_date',
-                       'end_date', 'duration', 'other_duration']
+            'fields': ['belongs_to',  'speaker', 'title', 'local', 'description', 'number_of_participants',
+                       'start_date', 'end_date', 'duration', 'other_duration']
         }),
     )
     inlines = [NewsInline]
@@ -55,7 +55,7 @@ admin.site.register(TrainingProgram, TrainingProgramAdmin)
 class SeminarAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['meeting', 'category', 'speaker', 'international_guest_lecturer', 'title', 'local', 'room',
+            'fields': ['belongs_to', 'category', 'speaker', 'international_guest_lecturer', 'title', 'local', 'room',
                        'date', 'time', 'abstract', 'attachment']
         }),
     )

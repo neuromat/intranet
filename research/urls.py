@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, url
-
 from research import views
+from django.conf.urls import url
 
-urlpatterns = patterns('',
+
+urlpatterns = [
     url(r'^articles/$', views.articles, name='articles'),
     url(r'^articles_tex/$', views.articles_tex, name='articles_tex'),
     url(r'^academic_works/$', views.academic_works, name='academic_works'),
@@ -14,4 +14,4 @@ urlpatterns = patterns('',
     url(r'^arxiv_papers/$', views.arxiv_papers, name='arxiv_papers'),
     url(r'^event_papers/$', views.event_papers, name='event_papers'),
     url(r'^update_papers/$', views.update_papers, name='update_papers'),
-)
+]

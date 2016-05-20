@@ -38,7 +38,7 @@ class Dissemination(models.Model):
     """
     title = models.CharField(_('Title'), max_length=255)
     date = models.DateField(_('Date'))
-    topic = models.ManyToManyField(Topic, verbose_name=_('Topic'), blank=True, null=True)
+    topic = models.ManyToManyField(Topic, verbose_name=_('Topic'), blank=True)
     link = models.URLField(_('URL'), blank=True, null=True)
     type_of_media = models.CharField(_('Type of media'), max_length=1, choices=TYPE_OF_MEDIA, blank=True)
 
@@ -78,7 +78,7 @@ class Internal(Dissemination):
     'authors'           Get the authors of the publication.
     """
     media_outlet = models.ForeignKey(InternalMediaOutlet, verbose_name=_('Media outlet'))
-    author = models.ManyToManyField(Person, verbose_name=_('Author'), blank=True, null=True)
+    author = models.ManyToManyField(Person, verbose_name=_('Author'), blank=True)
 
     class Meta:
         verbose_name = _('Internal')
@@ -119,7 +119,7 @@ class External(Dissemination):
     'authors'           Get the authors of the publication.
     """
     media_outlet = models.ForeignKey(ExternalMediaOutlet, verbose_name=_('Media outlet'))
-    author = models.ManyToManyField(Person, verbose_name=_('Author'), blank=True, null=True)
+    author = models.ManyToManyField(Person, verbose_name=_('Author'), blank=True)
 
     class Meta:
         verbose_name = _('External')
