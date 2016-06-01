@@ -3,9 +3,9 @@
 
 {% block breadcrumbs %}
 <ul class="breadcrumb">
-<li><a href="/">{% trans 'Home' %}</a></li>
-<li><a href="/research/articles">{% trans 'Articles' %}</a></li>
-<li>{% trans 'Results' %}</li>
+<li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
+<li><a href="/research/articles">{% trans 'Articles' %}</a><span class="divider">»</span></li>
+<li class="active">{% trans 'Results' %}</li>
 </ul>
 {% endblock %}
 

@@ -1,11 +1,11 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_static bootstrapped_goodies_tags %}
+{% load i18n admin_static %}
 
 {% block breadcrumbs %}
 <ul class="breadcrumb">
-<li><a href="/">{% trans 'Home' %}</a></li>
-<li><a href="/activity/training_programs">{% trans 'Training programs report' %}</a></li>
-<li>{% trans 'Results' %}</li>
+<li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
+<li><a href="/activity/training_programs">{% trans 'Training programs report' %}</a><span class="divider">»</span></li>
+<li class="active">{% trans 'Results' %}</li>
 </ul>
 {% endblock %}
 
@@ -44,31 +44,6 @@
             </tr>
         {% endfor %}
     </table>
-
-    <br>
-
-    <h3>{% trans "Latex version:" %}</h3>
-    <br>
-    <span>\begin{longtable}{ |p{5,5cm}|p{5cm}|p{2cm}|p{1,5cm}| }</span><br>
-    <span>\hline</span><br>
-    <span>{% trans "Title" %} & {% trans "Speaker" %} & {% trans "Date" %} & {% trans "Duration" %} \\ \hline</span><br>
-    {% for training in training_programs %}
-        <span>
-            {{ training.trainingprogram.title }} & {{ training.trainingprogram.speakers }} &
-            {% if training.trainingprogram.end_date %}
-                {{ training.trainingprogram.start_date|date:"M d, Y" }} -
-                {{ training.trainingprogram.end_date|date:"M d, Y" }} &
-            {% else %}
-                {{ training.trainingprogram.start_date|date:"M d, Y" }} &
-            {% endif %}
-            {% if training.trainingprogram.duration == 'Other' %}
-                {{ training.trainingprogram.other_duration }}  \\ \hline
-            {% else %}
-                {{ training.trainingprogram.duration }}  \\ \hline
-            {% endif %}
-        </span><br>
-    {% endfor %}
-    <span>\end{longtable}</span>
 
 {%  else %}
     {% trans "No training programs found!" %}

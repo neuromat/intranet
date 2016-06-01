@@ -1,5 +1,5 @@
 Django==1.9.6
-django-admin-bootstrapped==2.0.5
+django-suit==0.2.18
 django-cep==1.0.9
 django-model-utils==2.2
 html5lib==0.99999

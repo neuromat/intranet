@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_static bootstrapped_goodies_tags %}
+{% load i18n admin_static %}
 
 {% block extrahead %}
     <script src="{% static 'js/select_all_papers.js' %}"></script>
@@ -7,9 +7,9 @@
 
 {% block breadcrumbs %}
     <ul class="breadcrumb">
-        <li><a href="/">{% trans 'Home' %}</a></li>
-        <li><a href="/research/import_papers">{% trans 'Import papers' %}</a></li>
-        <li>{% trans 'Papers to import' %}</li>
+        <li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
+        <li><a href="/research/import_papers">{% trans 'Import papers' %}</a><span class="divider">»</span></li>
+        <li class="active">{% trans 'Papers to import' %}</li>
     </ul>
 {% endblock %}
 

@@ -6,25 +6,25 @@ $(document).ready(function () {
 
     $id_type.each(function() {
         if($(this).val() == 'c'){
-            $('#id_chapter').parents('.row').show();
-            $('#id_start_page').parents('.row').show();
-            $('#id_end_page').parents('.row').show();
+            $('#id_chapter').parents('.control-group').show();
+            $('#id_start_page').parents('.control-group').show();
+            $('#id_end_page').parents('.control-group').show();
         } else{
-            $('#id_chapter').parents('.row').hide();
-            $('#id_start_page').parents('.row').hide();
-            $('#id_end_page').parents('.row').hide();
+            $('#id_chapter').parents('.control-group').hide();
+            $('#id_start_page').parents('.control-group').hide();
+            $('#id_end_page').parents('.control-group').hide();
         }
     });
 
     $id_type.change(function(){
         if($(this).val() == 'c'){
-            $('#id_chapter').parents('.row').show();
-            $('#id_start_page').parents('.row').show();
-            $('#id_end_page').parents('.row').show();
+            $('#id_chapter').parents('.control-group').show();
+            $('#id_start_page').parents('.control-group').show();
+            $('#id_end_page').parents('.control-group').show();
         } else{
-            $('#id_chapter').parents('.row').hide();
-            $('#id_start_page').parents('.row').hide();
-            $('#id_end_page').parents('.row').hide();
+            $('#id_chapter').parents('.control-group').hide();
+            $('#id_start_page').parents('.control-group').hide();
+            $('#id_end_page').parents('.control-group').hide();
         }
     });
 });

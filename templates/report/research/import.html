@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_static bootstrapped_goodies_tags %}
+{% load i18n admin_static %}
 
 {% block extrahead %}
 <script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
@@ -8,8 +8,8 @@
 
 {% block breadcrumbs %}
 <ul class="breadcrumb">
-<li><a href="/">{% trans 'Home' %}</a></li>
-<li>{% trans 'Import papers' %}</li>
+<li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
+<li class="active">{% trans 'Import papers' %}</li>
 </ul>
 {% endblock %}
 
