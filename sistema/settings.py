@@ -104,6 +104,7 @@ TEMPLATES = [
 SUIT_CONFIG = {
     'ADMIN_NAME': 'NIRA',
     'MENU_OPEN_FIRST_CHILD': False,
+    'HEADER_DATE_FORMAT': 'l, d F Y',
     'MENU': (
         {'app': 'activity', 'icon': 'icon-calendar'},
         {'app': 'dissemination', 'icon': 'icon-facetime-video'},
