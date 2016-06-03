@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-18 11:35-0300\n"
+"POT-Creation-Date: 2016-06-03 14:45-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,9 +46,7 @@ msgstr "Seminário"
 #: activity/models.py:63 dissemination/models.py:39 research/models.py:46
 #: research/models.py:297 templates/report/activity/meetings_report.html:16
 #: templates/report/activity/seminars_report.html:21
-#: templates/report/activity/seminars_report.html:39
 #: templates/report/activity/training_programs_report.html:22
-#: templates/report/activity/training_programs_report.html:54
 #: templates/report/dissemination/dissemination_report.html:22
 #: templates/report/dissemination/dissemination_report.html:49
 #: templates/report/research/add_event_papers.html:25
@@ -127,22 +125,19 @@ msgstr "Início"
 msgid "End date"
 msgstr "Término"
 
-#: activity/models.py:111 templates/admin/index.html:77
+#: activity/models.py:111
 msgid "Meetings"
 msgstr "Reuniões"
 
 #: activity/models.py:127 activity/models.py:179
 #: templates/poster/seminar.html:21
 #: templates/report/activity/seminars_report.html:21
-#: templates/report/activity/seminars_report.html:39
 #: templates/report/activity/training_programs_report.html:22
-#: templates/report/activity/training_programs_report.html:54
 msgid "Speaker"
 msgstr "Palestrante"
 
 #: activity/models.py:132
 #: templates/report/activity/training_programs_report.html:23
-#: templates/report/activity/training_programs_report.html:54
 msgid "Duration"
 msgstr "Duração"
 
@@ -191,9 +186,7 @@ msgstr "Resumo"
 #: activity/models.py:184 dissemination/models.py:40 research/models.py:87
 #: research/models.py:230 research/models.py:240 research/models.py:250
 #: research/models.py:272 templates/report/activity/seminars_report.html:22
-#: templates/report/activity/seminars_report.html:39
 #: templates/report/activity/training_programs_report.html:22
-#: templates/report/activity/training_programs_report.html:54
 #: templates/report/dissemination/dissemination_report.html:24
 #: templates/report/dissemination/dissemination_report.html:51
 #: templates/report/research/arxiv_papers.html:28
@@ -215,7 +208,7 @@ msgstr "Anexo"
 msgid "Room"
 msgstr "Sala"
 
-#: activity/models.py:191 templates/admin/index.html:79
+#: activity/models.py:191
 msgid "Seminars"
 msgstr "Seminários"
 
@@ -287,7 +280,7 @@ msgstr ""
 "Determina se este usuário deve ser tratado como ativo. Remova essa seleçã ao "
 "invés de deletar as contas."
 
-#: custom_auth/models.py:58 sistema/urls.py:27 templates/admin/base_site.html:4
+#: custom_auth/models.py:58 sistema/urls.py:26
 msgid "NIRA admin"
 msgstr "Admin do NIRA"
 
@@ -325,7 +318,7 @@ msgstr "Usuários"
 msgid "Dissemination"
 msgstr "Difusão"
 
-#: dissemination/apps.py:10 templates/admin/index.html:76
+#: dissemination/apps.py:10
 msgid "Disseminations"
 msgstr "Difusões"
 
@@ -562,7 +555,7 @@ msgstr "Livro"
 #: templates/report/research/periodical_update_papers.html:45
 #: templates/report/research/periodical_update_papers.html:49
 msgid "Scientific"
-msgstr "Evento"
+msgstr "Científica"
 
 #: research/models.py:21 templates/report/research/add_event_papers.html:39
 #: templates/report/research/arxiv_papers.html:38
@@ -602,7 +595,7 @@ msgstr "Autores do arquivo RIS"
 
 #: research/models.py:66
 msgid "Order of author"
-msgstr "Data/hora do pedido"
+msgstr "Ordem dos autores"
 
 #: research/models.py:70
 #: templates/report/dissemination/dissemination_report.html:22
@@ -650,7 +643,7 @@ msgstr "Página final"
 msgid "Book and chapter"
 msgstr "Livro e capítulo"
 
-#: research/models.py:97 templates/admin/index.html:75
+#: research/models.py:97
 msgid "Books and chapters"
 msgstr "Livros e capítulos"
 
@@ -707,8 +700,7 @@ msgstr "Esconder esse paper no relatório"
 msgid "Not defined"
 msgstr "Não definido"
 
-#: research/models.py:217 templates/admin/index.html:74
-#: templates/report/research/articles.html:12
+#: research/models.py:217 templates/report/research/articles.html:12
 #: templates/report/research/articles_report.html:7
 msgid "Articles"
 msgstr "Artigos"
@@ -790,6 +782,13 @@ msgstr "Você não selecionou nenhum item. Não há nada para fazer!"
 msgid "Wrong date format! It should be YYYY-MM-DD."
 msgstr "Formato de data errado! Deveria ser AAAA-MM-DD"
 
+#: scientific_mission/apps.py:9
+#: templates/report/activity/scientific_missions_report.html:17
+#: templates/report/activity/scientific_missions_report.html:84
+#: templates/report/scientific_mission/scientific_missions_report.html:22
+msgid "Scientific mission"
+msgstr "Missão científica"
+
 #: scientific_mission/forms.py:10 scientific_mission/models.py:34
 msgid "City of origin"
 msgstr "Cidade de origem"
@@ -842,16 +841,32 @@ msgstr "Diária"
 msgid "Daily stipends"
 msgstr "Diárias"
 
-#: sistema/urls.py:26
+#: sistema/urls.py:25
 msgid "NeuroMat Individual Report of Activities"
 msgstr "Relatório de atividades individuais do Neuromat"
 
-#: sistema/urls.py:28
+#: sistema/urls.py:27
 msgid "Administration"
 msgstr "Administração"
 
-#: templates/admin/index.html:12 templates/poster/seminar.html:10
-#: templates/poster/seminar_poster.html:6
+#: templates/admin/base_site.html:44
+#: templates/poster/seminar_poster_pdf.html:52
+msgid "Supported by"
+msgstr "Apoiado por"
+
+#: templates/admin/base_site.html:45
+msgid "Developed by"
+msgstr "Desenvolvido por"
+
+#: templates/admin/base_site.html:54
+msgid "NIRA version:"
+msgstr "Versão do NIRA:"
+
+#: templates/admin/base_site.html:55
+msgid "NIRA is licensed under a"
+msgstr ""
+
+#: templates/poster/seminar.html:10 templates/poster/seminar_poster.html:6
 #: templates/report/activity/meetings.html:11
 #: templates/report/activity/meetings_report.html:6
 #: templates/report/activity/scientific_missions.html:11
@@ -878,116 +893,9 @@ msgstr "Administração"
 msgid "Home"
 msgstr "Início"
 
-#: templates/admin/index.html:22
-#, python-format
-msgid "Models available in the %(name)s application."
-msgstr "Modelos disponíveis nos %(name)s da aplicação."
-
-#: templates/admin/index.html:37
-msgid "Add"
-msgstr "Adicionar"
-
-#: templates/admin/index.html:41
-msgid "Change"
-msgstr "Alterar"
-
-#: templates/admin/index.html:59
-msgid ""
-"NeuroMat Individual Report of Activities (NIRA) is an open-source software, "
-"that should go through continuing updates, and its source-code is available "
-"on the NeuroMat github account:"
-msgstr ""
-"O NeuroMat Individual Report of Activities (NIRA) é um software de código "
-"aberto, que receberá atualizações contínuas, e seu código-fonte está "
-"disponível na conta do NeuroMat no Github:"
-
-#: templates/admin/index.html:60
-msgid ""
-"If you have any questions, please contact us at nira at numec dot prp dot "
-"usp dot br"
-msgstr ""
-"Se você tiver alguma dúvida, por favor, entre em contato conosco pelo email "
-"nira arroba numec ponto prp ponto usp ponto br"
-
-#: templates/admin/index.html:71
-msgid "Reports"
-msgstr "Relatórios"
-
-#: templates/admin/index.html:73
-msgid "Academic works"
-msgstr "Trabalhos acadêmicos"
-
-#: templates/admin/index.html:78
-msgid "Scientific missions"
-msgstr "Missões científicas"
-
-#: templates/admin/index.html:80
-msgid "Training programs"
-msgstr "Programas de treinamento"
-
-#: templates/admin/index.html:86
-msgid "Documents"
-msgstr "Documentos"
-
-#: templates/admin/index.html:88
-msgid "FAPESP - appendix 5"
-msgstr "FAPESP - anexo 5"
-
-#: templates/admin/index.html:89 templates/poster/seminar.html:11
-#: templates/poster/seminar_poster.html:7
+#: templates/poster/seminar.html:11 templates/poster/seminar_poster.html:7
 msgid "Seminar poster"
 msgstr "Poster de um seminário"
-
-#: templates/admin/index.html:95
-msgid "Upload contents"
-msgstr "Upload de conteúdos"
-
-#: templates/admin/index.html:97
-msgid "Create citation name"
-msgstr "Criar nome de citação"
-
-#: templates/admin/index.html:98
-#: templates/report/research/add_event_papers.html:11
-#: templates/report/research/arxiv_papers.html:11
-#: templates/report/research/events_to_import.html:7
-#: templates/report/research/import.html:12
-#: templates/report/research/periodical_published_papers.html:11
-#: templates/report/research/periodical_update_papers.html:11
-#: templates/report/research/periodicals_to_import.html:11
-msgid "Import papers"
-msgstr "Importar papers"
-
-#: templates/admin/index.html:104
-msgid "About NIRA"
-msgstr "Sobre o NIRA"
-
-#: templates/admin/index.html:105
-msgid ""
-"The NeuroMat Individual Report of Activities (NIRA) has the goal to "
-"automatically feed NeuroMat's annual Report of Activities, a document that "
-"is submitted annually to the São Paulo Research Foundation (FAPESP). See "
-"more on "
-msgstr ""
-"O NeuroMat Individual Report of Activities (NIRA) tem como objetivo "
-"alimentar automaticamente o relatório anual de atividades do NeuroMat, um "
-"documento obrigatório que é apresentado anualmente à Fundação de Amparo à "
-"Pesquisa do Estado de São Paulo (FAPESP). Veja mais na"
-
-#: templates/admin/index.html:105
-msgid "NeuroMat's webpage"
-msgstr "página do NeuroMat"
-
-#: templates/admin/index.html:113 templates/poster/seminar_poster_pdf.html:52
-msgid "Supported by"
-msgstr "Apoiado por"
-
-#: templates/admin/index.html:118
-msgid "Developed by"
-msgstr "Desenvolvido por"
-
-#: templates/admin/index.html:123
-msgid "NIRA version:"
-msgstr "Versão do NIRA:"
 
 #: templates/poster/seminar.html:42
 msgid "Get poster"
@@ -1069,12 +977,6 @@ msgstr "Relatório de missões científicas"
 msgid "Researcher"
 msgstr "Pesquisador"
 
-#: templates/report/activity/scientific_missions_report.html:17
-#: templates/report/activity/scientific_missions_report.html:84
-#: templates/report/scientific_mission/scientific_missions_report.html:22
-msgid "Scientific mission"
-msgstr "Missão científica"
-
 #: templates/report/activity/scientific_missions_report.html:66
 #: templates/report/activity/scientific_missions_report.html:121
 #: templates/report/activity/scientific_missions_report.html:133
@@ -1084,8 +986,6 @@ msgid "No scientific missions found!"
 msgstr "Nenhuma missão científica encontrada!"
 
 #: templates/report/activity/scientific_missions_report.html:79
-#: templates/report/activity/seminars_report.html:35
-#: templates/report/activity/training_programs_report.html:50
 msgid "Latex version:"
 msgstr "Versão em Latex:"
 
@@ -1110,7 +1010,7 @@ msgstr "Relatório de seminários"
 msgid "Download .tex file"
 msgstr "Download arquivo .tex"
 
-#: templates/report/activity/seminars_report.html:49
+#: templates/report/activity/seminars_report.html:34
 msgid "No seminars found!"
 msgstr "Nenhum seminário encontrado!"
 
@@ -1119,7 +1019,7 @@ msgstr "Nenhum seminário encontrado!"
 msgid "Training programs report"
 msgstr "Relatório de programas de treinamento"
 
-#: templates/report/activity/training_programs_report.html:74
+#: templates/report/activity/training_programs_report.html:49
 msgid "No training programs found!"
 msgstr "Nenhum programa de treinamento encontrado!"
 
@@ -1200,6 +1100,16 @@ msgstr "Dissertações de mestrado"
 #: templates/report/research/academic_works_report.html:180
 msgid "No academic works found!"
 msgstr "Nenhum trabalho acadêmico encontrado!"
+
+#: templates/report/research/add_event_papers.html:11
+#: templates/report/research/arxiv_papers.html:11
+#: templates/report/research/events_to_import.html:7
+#: templates/report/research/import.html:12
+#: templates/report/research/periodical_published_papers.html:11
+#: templates/report/research/periodical_update_papers.html:11
+#: templates/report/research/periodicals_to_import.html:11
+msgid "Import papers"
+msgstr "Importar artigos"
 
 #: templates/report/research/add_event_papers.html:12
 #: templates/report/research/arxiv_papers.html:12
@@ -1322,3 +1232,24 @@ msgstr "Adicionar periódicos"
 #: templates/report/research/periodicals_to_import.html:28
 msgid "No periodicals to be added!"
 msgstr "Sem periódicos para adicionar!"
+
+##########################
+# Adicionado manualmente #
+##########################
+msgid "Add content"
+msgstr "Adicionar conteúdo"
+
+msgid "Organized by NeuroMat?"
+msgstr "Organizado pelo NeuroMat?"
+
+msgid "Reports"
+msgstr "Relatórios"
+
+msgid "Documents"
+msgstr "Documentos"
+
+msgid "Cities"
+msgstr "Cidades"
+
+msgid "Groups"
+msgstr "Grupos"
