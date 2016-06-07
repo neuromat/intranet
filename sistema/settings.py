@@ -34,7 +34,6 @@ AUTH_USER_MODEL = 'custom_auth.User'
 # Application definition
 
 INSTALLED_APPS = (
-    'suit',
     'dal',
     'dal_select2',
     'django.contrib.admin',
@@ -46,15 +45,6 @@ INSTALLED_APPS = (
     'cep',
     'django_jenkins',
     'cities_light',
-)
-
-# Possible tasks for Jenkins
-
-JENKINS_TASKS = (
-    'django_jenkins.tasks.run_pep8',
-    'django_jenkins.tasks.run_pyflakes',
-    'django_jenkins.tasks.run_sloccount',
-    'django_jenkins.tasks.run_pylint',
 )
 
 PROJECT_APPS = (
@@ -100,41 +90,6 @@ TEMPLATES = [
         },
     },
 ]
-
-SUIT_CONFIG = {
-    'ADMIN_NAME': 'NIRA',
-    'MENU_OPEN_FIRST_CHILD': False,
-    'HEADER_DATE_FORMAT': 'l, d F Y',
-    'MENU': (
-        {'app': 'activity', 'icon': 'icon-calendar'},
-        {'app': 'dissemination', 'icon': 'icon-facetime-video'},
-        {'app': 'person', 'icon': 'icon-user'},
-        {'app': 'research', 'icon': 'icon-book'},
-        {'app': 'scientific_mission', 'icon': 'icon-plane'},
-        {'label': 'Reports', 'icon': 'icon-th', 'permissions': 'user.is_nira_admin', 'models': (
-            {'label': 'Academic works', 'url': '/research/academic_works'},
-            {'label': 'Articles', 'url': '/research/articles'},
-            # {'label': 'Books and chapters', 'url': ''},
-            {'label': 'Disseminations', 'url': '/dissemination/dissemination_report'},
-            {'label': 'Meetings', 'url': '/activity/meetings'},
-            {'label': 'Scientific missions', 'url': '/scientific_mission/report'},
-            {'label': 'Seminars', 'url': '/activity/seminars'},
-            {'label': 'Training programs', 'url': '/activity/training_programs'},
-        )},
-        {'label': 'Add content', 'icon': 'icon-upload', 'permissions': 'user.is_nira_admin', 'models': (
-            {'label': 'Create/Update citation name', 'url': '/person/citation_names'},
-            {'label': 'Import papers', 'url': '/research/import_papers'},
-        )},
-        {'label': 'Documents', 'icon': 'icon-list-alt', 'permissions': 'user.is_nira_admin', 'models': (
-            # {'label': 'FAPESP - appendix 5', 'url': ''},
-            {'label': 'Seminar poster', 'url': '/activity/seminar_poster'},
-        )},
-        '-',
-        {'app': 'cities_light', 'icon': 'icon-globe', 'label': 'Cities'},
-        {'app': 'custom_auth', 'icon': 'icon-lock', 'label': 'Users'},
-        {'app': 'auth', 'icon': 'icon-lock', 'label': 'Groups'},
-    ),
-}
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
