@@ -27,12 +27,12 @@
 <p><br />
 </p>
 
-<p>Recebi de Nome do Outorgado a importância de R$ ({{ mission.amount_paid }}), referente à minha manutenção (diárias), compreendida entre o período de {{ mission.departure.date }} até {{ mission.arrival.date }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº &emsp;.</p>
+<p>Recebi de Nome do Outorgado a importância de R${{ mission.amount_paid }} ({{ mission.amount_paid|stringformat:"i" }}), referente à minha manutenção (diárias), compreendida entre o período de {{ mission.departure.date|date:" d/m/Y"  }} até {{ mission.arrival.date|date:" d/m/Y"  }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
 
 <p><br />
 </p>
 
-<p>Local e data: São Paulo, {{ datetime.day }}&emsp; <strong>de</strong> {{ datetime.month }}&emsp; <strong>de</strong> {{ datetime.year }}</p>
+<p>Local e data: São Paulo, {{ date.day }}&emsp; <strong>de</strong> {{ date|date:"F" }}&emsp; <strong>de</strong> {{ date.year }}</p>
 
 <p><br />
 </p>
@@ -45,9 +45,15 @@
 <p>______________________________________________</p>
 <p>Assinatura</p>
 
-<p>Nº documento de Identidade: {{ person.rg }}</p>
+{% if person.rg %}
+    <p>Nº documento de Identidade: {{ person.rg }}</p>
+{% elif person.passport %}
+    <p>Nº documento de Identidade/Passaporte: {{ person.passport }}</p>
+{% endif %}
 
-<p>Nº do CPF: {{ person.cpf }}</p>
+{% if person.cpf %}
+    <p>Nº do CPF: {{ person.cpf }}</p>
+{% endif %}
 
 <p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
 
@@ -73,10 +79,10 @@
       <th>LOCALIDADE</th>
   </tr>
   <tr>
-      <td>{{ mission.departure.date }}</td>
+      <td>{{ mission.departure.date|date:" d/m/Y"  }}</td>
       <td>{{ mission.departure.time }}</td>
       <td>{{ mission.origin_city }}</td>
-      <td>{{ mission.arrival.date }}</td>
+      <td>{{ mission.arrival.date|date:" d/m/Y"  }}</td>
       <td>{{ mission.arrival.time }}</td>
       <td>{{ mission.destination_city }}</td>
   </tr>

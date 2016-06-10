@@ -8,7 +8,7 @@
 {% block breadcrumbs %}
 <ul class="breadcrumb">
 <li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
-<li class="active">{% trans 'Seminar poster' %}</li>
+<li class="active">{% trans 'Anexo5' %}</li>
 </ul>
 {% endblock %}
 
@@ -36,6 +36,17 @@
                 {% endfor %}
             </select>
         </div>
+
+        <div class="col-xs-2 col-sm-2">
+            <label>{% trans "Date of issue" %}</label>
+            <input class="form-control" name="issue_date" id="id_issue_date" placeholder="DD/MM/AAAA">
+        </div>
+
+        <div class="col-xs-2 col-sm-2">
+            <label>{% trans "Number of process" %}</label>
+            <input class="form-control" name="process" id="id_process">
+        </div>
+
     </div>
     <br>
     <div class="btn-group">

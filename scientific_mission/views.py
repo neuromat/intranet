@@ -1,16 +1,16 @@
 import json as simplejson
-from dal import autocomplete
 from activity.views import render_to_pdf
 from cities_light.models import City
-from helper_functions.date import *
-from scientific_mission.models import ScientificMission
+from dal import autocomplete
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
+from helper_functions.date import *
 from helper_functions.latex import generate_latex
 from person.models import Person
+from scientific_mission.models import ScientificMission
 
 
 class CityAutocomplete(autocomplete.Select2QuerySetView):
@@ -26,6 +26,16 @@ class CityAutocomplete(autocomplete.Select2QuerySetView):
 
         return qs
 
+
+def date_typed(date):
+    day = date[0:2]
+    month = date[3:5]
+    year = date[6:10]
+    date = year+month+day
+    date = datetime.datetime.strptime(date, "%Y%m%d").date()
+    return date
+
+
 @login_required
 def anexo5(request):
 
@@ -35,12 +45,22 @@ def anexo5(request):
     if request.method == 'POST':
 
         mission_id = request.POST['title']
+        process = request.POST['process']
+        date = request.POST['issue_date']
+
+        if date:
+            date = date_typed(date)
+        else:
+            date = datetime.datetime.now()
 
         if mission_id is None or mission_id == '':
+
             messages.error(request, _('You have to choose a scientific mission!'))
             context = {'people': people, 'missions': missions}
             return render(request, 'anexo/anexo5.html', context)
+
         else:
+
             try:
                 mission = ScientificMission.objects.get(id=mission_id)
             except ScientificMission.DoesNotExist:
@@ -52,6 +72,8 @@ def anexo5(request):
                     'pagesize': 'A4',
                     'mission': mission,
                     'person': mission.person,
+                    'date': date,
+                    'process': process,
                 }
             )
 
