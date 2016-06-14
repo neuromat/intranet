@@ -76,3 +76,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('User')
         verbose_name_plural = _('Users')
+        permissions = (
+            ("view_reports", _("Can see reports")),
+            ("add_content", _("Can add contents")),
+            ("create_documents", _("Can create documents")),
+        )
