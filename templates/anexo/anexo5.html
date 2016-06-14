@@ -1,0 +1,59 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+{% load static %}
+{% block extrahead %}
+    <script src="{% static 'js/anexo.js' %}"></script>
+{% endblock extrahead%}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
+<li class="active">{% trans 'Anexo5' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+{% if people %}
+<form role="form" method="post">{% csrf_token %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6 col-sm-6">
+            <label>{% trans "Person" %}</label>
+            <select class="form-control" name="person" id="id_person" onchange="ajax_select_mission(this.value)">
+                <option value=""></option>
+                {% for person in people %}
+                    <option value={{ person.id }}>{{ person }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-xs-6 col-sm-6">
+            <label>{% trans "Scientific mission" %}</label>
+            <select class="form-control" name="title" id="id_title">
+                <option value=""></option>
+                {% for mission in missions %}
+                    <option value={{ mission.id }}>{{ mission }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-xs-2 col-sm-2">
+            <label>{% trans "Date of issue" %}</label>
+            <input class="form-control" name="issue_date" id="id_issue_date" placeholder="DD/MM/AAAA">
+        </div>
+
+        <div class="col-xs-2 col-sm-2">
+            <label>{% trans "Number of process" %}</label>
+            <input class="form-control" name="process" id="id_process">
+        </div>
+
+    </div>
+    <br>
+    <div class="btn-group">
+        <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get anexo5" %}</button>
+    </div>
+</div>
+</form>
+{% endif %}
+
+{% endblock %}

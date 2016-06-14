@@ -1,0 +1,100 @@
+<div>
+<p><br />
+</p>
+
+<u><div style="text-align:center"><p><strong>ANEXO 5</strong></p>
+
+<p><strong>DO MANUAL DE PRESTAÇÃO DE CONTAS</strong></p>
+
+<p><strong>RECIBO PARA PAGAMENTO A PESQUISADORES VISITANTES E A </strong></p>
+
+<p><strong>TERCEIROS, POR RECEBIMENTO DE DIÁRIAS/MANUTENÇÃO</strong></p></div></u>
+
+<p><br />
+</p>
+
+<p><br />
+</p>
+
+<p><br />
+</p>
+
+<div style="text-align:center"><p><strong>Recibo: R$ {{ mission.amount_paid }}</strong></p></div>
+
+<p><br />
+</p>
+
+<p><br />
+</p>
+
+<p>Recebi de Nome do Outorgado a importância de R${{ mission.amount_paid }} ({{ mission.amount_paid|stringformat:"i" }}), referente à minha manutenção (diárias), compreendida entre o período de {{ mission.departure.date|date:" d/m/Y"  }} até {{ mission.arrival.date|date:" d/m/Y"  }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
+
+<p><br />
+</p>
+
+<p>Local e data: São Paulo, {{ date.day }}&emsp; <strong>de</strong> {{ date|date:"F" }}&emsp; <strong>de</strong> {{ date.year }}</p>
+
+<p><br />
+</p>
+
+<p>Nome: {{ person.full_name }}</p>
+
+<p><br />
+</p>
+
+<p>______________________________________________</p>
+<p>Assinatura</p>
+
+{% if person.rg %}
+    <p>Nº documento de Identidade: {{ person.rg }}</p>
+{% elif person.passport %}
+    <p>Nº documento de Identidade/Passaporte: {{ person.passport }}</p>
+{% endif %}
+
+{% if person.cpf %}
+    <p>Nº do CPF: {{ person.cpf }}</p>
+{% endif %}
+
+<p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
+
+<p>Número: {{ person.number }} &emsp;&emsp;&emsp;&emsp; Bairro: {{ person.district }}</p>
+
+<p>Cidade: {{ person.city }}</p>
+
+<p><br />
+</p>
+
+<p><strong>ROTEIRO DE VIAGENS PARA COMPROVAÇÃO DE DIÁRIAS</strong></p>
+<table border="1" style="width:100%">
+  <tr>
+    <th colspan="3">SAÍDA</th>
+    <th colspan="3">CHEGADA</th>
+  </tr>
+  <tr>
+      <th>DATA</th>
+      <th>HORA</th>
+      <th>LOCALIDADE</th>
+      <th>DATA</th>
+      <th>HORA</th>
+      <th>LOCALIDADE</th>
+  </tr>
+  <tr>
+      <td>{{ mission.departure.date|date:" d/m/Y"  }}</td>
+      <td>{{ mission.departure.time }}</td>
+      <td>{{ mission.origin_city }}</td>
+      <td>{{ mission.arrival.date|date:" d/m/Y"  }}</td>
+      <td>{{ mission.arrival.time }}</td>
+      <td>{{ mission.destination_city }}</td>
+  </tr>
+</table>
+
+<p><br />
+</p>
+
+<p><strong>Nota</strong>: A importância deverá ser paga de acordo com o tempo de permanência do pesquisador visitante, até o limite estabelecido no Termo de Outorga.</p>
+
+<p><br />
+</p>
+
+<p style="text-align:right"><strong>FAPESP, ABRIL DE 2010.</strong></p>
+</div>
