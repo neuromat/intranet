@@ -46,7 +46,7 @@ class Dissemination(models.Model):
         return u'%s' % self.title
 
     class Meta:
-        ordering = ('title', )
+        ordering = ('-date', 'title')
 
     def topics(self):
         return ', '.join([unicode(topic) for topic in self.topic.all()])
