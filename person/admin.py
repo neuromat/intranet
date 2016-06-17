@@ -43,9 +43,12 @@ admin.site.register(Person, PersonAdmin)
 
 
 class InstitutionAdmin(admin.ModelAdmin):
-    fields = ['type', 'name', 'acronym', 'belongs_to']
+    fields = ['type', 'name', 'acronym', 'belongs_to', 'street', 'street_complement', 'number', 'district', 'city',
+              'zipcode']
     list_display = ('type', 'name', 'acronym', 'belongs_to')
     list_display_links = ('name',)
+
+    form = InstitutionForm
 
 admin.site.register(Institution, InstitutionAdmin)
 

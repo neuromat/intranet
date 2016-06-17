@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
+from cities_light.models import City
+from person.validation import CPF
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ValidationError
-from person.validation import CPF
 
 
 DEFAULT_CHOICES = ((True, 'Yes'), (False, 'No'))
@@ -67,6 +68,12 @@ class Institution(models.Model):
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
     type = models.ForeignKey(InstitutionType, verbose_name=_('Type'))
     belongs_to = models.ForeignKey('self', verbose_name=_('Belongs to'), blank=True, null=True)
+    zipcode = models.CharField(_('Zip Code'), max_length=9, blank=True)
+    street = models.CharField(_('Address'), max_length=255, blank=True)
+    street_complement = models.CharField(_('Complement'), max_length=255, blank=True)
+    number = models.CharField(_('Number'), max_length=10, blank=True)
+    district = models.CharField(_('District'), max_length=255, blank=True)
+    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
 
     def __unicode__(self):
         if self.belongs_to:
