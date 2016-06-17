@@ -3,6 +3,7 @@ from cep.widgets import CEPInput
 from cities_light.models import City
 from models import Institution, Person
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
 
 class PersonForm(forms.ModelForm):
@@ -20,7 +21,7 @@ class PersonForm(forms.ModelForm):
 
 class InstitutionForm(forms.ModelForm):
 
-    city = forms.ModelChoiceField(queryset=City.objects.all(), required=False,
+    city = forms.ModelChoiceField(queryset=City.objects.all(), required=False, label=_('City'),
                                   widget=autocomplete.ModelSelect2(url='city_autocomplete'))
 
     class Meta:
