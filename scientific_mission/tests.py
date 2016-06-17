@@ -128,3 +128,9 @@ class ScientificMissionsTest(TestCase):
                                                         'process': 000,
                                                         'title': -3})
         self.assertEqual(response.status_code, 404)
+
+        # Show titles
+        person = people[0]
+        person_id = person.pk
+        response = self.client.get(reverse('anexo_missions'), {'person': person_id})
+        self.assertEqual(response.status_code, 200)
