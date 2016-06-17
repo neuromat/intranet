@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 14:45-0300\n"
+"POT-Creation-Date: 2016-06-17 15:42-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +39,7 @@ msgid "Meeting"
 msgstr "Reunião"
 
 #: activity/models.py:58 activity/models.py:190
-#: templates/poster/seminar.html:31 templates/poster/seminar_poster_pdf.html:62
+#: templates/poster/seminar.html:31 templates/poster/seminar_poster_pdf.html:66
 msgid "Seminar"
 msgstr "Seminário"
 
@@ -150,8 +150,8 @@ msgid "Training Programs"
 msgstr "Programas de treinamento"
 
 #: activity/models.py:161 dissemination/models.py:21 dissemination/models.py:62
-#: dissemination/models.py:103 person/models.py:27 person/models.py:45
-#: person/models.py:66 person/models.py:174 research/models.py:111
+#: dissemination/models.py:103 person/models.py:28 person/models.py:46
+#: person/models.py:67 person/models.py:181 research/models.py:111
 #: research/models.py:129 research/models.py:146 research/models.py:171
 #: research/models.py:280
 msgid "Name"
@@ -256,7 +256,7 @@ msgstr "Entre com um nome de usuário válido."
 msgid "invalid"
 msgstr "inválido"
 
-#: custom_auth/models.py:52 person/models.py:135
+#: custom_auth/models.py:52 person/models.py:142
 msgid "Email"
 msgstr "Email"
 
@@ -307,6 +307,18 @@ msgstr "Usuário"
 #: custom_auth/models.py:78
 msgid "Users"
 msgstr "Usuários"
+
+#: custom_auth/models.py:80
+msgid "Can see reports"
+msgstr "Pode ver relatórios"
+
+#: custom_auth/models.py:81
+msgid "Can add contents"
+msgstr "Pode adicionar conteúdo"
+
+#: custom_auth/models.py:82
+msgid "Can create documents"
+msgstr "Pode criar documentos"
 
 #: dissemination/apps.py:9 research/models.py:20
 #: templates/report/research/add_event_papers.html:38
@@ -384,41 +396,66 @@ msgstr "Informações de Contato"
 msgid "Personal Info"
 msgstr "Informações pessoais"
 
-#: person/models.py:17
+#: person/models.py:18
 #, python-format
 msgid "%s is not a valid CPF"
 msgstr "%s não é um CPF válido"
 
-#: person/models.py:33 person/models.py:132
+#: person/models.py:34 person/models.py:139
 msgid "Role"
 msgstr "Perfil"
 
-#: person/models.py:34
+#: person/models.py:35
 msgid "Roles"
 msgstr "Perfis"
 
-#: person/models.py:51
+#: person/models.py:52
 msgid "Type of institution"
 msgstr "Tipo de instituição"
 
-#: person/models.py:52
+#: person/models.py:53
 msgid "Types of institution"
 msgstr "Tipos de instituição"
 
-#: person/models.py:67 research/models.py:112 research/models.py:147
+#: person/models.py:68 research/models.py:112 research/models.py:147
 msgid "Acronym"
 msgstr "Sigla"
 
-#: person/models.py:68 research/models.py:49 research/models.py:80
+#: person/models.py:69 research/models.py:49 research/models.py:80
 #: research/models.py:296 templates/report/dissemination/dissemination.html:20
 msgid "Type"
 msgstr "Tipo"
 
-#: person/models.py:69
+#: person/models.py:70
 msgid "Belongs to"
 msgstr "Pertence a"
 
-#: person/models.py:117 person/models.py:133
+#: person/models.py:71 person/models.py:148
+msgid "Zip Code"
+msgstr "CEP"
+
+#: person/models.py:72 person/models.py:149
+msgid "Address"
+msgstr "Endereço"
+
+#: person/models.py:73 person/models.py:150
+msgid "Complement"
+msgstr "Complemento"
+
+#: person/models.py:74 person/models.py:151 research/models.py:150
+#: research/models.py:271
+msgid "Number"
+msgstr "Número"
+
+#: person/models.py:75 person/models.py:152
+msgid "District"
+msgstr "Bairro"
+
+#: person/models.py:76 person/models.py:153
+msgid "City"
+msgstr "Cidade"
+
+#: person/models.py:124 person/models.py:140
 #: templates/report/research/academic_works_report.html:33
 #: templates/report/research/academic_works_report.html:58
 #: templates/report/research/academic_works_report.html:86
@@ -428,79 +465,55 @@ msgstr "Pertence a"
 msgid "Institution"
 msgstr "Instituição"
 
-#: person/models.py:118
+#: person/models.py:125
 msgid "Institutions"
 msgstr "Instituições"
 
-#: person/models.py:134
+#: person/models.py:141
 msgid "Full name"
 msgstr "Nome completo"
 
-#: person/models.py:136
+#: person/models.py:143
 msgid "RG"
 msgstr "RG"
 
-#: person/models.py:137
+#: person/models.py:144
 msgid "CPF"
 msgstr "CPF"
 
-#: person/models.py:138
+#: person/models.py:145
 msgid "Passport"
 msgstr "Passaporte"
 
-#: person/models.py:139
+#: person/models.py:146
 msgid "Phone"
 msgstr "Telefone"
 
-#: person/models.py:140
+#: person/models.py:147
 msgid "Cell Phone"
 msgstr "Celular"
 
-#: person/models.py:141
-msgid "Zip Code"
-msgstr "CEP"
-
-#: person/models.py:142
-msgid "Address"
-msgstr "Endereço"
-
-#: person/models.py:143
-msgid "Complement"
-msgstr "Complemento"
-
-#: person/models.py:144 research/models.py:150 research/models.py:271
-msgid "Number"
-msgstr "Número"
-
-#: person/models.py:145
-msgid "District"
-msgstr "Bairro"
-
-#: person/models.py:146
-msgid "City"
-msgstr "Cidade"
-
-#: person/models.py:147
+#: person/models.py:154
 msgid "State"
 msgstr "Estado"
 
-#: person/models.py:148
+#: person/models.py:155
 msgid "Country"
 msgstr "País"
 
-#: person/models.py:165 person/models.py:166
+#: person/models.py:172 person/models.py:173 templates/anexo/anexo5.html:21
 msgid "Person"
 msgstr "Pessoa"
 
-#: person/models.py:175
+#: person/models.py:182
 msgid "Name in bibliographic citation"
 msgstr "Nome em citação bibliográfica"
 
-#: person/models.py:176
+#: person/models.py:183
 msgid "Default name?"
 msgstr "Nome default?"
 
-#: person/models.py:194 person/models.py:195
+#: person/models.py:201 person/models.py:202
 msgid "Citation name"
 msgstr "Nome de citação"
 
@@ -782,7 +795,7 @@ msgstr "Você não selecionou nenhum item. Não há nada para fazer!"
 msgid "Wrong date format! It should be YYYY-MM-DD."
 msgstr "Formato de data errado! Deveria ser AAAA-MM-DD"
 
-#: scientific_mission/apps.py:9
+#: scientific_mission/apps.py:9 templates/anexo/anexo5.html:31
 #: templates/report/activity/scientific_missions_report.html:17
 #: templates/report/activity/scientific_missions_report.html:84
 #: templates/report/scientific_mission/scientific_missions_report.html:22
@@ -841,6 +854,14 @@ msgstr "Diária"
 msgid "Daily stipends"
 msgstr "Diárias"
 
+#: scientific_mission/views.py:62
+msgid "You have to choose a scientific mission!"
+msgstr "Você tem que escolher uma missão científica!"
+
+#: scientific_mission/views.py:72
+msgid "No scientific mission matches the given query."
+msgstr "Nenhum missão científica corresponde a esta consulta."
+
 #: sistema/urls.py:25
 msgid "NeuroMat Individual Report of Activities"
 msgstr "Relatório de atividades individuais do Neuromat"
@@ -850,7 +871,7 @@ msgid "Administration"
 msgstr "Administração"
 
 #: templates/admin/base_site.html:44
-#: templates/poster/seminar_poster_pdf.html:52
+#: templates/poster/seminar_poster_pdf.html:107
 msgid "Supported by"
 msgstr "Apoiado por"
 
@@ -863,10 +884,11 @@ msgid "NIRA version:"
 msgstr "Versão do NIRA:"
 
 #: templates/admin/base_site.html:55
-msgid "NIRA is licensed under a"
-msgstr ""
+msgid "NIRA is licensed under"
+msgstr "NIRA está licenciado sob os termos da"
 
-#: templates/poster/seminar.html:10 templates/poster/seminar_poster.html:6
+#: templates/anexo/anexo5.html:10 templates/poster/seminar.html:10
+#: templates/poster/seminar_poster.html:6
 #: templates/report/activity/meetings.html:11
 #: templates/report/activity/meetings_report.html:6
 #: templates/report/activity/scientific_missions.html:11
@@ -893,6 +915,22 @@ msgstr ""
 msgid "Home"
 msgstr "Início"
 
+#: templates/anexo/anexo5.html:11
+msgid "Anexo5"
+msgstr ""
+
+#: templates/anexo/anexo5.html:41
+msgid "Date of issue"
+msgstr "Data de emissão"
+
+#: templates/anexo/anexo5.html:46
+msgid "Number of process"
+msgstr "Número de processo"
+
+#: templates/anexo/anexo5.html:53
+msgid "Get document"
+msgstr "Obter documentos"
+
 #: templates/poster/seminar.html:11 templates/poster/seminar_poster.html:7
 msgid "Seminar poster"
 msgstr "Poster de um seminário"
@@ -910,18 +948,13 @@ msgid "Funded by"
 msgstr "Financiado por"
 
 #: templates/poster/seminar_poster.html:35
-#: templates/poster/seminar_poster_pdf.html:57
 msgid "Organized by"
 msgstr "Organizado pelo"
 
 #: templates/poster/seminar_poster.html:70
-#: templates/poster/seminar_poster_pdf.html:89
+#: templates/poster/seminar_poster_pdf.html:116
 msgid "No seminar found!"
 msgstr "Nenhum seminário encontrado!"
-
-#: templates/poster/seminar_poster_pdf.html:70
-msgid "(International guest lecturer)"
-msgstr "(Professor convidado internacional)"
 
 #: templates/report/activity/meetings.html:12
 #: templates/report/activity/meetings_report.html:7

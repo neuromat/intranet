@@ -54,11 +54,14 @@ def anexo5(request):
         else:
             date = datetime.datetime.now()
 
+        if not process:
+            process = '2013/07699-0'
+
         if mission_id is None or mission_id == '':
 
             messages.error(request, _('You have to choose a scientific mission!'))
             date = datetime.datetime.now()
-            context = {'people': people, 'missions': missions, 'default_date': date}
+            context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
             return render(request, 'anexo/anexo5.html', context)
 
         else:
@@ -75,7 +78,7 @@ def anexo5(request):
             cents = ext.getExtenso(cents)
 
             return render_to_pdf(
-                'anexo/anexo5.html',
+                'anexo/anexo5_pdf.html',
                 {
                     'pagesize': 'A4',
                     'mission': mission,
@@ -88,7 +91,8 @@ def anexo5(request):
             )
 
     date = datetime.datetime.now()
-    context = {'people': people, 'missions': missions, 'default_date': date}
+    process = '2013/07699-0'
+    context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
     return render(request, 'anexo/anexo5.html', context)
 
 
