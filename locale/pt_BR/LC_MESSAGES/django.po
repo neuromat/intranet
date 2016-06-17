@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-17 15:42-0300\n"
+"POT-Creation-Date: 2016-06-17 16:38-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,7 +125,7 @@ msgstr "Início"
 msgid "End date"
 msgstr "Término"
 
-#: activity/models.py:111
+#: activity/models.py:111 sistema/settings_local.py:82
 msgid "Meetings"
 msgstr "Reuniões"
 
@@ -208,7 +208,7 @@ msgstr "Anexo"
 msgid "Room"
 msgstr "Sala"
 
-#: activity/models.py:191
+#: activity/models.py:191 sistema/settings_local.py:84
 msgid "Seminars"
 msgstr "Seminários"
 
@@ -304,7 +304,7 @@ msgstr "Perfil do usuário"
 msgid "User"
 msgstr "Usuário"
 
-#: custom_auth/models.py:78
+#: custom_auth/models.py:78 sistema/settings_local.py:97
 msgid "Users"
 msgstr "Usuários"
 
@@ -330,7 +330,7 @@ msgstr "Pode criar documentos"
 msgid "Dissemination"
 msgstr "Difusão"
 
-#: dissemination/apps.py:10
+#: dissemination/apps.py:10 sistema/settings_local.py:81
 msgid "Disseminations"
 msgstr "Difusões"
 
@@ -713,7 +713,8 @@ msgstr "Esconder esse paper no relatório"
 msgid "Not defined"
 msgstr "Não definido"
 
-#: research/models.py:217 templates/report/research/articles.html:12
+#: research/models.py:217 sistema/settings_local.py:79
+#: templates/report/research/articles.html:12
 #: templates/report/research/articles_report.html:7
 msgid "Articles"
 msgstr "Artigos"
@@ -862,6 +863,62 @@ msgstr "Você tem que escolher uma missão científica!"
 msgid "No scientific mission matches the given query."
 msgstr "Nenhum missão científica corresponde a esta consulta."
 
+#: sistema/settings_local.py:77
+msgid "Reports"
+msgstr "Relatórios"
+
+#: sistema/settings_local.py:78
+msgid "Academic works"
+msgstr "Trabalhos acadêmicos"
+
+#: sistema/settings_local.py:83
+msgid "Scientific missions"
+msgstr "Missões científicas"
+
+#: sistema/settings_local.py:85
+msgid "Training programs"
+msgstr "Programas de treinamento"
+
+#: sistema/settings_local.py:87
+msgid "Add content"
+msgstr "Adicionar conteúdo"
+
+#: sistema/settings_local.py:88
+msgid "Create/Update citation name"
+msgstr "Criar/Atualizar nome de citação"
+
+#: sistema/settings_local.py:89
+#: templates/report/research/add_event_papers.html:11
+#: templates/report/research/arxiv_papers.html:11
+#: templates/report/research/events_to_import.html:7
+#: templates/report/research/import.html:12
+#: templates/report/research/periodical_published_papers.html:11
+#: templates/report/research/periodical_update_papers.html:11
+#: templates/report/research/periodicals_to_import.html:11
+msgid "Import papers"
+msgstr "Importar artigos"
+
+#: sistema/settings_local.py:91
+msgid "Documents"
+msgstr "Documentos"
+
+#: sistema/settings_local.py:92
+msgid "FAPESP - appendix 5"
+msgstr "FAPESP - anexo 5"
+
+#: sistema/settings_local.py:93 templates/poster/seminar.html:11
+#: templates/poster/seminar_poster.html:7
+msgid "Seminar poster"
+msgstr "Poster de um seminário"
+
+#: sistema/settings_local.py:96
+msgid "Cities"
+msgstr "Cidades"
+
+#: sistema/settings_local.py:98
+msgid "Groups"
+msgstr "Grupos"
+
 #: sistema/urls.py:25
 msgid "NeuroMat Individual Report of Activities"
 msgstr "Relatório de atividades individuais do Neuromat"
@@ -930,10 +987,6 @@ msgstr "Número de processo"
 #: templates/anexo/anexo5.html:53
 msgid "Get document"
 msgstr "Obter documentos"
-
-#: templates/poster/seminar.html:11 templates/poster/seminar_poster.html:7
-msgid "Seminar poster"
-msgstr "Poster de um seminário"
 
 #: templates/poster/seminar.html:42
 msgid "Get poster"
@@ -1134,16 +1187,6 @@ msgstr "Dissertações de mestrado"
 msgid "No academic works found!"
 msgstr "Nenhum trabalho acadêmico encontrado!"
 
-#: templates/report/research/add_event_papers.html:11
-#: templates/report/research/arxiv_papers.html:11
-#: templates/report/research/events_to_import.html:7
-#: templates/report/research/import.html:12
-#: templates/report/research/periodical_published_papers.html:11
-#: templates/report/research/periodical_update_papers.html:11
-#: templates/report/research/periodicals_to_import.html:11
-msgid "Import papers"
-msgstr "Importar artigos"
-
 #: templates/report/research/add_event_papers.html:12
 #: templates/report/research/arxiv_papers.html:12
 #: templates/report/research/events_to_import.html:8
@@ -1266,23 +1309,5 @@ msgstr "Adicionar periódicos"
 msgid "No periodicals to be added!"
 msgstr "Sem periódicos para adicionar!"
 
-##########################
-# Adicionado manualmente #
-##########################
-msgid "Add content"
-msgstr "Adicionar conteúdo"
-
 msgid "Organized by NeuroMat?"
 msgstr "Organizado pelo NeuroMat?"
-
-msgid "Reports"
-msgstr "Relatórios"
-
-msgid "Documents"
-msgstr "Documentos"
-
-msgid "Cities"
-msgstr "Cidades"
-
-msgid "Groups"
-msgstr "Grupos"
