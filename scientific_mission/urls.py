@@ -6,6 +6,6 @@ urlpatterns = [
     url(r'^report/$', views.missions_report, name='missions_report'),
     url(r'^scientific_missions_tex/$', views.missions_tex, name='scientific_missions_tex'),
     url(r'^city_autocomplete/$', views.CityAutocomplete.as_view(), name='city_autocomplete'),
-    url(r'^anexo5_pdf/$', views.anexo5, name='anexo5_pdf'),
+    url(r'^anexo5/$', views.anexo5, name='anexo5'),
     url(r'^show_missions/$', views.mission_show_titles, name='anexo_missions')
 ]

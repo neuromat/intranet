@@ -1,100 +1,189 @@
-<div>
-<p><br />
-</p>
+{% load i18n admin_static %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Anexo 5</title>
+        <style type="text/css">
+            @page {
+                size: a4;
+                margin: 1cm 2cm;
+                padding:0;
+                font-size: 13px;
+            }
+            table {
+                text-align: left;
+                border-collapse: collapse;
+                border: 1px solid black;
+                padding-top: 3px;
+                padding-left: 3px;
+            }
+            body {
+                all: unset;
+                line-height: 1.5pt;
+                font-size: 10pt;
+                text-align: justify;
+            }
+            div.title {
+                text-align: center;
+                text-decoration: underline;
+                line-height: 1pt;
+            }
+            .bottom {
+                all: unset;
+                display:inline;
+                padding-left: 4cm;
+            }
+        </style>
+    </head>
+    <body>
+        <br />
 
-<u><div style="text-align:center"><p><strong>ANEXO 5</strong></p>
 
-<p><strong>DO MANUAL DE PRESTAÇÃO DE CONTAS</strong></p>
+        <div class="title"><p><strong>ANEXO 5</strong></p>
 
-<p><strong>RECIBO PARA PAGAMENTO A PESQUISADORES VISITANTES E A </strong></p>
+        <p><strong>DO MANUAL DE PRESTAÇÃO DE CONTAS</strong></p>
 
-<p><strong>TERCEIROS, POR RECEBIMENTO DE DIÁRIAS/MANUTENÇÃO</strong></p></div></u>
+        <p><strong>RECIBO PARA PAGAMENTO A PESQUISADORES VISITANTES E A </strong></p>
 
-<p><br />
-</p>
+        <p><strong>TERCEIROS, POR RECEBIMENTO DE DIÁRIAS/MANUTENÇÃO</strong></p></div>
 
-<p><br />
-</p>
+        <br />
 
-<p><br />
-</p>
+        <br />
 
-<div style="text-align:center"><p><strong>Recibo: R$ {{ mission.amount_paid }}</strong></p></div>
+        <div style="text-align:center"><p><strong>Recibo: R$</strong> {{ mission.amount_paid }}</p></div>
 
-<p><br />
-</p>
+        <br />
 
-<p><br />
-</p>
+        <br />
 
-<p>Recebi de Nome do Outorgado a importância de R${{ mission.amount_paid }} ({{ mission.amount_paid|stringformat:"i" }}), referente à minha manutenção (diárias), compreendida entre o período de {{ mission.departure.date|date:" d/m/Y"  }} até {{ mission.arrival.date|date:" d/m/Y"  }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi de Jefferson Antonio Galves a importância de R${{ mission.amount_paid }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente à minha manutenção (diárias), compreendida entre o período de {{ mission.departure.date|date:" d/m/Y" }} até {{ mission.arrival.date|date:" d/m/Y" }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
 
-<p><br />
-</p>
+        <br />
 
-<p>Local e data: São Paulo, {{ date.day }}&emsp; <strong>de</strong> {{ date|date:"F" }}&emsp; <strong>de</strong> {{ date.year }}</p>
+        <p>Local e data: <strong>São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</strong></p>
 
-<p><br />
-</p>
+        <p>Nome: {{ person.full_name }}</p>
 
-<p>Nome: {{ person.full_name }}</p>
+        <br />
 
-<p><br />
-</p>
+        <p>______________________________________________</p>
+        <p>Assinatura</p>
 
-<p>______________________________________________</p>
-<p>Assinatura</p>
+        <br />
 
-{% if person.rg %}
-    <p>Nº documento de Identidade: {{ person.rg }}</p>
-{% elif person.passport %}
-    <p>Nº documento de Identidade/Passaporte: {{ person.passport }}</p>
-{% endif %}
+        {% if person.rg %}
+            <p>Nº documento de Identidade: {{ person.rg }}</p>
+        {% elif person.passport %}
+            <p>Nº documento de Identidade/Passaporte: {{ person.passport }}</p>
+        {% endif %}
 
-{% if person.cpf %}
-    <p>Nº do CPF: {{ person.cpf }}</p>
-{% endif %}
+        {% if person.cpf %}
+            <p>Nº do CPF: {{ person.cpf }}</p>
+        {% endif %}
 
-<p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
+        <p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
 
-<p>Número: {{ person.number }} &emsp;&emsp;&emsp;&emsp; Bairro: {{ person.district }}</p>
+        <p>Número: {{ person.number }} &emsp;&emsp;&emsp;&emsp; Bairro: {{ person.district }}</p>
 
-<p>Cidade: {{ person.city }}</p>
+        <p>Cidade: {{ person.city }}</p>
 
-<p><br />
-</p>
+        <br />
 
-<p><strong>ROTEIRO DE VIAGENS PARA COMPROVAÇÃO DE DIÁRIAS</strong></p>
-<table border="1" style="width:100%">
-  <tr>
-    <th colspan="3">SAÍDA</th>
-    <th colspan="3">CHEGADA</th>
-  </tr>
-  <tr>
-      <th>DATA</th>
-      <th>HORA</th>
-      <th>LOCALIDADE</th>
-      <th>DATA</th>
-      <th>HORA</th>
-      <th>LOCALIDADE</th>
-  </tr>
-  <tr>
-      <td>{{ mission.departure.date|date:" d/m/Y"  }}</td>
-      <td>{{ mission.departure.time }}</td>
-      <td>{{ mission.origin_city }}</td>
-      <td>{{ mission.arrival.date|date:" d/m/Y"  }}</td>
-      <td>{{ mission.arrival.time }}</td>
-      <td>{{ mission.destination_city }}</td>
-  </tr>
-</table>
+        <p><strong>ROTEIRO DE VIAGENS PARA COMPROVAÇÃO DE DIÁRIAS</strong></p>
+        <table>
+          <tr>
+            <th style="text-align: left" colspan="3">SAÍDA</th>
+            <th style="text-align: left" colspan="3">CHEGADA</th>
+          </tr>
+          <tr>
+              <th style="text-align: left">DATA</th>
+              <th style="text-align: left">HORA</th>
+              <th style="text-align: left">LOCALIDADE</th>
+              <th style="text-align: left">DATA</th>
+              <th style="text-align: left">HORA</th>
+              <th style="text-align: left">LOCALIDADE</th>
+          </tr>
+          <tr>
+              <td>{{ mission.departure.date|date:" d/m/Y"  }}</td>
+              <td>{{ mission.departure.time }}</td>
+              {% if mission.origin_city.country_id == 31 %}
+                  <td>{{ mission.origin_city.name }},
+                    {% if mission.origin_city.region_id == 370 %} AC {% endif %}
+                    {% if mission.origin_city.region_id == 353 %} AL {% endif %}
+                    {% if mission.origin_city.region_id == 352 %} AP {% endif %}
+                    {% if mission.origin_city.region_id == 369 %} AM {% endif %}
+                    {% if mission.origin_city.region_id == 366 %} BA {% endif %}
+                    {% if mission.origin_city.region_id == 351 %} CE {% endif %}
+                    {% if mission.origin_city.region_id == 365 %} ES {% endif %}
+                    {% if mission.origin_city.region_id == 364 %} DF {% endif %}
+                    {% if mission.origin_city.region_id == 363 %} GO {% endif %}
+                    {% if mission.origin_city.region_id == 350 %} MA {% endif %}
+                    {% if mission.origin_city.region_id == 362 %} MT {% endif %}
+                    {% if mission.origin_city.region_id == 361 %} MS {% endif %}
+                    {% if mission.origin_city.region_id == 360 %} MG {% endif %}
+                    {% if mission.origin_city.region_id == 349 %} PA {% endif %}
+                    {% if mission.origin_city.region_id == 348 %} PB {% endif %}
+                    {% if mission.origin_city.region_id == 359 %} PR {% endif %}
+                    {% if mission.origin_city.region_id == 347 %} PE {% endif %}
+                    {% if mission.origin_city.region_id == 346 %} PI {% endif %}
+                    {% if mission.origin_city.region_id == 358 %} RJ {% endif %}
+                    {% if mission.origin_city.region_id == 345 %} RN {% endif %}
+                    {% if mission.origin_city.region_id == 357 %} RS {% endif %}
+                    {% if mission.origin_city.region_id == 371 %} RO {% endif %}
+                    {% if mission.origin_city.region_id == 368 %} RR {% endif %}
+                    {% if mission.origin_city.region_id == 356 %} SC {% endif %}
+                    {% if mission.origin_city.region_id == 355 %} SP {% endif %}
+                    {% if mission.origin_city.region_id == 354 %} SE {% endif %}
+                    {% if mission.origin_city.region_id == 367 %} TO {% endif %}
+                  </td>
+              {% else %}
+                <td>{{ mission.origin_city.name }}, {{ mission.origin_city.country }}</td>
+              {% endif %}
+              <td>{{ mission.arrival.date|date:" d/m/Y"  }}</td>
+              <td>{{ mission.arrival.time }}</td>
+              {% if mission.destination_city.country_id == 31 %}
+                  <td>{{ mission.destination_city.name }},
+                    {% if mission.destination_city.region_id == 370 %} AC {% endif %}
+                    {% if mission.destination_city.region_id == 353 %} AL {% endif %}
+                    {% if mission.destination_city.region_id == 352 %} AP {% endif %}
+                    {% if mission.destination_city.region_id == 369 %} AM {% endif %}
+                    {% if mission.destination_city.region_id == 366 %} BA {% endif %}
+                    {% if mission.destination_city.region_id == 351 %} CE {% endif %}
+                    {% if mission.destination_city.region_id == 365 %} ES {% endif %}
+                    {% if mission.destination_city.region_id == 364 %} DF {% endif %}
+                    {% if mission.destination_city.region_id == 363 %} GO {% endif %}
+                    {% if mission.destination_city.region_id == 350 %} MA {% endif %}
+                    {% if mission.destination_city.region_id == 362 %} MT {% endif %}
+                    {% if mission.destination_city.region_id == 361 %} MS {% endif %}
+                    {% if mission.destination_city.region_id == 360 %} MG {% endif %}
+                    {% if mission.destination_city.region_id == 349 %} PA {% endif %}
+                    {% if mission.destination_city.region_id == 348 %} PB {% endif %}
+                    {% if mission.destination_city.region_id == 359 %} PR {% endif %}
+                    {% if mission.destination_city.region_id == 347 %} PE {% endif %}
+                    {% if mission.destination_city.region_id == 346 %} PI {% endif %}
+                    {% if mission.destination_city.region_id == 358 %} RJ {% endif %}
+                    {% if mission.destination_city.region_id == 345 %} RN {% endif %}
+                    {% if mission.destination_city.region_id == 357 %} RS {% endif %}
+                    {% if mission.destination_city.region_id == 371 %} RO {% endif %}
+                    {% if mission.destination_city.region_id == 368 %} RR {% endif %}
+                    {% if mission.destination_city.region_id == 356 %} SC {% endif %}
+                    {% if mission.destination_city.region_id == 355 %} SP {% endif %}
+                    {% if mission.destination_city.region_id == 354 %} SE {% endif %}
+                    {% if mission.destination_city.region_id == 367 %} TO {% endif %}
+                  </td>
+              {% else %}
+                <td>{{ mission.destination_city.name }}, {{ mission.destination_city.country }}</td>
+              {% endif %}
+          </tr>
+        </table>
 
-<p><br />
-</p>
+        <br />
 
-<p><strong>Nota</strong>: A importância deverá ser paga de acordo com o tempo de permanência do pesquisador visitante, até o limite estabelecido no Termo de Outorga.</p>
+        <p><strong>Nota</strong>: <span class="bottom">A importância deverá ser paga de acordo com o tempo de permanência do pesquisador visitante, até o limite estabelecido no Termo de Outorga.</span></p>
 
-<p><br />
-</p>
+        <br />
 
-<p style="text-align:right"><strong>FAPESP, ABRIL DE 2010.</strong></p>
-</div>
+        <p style="text-align:right"><strong>FAPESP, ABRIL DE 2010.</strong></p>
+    </body>
+</html>

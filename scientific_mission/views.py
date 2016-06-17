@@ -9,6 +9,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from helper_functions.date import *
 from helper_functions.latex import generate_latex
+from helper_functions.extenso import dExtenso
 from person.models import Person
 from scientific_mission.models import ScientificMission
 
@@ -56,7 +57,8 @@ def anexo5(request):
         if mission_id is None or mission_id == '':
 
             messages.error(request, _('You have to choose a scientific mission!'))
-            context = {'people': people, 'missions': missions}
+            date = datetime.datetime.now()
+            context = {'people': people, 'missions': missions, 'default_date': date}
             return render(request, 'anexo/anexo5.html', context)
 
         else:
@@ -66,18 +68,27 @@ def anexo5(request):
             except ScientificMission.DoesNotExist:
                 raise Http404(_('No scientific mission matches the given query.'))
 
+            ext = dExtenso()
+            amount = str(int(mission.amount_paid))
+            cents = str(mission.amount_paid - int(mission.amount_paid))[2:4] # Apenas dois digitos nos centavos
+            amount = ext.getExtenso(amount)
+            cents = ext.getExtenso(cents)
+
             return render_to_pdf(
-                'anexo/anexo5_pdf.html',
+                'anexo/anexo5.html',
                 {
                     'pagesize': 'A4',
                     'mission': mission,
                     'person': mission.person,
                     'date': date,
                     'process': process,
+                    'amount': amount,
+                    'cents': cents,
                 }
             )
 
-    context = {'people': people, 'missions': missions}
+    date = datetime.datetime.now()
+    context = {'people': people, 'missions': missions, 'default_date': date}
     return render(request, 'anexo/anexo5.html', context)
 
 
