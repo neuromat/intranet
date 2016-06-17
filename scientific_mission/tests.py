@@ -98,18 +98,18 @@ class ScientificMissionsTest(TestCase):
 
         # Valid id
         mission = missions[0]
-        id = mission.pk
+        title = mission.pk
 
         # Date typed
         response = self.client.post(reverse('anexo5'), {'issue_date': '06/10/2016',
                                                         'process': 000,
-                                                        'title': id})
+                                                        'title': title})
         self.assertEqual(response.status_code, 200)
 
         # Without date
         response = self.client.post(reverse('anexo5'), {'issue_date': '',
                                                         'process': 000,
-                                                        'title': id})
+                                                        'title': title})
         self.assertEqual(response.status_code, 200)
 
         # Test if mission id exists
@@ -120,7 +120,7 @@ class ScientificMissionsTest(TestCase):
 
         response = self.client.post(reverse('anexo5'), {'issue_date': '07/05/2014',
                                                         'process': 000,
-                                                        'title': id})
+                                                        'title': title})
         self.assertEqual(response.status_code, 200)
 
         # Invalid id: 404
