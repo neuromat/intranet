@@ -11,11 +11,10 @@
 
 {% block content %}
 
-<p>
-    <a href="{% url 'articles_tex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}">{% trans 'Download .tex file' %}</a>
-</p>
-
 {% if published_scientific or accepted_scientific or submitted_scientific or draft_scientific or published_dissemin or accepted_dissemin or submitted_dissemin or draft_dissemin or published_tec_trans or accepted_tec_trans or submitted_tec_trans or draft_tec_trans or published_scientific_in_event or accepted_scientific_in_event or published_dissemin_in_event or accepted_dissemin_in_event or published_tec_trans_in_event or accepted_tec_trans_in_event %}
+    <p>
+        <a class="btn btn-primary" href="{% url 'articles_tex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
+    </p>
     <ol type="1">
     {% if published_scientific or accepted_scientific %}
         <p style="margin-left: -40px"><strong>Published or accepted</strong></p>
@@ -494,6 +493,5 @@
 {%  else %}
     <strong>{% trans "No articles found!" %}</strong>
 {% endif %}
-
 
 {% endblock %}

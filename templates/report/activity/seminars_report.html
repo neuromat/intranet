@@ -10,10 +10,11 @@
 {% endblock %}
 
 {% block content %}
+
 {% if seminars %}
 
     <p>
-        <a href="{% url 'seminar_latex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&category={{ category }}">{% trans 'Download .tex file' %}</a>
+        <a class="btn btn-primary" href="{% url 'seminar_latex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&category={{ category }}"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
     </p>
 
     <table class="table table-striped table-bordered">

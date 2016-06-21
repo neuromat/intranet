@@ -159,13 +159,6 @@ def articles_tex(request):
 
     return escape_and_generate_latex('report/research/tex/articles.tex', context, 'Articles', table=False)
 
-    # response = render_to_string('report/research/tex/articles.tex', context)
-    # response = tex_escape(response, table=False)
-    # latex_response = HttpResponse(response, content_type='text/plain')
-    # latex_response['Content-Disposition'] = 'attachment; filename="articles.tex"'
-    #
-    # return latex_response
-
 
 def search_academic_works(start_date, end_date):
     # Get all the Postdocs among the chosen dates

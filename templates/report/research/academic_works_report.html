@@ -11,11 +11,10 @@
 
 {% block content %}
 
-<p>
-    <a href="{% url 'academic_works_tex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}">{% trans 'Download .tex file' %}</a>
-</p>
-
 {% if postdoc_concluded or postdoc_in_progress or phd_concluded or phd_in_progress or msc_concluded or msc_in_progress %}
+    <p>
+        <a class="btn btn-primary" href="{% url 'academic_works_tex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
+    </p>
     {% if postdoc_concluded or postdoc_in_progress %}
         <h3><strong>{% trans 'Post-doctoral fellows' %}</strong></h3>
         {% if postdoc_concluded %}
@@ -179,6 +178,5 @@
 {%  else %}
     {% trans "No academic works found!" %}
 {% endif %}
-
 
 {% endblock %}

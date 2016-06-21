@@ -12,11 +12,9 @@
 {% block content %}
 
 {% if training_programs %}
-
     <p>
-        <a href="{% url 'training_programs_latex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}">{% trans 'Download .tex file' %}</a>
+        <a class="btn btn-primary" href="{% url 'training_programs_latex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
     </p>
-
     <table class="table table-striped table-bordered">
         <tr>
             <th>{% trans "Title" %}</th><th>{% trans "Speaker" %}</th><th>{% trans "Date" %}</th>
@@ -48,6 +46,5 @@
 {%  else %}
     {% trans "No training programs found!" %}
 {% endif %}
-
 
 {% endblock %}
