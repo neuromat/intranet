@@ -8,7 +8,7 @@ from random import randint
 from bs4 import BeautifulSoup
 from research.models import *
 from person.models import CitationName
-from helper_functions.latex import tex_escape
+from helper_functions.latex import escape_and_generate_latex
 from helper_functions.date import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -157,12 +157,14 @@ def articles_tex(request):
                'published_tec_trans_in_event': published_tec_trans_in_event,
                'accepted_tec_trans_in_event': accepted_tec_trans_in_event}
 
-    response = render_to_string('report/research/tex/articles.tex', context)
-    response = tex_escape(response)
-    latex_response = HttpResponse(response, content_type='text/plain')
-    latex_response['Content-Disposition'] = 'attachment; filename="articles.tex"'
+    return escape_and_generate_latex('report/research/tex/articles.tex', context, 'Articles', table=False)
 
-    return latex_response
+    # response = render_to_string('report/research/tex/articles.tex', context)
+    # response = tex_escape(response, table=False)
+    # latex_response = HttpResponse(response, content_type='text/plain')
+    # latex_response['Content-Disposition'] = 'attachment; filename="articles.tex"'
+    #
+    # return latex_response
 
 
 def search_academic_works(start_date, end_date):
