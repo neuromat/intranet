@@ -42,39 +42,13 @@
             {% else %}
                 <td>{% trans "No scientific missions found!" %}</td>
             {% endif %}
-            {% if mission.destination_city.country_id == 31 %}
-                <td>{{ mission.destination_city.name }},
-                    {% if mission.destination_city.region_id == 370 %} AC {% endif %}
-                    {% if mission.destination_city.region_id == 353 %} AL {% endif %}
-                    {% if mission.destination_city.region_id == 352 %} AP {% endif %}
-                    {% if mission.destination_city.region_id == 369 %} AM {% endif %}
-                    {% if mission.destination_city.region_id == 366 %} BA {% endif %}
-                    {% if mission.destination_city.region_id == 351 %} CE {% endif %}
-                    {% if mission.destination_city.region_id == 365 %} ES {% endif %}
-                    {% if mission.destination_city.region_id == 364 %} DF {% endif %}
-                    {% if mission.destination_city.region_id == 363 %} GO {% endif %}
-                    {% if mission.destination_city.region_id == 350 %} MA {% endif %}
-                    {% if mission.destination_city.region_id == 362 %} MT {% endif %}
-                    {% if mission.destination_city.region_id == 361 %} MS {% endif %}
-                    {% if mission.destination_city.region_id == 360 %} MG {% endif %}
-                    {% if mission.destination_city.region_id == 349 %} PA {% endif %}
-                    {% if mission.destination_city.region_id == 348 %} PB {% endif %}
-                    {% if mission.destination_city.region_id == 359 %} PR {% endif %}
-                    {% if mission.destination_city.region_id == 347 %} PE {% endif %}
-                    {% if mission.destination_city.region_id == 346 %} PI {% endif %}
-                    {% if mission.destination_city.region_id == 358 %} RJ {% endif %}
-                    {% if mission.destination_city.region_id == 345 %} RN {% endif %}
-                    {% if mission.destination_city.region_id == 357 %} RS {% endif %}
-                    {% if mission.destination_city.region_id == 371 %} RO {% endif %}
-                    {% if mission.destination_city.region_id == 368 %} RR {% endif %}
-                    {% if mission.destination_city.region_id == 356 %} SC {% endif %}
-                    {% if mission.destination_city.region_id == 355 %} SP {% endif %}
-                    {% if mission.destination_city.region_id == 354 %} SE {% endif %}
-                    {% if mission.destination_city.region_id == 367 %} TO {% endif %}
-                </td>
-            {% else %}
-                <td>{{ mission.destination_city.name }}, {{ mission.destination_city.country }}</td>
-            {% endif %}
+            <td>
+                {% if mission.destination_city.country.name == 'Brazil' %}
+                    {{ mission.destination_city.name }} - {{ mission.destination_city.region.alternate_names }}
+                {% else %}
+                    {{ mission.destination_city.name }}, {{ mission.destination_city.country }}
+                {% endif %}
+            </td>
             <td>{{ mission.departure|date:"M d, Y" }}</td>
             <td>{{ mission.arrival|date:"M d, Y" }}</td>
         </tr>
