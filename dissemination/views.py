@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from helper_functions.date import *
-from helper_functions.latex import generate_latex
+from helper_functions.latex import escape_and_generate_latex
 from dissemination.models import Dissemination, Internal, InternalMediaOutlet, TYPE_OF_MEDIA
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -92,10 +92,12 @@ def dissemination_tex(request):
 
     if media_type == 'i':
         disseminations = internal_filter(internal_type, start_date, end_date)
+        internal_media = InternalMediaOutlet.objects.get(pk=internal_type)
+        media = internal_media.name
+        context = {'disseminations': disseminations, 'type': media_type, 'media': media}
 
     else:
         disseminations = external_filter(start_date, end_date)
+        context = {'disseminations': disseminations, 'type': media_type}
 
-    context = {'disseminations': disseminations, 'type': media_type}
-
-    return generate_latex('report/dissemination/tex/disseminations.tex', context, filename)
+    return escape_and_generate_latex('report/dissemination/tex/disseminations.tex', context, filename, table=True)
