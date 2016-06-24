@@ -2,16 +2,20 @@ import datetime
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from cities_light.models import City, Country
-from scientific_mission.models import ScientificMission
+from scientific_mission.models import ScientificMission, Route
 from person.models import Person
 from research.tests import system_authentication
 
 
 # Create a scientific mission for testing
-def scientific_mission(person, city, departure, arrival, amount_paid):
-    return ScientificMission(person=person,
-                             origin_city=city, destination_city=city,
-                             departure=departure, arrival=arrival, amount_paid=amount_paid)
+def scientific_mission(person, amount_paid):
+    return ScientificMission(person=person, amount_paid=amount_paid)
+
+
+# Create routes
+def create_route(city, mission, date_time, order):
+    return Route(scientific_mission=mission, origin_city=city, destination_city=city, departure=date_time,
+                 arrival=date_time, order=order)
 
 
 class ScientificMissionsTest(TestCase):
@@ -38,19 +42,29 @@ class ScientificMissionsTest(TestCase):
         person = Person(full_name="Fulano Testeiro")
         person.save()
 
-        departure1 = datetime.date(2015, 1, 15)
-        arrival1 = datetime.date(2015, 1, 16)
+        date_departure1 = datetime.date(2015, 1, 15)
+        date_arrival1 = datetime.date(2015, 1, 16)
 
-        departure2 = datetime.date(2014, 1, 15)
-        arrival2 = datetime.date(2014, 1, 16)
+        date_departure2 = datetime.date(2014, 1, 15)
+        date_arrival2 = datetime.date(2014, 1, 16)
+        order_01 = 0
+        order_02 = 1
 
         amount_paid = 666
 
-        mission1 = scientific_mission(person, city, departure1, arrival1, amount_paid)
+        mission1 = scientific_mission(person, amount_paid)
         mission1.save()
+        route1_mission1 = create_route(city, mission1, date_departure1, order_01)
+        route2_mission1 = create_route(city, mission1, date_arrival1, order_02)
+        route1_mission1.save()
+        route2_mission1.save()
 
-        mission2 = scientific_mission(person, city, departure2, arrival2, amount_paid)
+        mission2 = scientific_mission(person, amount_paid)
         mission2.save()
+        route1_mission2 = create_route(city, mission2, date_departure2, order_01)
+        route2_mission2 = create_route(city, mission2, date_arrival2, order_02)
+        route1_mission2.save()
+        route2_mission2.save()
 
     def test_report(self):
 
@@ -63,6 +77,13 @@ class ScientificMissionsTest(TestCase):
                                                                  'end_date': '03-05-2017'})
         cont = response.context['missions']
         self.assertEqual(len(cont), 1)
+        self.assertEqual(response.status_code, 200)
+
+        # With date, but out of range
+        response = self.client.post(reverse('missions_report'), {'start_date': '01-01-2016',
+                                                                 'end_date': '31-12-2016'})
+        cont = response.context['missions']
+        self.assertEqual(len(cont), 0)
         self.assertEqual(response.status_code, 200)
 
         # Without date
@@ -78,8 +99,10 @@ class ScientificMissionsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_tex(self):
-        response = self.client.get(reverse('scientific_missions_tex'), {'start_date': '2015-03-01',
-                                                                        'end_date': '2017-03-05'})
+        response = self.client.get(reverse('scientific_missions_tex'), {'start_date': '2015-01-01',
+                                                                        'end_date': '2015-12-31'})
+        cont = response.context['missions']
+        self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
     def test_anexo(self):

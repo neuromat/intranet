@@ -31,11 +31,9 @@ class ScientificMission(models.Model):
     person = models.ForeignKey(Person, verbose_name=_('Paid to'))
     mission = models.ForeignKey(Type, verbose_name=_('Mission'), blank=True, null=True)
     project_activity = models.ForeignKey(ProjectActivities, verbose_name=_('Project activity'), blank=True, null=True)
-    origin_city = models.ForeignKey(City, verbose_name=_('City of origin'))
-    destination_city = models.ForeignKey(City, verbose_name=_('City of destination'), related_name='destination_city')
-    departure = models.DateTimeField(_('Departure'))
-    arrival = models.DateTimeField(_('Arrival'))
+    destination_city = models.ForeignKey(City, verbose_name=_('City of destination'))
     amount_paid = models.DecimalField(_('Amount paid'), max_digits=10, decimal_places=2)
+    date_of_registration = models.DateTimeField(_('Date'), auto_now_add=True, null=True)
 
     def __unicode__(self):
         return u'%s - R$ %s' % (self.person, self.amount_paid)
@@ -43,7 +41,16 @@ class ScientificMission(models.Model):
     class Meta:
         verbose_name = _('Daily stipend')
         verbose_name_plural = _('Daily stipends')
-        ordering = ('-departure', )
+        ordering = ('-date_of_registration',)
 
     def value(self):
         return "R$ %s" % self.amount_paid
+
+
+class Route(models.Model):
+    scientific_mission = models.ForeignKey(ScientificMission)
+    origin_city = models.ForeignKey(City, related_name='origin', verbose_name=_('From'))
+    destination_city = models.ForeignKey(City, related_name='destination', verbose_name=_('To'))
+    departure = models.DateTimeField(_('Departure'))
+    arrival = models.DateTimeField(_('Arrival'))
+    order = models.PositiveIntegerField(_('Order'))

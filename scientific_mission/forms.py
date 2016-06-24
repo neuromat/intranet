@@ -1,18 +1,33 @@
-from cities_light.models import City
 from dal import autocomplete
-from scientific_mission.models import ScientificMission
+from scientific_mission.models import ScientificMission, Route
+from suit.widgets import SuitSplitDateTimeWidget
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+
+
+class RouteForm(forms.ModelForm):
+
+    class Meta:
+        model = Route
+        fields = ('origin_city', 'destination_city', 'departure', 'arrival', 'order')
+        widgets = {
+            'origin_city': autocomplete.ModelSelect2(url='city_autocomplete'),
+            'destination_city': autocomplete.ModelSelect2(url='city_autocomplete'),
+            'departure': SuitSplitDateTimeWidget,
+            'arrival': SuitSplitDateTimeWidget
+        }
+
+    class Media:
+        css = {
+            'all': ('/static/css/inline_autocomplete.css',)
+        }
 
 
 class ScientificMissionForm(forms.ModelForm):
 
-    origin_city = forms.ModelChoiceField(queryset=City.objects.all(), label=_('City of origin'), initial=1383,
-                                         widget=autocomplete.ModelSelect2(url='city_autocomplete'))
-    destination_city = forms.ModelChoiceField(queryset=City.objects.all(), label=_('City of destination'), initial=1383,
-                                              widget=autocomplete.ModelSelect2(url='city_autocomplete'))
-
     class Meta:
         model = ScientificMission
         fields = '__all__'
+        widgets = {
+            'destination_city': autocomplete.ModelSelect2(url='city_autocomplete'),
+        }
         localized_fields = ('amount_paid',)

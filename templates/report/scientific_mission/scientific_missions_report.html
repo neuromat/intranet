@@ -22,35 +22,34 @@
         <th>{% trans "Researcher" %}</th><th>{% trans "Scientific mission" %}</th><th>{% trans "Local" %}</th>
         <th>{% trans "Start date" %}</th><th>{% trans "End date" %}</th>
     </tr>
-    {% for mission in missions %}
+    {% for item in missions %}
         <tr>
-            {% if mission.person and mission.person.institution == None %}
-                <td>{{ mission.person }}</td>
-            {% elif mission.person and mission.person.institution != None %}
-                <td>{{ mission.person }} / {{ mission.person.institution.get_person_institution }}</td>
+            {% if item.mission.person and item.mission.person.institution == None %}
+                <td>{{ item.mission.person }}</td>
+            {% elif item.mission.person and item.mission.person.institution != None %}
+                <td>{{ item.mission.person }} / {{ item.mission.person.institution.get_person_institution }}</td>
             {% endif %}
-
-            {% if mission.mission != None and mission.project_activity != None %}
+            {% if item.mission.mission != None and item.mission.project_activity != None %}
                 <td>
-                    {{ mission.mission }}<br>
-                    {{ mission.project_activity.title }}
+                    {{ item.mission.mission }}<br>
+                    {{ item.mission.project_activity.title }}
                 </td>
-            {% elif mission.mission != None %}
-                <td>{{ mission.mission }}</td>
-            {% elif mission.project_activity != None %}
-                <td>{{ mission.project_activity.title }}</td>
+            {% elif item.mission.mission != None %}
+                <td>{{ item.mission.mission }}</td>
+            {% elif item.mission.project_activity != None %}
+                <td>{{ item.mission.project_activity.title }}</td>
             {% else %}
                 <td>{% trans "No scientific missions found!" %}</td>
             {% endif %}
             <td>
-                {% if mission.destination_city.country.name == 'Brazil' %}
-                    {{ mission.destination_city.name }} - {{ mission.destination_city.region.alternate_names }}
+                {% if item.mission.destination_city.country.name == 'Brazil' %}
+                    {{ item.mission.destination_city.name }} - {{ item.mission.destination_city.region.alternate_names }}
                 {% else %}
-                    {{ mission.destination_city.name }}, {{ mission.destination_city.country }}
+                    {{ item.mission.destination_city.name }}, {{ item.mission.destination_city.country }}
                 {% endif %}
             </td>
-            <td>{{ mission.departure|date:"M d, Y" }}</td>
-            <td>{{ mission.arrival|date:"M d, Y" }}</td>
+            <td>{{ item.departure.departure|date:"M d, Y" }}</td>
+            <td>{{ item.arrival.departure|date:"M d, Y" }}</td>
         </tr>
     {% endfor %}
     </table>

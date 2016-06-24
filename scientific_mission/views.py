@@ -11,7 +11,7 @@ from helper_functions.date import *
 from helper_functions.latex import generate_latex
 from helper_functions.extenso import dExtenso
 from person.models import Person
-from scientific_mission.models import ScientificMission
+from scientific_mission.models import ScientificMission, Route
 
 
 class CityAutocomplete(autocomplete.Select2QuerySetView):
@@ -73,7 +73,7 @@ def anexo5(request):
 
             ext = dExtenso()
             amount = str(int(mission.amount_paid))
-            cents = str(mission.amount_paid - int(mission.amount_paid))[2:4] # Apenas dois digitos nos centavos
+            cents = str(mission.amount_paid - int(mission.amount_paid))[2:4]  # Apenas dois digitos nos centavos
             amount = ext.getExtenso(amount)
             cents = ext.getExtenso(cents)
 
@@ -112,6 +112,21 @@ def mission_show_titles(request):
         return HttpResponse(json, content_type="application/json")
 
 
+def get_missions(start_date, end_date):
+    missions = []
+    for mission in ScientificMission.objects.all():
+        routes = Route.objects.filter(scientific_mission=mission).order_by('order')
+        if routes:
+            departure = routes.first()
+            arrival = routes.last()
+
+            if departure.departure.date() >= start_date and arrival.departure.date() <= end_date:
+                valid_mission = {'mission': mission, 'departure': departure, 'arrival': arrival}
+                missions.append(valid_mission)
+
+    return missions
+
+
 @login_required
 def missions_report(request):
 
@@ -129,10 +144,8 @@ def missions_report(request):
         else:
             end_date = now_plus_thirty()
 
-        missions = ScientificMission.objects.filter(departure__gt=start_date,
-                                                    arrival__lt=end_date).order_by('-departure')
-
         if end_date >= start_date:
+            missions = get_missions(start_date, end_date)
             context = {'start_date': start_date, 'end_date': end_date, 'missions': missions}
             return render(request, 'report/scientific_mission/scientific_missions_report.html', context)
         else:
@@ -148,8 +161,8 @@ def missions_tex(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
 
-    missions = ScientificMission.objects.filter(departure__gt=start_date,
-                                                arrival__lt=end_date).order_by('-departure')
+    missions = get_missions(datetime.datetime.strptime(start_date, "%Y-%m-%d").date(),
+                            datetime.datetime.strptime(end_date, "%Y-%m-%d").date())
 
     context = {'missions': missions}
 
