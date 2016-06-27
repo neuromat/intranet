@@ -71,22 +71,35 @@ def anexo5(request):
             except ScientificMission.DoesNotExist:
                 raise Http404(_('No scientific mission matches the given query.'))
 
+            routes = None
+            start_date = None
+            end_date = None
+
+            if mission:
+                routes = Route.objects.filter(scientific_mission=mission).order_by('order')
+                if routes:
+                    start_date = routes.first()
+                    end_date = routes.last()
+
             ext = dExtenso()
             amount = str(int(mission.amount_paid))
-            cents = str(mission.amount_paid - int(mission.amount_paid))[2:4]  # Apenas dois digitos nos centavos
+            cents = str(mission.amount_paid - int(mission.amount_paid))[2:4]  # Only two digits in cents
             amount = ext.getExtenso(amount)
             cents = ext.getExtenso(cents)
 
             return render_to_pdf(
                 'anexo/anexo5_pdf.html',
                 {
-                    'pagesize': 'A4',
-                    'mission': mission,
-                    'person': mission.person,
-                    'date': date,
-                    'process': process,
                     'amount': amount,
                     'cents': cents,
+                    'date': date,
+                    'end_date': end_date.departure,
+                    'mission': mission,
+                    'pagesize': 'A4',
+                    'person': mission.person,
+                    'process': process,
+                    'routes': routes,
+                    'start_date': start_date.departure,
                 }
             )
 

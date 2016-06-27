@@ -57,7 +57,7 @@
 
         <br />
 
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi de Jefferson Antonio Galves a importância de R${{ mission.amount_paid }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente à minha manutenção (diárias), compreendida entre o período de {{ mission.departure.date|date:" d/m/Y" }} até {{ mission.arrival.date|date:" d/m/Y" }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi de Jefferson Antonio Galves a importância de R${{ mission.amount_paid }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente à minha manutenção (diárias), compreendida entre o período de {{ start_date.date|date:" d/m/Y" }} até {{ end_date.date|date:" d/m/Y" }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
 
         <br />
 
@@ -104,26 +104,28 @@
               <th style="text-align: left">HORA</th>
               <th style="text-align: left">LOCALIDADE</th>
           </tr>
-          <tr>
-              <td>{{ mission.departure.date|date:" d/m/Y"  }}</td>
-              <td>{{ mission.departure.time }}</td>
-              <td>
-                  {% if mission.origin_city.country.name == 'Brazil' %}
-                      {{ mission.origin_city.name }}, {{ mission.origin_city.region.alternate_names }}
-                  {% else %}
-                      {{ mission.origin_city.name }}, {{ mission.origin_city.country }}
-                  {% endif %}
-              </td>
-              <td>{{ mission.arrival.date|date:" d/m/Y"  }}</td>
-              <td>{{ mission.arrival.time }}</td>
-              <td>
-                  {% if mission.destination_city.country.name == 'Brazil' %}
-                      {{ mission.destination_city.name }}, {{ mission.destination_city.region.alternate_names }}
-                  {% else %}
-                      {{ mission.destination_city.name }}, {{ mission.destination_city.country }}
-                  {% endif %}
-              </td>
-          </tr>
+          {% for route in routes %}
+              <tr>
+                  <td>{{ route.departure.date|date:" d/m/Y"  }}</td>
+                  <td>{{ route.departure.time }}</td>
+                  <td>
+                      {% if route.origin_city.country.name == 'Brazil' %}
+                          {{ route.origin_city.name }}, {{ route.origin_city.region.alternate_names }}
+                      {% else %}
+                          {{ route.origin_city.name }}, {{ route.origin_city.country }}
+                      {% endif %}
+                  </td>
+                  <td>{{ route.arrival.date|date:" d/m/Y"  }}</td>
+                  <td>{{ route.arrival.time }}</td>
+                  <td>
+                      {% if route.destination_city.country.name == 'Brazil' %}
+                          {{ route.destination_city.name }}, {{ route.destination_city.region.alternate_names }}
+                      {% else %}
+                          {{ route.destination_city.name }}, {{ route.destination_city.country }}
+                      {% endif %}
+                  </td>
+              </tr>
+          {% endfor %}
         </table>
 
         <br />
