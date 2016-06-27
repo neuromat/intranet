@@ -27,6 +27,10 @@ class ScientificMission(models.Model):
     """
     An instance of this class is a daily stipend paid to a person.
 
+    '__unicode__'		Returns the person and the amount paid.
+    'class Meta'		Sets the description (singular and plural) model and the ordering of data by
+                        date_of_registration.
+    'value'             Returns the symbol for the Brazilian currency and the amount paid
     """
     person = models.ForeignKey(Person, verbose_name=_('Paid to'))
     mission = models.ForeignKey(Type, verbose_name=_('Mission'), blank=True, null=True)
@@ -48,9 +52,26 @@ class ScientificMission(models.Model):
 
 
 class Route(models.Model):
+    """
+    An instance of this class is a route on a scientific mission.
+
+    'class Meta'		Ordering of route by scientific_mission and order.
+    'save'              Set an integer value to order
+    """
     scientific_mission = models.ForeignKey(ScientificMission)
     origin_city = models.ForeignKey(City, related_name='origin', verbose_name=_('From'))
     destination_city = models.ForeignKey(City, related_name='destination', verbose_name=_('To'))
     departure = models.DateTimeField(_('Departure'))
     arrival = models.DateTimeField(_('Arrival'))
     order = models.PositiveIntegerField(_('Order'))
+
+    class Meta:
+        ordering = ('scientific_mission', 'order')
+
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            self.order = self.order
+        else:
+            last_order = Route.objects.filter(scientific_mission=self.scientific_mission).order_by('-order').first()
+            self.order = last_order.order + 1 if last_order else 1
+        super(Route, self).save(*args, **kwargs)
