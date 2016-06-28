@@ -22,7 +22,8 @@ class InlineValidationDate(BaseInlineFormSet):
             end_date = form.cleaned_data.pop('arrival', None)
 
             if previous_date and start_date and previous_date > start_date:
-                raise ValidationError(_("The departure date can not be greater than the previous arrival date."))
+                raise ValidationError(_("The departure date must be greater than the arrival date of the previous "
+                                        "route."))
 
             previous_date = end_date
 
@@ -35,6 +36,8 @@ class RouteInline(admin.TabularInline):
     extra = 1
     form = RouteForm
     formset = InlineValidationDate
+    verbose_name = _('Route')
+    verbose_name_plural = _('Routes')
 
 
 class ScientificMissionAdmin(admin.ModelAdmin):
