@@ -1,5 +1,4 @@
 from dal import autocomplete
-from cep.widgets import CEPInput
 from cities_light.models import City
 from models import Institution, Person
 from django import forms
@@ -8,15 +7,16 @@ from django.utils.translation import ugettext_lazy as _
 
 class PersonForm(forms.ModelForm):
 
+    def __init__(self, data=None, *args, **kwargs):
+        super(PersonForm, self).__init__(data, *args, **kwargs)
+        self.fields['zipcode'].widget.attrs['onBlur'] = 'pesquisacep(this.value);'
+
     class Meta:
         model = Person
+        fields = '__all__'
 
-        fields = ['zipcode', 'street', 'district', 'city', 'state']
-
-        widgets = {
-            'zipcode': CEPInput(address={'street': 'id_street', 'district': 'id_district', 'city': 'id_city',
-                                         'state': 'id_state'}, attrs={'pattern': '\d{5}-?\d{3}'}),
-        }
+    class Media:
+        js = ('/static/js/cep.js',)
 
 
 class InstitutionForm(forms.ModelForm):

@@ -1,5 +1,4 @@
 Django==1.9.6
-django-cep==1.0.9
 html5lib==0.99999
 reportlab==3.1.44
 six==1.9.0
