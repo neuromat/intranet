@@ -2,13 +2,14 @@
 import urllib2
 import HTMLParser
 import re
+import requests
 import time
 from itertools import chain
 from random import randint
 from bs4 import BeautifulSoup
 from research.models import *
 from person.models import CitationName
-from helper_functions.latex import escape_and_generate_latex
+from helper_functions.latex import tex_escape
 from helper_functions.date import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -157,7 +158,12 @@ def articles_tex(request):
                'published_tec_trans_in_event': published_tec_trans_in_event,
                'accepted_tec_trans_in_event': accepted_tec_trans_in_event}
 
-    return escape_and_generate_latex('report/research/tex/articles.tex', context, 'Articles', table=False)
+    response = render_to_string('report/research/tex/articles.tex', context)
+    response = tex_escape(response)
+    latex_response = HttpResponse(response, content_type='text/plain')
+    latex_response['Content-Disposition'] = 'attachment; filename="articles.tex"'
+
+    return latex_response
 
 
 def search_academic_works(start_date, end_date):
@@ -239,31 +245,44 @@ def scholar():
 
     """
 
-    html_scholar = urllib2.urlopen(SCHOLAR+SCHOLAR_USER).read()
-    soup = BeautifulSoup(html_scholar)
-
+    i = 0
+    articles_to_catch = True
     scholar_list = []
-    for line in soup.find_all('a'):
-        line = str(line)
-        if 'class="gsc_a_at"' in line:
-            try:
-                link = re.search('href="(.+?)">', line).group(1)
-                title = re.search('">(.+?)</a>', line).group(1)
-            except AttributeError:
-                link = ''
-                title = ''
-            if link != '' and title != '':
-                paper = {title: link}
-                scholar_list.append(paper)
 
-    return scholar_list
+    while articles_to_catch:
+
+        link = "https://scholar.google.com.br/citations?user=OaY57UIAAAAJ&hl=pt-BR&cstart=%d&pagesize=100" % i
+        html_scholar = urllib2.urlopen(link).read()
+
+        if "Nenhum artigo neste perfil." not in html_scholar:
+            soup = BeautifulSoup(html_scholar)
+
+            for line in soup.find_all('a'):
+                line = str(line)
+                if 'class="gsc_a_at"' in line:
+                    try:
+                        link = re.search('href="(.+?)">', line).group(1)
+                        title = re.search('">(.+?)</a>', line).group(1)
+                    except AttributeError:
+                        link = ''
+                        title = ''
+                    if link != '' and title != '':
+                        paper = {title: link}
+                        scholar_list.append(paper)
+
+        else:
+            return scholar_list
+
+        i += 100
 
 
 def scholar_info(scholar_list, paper_title):
+
     """
     From Neuromat's google scholar, this method retrieves the date and link of a specific paper, returning a tuple
 
     """
+
     paper_url = ''
     for each_dict in scholar_list:
         for each_key in each_dict:
@@ -273,28 +292,45 @@ def scholar_info(scholar_list, paper_title):
     html_parser = HTMLParser.HTMLParser()
     citation_link = html_parser.unescape(paper_url)
 
-    html_paper = urllib2.urlopen(SCHOLAR+citation_link).read()
-    soup = BeautifulSoup(html_paper)
+    # Check if Google Scholar is available
+    response = requests.get(SCHOLAR+citation_link)
+    if response.status_code == 200:
+        scholar_available = True
+    else:
+        scholar_available = False
 
-    date = ''
-    for line in soup:
-        line = str(line)
-        try:
-            date = re.search('<div class="gsc_field">Data de publicação</div><div class="gsc_value">(.+?)</div>',
-                             line).group(1)
-        except AttributeError:
-            date = ''
+    if scholar_available:
 
-    if date != '':
-        date_format = date.split('/')
-        if len(date_format) == 3:
-            date = datetime.datetime.strptime(date, '%Y/%m/%d').date()
+        html_paper = urllib2.urlopen(SCHOLAR+citation_link).read()
+        soup = BeautifulSoup(html_paper, "html5lib")
 
-    gsc_class = str(soup.find(class_=re.compile("gsc_title_link")))
-    url = re.search('href="(.+?)"', gsc_class).group(1)
+        date = ''
+        for line in soup:
+            line = str(line)
+            try:
+                date = re.search('<div class="gsc_field">Data de publicação</div><div class="gsc_value">(.+?)</div>',
+                                 line).group(1)
+            except AttributeError:
+                date = ''
 
-    return date, url
+        if date != '':
+            date_format = date.split('/')
+            if len(date_format) == 3:
+                date = datetime.datetime.strptime(date, '%Y/%m/%d').date()
 
+        gsc_class = str(soup.find(class_=re.compile("gsc_title_link")))  # google scholar class problem: gsc_class -> 'None'
+
+        re_reslt = re.search('href="(.+?)"', gsc_class)
+
+        if re_reslt:
+            url = re_reslt.group(1)
+        else:
+            url = ''
+
+        return date, url
+
+    else:
+        return '', ''
 
 def arxiv(arxiv_url):
     html = urllib2.urlopen(arxiv_url).read()
@@ -449,6 +485,13 @@ def add_papers(request):
         # Do the list of papers to add
         if request.POST['action'] == "next":
 
+            # Check if Google Scholar is available
+            response = requests.get(SCHOLAR+SCHOLAR_USER)
+            if response.status_code == 200:
+                scholar_available = True
+            else:
+                scholar_available = False
+
             # If already is in cache, do not make a new search
             if cache.get('periodical_published_papers'):
                 periodical_published_papers = cache.get('periodical_published_papers')
@@ -459,13 +502,19 @@ def add_papers(request):
 
             # Let's read the papers
             else:
+
+                # Get things from Scholar if available
+                if scholar_available:
+                    scholar_list = scholar()
+                else:
+                    pass
+
                 citations = CitationName.objects.all()
                 papers = cache.get('papers')
                 periodical_published_papers = []
                 arxiv_papers = []
                 event_papers = []
                 periodical_update_papers = []
-                scholar_list = scholar()
                 periodicals = Periodical.objects.all()
                 periodical_ris_file = PeriodicalRISFile.objects.all()
                 events = Event.objects.all()
@@ -583,11 +632,21 @@ def add_papers(request):
 
                         # Starting page of paper in publication
                         elif 'SP' in each_key:
-                            paper_start_page = each_dict[each_key]
+                            try:
+                                x = int(each_dict[each_key])
+                                if isinstance(x, int):
+                                    paper_start_page = each_dict[each_key]
+                            except:
+                                paper_start_page = ""
 
                         # Last page of paper in publication
                         elif 'EP' in each_key:
-                            paper_end_page = each_dict[each_key]
+                            try:
+                                x = int(each_dict[each_key])
+                                if isinstance(x, int):
+                                    paper_end_page = each_dict[each_key]
+                            except:
+                                paper_end_page = ""
 
                     if nira_author_list:
                         paper = {'nira_author_list': nira_author_list, 'paper_title': paper_title,
@@ -595,7 +654,7 @@ def add_papers(request):
                     else:
                         paper = {'paper_title': paper_title, 'paper_author': paper_author}
 
-                    # If the paper wasn't published before, get the date of publication using Google Scholar
+                    # If the paper wasn't published before, get the date of publication using Google Scholar if possible
                     if registered_title:
                         if u'p' not in get_paper_status and not paper_journal.startswith('arXiv'):
                             paper['paper_team'] = get_paper_team
@@ -605,7 +664,12 @@ def add_papers(request):
                             paper['paper_end_page'] = paper_end_page
                             paper['paper_scholar_id'] = paper_scholar_id
                             paper_scholar_id += 1
-                            paper_info = scholar_info(scholar_list, paper_title)
+
+                            if scholar_available:
+                                paper_info = scholar_info(scholar_list, paper_title)
+                            else:
+                                paper_info = ["", ""]
+
                             paper_date = paper_info[0]
                             paper_url = paper_info[1]
                             paper['periodical_id'] = periodical_id
@@ -634,7 +698,12 @@ def add_papers(request):
                                 paper['paper_end_page'] = paper_end_page
                                 paper['paper_scholar_id'] = paper_scholar_id
                                 paper_scholar_id += 1
-                                paper_info = scholar_info(scholar_list, paper_title)
+
+                                if scholar_available:
+                                    paper_info = scholar_info(scholar_list, paper_title)
+                                else:
+                                    paper_info = ["", ""]
+
                                 paper_date = paper_info[0]
                                 paper_url = paper_info[1]
                                 paper['periodical_id'] = periodical_id
