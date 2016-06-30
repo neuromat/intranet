@@ -35,7 +35,8 @@ class ScientificMission(models.Model):
     person = models.ForeignKey(Person, verbose_name=_('Paid to'))
     mission = models.ForeignKey(Type, verbose_name=_('Mission'), blank=True, null=True)
     project_activity = models.ForeignKey(ProjectActivities, verbose_name=_('Project activity'), blank=True, null=True)
-    destination_city = models.ForeignKey(City, verbose_name=_('City of destination'))
+    destination_city = models.ForeignKey(City, verbose_name=_('City of destination'), null=True,
+                                         related_name='destination_city')
     amount_paid = models.DecimalField(_('Amount paid'), max_digits=10, decimal_places=2)
     date_of_registration = models.DateTimeField(_('Date'), auto_now_add=True, null=True)
 
