@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from cities_light.models import City
 from person.validation import CPF
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -163,9 +163,12 @@ class Person(models.Model):
             orig = Person.objects.get(pk=self.pk)
             if orig.email != self.email:
                 from custom_auth.models import User
-                user = User.objects.get(user_profile=orig.pk)
-                user.email = self.email
-                user.save()
+                try:
+                    user = User.objects.get(user_profile=orig.pk)
+                    user.email = self.email
+                    user.save()
+                except ObjectDoesNotExist:
+                    pass
         super(Person, self).save(*args, **kw)
 
     class Meta:
