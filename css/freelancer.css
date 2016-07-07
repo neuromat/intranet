@@ -86,10 +86,12 @@ header .intro-text .name {
   text-transform: uppercase;
   font-weight: 700;
   font-size: 2em;
+  color: black;
 }
 header .intro-text .skills {
   font-size: 1.25em;
   font-weight: 300;
+  color: black;
 }
 @media (min-width: 768px) {
   header .container {
