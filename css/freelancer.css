@@ -448,3 +448,6 @@ fieldset[disabled] .btn-success.active {
 .my-link-flag ul li {
   display: inline;
 }
+ul li {
+  font-size: 20px;
+}
