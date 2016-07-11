@@ -478,6 +478,10 @@ def add_periodicals(request):
 
         # Back to the initial page
         elif request.POST['action'] == "back":
+            for key in request.session.keys():
+                if key != '_auth_user_hash' and key != '_auth_user_id' and key != '_auth_user_backend':
+                    del request.session[key]
+
             return redirect('import_papers')
 
     return redirect('import_papers')
@@ -1113,6 +1117,9 @@ def update_papers(request):
 
         # Back to the initial page
         elif request.POST['action'] == "finish":
+            for key in request.session.keys():
+                if key != '_auth_user_hash' and key != '_auth_user_id' and key != '_auth_user_backend':
+                    del request.session[key]
             return redirect('import_papers')
 
     return redirect('import_papers')
