@@ -28,6 +28,7 @@ ALLOWED_HOSTS = ['localhost']
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 AUTH_USER_MODEL = 'custom_auth.User'
 

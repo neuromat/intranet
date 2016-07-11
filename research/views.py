@@ -13,7 +13,6 @@ from helper_functions.latex import tex_escape
 from helper_functions.date import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import render, HttpResponse, redirect
 from django.template.loader import render_to_string
@@ -28,8 +27,9 @@ def search_articles(start_date, end_date):
     # List of articles
     published_periodical = PublishedInPeriodical.objects.filter(article__type='p', date__gt=start_date,
                                                                 date__lt=end_date).order_by('date')
-    published_event = Published.objects.filter(article__type='e', article__event__start_date__lt=end_date,
-                                               article__event__end_date__gt=start_date).order_by('article__event__start_date')
+    published_event = Published.objects.filter(
+        article__type='e', article__event__start_date__lt=end_date,
+        article__event__end_date__gt=start_date).order_by('article__event__start_date')
     accepted = Accepted.objects.filter(date__lt=end_date).order_by('date')
     submitted = Submitted.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
     draft = Draft.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
@@ -159,7 +159,7 @@ def articles_tex(request):
                'accepted_tec_trans_in_event': accepted_tec_trans_in_event}
 
     response = render_to_string('report/research/tex/articles.tex', context)
-    response = tex_escape(response)
+    response = tex_escape(response, table=False)
     latex_response = HttpResponse(response, content_type='text/plain')
     latex_response['Content-Disposition'] = 'attachment; filename="articles.tex"'
 
@@ -240,8 +240,7 @@ def academic_works_tex(request):
 
 def scholar():
     """
-
-    This method gets all articles on Neuromat's google scholar account
+    This method gets all articles from the Neuromat's google scholar account
 
     """
 
@@ -276,14 +275,32 @@ def scholar():
         i += 100
 
 
-def scholar_info(scholar_list, paper_title):
-
+def scholar_status(link):
     """
-    From Neuromat's google scholar, this method retrieves the date and link of a specific paper, returning a tuple
+    Check if Google Scholar is available
+
+    :return: Google Scholar status
+    """
+
+    response = requests.get(link)
+    if response.status_code == 200:
+        scholar_available = True
+    else:
+        scholar_available = False
+
+    return scholar_available
+
+
+def scholar_info(scholar_list, paper_title):
+    """
+    From Neuromat's google scholar, this method retrieves the date and the link of a specific paper, returning a tuple
 
     """
 
     paper_url = ''
+    if isinstance(paper_title, unicode):
+        paper_title = paper_title.encode('UTF-8')
+
     for each_dict in scholar_list:
         for each_key in each_dict:
             if paper_title in each_key:
@@ -291,13 +308,7 @@ def scholar_info(scholar_list, paper_title):
 
     html_parser = HTMLParser.HTMLParser()
     citation_link = html_parser.unescape(paper_url)
-
-    # Check if Google Scholar is available
-    response = requests.get(SCHOLAR+citation_link)
-    if response.status_code == 200:
-        scholar_available = True
-    else:
-        scholar_available = False
+    scholar_available = scholar_status(SCHOLAR+citation_link)
 
     if scholar_available:
 
@@ -318,7 +329,8 @@ def scholar_info(scholar_list, paper_title):
             if len(date_format) == 3:
                 date = datetime.datetime.strptime(date, '%Y/%m/%d').date()
 
-        gsc_class = str(soup.find(class_=re.compile("gsc_title_link")))  # google scholar class problem: gsc_class -> 'None'
+        # google scholar class problem: gsc_class -> 'None'
+        gsc_class = str(soup.find(class_=re.compile("gsc_title_link")))
 
         re_reslt = re.search('href="(.+?)"', gsc_class)
 
@@ -331,6 +343,7 @@ def scholar_info(scholar_list, paper_title):
 
     else:
         return '', ''
+
 
 def arxiv(arxiv_url):
     html = urllib2.urlopen(arxiv_url).read()
@@ -358,7 +371,7 @@ def arxiv(arxiv_url):
 @login_required
 def import_papers(request):
     """
-    This method imports papers from a RIS file and stores them on cache.
+    Import paper from a RIS file and store it in a session.
 
     """
 
@@ -400,9 +413,9 @@ def import_papers(request):
                         and not PeriodicalRISFile.objects.filter(name=periodical):
                     periodicals_to_add.append(periodical)
 
-            # Cache the list of papers and the list of periodicals to add
-            cache.set('papers', papers, 60 * 30)
-            cache.set('periodicals_to_add', periodicals_to_add, 60 * 30)
+            # Store the list of papers and the list of periodicals to add in sessions
+            request.session['papers'] = papers
+            request.session['periodicals_to_add'] = periodicals_to_add
 
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
@@ -414,19 +427,17 @@ def import_papers(request):
 
 
 def add_periodicals(request):
-
     """
-
-    This method adds periodicals to NIRA's database using date obtained from Google Scholar
+    This method adds periodicals to the database.
 
     """
 
     if request.method == "POST":
 
-        # Add the journals selected by the user
+        # Add the periodicals selected by the user
         if request.POST['action'] == "add":
             periodicals = request.POST.getlist('periodicals_to_add')
-            periodicals_to_add = cache.get('periodicals_to_add')
+            periodicals_to_add = request.session['periodicals_to_add']
 
             if periodicals:
                 num_of_periodicals = len(periodicals)
@@ -438,21 +449,20 @@ def add_periodicals(request):
                 if num_of_periodicals == 1:
                     messages.success(request, _('Successfully added one Periodical.'))
                 else:
-                    messages.success(request, _('Successfully added all the Periodicals.'))
+                    messages.success(request, _('Successfully added %d Periodicals.') % num_of_periodicals)
 
             else:
                 messages.warning(request, _('You have selected no item. Nothing to be done!'))
 
-            cache.set('periodicals_to_add', periodicals_to_add, 60 * 30)
+            request.session['periodicals_to_add'] = periodicals_to_add
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
 
-        # Go to the page that shows the events, with cache properly set
+        # Go to the page that shows the events
         elif request.POST['action'] == "next":
-            papers = cache.get('papers')
-            # Look for event to be registered. Remove duplicates
-            events_ty_jour = [key['JO'] for key in papers if 'JO' in key and 'CONF' in key.values()]
-            events_ty_chap = [key['T2'] for key in papers if 'T2' in key and 'CHAP' in key.values()]
+            # Search for events to be registered. Remove duplicates
+            events_ty_jour = [key['JO'] for key in request.session['papers'] if 'JO' in key and 'CONF' in key.values()]
+            events_ty_chap = [key['T2'] for key in request.session['papers'] if 'T2' in key and 'CHAP' in key.values()]
             events = events_ty_jour + events_ty_chap
             events = list(set(events))
 
@@ -462,13 +472,12 @@ def add_periodicals(request):
                 if not Event.objects.filter(name=event) and not EventRISFile.objects.filter(name=event):
                     events_to_add.append(event)
 
-            cache.set('events', events_to_add, 60 * 30)
+            request.session['events'] = events_to_add
             context = {'events_to_add': events_to_add}
             return render(request, 'report/research/events_to_import.html', context)
 
         # Back to the initial page
         elif request.POST['action'] == "back":
-            cache.delete_many(['papers', 'periodicals_to_add', 'events'])
             return redirect('import_papers')
 
     return redirect('import_papers')
@@ -476,7 +485,8 @@ def add_periodicals(request):
 
 def add_papers(request):
     """
-    Adding papers to NIRA's database using date obtained from Google Scholar
+    This method adds papers to the database. Get the date from Google Scholar or ArXiv.
+
     """
 
     # If user wants to add papers
@@ -485,32 +495,23 @@ def add_papers(request):
         # Do the list of papers to add
         if request.POST['action'] == "next":
 
-            # Check if Google Scholar is available
-            response = requests.get(SCHOLAR+SCHOLAR_USER)
-            if response.status_code == 200:
-                scholar_available = True
-            else:
-                scholar_available = False
-
-            # If already is in cache, do not make a new search
-            if cache.get('periodical_published_papers'):
-                periodical_published_papers = cache.get('periodical_published_papers')
+            # If in session, do not make a new search
+            if 'periodical_published_papers' in request.session:
+                periodical_published_papers = request.session['periodical_published_papers']
                 periodicals = Periodical.objects.all()
                 context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
-                # If you have the published papers, go to the next step
                 return render(request, 'report/research/periodical_published_papers.html', context)
 
             # Let's read the papers
             else:
+                scholar_available = scholar_status(SCHOLAR+SCHOLAR_USER)
 
                 # Get things from Scholar if available
                 if scholar_available:
                     scholar_list = scholar()
-                else:
-                    pass
 
                 citations = CitationName.objects.all()
-                papers = cache.get('papers')
+                papers = request.session['papers']
                 periodical_published_papers = []
                 arxiv_papers = []
                 event_papers = []
@@ -587,7 +588,7 @@ def add_papers(request):
 
                             paper_author = citation_names
 
-                        # Journal of publication
+                        # Periodical of the publication
                         elif 'JO' in each_key:
                             paper_journal = each_dict[each_key]
                             if not paper_journal.startswith('arXiv'):
@@ -610,7 +611,7 @@ def add_papers(request):
                                     periodical_id = ''
                                     event_id = ''
 
-                        # Event of paper
+                        # Event of the paper
                         elif 'T2' in each_key:
                             paper_event = each_dict[each_key]
                             if events.filter(name=paper_event):
@@ -622,15 +623,15 @@ def add_papers(request):
                             else:
                                 event_id = ''
 
-                        # Volume of paper publication
+                        # Volume of the paper
                         elif 'VL' in each_key:
                             paper_volume = each_dict[each_key]
 
-                        # Issue of paper publication
+                        # Issue of the paper
                         elif 'IS' in each_key:
                             paper_issue = each_dict[each_key]
 
-                        # Starting page of paper in publication
+                        # Starting page of the paper in the publication
                         elif 'SP' in each_key:
                             try:
                                 x = int(each_dict[each_key])
@@ -639,7 +640,7 @@ def add_papers(request):
                             except:
                                 paper_start_page = ""
 
-                        # Last page of paper in publication
+                        # Last page of the paper in the publication
                         elif 'EP' in each_key:
                             try:
                                 x = int(each_dict[each_key])
@@ -722,17 +723,17 @@ def add_papers(request):
                             paper['event_id'] = event_id
                             event_papers.append(paper)
 
-                cache.set('periodical_published_papers', periodical_published_papers, 60 * 30)
-                cache.set('arxiv_papers', arxiv_papers, 60 * 30)
-                cache.set('periodical_update_papers', periodical_update_papers, 60 * 30)
-                cache.set('event_papers', event_papers, 60 * 30)
+                request.session['periodical_published_papers'] = periodical_published_papers
+                request.session['arxiv_papers'] = arxiv_papers
+                request.session['periodical_update_papers'] = periodical_update_papers
+                request.session['event_papers'] = event_papers
 
                 context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
                 return render(request, 'report/research/periodical_published_papers.html', context)
 
         # Back to the list of periodicals to add
         elif request.POST['action'] == "back":
-            periodicals_to_add = cache.get('periodicals_to_add')
+            periodicals_to_add = request.session['periodicals_to_add']
             context = {'periodicals_to_add': periodicals_to_add}
             return render(request, 'report/research/periodicals_to_import.html', context)
 
@@ -744,14 +745,13 @@ def periodical_published_papers(request):
         # Add published papers
         if request.POST['action'] == "add":
             selected_papers = request.POST.getlist('paper_id')
-            periodical_published_papers = cache.get('periodical_published_papers')
+            periodical_published_papers = request.session['periodical_published_papers']
             periodicals = Periodical.objects.all()
 
             if selected_papers:
-                date_error = False
-
                 for paper_scholar_id in selected_papers:
-
+                    date_error = False
+                    periodical_error = False
                     paper_author = []
                     paper_url = ''
 
@@ -773,15 +773,17 @@ def periodical_published_papers(request):
                     paper_end_page = request.POST['paper_end_page_'+paper_scholar_id]
                     paper_date = request.POST['paper_date_'+paper_scholar_id]
 
-                    # Date field validation
-                    paper_date_error = False
+                    # Date validation
                     try:
                         datetime.datetime.strptime(paper_date, '%Y-%m-%d')
                     except ValueError:
-                        paper_date_error = True
                         date_error = True
 
-                    if not paper_date_error:
+                    # Periodical validation
+                    if paper_periodical == u'none':
+                        periodical_error = True
+
+                    if not date_error and not periodical_error:
                         # Adding paper in NIRA
                         periodical = Periodical.objects.get(id=int(paper_periodical))
                         article = Article(team=paper_team, title=paper_title, ris_file_authors=paper_ris_author,
@@ -795,29 +797,32 @@ def periodical_published_papers(request):
                                                               start_page=paper_start_page, end_page=paper_end_page)
                             published.save()
 
-                            if paper_author:
-                                for author in range(0, len(paper_author)):
-                                    person_id = paper_author[author].pk
-                                    Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
-
                         else:
                             published = PublishedInPeriodical(article_id=article_id, volume=paper_volume,
                                                               number=paper_issue, date=paper_date)
                             published.save()
 
-                            if paper_author:
-                                for author in range(0, len(paper_author)):
-                                    person_id = paper_author[author].pk
-                                    Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
+                        if paper_author:
+                            for author in range(0, len(paper_author)):
+                                person_id = paper_author[author].pk
+                                Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
 
                         # Removing paper from the periodical_published_papers list
                         periodical_published_papers = [x for x in periodical_published_papers if
                                                        not (int(paper_scholar_id) == x.get('paper_scholar_id'))]
 
-                if date_error:
-                    messages.warning(request, _('Wrong date format! It should be YYYY-MM-DD.'))
+                    else:
+                        if date_error and periodical_error:
+                            messages.warning(request, _('The paper "%s" has no journal and its date has a wrong format')
+                                             % paper_title)
+                        elif date_error:
+                            messages.warning(request, _('Wrong date format for the paper "%s". '
+                                                        'It should be YYYY-MM-DD.') % paper_title)
+                        elif periodical_error:
+                            messages.warning(request, _('You should select a journal for the paper "%s".')
+                                             % paper_title)
 
-                cache.set('periodical_published_papers', periodical_published_papers, 60 * 30)
+                request.session['periodical_published_papers'] = periodical_published_papers
                 context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
                 return render(request, 'report/research/periodical_published_papers.html', context)
 
@@ -828,13 +833,13 @@ def periodical_published_papers(request):
 
         # Go to the page that shows the arxiv papers to add
         elif request.POST['action'] == "next":
-            arxiv_papers = cache.get('arxiv_papers')
+            arxiv_papers = request.session['arxiv_papers']
             context = {'arxiv_papers': arxiv_papers}
             return render(request, 'report/research/arxiv_papers.html', context)
 
         # Back to the list of events to add
         elif request.POST['action'] == "back":
-            events_to_add = cache.get('events')
+            events_to_add = request.session['events']
             context = {'events_to_add': events_to_add}
             return render(request, 'report/research/events_to_import.html', context)
 
@@ -845,14 +850,12 @@ def arxiv_papers(request):
     if request.method == "POST":
         # Add arxiv papers
         if request.POST['action'] == "add":
-            arxiv_papers = cache.get('arxiv_papers')
+            arxiv_papers = request.session['arxiv_papers']
             selected_papers = request.POST.getlist('paper_id')
+
             if selected_papers:
-
-                date_error = False
-
                 for paper_arxiv_id in selected_papers:
-
+                    date_error = False
                     paper_x_author = []
 
                     for paper in arxiv_papers:
@@ -869,15 +872,13 @@ def arxiv_papers(request):
                     paper_date = request.POST['paper_date_'+paper_arxiv_id]
 
                     # Date field validation
-                    paper_date_error = False
                     try:
                         datetime.datetime.strptime(paper_date, '%Y-%m-%d')
                     except ValueError:
-                        paper_date_error = True
                         date_error = True
 
-                    if not paper_date_error:
-                        # Adding paper in NIRA
+                    if not date_error:
+                        # Adding paper
                         item = Article(team=paper_team, title=paper_title, ris_file_authors=paper_author, url=arxiv_url,
                                        status='d')
                         item.save()
@@ -893,10 +894,11 @@ def arxiv_papers(request):
                         # Removing paper from the arxiv_papers list
                         arxiv_papers = [x for x in arxiv_papers if not (int(paper_arxiv_id) == x.get('paper_arxiv_id'))]
 
-                if date_error:
-                    messages.warning(request, _('Wrong date format! It should be YYYY-MM-DD.'))
+                    else:
+                        messages.warning(request, _('Wrong date format for the paper "%s". It should be YYYY-MM-DD.')
+                                         % paper_title)
 
-                cache.set('arxiv_papers', arxiv_papers, 60 * 30)
+                request.session['arxiv_papers'] = arxiv_papers
                 context = {'arxiv_papers': arxiv_papers}
                 return render(request, 'report/research/arxiv_papers.html', context)
 
@@ -907,14 +909,14 @@ def arxiv_papers(request):
 
         # Go to the page that shows papers from events to add
         elif request.POST['action'] == "next":
-            event_papers = cache.get('event_papers')
+            event_papers = request.session['event_papers']
             events = Event.objects.all()
             context = {'event_papers': event_papers, 'events': events}
             return render(request, 'report/research/add_event_papers.html', context)
 
         # Back to the list of published papers to add
         elif request.POST['action'] == "back":
-            periodical_published_papers = cache.get('periodical_published_papers')
+            periodical_published_papers = request.session['periodical_published_papers']
             periodicals = Periodical.objects.all()
             context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}
             return render(request, 'report/research/periodical_published_papers.html', context)
@@ -926,9 +928,10 @@ def event_papers(request):
     if request.method == "POST":
         # Add event papers
         if request.POST['action'] == "add":
-            event_papers = cache.get('event_papers')
+            event_papers = request.session['event_papers']
             selected_papers = request.POST.getlist('paper_id')
             events = Event.objects.all()
+
             if selected_papers:
                 for paper_scholar_id in selected_papers:
 
@@ -960,25 +963,19 @@ def event_papers(request):
                                               end_page=paper_end_page)
                         published.save()
 
-                        if paper_event_author:
-                            for author in range(0, len(paper_event_author)):
-                                person_id = paper_event_author[author].pk
-                                Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
-
                     else:
                         published = Published(article_id=article_id)
                         published.save()
 
-                        if paper_event_author:
-                            for author in range(0, len(paper_event_author)):
-                                person_id = paper_event_author[author].pk
-                                Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
-
+                    if paper_event_author:
+                        for author in range(0, len(paper_event_author)):
+                            person_id = paper_event_author[author].pk
+                            Author(research_result_id=article_id, author_id=person_id, order=author+1).save()
 
                     # Removing paper from the event_papers list
                     event_papers = [x for x in event_papers if not (int(paper_scholar_id) == x.get('paper_scholar_id'))]
 
-                cache.set('event_papers', event_papers, 60 * 30)
+                request.session['event_papers'] = event_papers
                 context = {'event_papers': event_papers, 'events': events}
                 return render(request, 'report/research/add_event_papers.html', context)
 
@@ -989,13 +986,13 @@ def event_papers(request):
 
         # Back to the list of arxiv papers to add
         elif request.POST['action'] == "back":
-            arxiv_papers = cache.get('arxiv_papers')
+            arxiv_papers = request.session['arxiv_papers']
             context = {'arxiv_papers': arxiv_papers}
             return render(request, 'report/research/arxiv_papers.html', context)
 
         # Go to the page that shows the papers to update
         elif request.POST['action'] == "next":
-            periodical_update_papers = cache.get('periodical_update_papers')
+            periodical_update_papers = request.session['periodical_update_papers']
             periodicals = Periodical.objects.all()
             context = {'periodical_update_papers': periodical_update_papers, 'periodicals': periodicals}
             return render(request, 'report/research/periodical_update_papers.html', context)
@@ -1009,15 +1006,13 @@ def update_papers(request):
         if request.POST['action'] == "update":
             authors = Author.objects.all()
             selected_papers = request.POST.getlist('paper_id')
-            periodical_update_papers = cache.get('periodical_update_papers')
+            periodical_update_papers = request.session['periodical_update_papers']
             periodicals = Periodical.objects.all()
 
             if selected_papers:
-
-                date_error = False
-
                 for paper_scholar_id in selected_papers:
-
+                    date_error = False
+                    periodical_error = False
                     paper_update_author = []
 
                     for paper in periodical_update_papers:
@@ -1043,15 +1038,17 @@ def update_papers(request):
                     paper_url = paper.url
                     paper_status = paper.status
 
-                    # Date field validation
-                    paper_date_error = False
+                    # Date validation
                     try:
                         datetime.datetime.strptime(paper_date, '%Y-%m-%d')
                     except ValueError:
-                        paper_date_error = True
                         date_error = True
 
-                    if not paper_date_error:
+                    # Periodical validation
+                    if paper_periodical == u'none':
+                        periodical_error = True
+
+                    if not date_error and not periodical_error:
                         # Updating paper in NIRA
                         periodical = Periodical.objects.get(id=int(paper_periodical))
                         paper_status = re.findall("\\'(.+?)\\'", paper_status)
@@ -1087,10 +1084,18 @@ def update_papers(request):
                         periodical_update_papers = [x for x in periodical_update_papers if
                                                     not (int(paper_scholar_id) == x.get('paper_scholar_id'))]
 
-                if date_error:
-                    messages.warning(request, _('Wrong date format! It should be YYYY-MM-DD.'))
+                    else:
+                        if date_error and periodical_error:
+                            messages.warning(request, _('The paper "%s" has no journal and its date has a wrong format')
+                                             % paper_title)
+                        elif date_error:
+                            messages.warning(request, _('Wrong date format for the paper "%s". '
+                                                        'It should be YYYY-MM-DD.') % paper_title)
+                        elif periodical_error:
+                            messages.warning(request, _('You should select a journal for the paper "%s".')
+                                             % paper_title)
 
-                cache.set('periodical_update_papers', periodical_update_papers, 60 * 30)
+                request.session['periodical_update_papers'] = periodical_update_papers
                 context = {'periodical_update_papers': periodical_update_papers, 'periodicals': periodicals}
                 return render(request, 'report/research/periodical_update_papers.html', context)
 
@@ -1101,15 +1106,13 @@ def update_papers(request):
 
         # Back to the list of event papers to add
         elif request.POST['action'] == "back":
-            event_papers = cache.get('event_papers')
+            event_papers = request.session['event_papers']
             events = Event.objects.all()
             context = {'event_papers': event_papers, 'events': events}
             return render(request, 'report/research/add_event_papers.html', context)
 
-        # Clean the cache. Back to the initial page
+        # Back to the initial page
         elif request.POST['action'] == "finish":
-            cache.delete_many(['papers', 'periodicals_to_add', 'events', 'event_papers', 'arxiv_papers',
-                               'periodical_published_papers', 'periodical_update_papers'])
             return redirect('import_papers')
 
     return redirect('import_papers')
