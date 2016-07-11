@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-28 15:54-0300\n"
+"POT-Creation-Date: 2016-07-11 16:27-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,7 +153,7 @@ msgstr "Programas de treinamento"
 
 #: activity/models.py:161 dissemination/models.py:21 dissemination/models.py:62
 #: dissemination/models.py:103 person/models.py:28 person/models.py:46
-#: person/models.py:67 person/models.py:181 research/models.py:111
+#: person/models.py:67 person/models.py:184 research/models.py:111
 #: research/models.py:129 research/models.py:146 research/models.py:171
 #: research/models.py:280
 msgid "Name"
@@ -187,7 +187,7 @@ msgstr "Resumo"
 
 #: activity/models.py:184 dissemination/models.py:40 research/models.py:87
 #: research/models.py:230 research/models.py:240 research/models.py:250
-#: research/models.py:272 scientific_mission/models.py:40
+#: research/models.py:272 scientific_mission/models.py:41
 #: templates/report/activity/seminars_report.html:23
 #: templates/report/activity/training_programs_report.html:20
 #: templates/report/dissemination/dissemination_report.html:24
@@ -217,7 +217,7 @@ msgid "Seminars"
 msgstr "Seminários"
 
 #: activity/views.py:87 activity/views.py:176 activity/views.py:233
-#: dissemination/views.py:74 research/views.py:130 research/views.py:211
+#: dissemination/views.py:74 research/views.py:131 research/views.py:217
 msgid "End date should be equal or greater than start date."
 msgstr "A data de término deve ser igual ou superior a data inicial."
 
@@ -506,19 +506,19 @@ msgstr "Estado"
 msgid "Country"
 msgstr "País"
 
-#: person/models.py:172 person/models.py:173 templates/anexo/anexo5.html:21
+#: person/models.py:175 person/models.py:176 templates/anexo/anexo5.html:21
 msgid "Person"
 msgstr "Pessoa"
 
-#: person/models.py:182
+#: person/models.py:185
 msgid "Name in bibliographic citation"
 msgstr "Nome em citação bibliográfica"
 
-#: person/models.py:183
+#: person/models.py:186
 msgid "Default name?"
 msgstr "Nome default?"
 
-#: person/models.py:201 person/models.py:202
+#: person/models.py:204 person/models.py:205
 msgid "Citation name"
 msgstr "Nome de citação"
 
@@ -772,34 +772,54 @@ msgstr "Trabalho acadêmico"
 msgid "Academic Works"
 msgstr "Trabalhos acadêmicos"
 
-#: research/views.py:93
+#: research/views.py:94
 msgid "Invalid start date!"
 msgstr "Início inválido"
 
-#: research/views.py:103
+#: research/views.py:104
 msgid "Invalid end date!"
 msgstr "Término inválido"
 
-#: research/views.py:375
+#: research/views.py:424
 msgid "Please, select a .ris file to upload."
 msgstr "Por favor, selecione um arquivo .ris para fazer o upload."
 
-#: research/views.py:403
+#: research/views.py:450
 msgid "Successfully added one Periodical."
-msgstr "Periódico adicionado com sucesso"
+msgstr "Periódico adicionado com sucesso."
 
-#: research/views.py:405
-msgid "Successfully added all the Periodicals."
-msgstr "Todos os periódicos foram adicionados com sucesso"
+#: research/views.py:452
+#, python-format
+msgid "Successfully added %d Periodicals."
+msgstr "%d periódicos adicionados com sucesso."
 
-#: research/views.py:408 research/views.py:756 research/views.py:835
-#: research/views.py:917 research/views.py:1029
+#: research/views.py:455 research/views.py:830 research/views.py:906
+#: research/views.py:983 research/views.py:1103
 msgid "You have selected no item. Nothing to be done!"
 msgstr "Você não selecionou nenhum item. Não há nada para fazer!"
 
-#: research/views.py:749 research/views.py:828 research/views.py:1022
-msgid "Wrong date format! It should be YYYY-MM-DD."
-msgstr "Formato de data errado! Deveria ser AAAA-MM-DD"
+#: research/views.py:816 research/views.py:1089
+#, python-format
+msgid ""
+"The paper \"%s\" has no journal and the date field is empty or has an "
+"incorrect format"
+msgstr ""
+"O paper \"%s\" está sem periódico e o campo data está vazio ou com um "
+"formato incorreto."
+
+#: research/views.py:819 research/views.py:898 research/views.py:1092
+#, python-format
+msgid ""
+"The date field is empty or has an incorrect format for the paper \"%s\". It "
+"should be YYYY-MM-DD."
+msgstr ""
+"O campo data está vazio ou com um formato incorreto para o paper \"%s\". O "
+"fomato correto é o YYYY-MM-DD."
+
+#: research/views.py:822 research/views.py:1095
+#, python-format
+msgid "You should select a journal for the paper \"%s\"."
+msgstr "Você deve escolher um periódico para o paper \"%s\"."
 
 #: scientific_mission/admin.py:25
 msgid ""
@@ -855,35 +875,35 @@ msgstr "Atividade do projeto"
 msgid "City of destination"
 msgstr "Cidade de destino"
 
-#: scientific_mission/models.py:39
+#: scientific_mission/models.py:40
 msgid "Amount paid"
 msgstr "Valor pago"
 
-#: scientific_mission/models.py:46
+#: scientific_mission/models.py:47
 msgid "Daily stipend"
 msgstr "Diária"
 
-#: scientific_mission/models.py:47
+#: scientific_mission/models.py:48
 msgid "Daily stipends"
 msgstr "Diárias"
 
-#: scientific_mission/models.py:62
+#: scientific_mission/models.py:63
 msgid "From"
 msgstr "De"
 
-#: scientific_mission/models.py:63
+#: scientific_mission/models.py:64
 msgid "To"
 msgstr "Para"
 
-#: scientific_mission/models.py:64
+#: scientific_mission/models.py:65
 msgid "Departure"
 msgstr "Partida"
 
-#: scientific_mission/models.py:65
+#: scientific_mission/models.py:66
 msgid "Arrival"
 msgstr "Chegada"
 
-#: scientific_mission/models.py:66
+#: scientific_mission/models.py:67
 msgid "Order"
 msgstr "Ordem"
 

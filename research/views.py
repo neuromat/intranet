@@ -813,11 +813,11 @@ def periodical_published_papers(request):
 
                     else:
                         if date_error and periodical_error:
-                            messages.warning(request, _('The paper "%s" has no journal and its date has a wrong format')
-                                             % paper_title)
+                            messages.warning(request, _('The paper "%s" has no journal and the date field is empty or '
+                                                        'has an incorrect format') % paper_title)
                         elif date_error:
-                            messages.warning(request, _('Wrong date format for the paper "%s". '
-                                                        'It should be YYYY-MM-DD.') % paper_title)
+                            messages.warning(request, _('The date field is empty or has an incorrect format for the '
+                                                        'paper "%s". It should be YYYY-MM-DD.') % paper_title)
                         elif periodical_error:
                             messages.warning(request, _('You should select a journal for the paper "%s".')
                                              % paper_title)
@@ -895,8 +895,8 @@ def arxiv_papers(request):
                         arxiv_papers = [x for x in arxiv_papers if not (int(paper_arxiv_id) == x.get('paper_arxiv_id'))]
 
                     else:
-                        messages.warning(request, _('Wrong date format for the paper "%s". It should be YYYY-MM-DD.')
-                                         % paper_title)
+                        messages.warning(request, _('The date field is empty or has an incorrect format for the paper'
+                                                    ' "%s". It should be YYYY-MM-DD.') % paper_title)
 
                 request.session['arxiv_papers'] = arxiv_papers
                 context = {'arxiv_papers': arxiv_papers}
@@ -934,7 +934,6 @@ def event_papers(request):
 
             if selected_papers:
                 for paper_scholar_id in selected_papers:
-
                     paper_event_author = []
 
                     for paper in event_papers:
@@ -957,6 +956,7 @@ def event_papers(request):
                                       type='e', event=event)
                     article.save()
                     article_id = article.pk
+
                     # start_page and end_page are integers, so they can't be blank
                     if paper_start_page and paper_end_page:
                         published = Published(article_id=article_id, start_page=paper_start_page,
@@ -1086,11 +1086,11 @@ def update_papers(request):
 
                     else:
                         if date_error and periodical_error:
-                            messages.warning(request, _('The paper "%s" has no journal and its date has a wrong format')
-                                             % paper_title)
+                            messages.warning(request, _('The paper "%s" has no journal and the date field is empty or '
+                                                        'has an incorrect format') % paper_title)
                         elif date_error:
-                            messages.warning(request, _('Wrong date format for the paper "%s". '
-                                                        'It should be YYYY-MM-DD.') % paper_title)
+                            messages.warning(request, _('The date field is empty or has an incorrect format for the '
+                                                        'paper "%s". It should be YYYY-MM-DD.') % paper_title)
                         elif periodical_error:
                             messages.warning(request, _('You should select a journal for the paper "%s".')
                                              % paper_title)
