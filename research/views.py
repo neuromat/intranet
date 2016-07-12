@@ -254,7 +254,7 @@ def scholar():
         html_scholar = urllib2.urlopen(link).read()
 
         if "Nenhum artigo neste perfil." not in html_scholar:
-            soup = BeautifulSoup(html_scholar)
+            soup = BeautifulSoup(html_scholar, "html5lib")
 
             for line in soup.find_all('a'):
                 line = str(line)
@@ -347,7 +347,7 @@ def scholar_info(scholar_list, paper_title):
 
 def arxiv(arxiv_url):
     html = urllib2.urlopen(arxiv_url).read()
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, "html5lib")
     line = soup.find_all("div", class_="dateline")
     line = str(line[0])
 
@@ -368,7 +368,7 @@ def arxiv(arxiv_url):
     return date
 
 
-@login_required
+# @login_required
 def import_papers(request):
     """
     Import paper from a RIS file and store it in a session.
