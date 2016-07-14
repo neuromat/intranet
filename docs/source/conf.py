@@ -51,7 +51,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'NIRA'
-copyright = u'2016, Lucas Helfstein'
+copyright = u'2016, Neuromat'
 author = u'Lucas Helfstein'
 
 # The version info for the project you're documenting, acts as replacement for

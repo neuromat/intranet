@@ -14,7 +14,7 @@ Precisamos instalar o git, postgres, virtualenv, apache2::
 
 
 2. Virtualenv
-----------------------
+-------------
 
 Criar um virtualenv 
 +++++++++++++++++++	
@@ -53,7 +53,7 @@ Instale os pacotes necessários da versão obtida do GitHub::
 
 
 4. Alterar o arquivo wsgi.py
------------------------------
+----------------------------
 
 Abra o arquivo de wsgi::
 	
@@ -69,43 +69,43 @@ Deixe similar ao seguinte código, modificando caso seu diretório seja diferent
 
 
 5. Configure seu settings_local
---------------------------------
+-------------------------------
 
 Configure um postgres banco de dados
-+++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++
 
 Configurar um banco de dados PostgreSQL é simples, são três passos:
 
 1. Usando o usuário postgres::
 
-	su postgres
+    su postgres
 
 2. Crie um usuário de banco e defina uma senha::
 
-	createuser seu_usuario --pwprompt --encrypted
+    createuser seu_usuario --pwprompt --encrypted
 	
 3. Crie um banco e defina uma senha::
 
-	createdb seu_banco
+    createdb seu_banco
 
 
 Settings local 
-+++++++++++++++
+++++++++++++++
 
 O arquivo *settings_local.py* deve ficar no diretório sistema do projeto do NIRA, no nosso caso::
 	
-	cd /var/lib/sistema-nira/nira/sistema/
-	vi /var/lib/sistema-nira/sistema/settings_local.py
+    cd /var/lib/sistema-nira/nira/sistema/
+    vi /var/lib/sistema-nira/sistema/settings_local.py
 
 
 Em *settings_local.py* você deve configurar o sistema para usar o seu banco de dados PostgreSQL.
 
 .. literalinclude:: ./settings_local.py
     :language: python
-    :emphasize-lines: 11, 15, 44-52
+    :emphasize-lines: 11, 15, 50-58
 
 
-A linha de *INSTALLED_APPS* que está comentada deve ser descomentada somente se a interface visual desejada seja o Django Suit. Leia mais.
+A linha de *INSTALLED_APPS* que está comentada deve ser descomentada somente se a interface visual desejada seja o Django Suit.
 
 
 6. Configuração do Apache
@@ -113,13 +113,13 @@ A linha de *INSTALLED_APPS* que está comentada deve ser descomentada somente se
 
 Crie um diretório para armazenar os logs de erro do sistema::
 
-	mkdir /var/log/apache2/nira
+    mkdir /var/log/apache2/nira
 
 
 Vá para o diretório de sites do Apache e abra um arquivo para o nira, *nira.conf*::
 
-	cd /etc/apache2/sites-available
-	nano nira.conf
+    cd /etc/apache2/sites-available
+    vi nira.conf
 
 
 Coloque algo similar ao código abaixo, alterando *ServerAdmin, ServerName, ServerAlias* de acordo seu ambiente e altere o diretório caso seja necessário:
@@ -129,44 +129,44 @@ Coloque algo similar ao código abaixo, alterando *ServerAdmin, ServerName, Serv
 
 Desligue o sites do Apache e habilite o NIRA::
 
-	a2dissite 000-default.conf
-	a2ensite nira
+    a2dissite 000-default.conf
+    a2ensite nira
 
 
-7. Usuário, Static, Banco
---------------------------
+7. Configurações finais
+-----------------------
 
 Arrumando os arquivos de static::
 
-	cd /var/lib/sistema-nira/nira/
-	nano sistema/settings.py
+    cd /var/lib/sistema-nira/nira/
+    nano sistema/settings.py
 
 Comente a seguinte parte do código::
 
-	# STATICFILES_DIRS = (
-	#     os.path.join(BASE_DIR, 'static'),
-	# )
+    # STATICFILES_DIRS = (
+    #     os.path.join(BASE_DIR, 'static'),
+    # )
 
 
 Para obter os arquivos de static, faça::
 
-	cd /var/lib/sistema-nira/
-	python manage.py collectstatic
+    cd /var/lib/sistema-nira/
+    python manage.py collectstatic
 
 
 Configure o banco de dados com os apps do NIRA::
 
-	python manage.py migrate
+    python manage.py migrate
 
 
 Crie um usuário administrador::
 
-	python manage.py createsuperuser
+    python manage.py createsuperuser
 
 
 Reinicie o Apache::
 		
-	service apache2 restart
+    service apache2 restart
 
 
 Se tudo tiver corrido corretamente, o NIRA estará na porta configurada no arquivo do Apache.
