@@ -1,0 +1,1 @@
+O NeuroMat Individual Report of Activities (NIRA) é um sistema que pode ser utilizado pelos Centros de Pesquisa, Inovação e Difusão (Cepids) apoiados pela `Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) <http://www.fapesp.br/>`_. Seu objetivo é auxiliar na elaboração do relatório anual de atividades, um documento obrigatório que é apresentado anualmente à FAPESP.

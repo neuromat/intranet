@@ -1,0 +1,506 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Instalação &mdash; NIRA 0.3.3 documentação</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="NIRA 0.3.3 documentação" href="../index.html"/>
+        <link rel="prev" title="NIRA" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NIRA
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Instalação</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pacotes-necessarios">1. Pacotes necessários</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#virtualenv">2. Virtualenv</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#criar-um-virtualenv">Criar um virtualenv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#baixar-o-nira-no-virtualenv">Baixar o NIRA no virtualenv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ativar-o-virtualenv">Ativar o virtualenv</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#instalar-os-pacotes-necessarios-para-o-funcionamento-do-nira-na-versao-desejada">3. Instalar os pacotes necessários para o funcionamento do NIRA na versão desejada</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alterar-o-arquivo-wsgi-py">4. Alterar o arquivo wsgi.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-seu-settings-local">5. Configure seu settings_local</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configure-um-postgres-banco-de-dados">Configure um postgres banco de dados</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#settings-local">Settings local</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuracao-do-apache">6. Configuração do Apache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usuario-static-banco">7. Usuário, Static, Banco</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">NIRA</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Instalação</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/install/main.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="instalacao">
+<h1>Instalação<a class="headerlink" href="#instalacao" title="Link permanente para este título">¶</a></h1>
+<p>Instalação do NIRA para um ambiente Linux Debian, utilizando Python 2.7, Virtualenv, Apache, Git e PostgreSQL.</p>
+<div class="section" id="pacotes-necessarios">
+<h2>1. Pacotes necessários<a class="headerlink" href="#pacotes-necessarios" title="Link permanente para este título">¶</a></h2>
+<p>Precisamos instalar o git, postgres, virtualenv, apache2:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span> <span class="n">apache2</span> <span class="n">git</span> <span class="n">postgresql</span><span class="o">-</span><span class="mf">9.4</span> <span class="n">libpq</span><span class="o">-</span><span class="n">dev</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">libapache2</span><span class="o">-</span><span class="n">mod</span><span class="o">-</span><span class="n">wsgi</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">virtualenv</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="virtualenv">
+<h2>2. Virtualenv<a class="headerlink" href="#virtualenv" title="Link permanente para este título">¶</a></h2>
+<div class="section" id="criar-um-virtualenv">
+<h3>Criar um virtualenv<a class="headerlink" href="#criar-um-virtualenv" title="Link permanente para este título">¶</a></h3>
+<p>Para criar um virtualenv em um diretório, por exemplo <em>/var/lib</em>, faça:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span>
+<span class="n">virtualenv</span> <span class="n">sistema</span><span class="o">-</span><span class="n">nira</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="baixar-o-nira-no-virtualenv">
+<h3>Baixar o NIRA no virtualenv<a class="headerlink" href="#baixar-o-nira-no-virtualenv" title="Link permanente para este título">¶</a></h3>
+<p>Baixe o NIRA do git para dentro do virtualenv com o seguinte comando:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">neuromat</span><span class="o">/</span><span class="n">nira</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ativar-o-virtualenv">
+<h3>Ativar o virtualenv<a class="headerlink" href="#ativar-o-virtualenv" title="Link permanente para este título">¶</a></h3>
+<p>Ative o virtualenv e siga para os próximos passos:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span>
+<span class="n">source</span> <span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="instalar-os-pacotes-necessarios-para-o-funcionamento-do-nira-na-versao-desejada">
+<h2>3. Instalar os pacotes necessários para o funcionamento do NIRA na versão desejada<a class="headerlink" href="#instalar-os-pacotes-necessarios-para-o-funcionamento-do-nira-na-versao-desejada" title="Link permanente para este título">¶</a></h2>
+<p>Instale os pacotes necessários da versão obtida do GitHub:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">nira</span><span class="o">/</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="alterar-o-arquivo-wsgi-py">
+<h2>4. Alterar o arquivo wsgi.py<a class="headerlink" href="#alterar-o-arquivo-wsgi-py" title="Link permanente para este título">¶</a></h2>
+<p>Abra o arquivo de wsgi:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">nira</span><span class="o">/</span><span class="n">sistema</span>
+<span class="n">vi</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">nira</span><span class="o">/</span><span class="n">sistema</span><span class="o">/</span><span class="n">wsgi</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Deixe similar ao seguinte código, modificando caso seu diretório seja diferente:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">WSGI config for NIRA project.</span>
+<span class="sd">It exposes the WSGI callable as a module-level variable named ``application``.</span>
+<span class="sd">For more information on this file, see</span>
+<span class="sd">https://docs.djangoproject.com/en/1.9/howto/deployment/wsgi/</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">site</span>
+
+<span class="hll"><span class="c1"># Altere o path de acordo com o local da sua instalação</span>
+</span><span class="hll"><span class="c1"># aqui usamos o caminho /var/lib/sistema-nira/nira</span>
+</span><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/var/lib&#39;</span><span class="p">,</span> <span class="s1">&#39;/var/lib/sistema-nira&#39;</span><span class="p">,</span> <span class="s1">&#39;/var/lib/sistema-nira/nira&#39;</span><span class="p">,]</span>
+
+<span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;DJANGO_SETTINGS_MODULE&quot;</span><span class="p">,</span> <span class="s2">&quot;sistema.settings&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">django.core.wsgi</span> <span class="kn">import</span> <span class="n">get_wsgi_application</span>
+<span class="n">application</span> <span class="o">=</span> <span class="n">get_wsgi_application</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-seu-settings-local">
+<h2>5. Configure seu settings_local<a class="headerlink" href="#configure-seu-settings-local" title="Link permanente para este título">¶</a></h2>
+<div class="section" id="configure-um-postgres-banco-de-dados">
+<h3>Configure um postgres banco de dados<a class="headerlink" href="#configure-um-postgres-banco-de-dados" title="Link permanente para este título">¶</a></h3>
+<p>Configurar um banco de dados PostgreSQL é simples, são três passos:</p>
+<ol class="arabic">
+<li><p class="first">Usando o usuário postgres:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">su</span> <span class="n">postgres</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Crie um usuário de banco e defina uma senha:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">createuser</span> <span class="n">seu_usuario</span> <span class="o">--</span><span class="n">pwprompt</span> <span class="o">--</span><span class="n">encrypted</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Crie um banco e defina uma senha:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">createdb</span> <span class="n">seu_banco</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="settings-local">
+<h3>Settings local<a class="headerlink" href="#settings-local" title="Link permanente para este título">¶</a></h3>
+<p>O arquivo <em>settings_local.py</em> deve ficar no diretório sistema do projeto do NIRA, no nosso caso:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">nira</span><span class="o">/</span><span class="n">sistema</span><span class="o">/</span>
+<span class="n">vi</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">sistema</span><span class="o">/</span><span class="n">settings_local</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Em <em>settings_local.py</em> você deve configurar o sistema para usar o seu banco de dados PostgreSQL.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">secret_key</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">helper_functions.secret_key_generator</span> <span class="kn">import</span> <span class="o">*</span>
+    <span class="n">SETTINGS_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+    <span class="n">generate_secret_key</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SETTINGS_DIR</span><span class="p">,</span> <span class="s1">&#39;secret_key.py&#39;</span><span class="p">))</span>
+    <span class="kn">from</span> <span class="nn">secret_key</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="hll"><span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
+</span>
+<span class="n">TEMPLATE_DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="hll"><span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[]</span>
+</span>
+<span class="c1"># Ajuste o caminho para static</span>
+<span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="s1">&#39;/var/lib/sistema-nira/nira/static/&#39;</span>
+
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="c1">#&#39;suit&#39;,</span>
+    <span class="s1">&#39;dal&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dal_select2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cep&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cities_light&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">PROJECT_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;custom_auth&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;person&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;activity&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dissemination&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;research&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;scientific_mission&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">INSTALLED_APPS</span> <span class="o">+=</span> <span class="n">PROJECT_APPS</span>
+<span class="hll">
+</span><span class="hll"><span class="n">NIRA_WEBSITE</span> <span class="o">=</span> <span class="s1">&#39;http://nira.numec.prp.usp.br&#39;</span>
+</span><span class="hll">
+</span><span class="hll"><span class="n">CEPID_NAME</span> <span class="o">=</span> <span class="s1">&#39;NeuroMat&#39;</span>
+</span><span class="hll">
+</span><span class="hll"><span class="c1"># Aqui você deve colocar as suas configurações de banco de dados</span>
+</span><span class="hll"><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="hll">    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class="hll">        <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.postgresql_psycopg2&#39;</span><span class="p">,</span>
+</span>        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;seu_banco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;USER&#39;</span><span class="p">:</span> <span class="s1">&#39;seu_usuario&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s1">&#39;sua_senha&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;HOST&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">SUIT_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;ADMIN_NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;NIRA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MENU_OPEN_FIRST_CHILD&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s1">&#39;HEADER_DATE_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;l, d F Y&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MENU&#39;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-calendar&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="s1">&#39;dissemination&#39;</span><span class="p">,</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-facetime-video&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-user&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="s1">&#39;research&#39;</span><span class="p">,</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-book&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="s1">&#39;scientific_mission&#39;</span><span class="p">,</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-plane&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Reports&#39;</span><span class="p">),</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-th&#39;</span><span class="p">,</span> <span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="s1">&#39;custom_auth.view_reports&#39;</span><span class="p">,</span> <span class="s1">&#39;models&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Academic works&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/research/academic_works&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Articles&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/research/articles&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Disseminations&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/dissemination/dissemination_report&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Meetings&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/activity/meetings&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Scientific missions&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/scientific_mission/report&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Seminars&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/activity/seminars&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Training programs&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/activity/training_programs&#39;</span><span class="p">},</span>
+        <span class="p">)},</span>
+        <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Add content&#39;</span><span class="p">),</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-upload&#39;</span><span class="p">,</span> <span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="s1">&#39;custom_auth.add_content&#39;</span><span class="p">,</span> <span class="s1">&#39;models&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Create/Update citation name&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/person/citation_names&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Import papers&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/research/import_papers&#39;</span><span class="p">},</span>
+        <span class="p">)},</span>
+        <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Documents&#39;</span><span class="p">),</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-list-alt&#39;</span><span class="p">,</span> <span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="s1">&#39;custom_auth.create_documents&#39;</span><span class="p">,</span> <span class="s1">&#39;models&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;FAPESP - appendix 5&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/scientific_mission/anexo5/&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Seminar poster&#39;</span><span class="p">),</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/activity/seminar_poster&#39;</span><span class="p">},</span>
+        <span class="p">)},</span>
+        <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+        <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="s1">&#39;cities_light&#39;</span><span class="p">,</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-globe&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Cities&#39;</span><span class="p">)},</span>
+        <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="s1">&#39;custom_auth&#39;</span><span class="p">,</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-lock&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Users&#39;</span><span class="p">)},</span>
+        <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;icon-lock&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Groups&#39;</span><span class="p">)},</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+
+</pre></div>
+</div>
+<p>A linha de <em>INSTALLED_APPS</em> que está comentada deve ser descomentada somente se a interface visual desejada seja o Django Suit. Leia mais.</p>
+</div>
+</div>
+<div class="section" id="configuracao-do-apache">
+<h2>6. Configuração do Apache<a class="headerlink" href="#configuracao-do-apache" title="Link permanente para este título">¶</a></h2>
+<p>Crie um diretório para armazenar os logs de erro do sistema:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">nira</span>
+</pre></div>
+</div>
+<p>Vá para o diretório de sites do Apache e abra um arquivo para o nira, <em>nira.conf</em>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span>
+<span class="n">nano</span> <span class="n">nira</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>Coloque algo similar ao código abaixo, alterando <em>ServerAdmin, ServerName, ServerAlias</em> de acordo seu ambiente e altere o diretório caso seja necessário:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Dependendo da versão do Apache esse arquivo varia, acesse para mais infos http://wiki.apache.org/httpd/ClientDeniedByServerConfiguration</span>
+
+<span class="n">WSGIPythonPath</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="p">:</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python2</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span>
+
+<span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">80</span><span class="o">&gt;</span>
+        <span class="n">ServerAdmin</span> <span class="n">seu_email</span><span class="nd">@exemplo</span><span class="o">.</span><span class="n">br</span>
+        <span class="n">ServerName</span> <span class="n">nira</span><span class="o">.</span><span class="n">exemplo</span><span class="o">.</span><span class="n">br</span>
+        <span class="n">ServerAlias</span> <span class="n">www</span><span class="o">.</span><span class="n">nira</span><span class="o">.</span><span class="n">exemplo</span><span class="o">.</span><span class="n">br</span>
+
+        <span class="n">DocumentRoot</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">nira</span>
+
+        <span class="o">&lt;</span><span class="n">Directory</span> <span class="o">/&gt;</span>
+           <span class="n">Options</span> <span class="n">FollowSymLinks</span>
+           <span class="n">AllowOverride</span> <span class="kc">None</span>
+        <span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+
+        <span class="n">Alias</span> <span class="o">/</span><span class="n">static</span><span class="o">/</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">nira</span><span class="o">/</span><span class="n">static</span><span class="o">/</span>
+
+        <span class="o">&lt;</span><span class="n">Directory</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">nira</span><span class="o">&gt;</span>
+                <span class="n">Require</span> <span class="nb">all</span> <span class="n">granted</span>
+        <span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+
+        <span class="n">WSGIScriptAlias</span> <span class="o">/</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">nira</span><span class="o">/</span><span class="n">sistema</span><span class="o">/</span><span class="n">wsgi</span><span class="o">.</span><span class="n">py</span>
+
+        <span class="c1"># Caminho definido para o erro do apache</span>
+        <span class="n">ErrorLog</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">nira</span><span class="o">/</span><span class="n">error</span><span class="o">.</span><span class="n">log</span>
+
+<span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Desligue o sites do Apache e habilite o NIRA:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a2dissite</span> <span class="mi">000</span><span class="o">-</span><span class="n">default</span><span class="o">.</span><span class="n">conf</span>
+<span class="n">a2ensite</span> <span class="n">nira</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="usuario-static-banco">
+<h2>7. Usuário, Static, Banco<a class="headerlink" href="#usuario-static-banco" title="Link permanente para este título">¶</a></h2>
+<p>Arrumando os arquivos de static:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span><span class="n">nira</span><span class="o">/</span>
+<span class="n">nano</span> <span class="n">sistema</span><span class="o">/</span><span class="n">settings</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Comente a seguinte parte do código:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># STATICFILES_DIRS = (</span>
+<span class="c1">#     os.path.join(BASE_DIR, &#39;static&#39;),</span>
+<span class="c1"># )</span>
+</pre></div>
+</div>
+<p>Para obter os arquivos de static, faça:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sistema</span><span class="o">-</span><span class="n">nira</span><span class="o">/</span>
+<span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">collectstatic</span>
+</pre></div>
+</div>
+<p>Configure o banco de dados com os apps do NIRA:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">migrate</span>
+</pre></div>
+</div>
+<p>Crie um usuário administrador:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">createsuperuser</span>
+</pre></div>
+</div>
+<p>Reinicie o Apache:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">apache2</span> <span class="n">restart</span>
+</pre></div>
+</div>
+<p>Se tudo tiver corrido corretamente, o NIRA estará na porta configurada no arquivo do Apache.</p>
+<p>Você pode logar no sistema com o Administrador criado no passo 7.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="NIRA" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Lucas Helfstein.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
