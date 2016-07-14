@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
 
 try:
@@ -42,9 +43,7 @@ PROJECT_APPS = (
 
 INSTALLED_APPS += PROJECT_APPS
 
-NIRA_WEBSITE = 'http://nira.numec.prp.usp.br'
-
-CEPID_NAME = 'NeuroMat'
+CEPID_NAME = 'Seu Cepid'
 
 # Aqui você deve colocar as suas configurações de banco de dados
 DATABASES = {

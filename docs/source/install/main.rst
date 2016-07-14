@@ -99,10 +99,11 @@ O arquivo *settings_local.py* deve ficar no diretório sistema do projeto do NIR
 
 
 Em *settings_local.py* você deve configurar o sistema para usar o seu banco de dados PostgreSQL.
+Você também deve alterar a variável com o nome do seu CEPID.
 
 .. literalinclude:: ./settings_local.py
     :language: python
-    :emphasize-lines: 11, 15, 50-58
+    :emphasize-lines: 11, 15, 25, 48-56
 
 
 A linha de *INSTALLED_APPS* que está comentada deve ser descomentada somente se a interface visual desejada seja o Django Suit.
