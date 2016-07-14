@@ -22,3 +22,8 @@ db.sqlite3
 # Other folders
 .idea
 venv/
+
+docs/build*
+docs/source/_static/
+docs/source/_templates/
+
