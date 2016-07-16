@@ -105,8 +105,10 @@ Você também deve alterar a variável com o nome do seu CEPID.
     :language: python
     :emphasize-lines: 21, 24, 47, 53-55
 
+A linha de *INSTALLED_APPS* que está comentada deve ser descomentada somente se a interface visual desejada seja o Django Suit. Veja mais na página sobre a interface_.
 
-A linha de *INSTALLED_APPS* que está comentada deve ser descomentada somente se a interface visual desejada seja o Django Suit.
+.. _interface:
+    ../interface/main.html
 
 
 6. Configuração do Apache

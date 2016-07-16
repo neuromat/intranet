@@ -16,6 +16,7 @@ Tópicos
    :maxdepth: 2
 
    install/main.rst
+   interface/main.rst
 .. restructured/main.rst
 
 
