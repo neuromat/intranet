@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
+import os
 
+# Generate a secret key
 try:
     from secret_key import *
 except ImportError:
@@ -28,7 +30,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cep',
     'cities_light',
 )
 
@@ -56,6 +57,7 @@ DATABASES = {
     }
 }
 
+# Esse trecho só é necessário se o Django Suit for usado
 SUIT_CONFIG = {
     'ADMIN_NAME': 'NIRA',
     'MENU_OPEN_FIRST_CHILD': False,

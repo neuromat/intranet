@@ -1,7 +1,7 @@
-Instalação 
-==========
+Instalando o NIRA Dev
+=========================
 
-Instalação do NIRA para um ambiente Linux Debian, utilizando Python 2.7, Virtualenv, Apache, Git e PostgreSQL.
+Instalação do NIRA para um ambiente Linux Debian, utilizando Python 2.7, Virtualenv, Apache2, Git e PostgreSQL.
 
 
 1. Pacotes necessários
@@ -28,16 +28,16 @@ Para criar um virtualenv em um diretório, por exemplo */var/lib*, faça::
 Baixar o NIRA no virtualenv
 +++++++++++++++++++++++++++
 
-Baixe o NIRA do git para dentro do virtualenv com o seguinte comando::
+Baixe o NIRA Dev do git para dentro do virtualenv com o seguinte comando::
 	
 	cd /var/lib/sistema-nira
-	git clone https://github.com/neuromat/nira.git
+	git clone https://github.com/neuromat/nira.git -b "Dev"
 
 
 Ativar o virtualenv
 +++++++++++++++++++
 
-Ative o virtualenv e siga para os próximos passos::
+Ative o virtualenv e siga para realizar os próximos passos::
 
 	cd /var/lib/sistema-nira
 	source bin/activate
@@ -103,7 +103,7 @@ Você também deve alterar a variável com o nome do seu CEPID.
 
 .. literalinclude:: ./settings_local.py
     :language: python
-    :emphasize-lines: 11, 15, 25, 48-56
+    :emphasize-lines: 21, 24, 47, 53-55
 
 
 A linha de *INSTALLED_APPS* que está comentada deve ser descomentada somente se a interface visual desejada seja o Django Suit.
@@ -151,7 +151,7 @@ Comente a seguinte parte do código::
 
 Para obter os arquivos de static, faça::
 
-    cd /var/lib/sistema-nira/
+    cd /var/lib/sistema-nira/nira/
     python manage.py collectstatic
 
 

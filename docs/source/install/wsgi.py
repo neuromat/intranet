@@ -2,14 +2,13 @@
 WSGI config for NIRA project.
 It exposes the WSGI callable as a module-level variable named ``application``.
 For more information on this file, see
-https://docs.djangoproject.com/en/1.9/howto/deployment/wsgi/
+https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 """
 
 import os
 import sys
-import site
 
-# Altere o path de acordo com o local da sua instalação
+# Altere o path de acordo com seu sistema
 # aqui usamos o caminho /var/lib/sistema-nira/nira
 paths = ['/var/lib', '/var/lib/sistema-nira', '/var/lib/sistema-nira/nira',]
 
