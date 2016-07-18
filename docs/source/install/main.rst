@@ -7,9 +7,13 @@ Instalação do NIRA para um ambiente Linux Debian, utilizando Python 2.7, Virtu
 1. Pacotes necessários
 ----------------------
 
-Precisamos instalar o git, postgres, virtualenv, apache2::
+Precisamos instalar o git, postgres, apache2 e outras dependências::
 
 	apt-get install python-pip apache2 git postgresql-9.4 libpq-dev python-dev libapache2-mod-wsgi
+
+
+Baixe o virtualenv::
+
 	pip install virtualenv
 
 
@@ -68,11 +72,8 @@ Deixe similar ao seguinte código, modificando caso seu diretório seja diferent
     :emphasize-lines: 12-13
 
 
-5. Configure seu settings_local
--------------------------------
-
-Configure um postgres banco de dados
-++++++++++++++++++++++++++++++++++++
+5. Configure um banco de dados
+------------------------------
 
 Configurar um banco de dados PostgreSQL é simples, são três passos:
 
@@ -84,13 +85,13 @@ Configurar um banco de dados PostgreSQL é simples, são três passos:
 
     createuser seu_usuario --pwprompt --encrypted
 	
-3. Crie um banco e defina uma senha::
+3. Crie um banco::
 
-    createdb seu_banco
+    createdb seu_banco --owner=seu_usuario
 
 
-Settings local 
-++++++++++++++
+6. Configure seu settings_local
+-------------------------------
 
 O arquivo *settings_local.py* deve ficar no diretório sistema do projeto do NIRA, no nosso caso::
 	
@@ -103,15 +104,15 @@ Você também deve alterar a variável com o nome do seu CEPID.
 
 .. literalinclude:: ./settings_local.py
     :language: python
-    :emphasize-lines: 21, 24, 47, 53-55
+    :emphasize-lines: 21, 23, 29-32
 
-A linha de *INSTALLED_APPS* que está comentada deve ser descomentada somente se a interface visual desejada seja o Django Suit. Veja mais na página sobre a interface_.
+Veja mais na página sobre a interface_.
 
 .. _interface:
     ../interface/main.html
 
 
-6. Configuração do Apache
+7. Configuração do Apache
 -------------------------
 
 Crie um diretório para armazenar os logs de erro do sistema::
@@ -130,26 +131,14 @@ Coloque algo similar ao código abaixo, alterando *ServerAdmin, ServerName, Serv
 .. literalinclude:: ./nira.conf
 
 
-Desligue o sites do Apache e habilite o NIRA::
+Desabilite o virtualhost padrão do Apache e habilite o NIRA::
 
     a2dissite 000-default.conf
     a2ensite nira
 
 
-7. Configurações finais
+8. Configurações finais
 -----------------------
-
-Arrumando os arquivos de static::
-
-    cd /var/lib/sistema-nira/nira/
-    nano sistema/settings.py
-
-Comente a seguinte parte do código::
-
-    # STATICFILES_DIRS = (
-    #     os.path.join(BASE_DIR, 'static'),
-    # )
-
 
 Para obter os arquivos de static, faça::
 
@@ -174,4 +163,4 @@ Reinicie o Apache::
 
 Se tudo tiver corrido corretamente, o NIRA estará na porta configurada no arquivo do Apache.
 
-Você pode logar no sistema com o Administrador criado no passo 7.
+Você pode logar no sistema com o Administrador criado no passo 8.
