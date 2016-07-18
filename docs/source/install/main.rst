@@ -1,7 +1,7 @@
-Instalando o NIRA Dev
+Instalando a última versão estável do NIRA
 =========================
 
-Instalação do NIRA para um ambiente Linux Debian, utilizando Python 2.7, Virtualenv, Apache2, Git e PostgreSQL.
+Instalação do NIRA para um ambiente Linux Debian (Jessie), utilizando Python 2.7, Virtualenv, Apache2, Git e PostgreSQL.
 
 
 1. Pacotes necessários
@@ -35,7 +35,7 @@ Baixar o NIRA no virtualenv
 Baixe o NIRA Dev do git para dentro do virtualenv com o seguinte comando::
 	
 	cd /var/lib/sistema-nira
-	git clone https://github.com/neuromat/nira.git -b "Dev"
+	git clone https://github.com/neuromat/nira.git
 
 
 Ativar o virtualenv
