@@ -1,5 +1,10 @@
+=========
+Interface
+=========
+
+*****************************
 Utilizando o tema Django Suit
-=============================
+*****************************
 
 O NIRA tem suporte ao tema Django Suit, um tema moderno para a interface do Django.
 
