@@ -5,22 +5,12 @@ NIRA
 .. include:: infos/intro.rst
 
 
---------------------
-Para administradores
---------------------
+--------
+Conteúdo
+--------
 
 .. toctree::
    :maxdepth: 2
 
-   install/main.rst
-   interface/main.rst
-
-
--------------
-Para usuários
--------------   
-
-.. toctree::
-   :maxdepth: 2
-
-   activity/main.rst
+   admin.rst
+   users.rst
