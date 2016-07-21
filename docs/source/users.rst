@@ -13,3 +13,6 @@ Para usuários
    relatorios/main.rst
    adicionar_conteudo/main.rst
    documentos/main.rst
+   cidades/main.rst
+   usuarios/main.rst
+   grupos/main.rst

@@ -43,9 +43,9 @@ Para adicionar ou editar um país, preencha os campos e clique em salvar.
 Regions/states
 **************
 
---------------------------------
-Adicionar ou editar um seminário
---------------------------------
+-----------------------------
+Adicionar ou editar um estado
+-----------------------------
 
 Para adicionar ou editar um estado, preencha os campos e clique em salvar.
 
