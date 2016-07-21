@@ -5,11 +5,11 @@ Para usuários
 .. toctree::
    :maxdepth: 2
 
-   project_activities/main.rst
-   dissemination/main.rst
-   personal_info/main.rst
-   research_results/main.rst
-   scientific_mission/main.rst
-   reports/main.rst
-   add_content/main.rst
-   documents/main.rst
+   atividades_projeto/main.rst
+   disseminacao/main.rst
+   info_pessoal/main.rst
+   resultados_pesquisa/main.rst
+   missao_cientifica/main.rst
+   relatorios/main.rst
+   adicionar_conteudo/main.rst
+   documentos/main.rst

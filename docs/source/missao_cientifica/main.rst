@@ -22,7 +22,7 @@ Para editar diárias, clique em ID, edite os campos e clique em salvar.
 .. image:: imagens/diarias.png
 
 :Campos obrigatórios:
-    Pago para, valor pago e cidade de destino
+    Pago para, rotas, valor pago e cidade de destino
 
 
 **************************

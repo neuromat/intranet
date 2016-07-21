@@ -5,5 +5,5 @@ Para administradores
 .. toctree::
    :maxdepth: 2
 
-   install/main.rst
+   instalacao/main.rst
    interface/main.rst
