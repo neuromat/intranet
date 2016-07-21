@@ -2,9 +2,9 @@
 Cidades
 =======
 
-Página detalhando as atividades de projeto.
+Informações sobre a página de cidades.
 
-.. image:: imagens/atividades.png
+.. image:: imagens/cidades.png
 
 
 ******
