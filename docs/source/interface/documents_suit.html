@@ -1,0 +1,26 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module">
+      <table class="table-overview applist" summary="Documents available.">
+        <caption><a href="/documents/" class="section">{% trans "Documents" %}</a></caption>
+          <tbody>
+              <tr>
+                <th scope="row">{% trans "Appendix 5" %}</th>
+                  <td>
+                    <a href="/documents/anexo5/" class="addlink icon"><i class="icon-plus-sign icon-alpha75"></i>{% trans "Generate" %}</a>
+                  </td>
+              </tr>
+              <tr>
+                <th scope="row">{% trans "Seminar poster"%}</th>
+                  <td>
+                      <a href="/documents/seminar_poster/" class="addlink icon"><i class="icon-plus-sign icon-alpha75"></i>{% trans "Get" %}</a>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+</div>
+{% endblock %}

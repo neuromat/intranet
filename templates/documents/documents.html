@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
+{% block coltype %}colMS{% endblock %}
+{% block bodyclass %} {% trans "Documents" %} dashboard{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>{% trans "Documents" %}</h1>
+    <div class="documents module">
+        <table>
+            <caption>
+                <a href="/documents/" class="section">{% trans "Documents" %}</a>
+            </caption>
+            <tr>
+                <th scope="row"><a href="/documents/anexo5/">{% trans "Appendix 5" %}</a></th>
+                <td><a href="/documents/anexo5/" class="addlink">{% trans "Generate" %}</a></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/documents/seminar_poster/">{% trans "Seminar poster" %}</a></th>
+                <td><a href="/documents/seminar_poster/" class="addlink">{% trans "Get" %}</a></td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}
