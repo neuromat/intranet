@@ -83,7 +83,7 @@ def search_articles(start_date, end_date):
 
 
 @login_required
-def articles(request):
+def articles_report(request):
     if request.method == 'POST':
 
         start_date = request.POST['start_date']

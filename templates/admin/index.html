@@ -13,6 +13,7 @@
 <div id="content-main">
 
 {% if app_list %}
+
     {% for app in app_list %}
         <div class="app-{{ app.app_label }} module">
         <table>
@@ -45,24 +46,79 @@
     {% endfor %}
 
     <!-- NIRA CUSTOMIZED MENU -->
-    {% if not app_label and perms.custom_auth.create_documents %}
-    <div class="module">
-        <table>
-            <caption>
-                <a href="/documents/" class="section" title="Documents">{% trans "Documents" %}</a>
-            </caption>
-            <tr class="model">
-                <th scope="row"><a href="/scientific_mission/anexo5/">{% trans "Appendix 5" %}</a></th>
-                <td>&nbsp;</td>
-            </tr>
+    {% if not app_label %}
 
-            <tr class="model">
-                <th scope="row"><a href="/activity/seminar_poster/">{% trans "Seminar poster" %}</a></th>
-                <td>&nbsp;</td>
-            </tr>
+        {% if perms.custom_auth.add_content %}
+            <div class="module">
+                <table>
+                    <caption>
+                        <a href="/documents/" class="section" title="Add content">{% trans "Add content" %}</a>
+                    </caption>
+                    <tr class="model">
+                        <th scope="row"><a href="/research/import_papers/">{% trans "Import papers" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+        {% endif %}
 
-        </table>
-    </div>
+        {% if perms.custom_auth.create_documents %}
+            <div class="module">
+                <table>
+                    <caption>
+                        <a href="/documents/" class="section" title="Documents">{% trans "Documents" %}</a>
+                    </caption>
+                    <tr class="model">
+                        <th scope="row"><a href="/scientific_mission/anexo5/">{% trans "Appendix 5" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+
+                    <tr class="model">
+                        <th scope="row"><a href="/activity/seminar_poster/">{% trans "Seminar poster" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if perms.custom_auth.view_reports %}
+            <div class="module">
+                <table>
+                    <caption>
+                        <a href="/reports/" class="section" title="Reports">{% trans "Reports" %}</a>
+                    </caption>
+                    <tr>
+                        <th scope="row"><a href="/reports/academic_works/">{% trans "Academic works" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="/reports/articles/">{% trans "Articles" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="/reports/dissemination/">{% trans "Dissemination" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="/reports/meetings/">{% trans "Meetings" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="/reports/scientific_mission/">{% trans "Scientific mission" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="/reports/seminars/">{% trans "Seminars" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="/reports/training_programs/">{% trans "Training programs" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+        {% endif %}
+
     {% endif %}
     <!-- END OF NIRA CUSTOMIZED MENU -->
 

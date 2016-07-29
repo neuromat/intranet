@@ -1,0 +1,46 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
+{% block coltype %}colMS{% endblock %}
+{% block bodyclass %} {% trans "Reports" %} dashboard{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>{% trans "Reports" %}</h1>
+    <div class="reports module">
+        <table>
+            <caption>
+                <a href="/reports/" class="section">{% trans "Reports available" %}</a>
+            </caption>
+            <tr>
+                <th scope="row"><a href="/reports/academic_works/">{% trans "Academic works" %}</a></th>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/reports/articles/">{% trans "Articles" %}</a></th>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/reports/dissemination/">{% trans "Dissemination" %}</a></th>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/reports/meetings/">{% trans "Meetings" %}</a></th>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/reports/scientific_mission/">{% trans "Scientific mission" %}</a></th>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/reports/seminars/">{% trans "Seminars" %}</a></th>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/reports/training_programs/">{% trans "Training programs" %}</a></th>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}
