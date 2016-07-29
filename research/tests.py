@@ -380,7 +380,7 @@ class ScholarTest(TestCase):
              'for biological neural nets': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UI'
                                            'AAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
         self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
-        self.specific_paper_date = datetime.date(2014, 1, 17)
+        self.specific_paper_date = datetime.date(2015, 2, 1)
         self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
         self.wrong_paper_title = 'Hydrodynamics limits for interactings neuron'
         self.wrong_paper_date = datetime.date(2010, 1, 15)

@@ -1,5 +1,10 @@
+=========
+Interface
+=========
+
+*****************************
 Utilizando o tema Django Suit
-=============================
+*****************************
 
 O NIRA tem suporte ao tema Django Suit, um tema moderno para a interface do Django.
 
@@ -14,19 +19,28 @@ Instale a última versão estável do Django Suit::
     pip install django-suit
 
 
-2. Colocar nos apps instalados
-------------------------------
+2. Alterar alguns arquivos
+--------------------------
 
-Incluia *suit* em INSTALLED_APPS, dentro de settings.py:
+Inclua *suit* em INSTALLED_APPS, dentro de sistema/settings.py:
 
 .. literalinclude:: ./settings_suit.py
     :language: python
 
-Inclua o código abaixo em settings_local.py:
+Inclua o código abaixo em sistema/settings_local.py:
 
 .. literalinclude:: ./interface.py
     :language: python
 
+:Recomendação:
+    Para os próximos passos, faça um backup do arquivo caso deseje voltar para a interface original.
+
+Delete o arquivo index.html em templates/admin/index.html
+
+Substitua o código encontrado em templates/documents/documents.html pelo seguinte:
+
+.. literalinclude:: ./documents_suit.html
+    :language: html
 
 3. Atualizar os arquivos static
 -------------------------------
