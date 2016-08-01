@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from collections import Counter
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 from django.utils.translation import ugettext_lazy as _
-from person.models import Person, CitationName
+
+from person.models import CitationName, Person
 
 prep = ['e', 'da', 'do', 'de', 'dos', 'E', 'Da', 'Do', 'De', 'Dos']
 
@@ -141,3 +143,14 @@ def citation_names(request):
 
     messages.success(request, _('Successfully updated citation names.'))
     return redirect(reverse('admin:index'))
+
+
+@login_required
+def researchers(request):
+    list_of_researchers = Person.objects.all()
+    list_of_roles = []
+    for research in list_of_researchers:
+        list_of_roles.append(str(research.role))
+    table_of_roles = (Counter(list_of_roles)).items()
+    context = {'list_of_researchers': list_of_researchers, 'table_of_roles': table_of_roles}
+    return render(request, 'report/person/researchers.html', context)

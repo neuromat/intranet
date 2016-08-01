@@ -22,7 +22,7 @@ class PersonAdmin(admin.ModelAdmin):
     )
     list_display = ('full_name', 'role', 'institution')
     list_display_links = ('full_name',)
-    search_fields = ['full_name']
+    search_fields = ['full_name', 'role__name']
 
     # If not superuser or nira_admin, show the current user
     def get_queryset(self, request):
