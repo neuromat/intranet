@@ -14,6 +14,7 @@ SUIT_CONFIG = {
             {'label': _('Articles'), 'url': '/reports/articles'},
             {'label': _('Disseminations'), 'url': '/reports/dissemination'},
             {'label': _('Meetings'), 'url': '/reports/meetings'},
+            {'label': _('Researchers'), 'url': '/reports/researchers'},
             {'label': _('Scientific missions'), 'url': '/reports/scientific_mission'},
             {'label': _('Seminars'), 'url': '/reports/seminars'},
             {'label': _('Training programs'), 'url': '/reports/training_programs'},
