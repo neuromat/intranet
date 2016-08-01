@@ -57,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                                                 'Unselect this instead of deleting accounts.'))
     is_nira_admin = models.BooleanField(_('NIRA admin'), default=False,
                                         help_text=_('Designates whether this user has special permissions, '
-                                                    'e.g. see all orders, create order on behalf of another user.'))
+                                                    'e.g. add content on behalf of another user.'))
     date_joined = models.DateTimeField(_('Date joined'), default=timezone.now)
     user_profile = models.OneToOneField(Person, verbose_name=_('User profile'), blank=True, null=True)
 
