@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-01 15:56-0300\n"
+"POT-Creation-Date: 2016-08-01 16:40-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,7 +128,7 @@ msgid "End date"
 msgstr "Término"
 
 #: activity/models.py:111 docs/source/interface/interface.py:16
-#: docs/source/interface/reports_suit.html:30 sistema/settings_local.py:123
+#: docs/source/interface/reports_suit.html:30 sistema/settings_local.py:84
 #: templates/admin/index.html:107 templates/report/reports.html:28
 msgid "Meetings"
 msgstr "Reuniões"
@@ -215,7 +215,7 @@ msgid "Room"
 msgstr "Sala"
 
 #: activity/models.py:191 docs/source/interface/interface.py:19
-#: docs/source/interface/reports_suit.html:39 sistema/settings_local.py:126
+#: docs/source/interface/reports_suit.html:39 sistema/settings_local.py:86
 #: templates/admin/index.html:119 templates/report/reports.html:40
 msgid "Seminars"
 msgstr "Seminários"
@@ -297,12 +297,12 @@ msgid ""
 "Designates whether this user has special permissions, e.g. add content on "
 "behalf of another user."
 msgstr ""
-"Determina se este usuário tem permissões especiais, ex: adicionar conteúdo em "
-"nome de outro usuário."
+"Determina se este usuário tem permissões especiais, ex: adicionar conteúdo "
+"em nome de outro usuário."
 
 #: custom_auth/models.py:61
 msgid "Date joined"
-msgstr ""
+msgstr "Data de cadastro"
 
 #: custom_auth/models.py:62
 msgid "User profile"
@@ -313,7 +313,7 @@ msgid "User"
 msgstr "Usuário"
 
 #: custom_auth/models.py:78 docs/source/interface/interface.py:34
-#: sistema/settings_local.py:141
+#: sistema/settings_local.py:101
 msgid "Users"
 msgstr "Usuários"
 
@@ -342,7 +342,7 @@ msgid "Dissemination"
 msgstr "Difusão"
 
 #: dissemination/apps.py:10 docs/source/interface/interface.py:15
-#: sistema/settings_local.py:122
+#: sistema/settings_local.py:83
 msgid "Disseminations"
 msgstr "Difusões"
 
@@ -434,7 +434,7 @@ msgstr "Início"
 
 #: docs/source/interface/add_content_suit.html:7
 #: docs/source/interface/add_content_suit.html:15
-#: docs/source/interface/interface.py:22 sistema/settings_local.py:129
+#: docs/source/interface/interface.py:22 sistema/settings_local.py:89
 #: templates/add_content/add_content.html:5
 #: templates/add_content/add_content.html:9
 #: templates/add_content/add_content.html:13 templates/admin/index.html:55
@@ -442,7 +442,7 @@ msgid "Add content"
 msgstr "Adicionar conteúdo"
 
 #: docs/source/interface/add_content_suit.html:18
-#: docs/source/interface/interface.py:25 sistema/settings_local.py:132
+#: docs/source/interface/interface.py:25 sistema/settings_local.py:92
 #: templates/add_content/add_content.html:16 templates/admin/index.html:58
 #: templates/report/research/add_event_papers.html:11
 #: templates/report/research/arxiv_papers.html:11
@@ -456,28 +456,24 @@ msgstr "Importar artigos"
 
 #: docs/source/interface/add_content_suit.html:20
 #: templates/add_content/add_content.html:17
-#, fuzzy
-#| msgid "Import papers"
 msgid "Import"
-msgstr "Importar artigos"
+msgstr "Importar"
 
 #: docs/source/interface/add_content_suit.html:24
 #: templates/add_content/add_content.html:21
-#, fuzzy
-#| msgid "Create/Update citation name"
 msgid "Generate citation names"
-msgstr "Criar/Atualizar nome de citação"
+msgstr "Gerar nomes de citação"
 
 #: docs/source/interface/add_content_suit.html:26
 #: docs/source/interface/documents_suit.html:20
 #: templates/add_content/add_content.html:22
 #: templates/documents/documents.html:17
 msgid "Generate"
-msgstr ""
+msgstr "Gerar"
 
 #: docs/source/interface/documents_suit.html:7
 #: docs/source/interface/documents_suit.html:15
-#: docs/source/interface/interface.py:27 sistema/settings_local.py:134
+#: docs/source/interface/interface.py:27 sistema/settings_local.py:94
 #: templates/admin/index.html:73 templates/documents/documents.html:5
 #: templates/documents/documents.html:9 templates/documents/documents.html:13
 msgid "Documents"
@@ -485,13 +481,11 @@ msgstr "Documentos"
 
 #: docs/source/interface/documents_suit.html:18 templates/admin/index.html:76
 #: templates/documents/documents.html:16
-#, fuzzy
-#| msgid "FAPESP - appendix 5"
 msgid "Appendix 5"
-msgstr "FAPESP - anexo 5"
+msgstr "Anexo 5"
 
 #: docs/source/interface/documents_suit.html:24
-#: docs/source/interface/interface.py:30 sistema/settings_local.py:137
+#: docs/source/interface/interface.py:30 sistema/settings_local.py:97
 #: templates/admin/index.html:81 templates/documents/documents.html:21
 #: templates/poster/seminar.html:11 templates/poster/seminar_poster.html:7
 msgid "Seminar poster"
@@ -500,62 +494,60 @@ msgstr "Poster de um seminário"
 #: docs/source/interface/documents_suit.html:26
 #: templates/documents/documents.html:22
 msgid "Get"
-msgstr ""
+msgstr "Obter"
 
 #: docs/source/interface/interface.py:11
 #: docs/source/interface/reports_suit.html:5
 #: docs/source/interface/reports_suit.html:10
-#: docs/source/interface/reports_suit.html:18 sistema/settings_local.py:118
+#: docs/source/interface/reports_suit.html:18 sistema/settings_local.py:78
 #: templates/admin/index.html:92 templates/report/reports.html:5
 #: templates/report/reports.html:9
 msgid "Reports"
 msgstr "Relatórios"
 
 #: docs/source/interface/interface.py:13
-#: docs/source/interface/reports_suit.html:21 sistema/settings_local.py:120
+#: docs/source/interface/reports_suit.html:21 sistema/settings_local.py:80
 #: templates/admin/index.html:95 templates/report/reports.html:16
 msgid "Academic works"
 msgstr "Trabalhos acadêmicos"
 
 #: docs/source/interface/interface.py:14
 #: docs/source/interface/reports_suit.html:24 research/models.py:217
-#: sistema/settings_local.py:121 templates/admin/index.html:99
+#: sistema/settings_local.py:81 templates/admin/index.html:99
 #: templates/report/reports.html:20 templates/report/research/articles.html:12
 #: templates/report/research/articles_report.html:7
 msgid "Articles"
 msgstr "Artigos"
 
 #: docs/source/interface/interface.py:17
-#: docs/source/interface/reports_suit.html:33 sistema/settings_local.py:124
-#: templates/admin/index.html:111 templates/report/reports.html:32
-#, fuzzy
-#| msgid "Researcher"
+#: docs/source/interface/reports_suit.html:33 templates/admin/index.html:111
+#: templates/report/reports.html:32
 msgid "Researchers"
-msgstr "Pesquisador"
+msgstr "Pesquisadores"
 
-#: docs/source/interface/interface.py:18 sistema/settings_local.py:125
+#: docs/source/interface/interface.py:18 sistema/settings_local.py:85
 msgid "Scientific missions"
 msgstr "Missões científicas"
 
 #: docs/source/interface/interface.py:20
-#: docs/source/interface/reports_suit.html:42 sistema/settings_local.py:127
+#: docs/source/interface/reports_suit.html:42 sistema/settings_local.py:87
 #: templates/admin/index.html:123 templates/report/reports.html:44
 msgid "Training programs"
 msgstr "Programas de treinamento"
 
-#: docs/source/interface/interface.py:24 sistema/settings_local.py:131
+#: docs/source/interface/interface.py:24 sistema/settings_local.py:91
 msgid "Create/Update citation name"
 msgstr "Criar/Atualizar nome de citação"
 
-#: docs/source/interface/interface.py:29 sistema/settings_local.py:136
+#: docs/source/interface/interface.py:29 sistema/settings_local.py:96
 msgid "FAPESP - appendix 5"
 msgstr "FAPESP - anexo 5"
 
-#: docs/source/interface/interface.py:33 sistema/settings_local.py:140
+#: docs/source/interface/interface.py:33 sistema/settings_local.py:100
 msgid "Cities"
 msgstr "Cidades"
 
-#: docs/source/interface/interface.py:35 sistema/settings_local.py:142
+#: docs/source/interface/interface.py:35 sistema/settings_local.py:102
 msgid "Groups"
 msgstr "Grupos"
 
@@ -571,7 +563,7 @@ msgstr "Missão científica"
 #: helper_functions/show_page.py:13 helper_functions/show_page.py:22
 #: helper_functions/show_page.py:31
 msgid "You don't have permission to access this page."
-msgstr ""
+msgstr "Você não tem permissão para acessar essa página."
 
 #: person/admin.py:18
 msgid "Contact Info"
@@ -1111,49 +1103,43 @@ msgstr "NIRA está licenciado sob os termos da"
 #: templates/admin/index.html:21
 #, python-format
 msgid "Models in the %(name)s application"
-msgstr ""
+msgstr "Modelos na aplicação %(name)s"
 
 #: templates/admin/index.html:32
-#, fuzzy
-#| msgid "Address"
 msgid "Add"
-msgstr "Endereço"
+msgstr "Adicionar"
 
 #: templates/admin/index.html:38
 msgid "Change"
-msgstr ""
+msgstr "Trocar"
 
 #: templates/admin/index.html:62
-#, fuzzy
-#| msgid "Citation name"
 msgid "Citation names"
-msgstr "Nome de citação"
+msgstr "Nomes de citação"
 
 #: templates/admin/index.html:134
 msgid "You don't have permission to edit anything."
-msgstr ""
+msgstr "Você não tem permissão para alterar nada."
 
 #: templates/admin/index.html:143
 msgid "Recent Actions"
-msgstr ""
+msgstr "Ações recentes"
 
 #: templates/admin/index.html:144
 msgid "My Actions"
-msgstr ""
+msgstr "Minhas ações"
 
 #: templates/admin/index.html:148
 msgid "None available"
-msgstr ""
+msgstr "Não disponível"
 
 #: templates/admin/index.html:162
-#, fuzzy
-#| msgid "Add content"
 msgid "Unknown content"
-msgstr "Adicionar conteúdo"
+msgstr "Conteúdo desconhecido"
 
 #: templates/anexo/anexo5.html:11
-msgid "Anexo5"
-msgstr ""
+msgid "Appendix 5"
+msgstr "Anexo5"
 
 #: templates/anexo/anexo5.html:41
 msgid "Date of issue"
@@ -1299,24 +1285,20 @@ msgid "No disseminations found!"
 msgstr "Nenhuma difusão encontrada!"
 
 #: templates/report/person/researchers.html:13
-#, fuzzy
-#| msgid "Number of process"
 msgid "Table of roles"
-msgstr "Número de processo"
+msgstr "Tabela de papéis"
 
 #: templates/report/person/researchers.html:20
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: templates/report/person/researchers.html:39
-#, fuzzy
-#| msgid "Researcher"
 msgid "List of researchers"
-msgstr "Pesquisador"
+msgstr "Lista de pesquisadores"
 
 #: templates/report/reports.html:13
 msgid "Reports available"
-msgstr ""
+msgstr "Relatórios disponíveis"
 
 #: templates/report/research/academic_works.html:12
 #: templates/report/research/academic_works_report.html:7
