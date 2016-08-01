@@ -14,11 +14,19 @@ def display_documents(request):
         return redirect(reverse('admin:index'))
 
 
-# Maybe a little of cpd reports here
 @login_required
 def display_reports(request):
     if request.user.has_perm('custom_auth.view_reports'):
         return render(request, 'report/reports.html')
+    else:
+        messages.warning(request, _("You don't have permission to access this page."))
+        return redirect(reverse('admin:index'))
+
+
+@login_required
+def display_add_content(request):
+    if request.user.has_perm('custom_auth.add_content'):
+        return render(request, 'add_content/add_content.html')
     else:
         messages.warning(request, _("You don't have permission to access this page."))
         return redirect(reverse('admin:index'))

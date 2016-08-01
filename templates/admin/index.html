@@ -52,10 +52,14 @@
             <div class="module">
                 <table>
                     <caption>
-                        <a href="/documents/" class="section" title="Add content">{% trans "Add content" %}</a>
+                        <a href="/add_content/" class="section" title="Add content">{% trans "Add content" %}</a>
                     </caption>
                     <tr class="model">
-                        <th scope="row"><a href="/research/import_papers/">{% trans "Import papers" %}</a></th>
+                        <th scope="row"><a href="/add_content/import_papers/">{% trans "Import papers" %}</a></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="model">
+                        <th scope="row"><a href="/add_content/citation_names/">{% trans "Citation names" %}</a></th>
                         <td>&nbsp;</td>
                     </tr>
                 </table>
@@ -69,12 +73,12 @@
                         <a href="/documents/" class="section" title="Documents">{% trans "Documents" %}</a>
                     </caption>
                     <tr class="model">
-                        <th scope="row"><a href="/scientific_mission/anexo5/">{% trans "Appendix 5" %}</a></th>
+                        <th scope="row"><a href="/documents/anexo5/">{% trans "Appendix 5" %}</a></th>
                         <td>&nbsp;</td>
                     </tr>
 
                     <tr class="model">
-                        <th scope="row"><a href="/activity/seminar_poster/">{% trans "Seminar poster" %}</a></th>
+                        <th scope="row"><a href="/documents/seminar_poster/">{% trans "Seminar poster" %}</a></th>
                         <td>&nbsp;</td>
                     </tr>
                 </table>
@@ -160,5 +164,3 @@
     </div>
 </div>
 {% endblock %}
-
-

@@ -33,13 +33,23 @@ Inclua o código abaixo em sistema/settings_local.py:
     :language: python
 
 :Recomendação:
-    Para os próximos passos, faça um backup do arquivo caso deseje voltar para a interface original.
+    Para os próximos passos, faça um backup do arquivo caso deseje voltar para a interface original no futuro.
 
 Delete o arquivo index.html em templates/admin/index.html
 
 Substitua o código encontrado em templates/documents/documents.html pelo seguinte:
 
 .. literalinclude:: ./documents_suit.html
+    :language: html
+
+Substitua o código encontrado em templates/report/reports.html pelo seguinte:
+
+.. literalinclude:: ./reports_suit.html
+    :language: html
+
+Substitua o código encontrado em templates/add_content/add_content.html pelo seguinte:
+
+.. literalinclude:: ./add_content_suit.html
     :language: html
 
 3. Atualizar os arquivos static

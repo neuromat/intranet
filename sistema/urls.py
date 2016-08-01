@@ -5,13 +5,13 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.utils.translation import ugettext_lazy as _
 
-from helper_functions.show_page import display_documents, display_reports
+from helper_functions.show_page import display_documents, display_reports, display_add_content
 
 from activity import views as activity_views
 from dissemination import views as dissemination_views
-from scientific_mission import views as scientific_views
+from person import views as person_views
 from research import views as research_views
-
+from scientific_mission import views as scientific_views
 
 document_patterns = [
     url(r'^anexo5/$', scientific_views.anexo5, name='anexo5'),
@@ -19,13 +19,18 @@ document_patterns = [
 ]
 
 reports_patterns = [
-    url(r'^academic_works/$', research_views.academic_works, name='academic_works'),  # name should be xxx_report
+    url(r'^academic_works/$', research_views.academic_works, name='academic_works'),
     url(r'^articles/$', research_views.articles_report, name='articles'),
     url(r'^dissemination/$', dissemination_views.dissemination_report, name='dissemination_report'),
     url(r'^meetings/$', activity_views.meetings_report, name='meetings_report'),
     url(r'^seminars/$', activity_views.seminars_report, name='seminars_report'),
     url(r'^scientific_mission/$', scientific_views.missions_report, name='missions_report'),
     url(r'^training_programs/$', activity_views.training_programs_report, name='training_programs_report'),
+]
+
+content_patterns = [
+    url(r'^import_papers/$', research_views.import_papers, name='import_papers'),
+    url(r'^citation_names/$', person_views.citation_names, name='citation_names'),
 ]
 
 urlpatterns = [
@@ -46,6 +51,8 @@ urlpatterns = [
     url(r'^documents/', include(document_patterns)),
     url(r'^reports/$', display_reports, name='reports'),
     url(r'^reports/', include(reports_patterns)),
+    url(r'^add_content/$', display_add_content, name='add_content'),
+    url(r'^add_content/', include(content_patterns)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = _('NeuroMat Individual Report of Activities')

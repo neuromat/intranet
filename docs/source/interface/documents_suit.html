@@ -1,6 +1,13 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_static %}
 
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+    <li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
+    <li class="active">{% trans 'Documents' %}</li>
+</ul>
+{% endblock %}
+
 {% block content %}
 <div id="content-main">
     <div class="module">
