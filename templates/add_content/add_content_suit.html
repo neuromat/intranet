@@ -1,0 +1,33 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+    <li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
+    <li class="active">{% trans 'Add content' %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module">
+      <table class="table-overview applist" summary="Contents available to add.">
+        <caption><a href="/add_content/" class="section">{% trans "Add content" %}</a></caption>
+          <tbody>
+              <tr>
+                <th scope="row">{% trans "Import papers" %}</th>
+                  <td>
+                    <a href="/add_content/import_papers/" class="addlink icon"><i class="icon-plus-sign icon-alpha75"></i>{% trans "Import" %}</a>
+                  </td>
+              </tr>
+              <tr>
+                <th scope="row">{% trans "Generate citation names"%}</th>
+                  <td>
+                      <a href="/add_content/citation_names/" class="addlink icon"><i class="icon-plus-sign icon-alpha75"></i>{% trans "Generate" %}</a>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+</div>
+{% endblock %}
