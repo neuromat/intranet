@@ -162,6 +162,13 @@ Crie um usuário administrador::
     python manage.py createsuperuser
 
 
+Para popular a base de dados com cidades para o sistema, faça::
+
+    python manage.py cities_light
+
+Mais informações sobre as cidades podem ser encontradas `aqui <../cidades/main.html>`_.
+
+
 Reinicie o Apache::
         
     service apache2 restart

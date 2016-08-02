@@ -4,6 +4,8 @@ Relatórios
 
 Informações sobre os relatórios que podem ser gerados no NIRA.
 
+.. image:: imagens/relatorios.png
+
 
 ********************
 Trabalhos acadêmicos

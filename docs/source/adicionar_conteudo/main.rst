@@ -4,6 +4,9 @@ Adicionar conteúdo
 
 Página detalhando como adicionar conteúdo no NIRA.
 
+.. image:: imagens/adicionar_conteudo.png
+
+
 *******************************
 Criar/Atualizar nome de citação
 *******************************

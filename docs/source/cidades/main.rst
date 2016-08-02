@@ -2,7 +2,8 @@
 Cidades
 =======
 
-Informações sobre a página de cidades.
+As cidades do sistema são adicionadas com um comando durante a `instalação <../instalacao/main.html#configuracoes-finais>`_.
+É possível adicionar novas cidades ao sistema, é possível também editar cidades que já cadastradas no sistema.
 
 .. image:: imagens/cidades.png
 
@@ -15,7 +16,7 @@ Cities
 Adicionar ou modificar uma cidade
 ---------------------------------
 
-Para adicionar ou editar um programa de treinamento, preencha os campos e clique em salvar.
+Para adicionar ou editar uma cidade, preencha os campos e clique em salvar.
 
 .. image:: imagens/add_cidade.png
 

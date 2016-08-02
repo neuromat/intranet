@@ -4,6 +4,9 @@ Documentos
 
 Informações sobre as opções de documentos do NIRA.
 
+.. image:: imagens/documentos.png
+
+
 ****************
 FAPESP - Anexo 5
 ****************
