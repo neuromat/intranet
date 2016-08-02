@@ -55,6 +55,8 @@ urlpatterns = [
     url(r'^add_content/', include(content_patterns)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-admin.site.site_header = _('NeuroMat Individual Report of Activities')
-admin.site.site_title = _('NIRA admin')
-admin.site.index_title = _('Administration')
+if 'suit' not in settings.INSTALLED_APPS:
+    admin.site.index_template = 'admin/default_index.html'
+    admin.site.site_header = _('NeuroMat Individual Report of Activities')
+    admin.site.site_title = _('NIRA admin')
+    admin.site.index_title = _('Administration')
