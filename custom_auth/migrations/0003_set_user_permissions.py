@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='user',
-            options={'permissions': (('view_reports', 'Can see reports'), ('add_content', 'Can add contents'), ('create_documents', 'Can create documents')), 'verbose_name': 'User', 'verbose_name_plural': 'Users'},
+            options={'permissions': (('view_reports', 'Can see reports'), ('add_content', 'Can add contents'),
+                                     ('create_documents', 'Can create documents')), 'verbose_name': 'User',
+                     'verbose_name_plural': 'Users'},
         ),
     ]
