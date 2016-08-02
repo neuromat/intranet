@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-01 16:40-0300\n"
+"POT-Creation-Date: 2016-08-02 12:36-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,7 +128,7 @@ msgid "End date"
 msgstr "Término"
 
 #: activity/models.py:111 docs/source/interface/interface.py:16
-#: docs/source/interface/reports_suit.html:30 sistema/settings_local.py:84
+#: docs/source/interface/reports_suit.html:30 sistema/settings_local.py:123
 #: templates/admin/index.html:107 templates/report/reports.html:28
 msgid "Meetings"
 msgstr "Reuniões"
@@ -215,7 +215,7 @@ msgid "Room"
 msgstr "Sala"
 
 #: activity/models.py:191 docs/source/interface/interface.py:19
-#: docs/source/interface/reports_suit.html:39 sistema/settings_local.py:86
+#: docs/source/interface/reports_suit.html:39 sistema/settings_local.py:126
 #: templates/admin/index.html:119 templates/report/reports.html:40
 msgid "Seminars"
 msgstr "Seminários"
@@ -240,6 +240,34 @@ msgstr "Permissões"
 #: custom_auth/apps.py:6
 msgid "Authentication"
 msgstr "Autenticação"
+
+#: custom_auth/forms.py:12 custom_auth/forms.py:49
+msgid "Password"
+msgstr "Senha"
+
+#: custom_auth/forms.py:13
+msgid "Password confirmation"
+msgstr "Confirmação de senha"
+
+#: custom_auth/forms.py:25
+msgid "Duplicate username"
+msgstr "Nome de usuário duplicado"
+
+#: custom_auth/forms.py:32
+msgid "Passwords do not match"
+msgstr "As senhas não coincidem"
+
+#: custom_auth/forms.py:50
+msgid ""
+"Raw passwords are not stored, so there is no way to see this\n"
+"                                         user's password, but you can change "
+"the password using\n"
+"                                         <a href=/password_change>this form</"
+"a>."
+msgstr ""
+"Senhas não são armazenadas, portanto não é possível ver a senha deste "
+"usuário. Contudo, você pode alterar a senha\n"
+"usando <a href=/password_change>este formulário</a>."
 
 #: custom_auth/models.py:18
 msgid "The username must be set"
@@ -313,7 +341,7 @@ msgid "User"
 msgstr "Usuário"
 
 #: custom_auth/models.py:78 docs/source/interface/interface.py:34
-#: sistema/settings_local.py:101
+#: sistema/settings_local.py:141
 msgid "Users"
 msgstr "Usuários"
 
@@ -342,7 +370,7 @@ msgid "Dissemination"
 msgstr "Difusão"
 
 #: dissemination/apps.py:10 docs/source/interface/interface.py:15
-#: sistema/settings_local.py:83
+#: sistema/settings_local.py:122
 msgid "Disseminations"
 msgstr "Difusões"
 
@@ -434,7 +462,7 @@ msgstr "Início"
 
 #: docs/source/interface/add_content_suit.html:7
 #: docs/source/interface/add_content_suit.html:15
-#: docs/source/interface/interface.py:22 sistema/settings_local.py:89
+#: docs/source/interface/interface.py:22 sistema/settings_local.py:129
 #: templates/add_content/add_content.html:5
 #: templates/add_content/add_content.html:9
 #: templates/add_content/add_content.html:13 templates/admin/index.html:55
@@ -442,7 +470,7 @@ msgid "Add content"
 msgstr "Adicionar conteúdo"
 
 #: docs/source/interface/add_content_suit.html:18
-#: docs/source/interface/interface.py:25 sistema/settings_local.py:92
+#: docs/source/interface/interface.py:25 sistema/settings_local.py:132
 #: templates/add_content/add_content.html:16 templates/admin/index.html:58
 #: templates/report/research/add_event_papers.html:11
 #: templates/report/research/arxiv_papers.html:11
@@ -473,19 +501,19 @@ msgstr "Gerar"
 
 #: docs/source/interface/documents_suit.html:7
 #: docs/source/interface/documents_suit.html:15
-#: docs/source/interface/interface.py:27 sistema/settings_local.py:94
+#: docs/source/interface/interface.py:27 sistema/settings_local.py:134
 #: templates/admin/index.html:73 templates/documents/documents.html:5
 #: templates/documents/documents.html:9 templates/documents/documents.html:13
 msgid "Documents"
 msgstr "Documentos"
 
 #: docs/source/interface/documents_suit.html:18 templates/admin/index.html:76
-#: templates/documents/documents.html:16
+#: templates/anexo/anexo5.html:11 templates/documents/documents.html:16
 msgid "Appendix 5"
 msgstr "Anexo 5"
 
 #: docs/source/interface/documents_suit.html:24
-#: docs/source/interface/interface.py:30 sistema/settings_local.py:97
+#: docs/source/interface/interface.py:30 sistema/settings_local.py:137
 #: templates/admin/index.html:81 templates/documents/documents.html:21
 #: templates/poster/seminar.html:11 templates/poster/seminar_poster.html:7
 msgid "Seminar poster"
@@ -499,55 +527,55 @@ msgstr "Obter"
 #: docs/source/interface/interface.py:11
 #: docs/source/interface/reports_suit.html:5
 #: docs/source/interface/reports_suit.html:10
-#: docs/source/interface/reports_suit.html:18 sistema/settings_local.py:78
+#: docs/source/interface/reports_suit.html:18 sistema/settings_local.py:118
 #: templates/admin/index.html:92 templates/report/reports.html:5
 #: templates/report/reports.html:9
 msgid "Reports"
 msgstr "Relatórios"
 
 #: docs/source/interface/interface.py:13
-#: docs/source/interface/reports_suit.html:21 sistema/settings_local.py:80
+#: docs/source/interface/reports_suit.html:21 sistema/settings_local.py:120
 #: templates/admin/index.html:95 templates/report/reports.html:16
 msgid "Academic works"
 msgstr "Trabalhos acadêmicos"
 
 #: docs/source/interface/interface.py:14
 #: docs/source/interface/reports_suit.html:24 research/models.py:217
-#: sistema/settings_local.py:81 templates/admin/index.html:99
+#: sistema/settings_local.py:121 templates/admin/index.html:99
 #: templates/report/reports.html:20 templates/report/research/articles.html:12
 #: templates/report/research/articles_report.html:7
 msgid "Articles"
 msgstr "Artigos"
 
 #: docs/source/interface/interface.py:17
-#: docs/source/interface/reports_suit.html:33 templates/admin/index.html:111
-#: templates/report/reports.html:32
+#: docs/source/interface/reports_suit.html:33 sistema/settings_local.py:124
+#: templates/admin/index.html:111 templates/report/reports.html:32
 msgid "Researchers"
 msgstr "Pesquisadores"
 
-#: docs/source/interface/interface.py:18 sistema/settings_local.py:85
+#: docs/source/interface/interface.py:18 sistema/settings_local.py:125
 msgid "Scientific missions"
 msgstr "Missões científicas"
 
 #: docs/source/interface/interface.py:20
-#: docs/source/interface/reports_suit.html:42 sistema/settings_local.py:87
+#: docs/source/interface/reports_suit.html:42 sistema/settings_local.py:127
 #: templates/admin/index.html:123 templates/report/reports.html:44
 msgid "Training programs"
 msgstr "Programas de treinamento"
 
-#: docs/source/interface/interface.py:24 sistema/settings_local.py:91
+#: docs/source/interface/interface.py:24 sistema/settings_local.py:131
 msgid "Create/Update citation name"
 msgstr "Criar/Atualizar nome de citação"
 
-#: docs/source/interface/interface.py:29 sistema/settings_local.py:96
+#: docs/source/interface/interface.py:29 sistema/settings_local.py:136
 msgid "FAPESP - appendix 5"
 msgstr "FAPESP - anexo 5"
 
-#: docs/source/interface/interface.py:33 sistema/settings_local.py:100
+#: docs/source/interface/interface.py:33 sistema/settings_local.py:140
 msgid "Cities"
 msgstr "Cidades"
 
-#: docs/source/interface/interface.py:35 sistema/settings_local.py:102
+#: docs/source/interface/interface.py:35 sistema/settings_local.py:142
 msgid "Groups"
 msgstr "Grupos"
 
@@ -1137,10 +1165,6 @@ msgstr "Não disponível"
 msgid "Unknown content"
 msgstr "Conteúdo desconhecido"
 
-#: templates/anexo/anexo5.html:11
-msgid "Appendix 5"
-msgstr "Anexo5"
-
 #: templates/anexo/anexo5.html:41
 msgid "Date of issue"
 msgstr "Data de emissão"
@@ -1491,5 +1515,5 @@ msgstr "Adicionar periódicos"
 msgid "No periodicals to be added!"
 msgstr "Sem periódicos para adicionar!"
 
-#~ msgid "Organized by NeuroMat?"
-#~ msgstr "Organizado pelo NeuroMat?"
+msgid "Organized by NeuroMat?"
+msgstr "Organizado pelo NeuroMat?"

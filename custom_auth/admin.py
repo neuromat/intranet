@@ -27,7 +27,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('username', 'password1', 'password2')}),
     )
 
-    list_display = ('username', 'is_staff')
+    list_display = ('username', 'is_staff', 'is_active', 'is_nira_admin', 'is_superuser')
     ordering = ('username',)
 
     # Shows users according to the user permission
