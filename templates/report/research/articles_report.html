@@ -17,7 +17,7 @@
     </p>
     <ol type="1">
     {% if published_scientific or accepted_scientific %}
-        <p style="margin-left: -40px"><strong>Published or accepted</strong></p>
+        <p style="margin-left: -40px"><strong>{% trans "Published or accepted"%}</strong></p>
             {% if published_scientific %}
                 {% for article in published_scientific %}
                     {% if not article.article.hide %}
@@ -71,7 +71,7 @@
     {% endif %}
 
     {% if published_dissemin or accepted_dissemin %}
-        <p style="margin-left: -40px"><strong>Published or accepted from the dissemination team</strong></p>
+        <p style="margin-left: -40px"><strong>{% trans "Published or accepted from the dissemination team" %}</strong></p>
             {% if published_dissemin %}
                 {% for article in published_dissemin %}
                     {% if not article.article.hide %}
