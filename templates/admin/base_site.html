@@ -1,6 +1,10 @@
 {% extends "admin/base.html" %}
 {% load i18n admin_static %}
 
+{# Info added manually because of the Django default template #}
+{% block title %} NIRA {% endblock %}
+{% block branding %} <h1 id="site-name">NIRA</h1> {% endblock %}
+
 {# Additional <head> content here, some extra meta tags or favicon #}
 {#{% block extrahead %}#}
 {#{% endblock %}#}
@@ -11,7 +15,6 @@
 {#  <link rel="stylesheet" type="text/css" href="{% static 'css/my_project.css' %}" media="all">#}
 {#{% endblock %}#}
 
-
 {# Additional JS files in footer, right before </body> #}
 {#{% block extrajs %}#}
 {#  <script type="text/javascript" src="{% static 'js/my_project.js' %}"></script>#}
@@ -20,21 +23,17 @@
 {# Additional header content like notifications or language switcher #}
 {% block header_content %}
     <div class="header-content">
-        <div class="header-column" style="margin-right: 20px">
-            <form action="{% url 'set_language' %}" method="post">
-            {% csrf_token %}
-            <input name="next" type="hidden" value="{{ redirect_to }}" />
-            <select name="language" onchange="this.form.submit()">
-            {% get_current_language as LANGUAGE_CODE %}
-            {% get_available_languages as LANGUAGES %}
-            {% get_language_info_list for LANGUAGES as languages %}
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        <div>
             {% for language in languages %}
-                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-                    {{ language.name_local }} ({{ language.code }})
-                </option>
+                {% if language.code != LANGUAGE_CODE %}
+                    <a href="/language/{{ language.code }}?next={{ request.get_full_path }}">
+                        <i class="icon-globe"></i> {{ language.name_local }}
+                    </a>
+                {% endif %}
             {% endfor %}
-            </select>
-            </form>
         </div>
     </div>
 {% endblock %}

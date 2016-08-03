@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from helper_functions.show_page import display_documents, display_reports, display_add_content
 
+from views import language_change
 from activity import views as activity_views
 from dissemination import views as dissemination_views
 from person import views as person_views
@@ -43,6 +44,7 @@ urlpatterns = [
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.password_reset_confirm,
         name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+    url(r'^language/(?P<language_code>(?:(?:\w{2})|(?:\w{2}\-\w{2})))$', language_change, name='language_change'),
     url(r'^activity/', include('activity.urls')),
     url(r'^research/', include('research.urls')),
     url(r'^dissemination/', include('dissemination.urls')),
@@ -57,6 +59,4 @@ urlpatterns = [
 
 if 'suit' not in settings.INSTALLED_APPS:
     admin.site.index_template = 'admin/default_index.html'
-    admin.site.site_header = _('NeuroMat Individual Report of Activities')
-    admin.site.site_title = _('NIRA admin')
-    admin.site.index_title = _('Administration')
+    admin.site.index_title = _('Features of the NIRA system')
