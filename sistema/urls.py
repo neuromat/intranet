@@ -59,4 +59,5 @@ urlpatterns = [
 
 if 'suit' not in settings.INSTALLED_APPS:
     admin.site.index_template = 'admin/default_index.html'
+    admin.site.app_index_template = 'admin/default_index.html'
     admin.site.index_title = _('Features of the NIRA system')
