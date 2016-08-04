@@ -2,7 +2,7 @@
 Missão científica
 =================
 
-Informações sobre a página de missão científica.
+O módulo missão científica armazena informações sobre as diárias concedidas aos pesquisadores.
 
 .. image:: imagens/missao_cientifica.png
 

@@ -2,8 +2,8 @@
 Cidades
 =======
 
-As cidades do sistema são adicionadas com um comando durante a `instalação <../instalacao/main.html#configuracoes-finais>`_.
-É possível adicionar novas cidades ao sistema, é possível também editar cidades que já cadastradas no sistema.
+As cidades são adicionadas automaticamente com um comando durante a `instalação <../instalacao/main.html#configuracoes-finais>`_
+do sistema. É possível adicionar novas cidades ao NIRA, é possível também editar cidades já cadastradas.
 
 .. image:: imagens/cidades.png
 

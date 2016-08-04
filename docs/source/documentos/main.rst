@@ -2,7 +2,9 @@
 Documentos
 ==========
 
-Informações sobre as opções de documentos do NIRA.
+Com base nas diárias cadastradas (ver `Diárias <../missao_cientifica/main.html#diarias>`_) o NIRA
+pode gerar o documento "Anexo 5" da FAPESP. O NIRA também pode gerar um poster de divulgação de um seminário com base
+nos seminários cadastrados (ver `Seminários <../atividades_projeto/main.html#seminarios>`_).
 
 .. image:: imagens/documentos.png
 
@@ -30,3 +32,6 @@ Escolha o palestrante, o seminário desejado e clique em obter pôster.
 
 .. image:: imagens/poster_seminario.png
 
+Exemplo de pôster:
+
+.. image:: imagens/exemplo_poster.jpg
