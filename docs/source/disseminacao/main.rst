@@ -2,7 +2,8 @@
 Difusão
 =======
 
-Informações sobre a página de difusão.
+O módulo difusão armazena as notícias sobre o CEPID que foram veiculados em diferentes meios de comunicação, interno
+ou externo.
 
 .. image:: imagens/disseminacao.png
 
@@ -22,6 +23,9 @@ Para adicionar ou editar uma difusão interna, preencha os campos e clique em sa
 :Campos obrigatórios:
 	Título, meio de comunicação e data
 
+Tela com exemplos de difusão interna:
+
+.. image:: imagens/exemplo_difusao_interna.jpg
 
 ***************
 Difusão externa
@@ -38,6 +42,9 @@ Para adicionar ou editar uma difusão externa, preencha os campos e clique em sa
 :Campos obrigatórios:
 	Título, meio de comunicação e data
 
+Tela com exemplos de difusão externa:
+
+.. image:: imagens/exemplo_difusao_externa.jpg
 
 ****************************
 Meios de comunicação interna

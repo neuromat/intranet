@@ -2,6 +2,14 @@
 Instalando a última versão estável do NIRA
 ==========================================
 
+******************************
+Pré-requisitos para instalação
+******************************
+
+Para realizar a instalação é necessário conhecimentos básicos na plataforma Linux. Para acessar o sistema com um nome
+(nira.exemplo.br) é preciso configurar um servidor de DNS. A configuração de um DNS está fora do escopo desta
+documentação.
+
 *****************************************
 Instalação do NIRA para um ambiente Linux 
 *****************************************
@@ -99,10 +107,10 @@ Configurar um banco de dados PostgreSQL é simples, são três passos:
 6. Configure seu settings_local
 -------------------------------
 
-O arquivo *settings_local.py* deve ficar no diretório sistema do projeto do NIRA, no nosso caso::
+O arquivo *settings_local.py* deve ser criado no diretório "sistema" do projeto, no nosso caso::
     
     cd /var/lib/sistema-nira/nira/sistema/
-    vi /var/lib/sistema-nira/sistema/settings_local.py
+    vi settings_local.py
 
 
 Em *settings_local.py* você deve configurar o sistema para usar o seu banco de dados PostgreSQL.
@@ -111,11 +119,6 @@ Você também deve alterar a variável com o nome do seu CEPID.
 .. literalinclude:: ./settings_local.py
     :language: python
     :emphasize-lines: 21, 23, 29-32
-
-Veja mais na página sobre a interface_.
-
-.. _interface:
-    ../interface/main.html
 
 
 7. Configuração do Apache
@@ -162,7 +165,7 @@ Crie um usuário administrador::
     python manage.py createsuperuser
 
 
-Para popular a base de dados com cidades para o sistema, faça::
+Para popular a base de dados com cidades de todos os continentes, faça::
 
     python manage.py cities_light
 
@@ -174,6 +177,6 @@ Reinicie o Apache::
     service apache2 restart
 
 
-Se tudo tiver corrido corretamente, o NIRA estará na porta configurada no arquivo do Apache.
-
-Você pode logar no sistema com o Administrador criado no passo 8.
+Se todos os itens foram realizados sem nenhum erro, então o NIRA está pronto para ser utilizado. Acesse o sistema
+com o nome configurado no Virtualhost (Item 7, Configuração do Apache). Você pode logar no sistema com os dados
+de acesso do usuário administrador, criado no Item 8.

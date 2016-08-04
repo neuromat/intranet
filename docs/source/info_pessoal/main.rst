@@ -2,7 +2,8 @@
 Informações pessoais
 ====================
 
-Informações sobre a página de informações pessoais.
+O módulo informações pessoais é utilizado para armazenar dados dos pesquisadores envolvidos no projeto e de suas
+intituições.
 
 .. image:: imagens/info_pessoal.png
 
@@ -31,11 +32,14 @@ Nome de citação
 Adicionar ou editar um nome de citação
 --------------------------------------
 
+Nomes de citações podem ser gerados automaticamente por meio do link *Adicionar conteúdo > Criar/Atualizar nome de
+citação*. Veja mais em `Adicionar conteúdo <../adicionar_conteudo/main.html>`_.
+
 Para adicionar um nome de citação, preencha os campos obrigatórios e clique em salvar.
 
 Para editar um nome de citação, clique no nome, edite os campos e clique em salvar.
 
-.. image:: imagens/nome_de_citacao.png
+.. image:: imagens/nome_de_citacao.jpg
 
 :Campos obrigatórios:
     Nome e nome em citação bibliográfica

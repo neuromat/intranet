@@ -1,5 +1,4 @@
 SUIT_CONFIG = {
-    'ADMIN_NAME': 'NIRA',
     'MENU_OPEN_FIRST_CHILD': False,
     'HEADER_DATE_FORMAT': 'l, d F Y',
     'MENU': (
