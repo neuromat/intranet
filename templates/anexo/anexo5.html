@@ -6,10 +6,7 @@
 {% endblock extrahead%}
 
 {% block breadcrumbs %}
-<ul class="breadcrumb">
-<li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
-<li class="active">{% trans 'Appendix 5' %}</li>
-</ul>
+    <div class="breadcrumbs"><a href="/" class="active">{% trans 'Home' %}</a> › <a href="/documents">{% trans 'Documents' %}</a> › {% trans 'Appendix 5' %}</div>
 {% endblock %}
 
 {% block content %}

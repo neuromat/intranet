@@ -2,11 +2,7 @@
 {% load i18n %}
 
 {% block breadcrumbs %}
-<ul class="breadcrumb">
-<li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
-<li><a href="/research/articles">{% trans 'Articles' %}</a><span class="divider">»</span></li>
-<li class="active">{% trans 'Results' %}</li>
-</ul>
+    <div class="breadcrumbs"><a href="/">{% trans 'Home' %}</a> › <a href="/reports">{% trans 'Reports' %}</a> › <span class="active">{% trans 'Results' %}</span></div>
 {% endblock %}
 
 {% block content %}
