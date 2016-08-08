@@ -2,11 +2,7 @@
 {% load i18n admin_static %}
 
 {% block breadcrumbs %}
-<ul class="breadcrumb">
-<li><a href="/">{% trans 'Home' %}</a><span class="divider">»</span></li>
-<li><a href="/activity/training_programs">{% trans 'Training programs report' %}</a><span class="divider">»</span></li>
-<li class="active">{% trans 'Results' %}</li>
-</ul>
+    <div class="breadcrumbs"><a href="/">{% trans 'Home' %}</a> › <a href="/reports">{% trans 'Reports' %}</a> › <span class="active">{% trans 'Training programs' %}</span></div>
 {% endblock %}
 
 {% block content %}
