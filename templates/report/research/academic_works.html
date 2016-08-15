@@ -11,27 +11,10 @@
 {% endblock %}
 
 {% block content %}
-<form role="form" method="post">{% csrf_token %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-xs-2 col-sm-2">
-            <label>{% trans "Start date" %}</label>
-            <input class="form-control" name="start_date" id="id_start_date">
-        </div>
-
-        <div class="col-xs-2 col-sm-2">
-            <label>{% trans "End date" %}</label>
-            <input class="form-control" name="end_date" id="id_end_date">
-        </div>
-
-        <div class="col-xs-2 col-sm-2">
-            <br>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get report" %}</button>
-             </div>
-        </div>
-    </div>
-</div>
+<form action="" method="post">{% csrf_token %}
+    Start Date:{{ form.start_date }}<br/>
+    End Date:{{ form.end_date }}<br/>
+    <input  type = "submit" name = "submit" value = "Get report">
 </form>
 
 {% endblock %}

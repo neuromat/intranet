@@ -4,9 +4,9 @@ import os
 import StringIO  # PDF file
 from cgi import escape  # PDF file
 from xhtml2pdf import pisa  # PDF file
-from helper_functions.date import *
+from helpers.views.date import *
 from activity.models import ProjectActivities, Seminar, SeminarType
-from helper_functions.latex import generate_latex
+from helpers.views.latex import generate_latex
 from person.models import Person
 from django.conf import settings
 from django.contrib import messages

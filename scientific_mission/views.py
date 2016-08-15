@@ -1,3 +1,4 @@
+import datetime
 import json as simplejson
 from activity.views import render_to_pdf
 from cities_light.models import City
@@ -7,9 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
-from helper_functions.date import *
-from helper_functions.latex import generate_latex
-from helper_functions.extenso import dExtenso
+from helpers.views.date import *
+from helpers.views.latex import generate_latex
+from helpers.views.extenso import dExtenso
 from person.models import Person
 from scientific_mission.models import ScientificMission, Route
 

@@ -11,9 +11,14 @@
 
 
 {# Additional CSS includes #}
-{#{% block extrastyle %}#}
-{#  <link rel="stylesheet" type="text/css" href="{% static 'css/my_project.css' %}" media="all">#}
-{#{% endblock %}#}
+{% block extrastyle %}
+
+<link rel="stylesheet" href="{% static 'js/jquery/themes/base/jquery-ui.css' %}">
+<script src="{% static 'js/jquery/external/jquery/jquery.js' %}"></script>
+<script src="{% static 'js/jquery/jquery-ui.js' %}"></script>
+<script src="{% static 'js/datepicker.js' %}"></script>
+
+{% endblock %}
 
 {# Additional JS files in footer, right before </body> #}
 {#{% block extrajs %}#}
@@ -21,21 +26,54 @@
 {#{% endblock %}#}
 
 {# Additional header content like notifications or language switcher #}
-{% block header_content %}
-    <div class="header-content">
-        {% get_current_language as LANGUAGE_CODE %}
-        {% get_available_languages as LANGUAGES %}
-        {% get_language_info_list for LANGUAGES as languages %}
-        <div>
+{#{% block header_content %}#}
+{#    <div class="header-content">#}
+{#        {% get_current_language as LANGUAGE_CODE %}#}
+{#        {% get_available_languages as LANGUAGES %}#}
+{#        {% get_language_info_list for LANGUAGES as languages %}#}
+{#        <div>#}
+{#            {% for language in languages %}#}
+{#                {% if language.code != LANGUAGE_CODE %}#}
+{#                    <a href="/language/{{ language.code }}?next={{ request.get_full_path }}">#}
+{#                        <i class="icon-globe"></i> {{ language.name_local }}#}
+{#                    </a>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#    </div>#}
+{#{% endblock %}#}
+
+{# Custom usertools, a language switcher #}
+{% block usertools %}
+    <div id="user-tools">
+        {% block welcome-msg %}
+            {% trans 'Welcome,' %}
+            <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+        {% endblock %}
+        {% block userlinks %}
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
             {% for language in languages %}
                 {% if language.code != LANGUAGE_CODE %}
                     <a href="/language/{{ language.code }}?next={{ request.get_full_path }}">
-                        <i class="icon-globe"></i> {{ language.name_local }}
-                    </a>
+                        {{ language.name_local }}
+                    </a> |
                 {% endif %}
             {% endfor %}
-        </div>
+            {% if user.is_active and user.is_staff %}
+                {% url 'django-admindocs-docroot' as docsroot %}
+                {% if docsroot %}
+                    <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> |
+                {% endif %}
+            {% endif %}
+            {% if user.has_usable_password %}
+            <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> |
+            {% endif %}
+            <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+        {% endblock %}
     </div>
+
 {% endblock %}
 
 {# Footer links (left side) #}

@@ -6,7 +6,7 @@ import os
 try:
     from secret_key import *
 except ImportError:
-    from helper_functions.secret_key_generator import *
+    from helpers.views.secret_key_generator import *
     SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
     generate_secret_key(os.path.join(SETTINGS_DIR, 'secret_key.py'))
     from secret_key import *

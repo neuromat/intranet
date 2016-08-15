@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.utils.translation import ugettext_lazy as _
 
-from helper_functions.show_page import display_documents, display_reports, display_add_content
+from helpers.views.show_page import display_documents, display_reports, display_add_content
 
 from views import language_change
 from activity import views as activity_views

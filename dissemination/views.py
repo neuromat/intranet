@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from helper_functions.date import *
-from helper_functions.latex import escape_and_generate_latex
+from helpers.views.date import *
+from helpers.views.latex import escape_and_generate_latex
 from dissemination.models import Dissemination, Internal, InternalMediaOutlet, TYPE_OF_MEDIA
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required

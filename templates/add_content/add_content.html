@@ -4,6 +4,10 @@
 {% block coltype %}colMS{% endblock %}
 {% block bodyclass %} {% trans "Add content" %} dashboard{% endblock %}
 
+{% block breadcrumbs %}
+    <div class="breadcrumbs"><a href="/" class="active">{% trans 'Home' %}</a> › {% trans 'Add content' %}</div>
+{% endblock %}
+
 {% block content %}
 <div id="content-main">
     <h1>{% trans "Add content" %}</h1>
