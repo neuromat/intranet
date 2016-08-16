@@ -1,10 +1,8 @@
 $(document).ready(function() {
-    $( ".datepicker" ).datepicker({
+    $( ".form-control" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
       autoSize: true,
-      showOn: "both",
-      buttonImage: "",
-      buttonImageOnly: true,
-      buttonText: "Calendar",
       dateFormat: "dd/mm/yy"
     });
 });
