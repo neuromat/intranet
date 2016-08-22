@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $( ".form-control" ).datepicker({
+    $( ".datepicker" ).datepicker({
       changeMonth: true,
       changeYear: true,
       autoSize: true,

@@ -1,7 +1,7 @@
 from django import forms
 
 #  Form with jquerys datepicker
-DateInput = forms.DateInput(format=['%d-%m-%Y'], attrs={'class': 'form-control', 'placeholder': 'dd/mm/aaaa'})
+DateInput = forms.DateInput(format=['%d-%m-%Y'], attrs={'class': 'datepicker', 'placeholder': 'dd/mm/aaaa'})
 
 
 #  Creates a form that comes with the datepicker widget
