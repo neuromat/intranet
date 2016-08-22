@@ -12,14 +12,7 @@
 
 {% block content %}
 <form method="post">{% csrf_token %}
-    <div>
-        <label class="required" for="id_start_date">{% trans "Start date" %}</label>
-        {{ form.start_date }}
-    </div>
-    <div>
-        <label class="required" for="id_end_date">{% trans "End date" %}</label>
-        {{ form.end_date }}
-    </div>
+    {{ form.as_p }}
     <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get report" %}</button>
 </form>
 
