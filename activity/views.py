@@ -17,6 +17,8 @@ from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 
+from configuration.models import PosterImage, QRCode
+
 
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
@@ -112,23 +114,42 @@ def seminar_poster(request):
     seminars = ProjectActivities.objects.filter(type_of_activity='s')
 
     if request.method == 'POST':
+
         title_id = request.POST['title']
 
         if title_id is None or title_id == '':
             messages.error(request, _('You have to choose a seminar!'))
             context = {'speakers': speakers, 'seminars': seminars}
             return render(request, 'poster/seminar.html', context)
+
         else:
+
             try:
                 seminar = Seminar.objects.get(id=title_id)
             except Seminar.DoesNotExist:
                 raise Http404(_('No seminar matches the given query.'))
+
+            try:
+                image = PosterImage.objects.get()
+            except:
+                messages.error(request, _("You haven't configured the poster image on your system."))
+                context = {'speakers': speakers, 'seminars': seminars}
+                return render(request, 'poster/seminar.html', context)
+
+            try:
+                qr = QRCode.objects.get()
+            except:
+                messages.error(request, _("You haven't configured the QR code image on your system."))
+                context = {'speakers': speakers, 'seminars': seminars}
+                return render(request, 'poster/seminar.html', context)
 
             return render_to_pdf(
                 'poster/seminar_poster_pdf.html',
                 {
                     'pagesize': 'A4',
                     'seminar': seminar,
+                    'image': image.poster_image.url,
+                    'qr_code': qr.code_image.url
                 }
             )
 

@@ -60,7 +60,7 @@
             {% block content %}
                 {% if seminar %}
                     {% if seminar.category.name == 'NeuroMat' %}
-                        <img alt="Logo NUMEC" src="images/neuromat.jpg"><span class="neuromat_seminar">&nbsp&nbsp seminar</span>
+                        <img alt="Logo NUMEC" src={{ image }}><span class="neuromat_seminar">&nbsp&nbsp seminar</span>
                         <br>
                     {% else %}
                         <p class="other_seminar">{% trans "Seminar" %}</p>
@@ -108,7 +108,7 @@
                                 <img alt="Logo FAPESP" src="images/logo-fapesp.jpg" height="46" width="200">
                             </td>
                             <td align="right">
-                                <img alt="QR Code to NeuroMat Facebook" src="images/qr_code.jpg" height="95" width="95">
+                                <img alt="QR Code to NeuroMat Facebook" src={{ qr_code }} height="95" width="95">
                             </td>
                         </tr>
                     </table>

@@ -44,12 +44,15 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cities_light',
+    'solo',
+    'django_cleanup',
 )
 
 PROJECT_APPS = (
     'custom_auth',
     'person',
     'activity',
+    'configuration',
     'dissemination',
     'research',
     'scientific_mission',
