@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from person.models import Person, Institution
 from django.utils.html import format_html
-from django.conf import settings
+from configuration.models import CepidName
 
 # Defining the duration of a Training Program
 ONE_HOUR = '1h'
@@ -96,7 +96,8 @@ class Meeting(ProjectActivities):
     'class Meta'		Sets the description model (singular and plural) and define ordering of data by start_date.
     """
     # import CEPID name
-    cepid_name = settings.CEPID_NAME
+    cepid = CepidName.get_solo()
+    cepid_name = cepid.cepid_name
 
     # fields
     broad_audience = models.BooleanField(_('Broad audience?'), default=False)

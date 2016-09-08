@@ -5,7 +5,7 @@ from solo.models import SingletonModel
 
 class ProcessNumber(SingletonModel):
 
-    process_number = models.CharField(_('Process number'), max_length=255, default='0000-000/00')
+    process_number = models.CharField(_('Process number'), max_length=255, default='0000/00000-0')
 
     class Meta:
         verbose_name = _('Process number')

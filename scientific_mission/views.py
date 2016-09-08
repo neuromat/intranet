@@ -2,6 +2,7 @@ import datetime
 import json as simplejson
 from activity.views import render_to_pdf
 from cities_light.models import City
+from configuration.models import ProcessNumber
 from dal import autocomplete
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -56,7 +57,9 @@ def anexo5(request):
             date = datetime.datetime.now()
 
         if not process:
-            process = '2013/07699-0'
+            process = ProcessNumber.get_solo()
+            process = process.process_number
+            messages.error(request, _("You should've configured your process number on configurations."))
 
         if mission_id is None or mission_id == '':
 
@@ -105,8 +108,13 @@ def anexo5(request):
             )
 
     date = datetime.datetime.now()
-    process = '2013/07699-0'
-    context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
+    process = ProcessNumber.get_solo()
+    process_number = process.process_number
+
+    if process_number == '0000/00000-0':
+        messages.error(request, _('You should configure your process number on configurations.'))
+
+    context = {'people': people, 'missions': missions, 'default_date': date, 'process': process_number}
     return render(request, 'anexo/anexo5.html', context)
 
 

@@ -17,7 +17,7 @@ from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 
-from configuration.models import PosterImage, QRCode
+from configuration.models import PosterImage, QRCode, CepidName
 
 
 def render_to_pdf(template_src, context_dict):
@@ -130,14 +130,14 @@ def seminar_poster(request):
                 raise Http404(_('No seminar matches the given query.'))
 
             try:
-                image = PosterImage.objects.get()
+                image = PosterImage.get_solo()
             except:
                 messages.error(request, _("You haven't configured the poster image on your system."))
                 context = {'speakers': speakers, 'seminars': seminars}
                 return render(request, 'poster/seminar.html', context)
 
             try:
-                qr = QRCode.objects.get()
+                qr = QRCode.get_solo()
             except:
                 messages.error(request, _("You haven't configured the QR code image on your system."))
                 context = {'speakers': speakers, 'seminars': seminars}
@@ -254,5 +254,11 @@ def meetings_report(request):
             messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/activity/meetings.html')
 
-    context = {'cepid_name': settings.CEPID_NAME}
+    cepid = CepidName.objects.get()
+    cepid_name = cepid.name
+
+    if cepid_name == 'Meu Cepid':
+        messages.error(request, _('You should configure your Cepid name on configurations.'))
+
+    context = {'cepid_name': cepid_name}
     return render(request, 'report/activity/meetings.html', context)
