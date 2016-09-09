@@ -1,7 +1,8 @@
 import datetime
+import tempfile
 from activity.models import ProjectActivities, Seminar, SeminarType, TrainingProgram, Meeting
 from activity.views import render_to_pdf, training_programs_search, seminars_search
-from configuration.models import PosterImage
+from configuration.models import PosterImage, QRCode
 from django.core.urlresolvers import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
@@ -119,10 +120,13 @@ class SeminarsTest(TestCase):
         seminar2 = seminar('Seminar2', type2, self.date2)
         seminar2.save()
 
-        # Set poster image
         image = PosterImage.get_solo()
-        image.poster_image.url = 'test.jpg'
+        image.poster_image = tempfile.NamedTemporaryFile(suffix=".jpg").name
         image.save()
+
+        qr = QRCode.get_solo()
+        qr.code_image = tempfile.NamedTemporaryFile(suffix=".jpg").name
+        qr.save()
 
     def test_report(self):
 
