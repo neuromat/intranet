@@ -1,6 +1,7 @@
 import datetime
 from activity.models import ProjectActivities, Seminar, SeminarType, TrainingProgram, Meeting
 from activity.views import render_to_pdf, training_programs_search, seminars_search
+from configuration.models import PosterImage
 from django.core.urlresolvers import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
@@ -117,6 +118,11 @@ class SeminarsTest(TestCase):
 
         seminar2 = seminar('Seminar2', type2, self.date2)
         seminar2.save()
+
+        # Set poster image
+        image = PosterImage.get_solo()
+        image.poster_image.url = 'test.jpg'
+        image.save()
 
     def test_report(self):
 

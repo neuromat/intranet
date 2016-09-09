@@ -235,17 +235,20 @@ def meetings_report(request):
 
         if broad_audience == '0':
             meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__start_date__gt=start_date,
-                                                        meeting__start_date__lt=end_date).order_by('meeting__start_date')
+                                                        meeting__start_date__lt=end_date).\
+                order_by('meeting__start_date')
 
         elif broad_audience == '1':
             meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__broad_audience='1',
                                                         meeting__start_date__gt=start_date,
-                                                        meeting__start_date__lt=end_date).order_by('meeting__start_date')
+                                                        meeting__start_date__lt=end_date).\
+                order_by('meeting__start_date')
 
         elif broad_audience == '2':
             meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__broad_audience='0',
                                                         meeting__start_date__gt=start_date,
-                                                        meeting__start_date__lt=end_date).order_by('meeting__start_date')
+                                                        meeting__start_date__lt=end_date).\
+                order_by('meeting__start_date')
 
         if end_date >= start_date:
             context = {'meetings': meetings}
@@ -254,8 +257,8 @@ def meetings_report(request):
             messages.error(request, _('End date should be equal or greater than start date.'))
             return render(request, 'report/activity/meetings.html')
 
-    cepid = CepidName.objects.get()
-    cepid_name = cepid.name
+    cepid = CepidName.get_solo()
+    cepid_name = cepid.cepid_name
 
     if cepid_name == 'Meu Cepid':
         messages.error(request, _('You should configure your Cepid name on configurations.'))
