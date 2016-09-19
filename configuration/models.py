@@ -19,21 +19,3 @@ class CepidName(SingletonModel):
     class Meta:
         verbose_name = _('Cepid name')
         permissions = (("change_cepid_name", _("Can change the Cepid name.")),)
-
-
-class PosterImage(SingletonModel):
-
-    poster_image = models.ImageField()
-
-    class Meta:
-        verbose_name = _('Poster image')
-        permissions = (("change_poster_image", _("Can change the poster image.")),)
-
-
-class QRCode(SingletonModel):
-
-    code_image = models.ImageField()
-
-    class Meta:
-        verbose_name = _('QR code')
-        permissions = (("change_qr_code", _("Can change the QR code.")),)

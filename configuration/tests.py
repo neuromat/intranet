@@ -11,9 +11,3 @@ class ConfigurationsTest(TestCase):
 
     def test_process_number(self):
         pass
-
-    def test_poster_image(self):
-        pass
-
-    def test_qr_code(self):
-        pass

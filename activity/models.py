@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from person.models import Person, Institution
 from django.utils.html import format_html
 from configuration.models import CepidName
+from solo.models import SingletonModel
 
 # Defining the duration of a Training Program
 ONE_HOUR = '1h'
@@ -160,6 +161,9 @@ class SeminarType(models.Model):
 
     """
     name = models.CharField(_('Name'), max_length=255)
+    image = models.ImageField(_('Image'), blank=True, null=True,
+                              help_text=_('Logo for poster. We recommend an image with size 400x100.'))
+    qr_code = models.ImageField(_('QR Code'), blank=True, null=True, help_text=_('QR code with link to some page.'))
 
     def __unicode__(self):
         return u'%s' % self.name

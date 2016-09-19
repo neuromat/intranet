@@ -10,7 +10,7 @@
                 padding:0;
                 font-family: Helvetica, Arial, sans-serif;
             }
-            .neuromat_seminar{
+            .category_seminar{
                 font-size: 32pt;
             }
             .other_seminar{
@@ -46,7 +46,6 @@
             }
             .footer{
                 font-size: 12pt;
-{#                display: block;#}
             }
             table {
                 width: 100%;
@@ -59,8 +58,8 @@
         <div>
             {% block content %}
                 {% if seminar %}
-                    {% if seminar.category.name == 'NeuroMat' %}
-                        <img alt="Logo NUMEC" src={{ image }}><span class="neuromat_seminar">&nbsp&nbsp seminar</span>
+                    {% if seminar.category.image %}
+                        <img alt="Category logo" src={{ seminar.category.image.url }}><span class="category_seminar">&nbsp&nbsp seminar</span>
                         <br>
                     {% else %}
                         <p class="other_seminar">{% trans "Seminar" %}</p>
@@ -107,13 +106,13 @@
                                 <span class="footer">{% trans "Supported by" %}</span>&nbsp
                                 <img alt="Logo FAPESP" src="images/logo-fapesp.jpg" height="46" width="200">
                             </td>
+                            {% if seminar.category.qr_code %}
                             <td align="right">
-                                <img alt="QR Code to NeuroMat Facebook" src={{ qr_code }} height="95" width="95">
+                                <img alt="QR Code with category link" src={{ seminar.category.qr_code.url }} height="95" width="95">
                             </td>
+                            {% endif %}
                         </tr>
                     </table>
-                {%  else %}
-                    {% trans "No seminar found!" %}
                 {% endif %}
             {% endblock %}
         </div>

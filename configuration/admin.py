@@ -5,5 +5,3 @@ from solo.admin import SingletonModelAdmin
 
 admin.site.register(ProcessNumber, SingletonModelAdmin)
 admin.site.register(CepidName, SingletonModelAdmin)
-admin.site.register(PosterImage, SingletonModelAdmin)
-admin.site.register(QRCode, SingletonModelAdmin)
