@@ -101,6 +101,15 @@ def anexo5(request):
             amount = ext.getExtenso(amount)
             cents = ext.getExtenso(cents)
 
+            try:
+                people = Person.objects.all()
+                principal_investigator = people.get(role__name="Principal Investigator")
+            except:
+                messages.error(request, _('You should have set a person with your role of Principal Investigator.'))
+                date = datetime.datetime.now()
+                context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
+                return render(request, 'anexo/anexo5.html', context)
+
             return render_to_pdf(
                 'anexo/anexo5_pdf.html',
                 {
@@ -112,6 +121,7 @@ def anexo5(request):
                     'pagesize': 'A4',
                     'person': mission.person,
                     'process': process,
+                    'principal_investigator': principal_investigator,
                     'routes': routes,
                     'start_date': start_date.departure,
                 }

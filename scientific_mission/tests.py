@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from cities_light.models import City, Country
 from scientific_mission.models import ScientificMission, Route
-from person.models import Person
+from person.models import Person, Role
 from research.tests import system_authentication
 
 
@@ -39,7 +39,10 @@ class ScientificMissionsTest(TestCase):
         city = City(country=country)
         city.save()
 
-        person = Person(full_name="Fulano Testeiro")
+        role = Role(name="Principal Investigator")
+        role.save()
+
+        person = Person(full_name="Fulano Testeiro", role=role)
         person.save()
 
         date_departure1 = datetime.date(2015, 1, 15)
