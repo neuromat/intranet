@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 from helpers.views.date import *
 from helpers.views.latex import generate_latex
 from helpers.views.extenso import dExtenso
@@ -59,7 +60,10 @@ def anexo5(request):
         if not process:
             process = ProcessNumber.get_solo()
             process = process.process_number
-            messages.error(request, _("You should've configured your process number on configurations."))
+
+            if process == '0000/00000-0':
+                messages.info(request, mark_safe(_('You should have configured your process number on configurations. '
+                                                   ' Click <a href="../../configuration">here</a> to configure it.')))
 
         if mission_id is None or mission_id == '':
 
@@ -81,9 +85,15 @@ def anexo5(request):
 
             if mission:
                 routes = Route.objects.filter(scientific_mission=mission).order_by('order')
+
                 if routes:
+
                     start_date = routes.first()
                     end_date = routes.last()
+                else:
+                    messages.error(request, _("You should've set routes for this mission."))
+                    context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
+                    return render(request, 'anexo/anexo5.html', context)
 
             ext = dExtenso()
             amount = str(int(mission.amount_paid))
@@ -112,7 +122,8 @@ def anexo5(request):
     process_number = process.process_number
 
     if process_number == '0000/00000-0':
-        messages.error(request, _('You should configure your process number on configurations.'))
+        messages.info(request, mark_safe(_('You should have configured your process number on configurations. '
+                                           ' Click <a href="../../configuration">here</a> to configure it.')))
 
     context = {'people': people, 'missions': missions, 'default_date': date, 'process': process_number}
     return render(request, 'anexo/anexo5.html', context)
