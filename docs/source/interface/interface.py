@@ -2,6 +2,7 @@ SUIT_CONFIG = {
     'MENU_OPEN_FIRST_CHILD': False,
     'HEADER_DATE_FORMAT': 'l, d F Y',
     'MENU': (
+        {'app': 'configuration', 'icon': 'icon-cog'},
         {'app': 'activity', 'icon': 'icon-calendar'},
         {'app': 'dissemination', 'icon': 'icon-facetime-video'},
         {'app': 'person', 'icon': 'icon-user'},

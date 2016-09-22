@@ -73,8 +73,14 @@ Adicionar um tipo de seminário
 ------------------------------
 
 Para adicionar um tipo de seminário, preencha o nome e clique em salvar.
+Você pode configurar uma imagem e um QR code para uma categoria, essas imagens são utilizadas na geração
+de pôsteres (ver `Pôster de um seminário <../documentos/main.html#poster-de-um-seminario>`_).
 
 .. image:: imagens/tipo.png
 
 :Campos obrigatórios:
 	Nome
+
+:Campos opcionais:
+
+	Imagem, QR code

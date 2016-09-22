@@ -83,10 +83,8 @@ msgid "Broad audience?"
 msgstr "Aberto ao público?"
 
 #: activity/models.py:105
-#, fuzzy
-#| msgid "Organized by "
 msgid "Organized by CEPID?"
-msgstr "Organizado por "
+msgstr "Organizado pelo CEPID? "
 
 #: activity/models.py:106
 msgid "Participant"
@@ -162,7 +160,6 @@ msgid "Logo for poster. We recommend an image with size 400x100."
 msgstr "Logo para o pôster. Recomendamos uma imagem com tamanho 400x100."
 
 #: activity/models.py:166
-#, fuzzy
 msgid "QR Code"
 msgstr "QR code"
 
@@ -245,16 +242,12 @@ msgid "No seminar matches the given query."
 msgstr "Nenhum seminário corresponde a esta consulta."
 
 #: configuration/apps.py:7
-#, fuzzy
-#| msgid "Duration"
 msgid "Configuration"
-msgstr "Duração"
+msgstr "Configuração"
 
 #: configuration/apps.py:8
-#, fuzzy
-#| msgid "Duration"
 msgid "Configurations"
-msgstr "Duração"
+msgstr "Configurações"
 
 #: configuration/models.py:8 configuration/models.py:11
 msgid "Process number"
@@ -265,16 +258,12 @@ msgid "Can change the process number."
 msgstr "Pode alterar o número do processo."
 
 #: configuration/models.py:17
-#, fuzzy
-#| msgid "Event name"
 msgid "CEPID name"
-msgstr "Nome do Evento"
+msgstr "Nome do CEPID"
 
 #: configuration/models.py:20
-#, fuzzy
-#| msgid "Periodical name"
 msgid "Cepid name"
-msgstr "Nome do periódico"
+msgstr "Nome do CEPID"
 
 #: configuration/models.py:21
 msgid "Can change the Cepid name."
@@ -1129,10 +1118,8 @@ msgid "No scientific mission matches the given query."
 msgstr "Nenhum missão científica corresponde a esta consulta."
 
 #: scientific_mission/views.py:94
-#, fuzzy
-#| msgid "You should select a journal for the paper \"%s\"."
 msgid "You should've set routes for this mission."
-msgstr "Você deve escolher um periódico para o paper \"%s\"."
+msgstr "Você deveria ter configurado rotas para essa missão."
 
 #: scientific_mission/views.py:108
 msgid "You should have set a person with your role of Principal Investigator."

@@ -7,3 +7,4 @@ Para administradores
 
    instalacao/main.rst
    interface/main.rst
+   configuracao/main.rst

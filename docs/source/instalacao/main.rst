@@ -118,7 +118,7 @@ Você também deve alterar a variável com o nome do seu CEPID.
 
 .. literalinclude:: ./settings_local.py
     :language: python
-    :emphasize-lines: 21, 23, 29-32
+    :emphasize-lines: 21, 24-32
 
 
 7. Configuração do Apache

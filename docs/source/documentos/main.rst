@@ -17,10 +17,15 @@ Clique nessa sessão para obter o documento Anexo 5 de uma missão científica p
 
 .. image:: imagens/anexo5.png
 
+:Observação importante:
+    Para gerar este documento, você deve configurar alguma pessoa como pesquisadora principal (ver `Configurações <../configuracao/main.html>`_), o nome dessa pessoa aparece no Anexo 5.
+
+
 :Campos opcionais:
     A data de emissão será a data do dia em que a ação executada caso nada seja preenchido.
 
-    O número do processo será o padrão definido caso o usuário não o altere.
+    O número do processo usado é o padrão do seu sistema (ver `Configurações <../configuracao/main.html>`_), você pode optar por digitar outro número.
+
 
 **********************
 Pôster de um seminário
@@ -30,8 +35,10 @@ Clique nessa sessão para obter um pôster de seminário.
 
 Escolha o palestrante, o seminário desejado e clique em obter pôster.
 
+O pôster terá no canto superior esquerdo a imagem determinada para o tipo do seminário (ver `Tipo de seminário <../atividades_projeto/main.html#tipos-de-seminario>`_).
+
 .. image:: imagens/poster_seminario.png
 
-Exemplo de pôster:
+Exemplo de pôster com uma imagem para o tipo de seminário:
 
 .. image:: imagens/exemplo_poster.jpg

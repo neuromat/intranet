@@ -20,8 +20,6 @@ ALLOWED_HOSTS = []
 # Ajuste o caminho para static
 STATIC_ROOT = '/var/lib/sistema-nira/nira/static/'
 
-CEPID_NAME = 'Seu Cepid'
-
 # Aqui você deve colocar as suas configurações de banco de dados
 DATABASES = {
     'default': {
