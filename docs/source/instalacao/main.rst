@@ -165,6 +165,10 @@ Crie um usuário administrador::
     python manage.py createsuperuser
 
 
+Coloque no banco de dados os perfis básicos de usuáriosL
+
+    python
+
 Para popular a base de dados com cidades de todos os continentes, faça::
 
     python manage.py cities_light

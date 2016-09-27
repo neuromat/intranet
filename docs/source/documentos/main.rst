@@ -18,7 +18,7 @@ Clique nessa sessão para obter o documento Anexo 5 de uma missão científica p
 .. image:: imagens/anexo5.png
 
 :Observação importante:
-    Para gerar este documento, você deve configurar alguma pessoa como pesquisadora principal (ver `Configurações <../configuracao/main.html>`_), o nome dessa pessoa aparece no Anexo 5.
+    Para gerar este documento, você deve configurar alguma pessoa com o perfil de pesquisadora principal (ver `Pessoa <../info_pessoal/main.html#pessoa>`_), o nome dessa pessoa aparece no Anexo 5.
 
 
 :Campos opcionais:

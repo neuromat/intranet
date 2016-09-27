@@ -105,7 +105,7 @@ def anexo5(request):
                 people = Person.objects.all()
                 principal_investigator = people.get(role__name="Principal Investigator")
             except:
-                messages.error(request, _('You should have set a person with your role of Principal Investigator.'))
+                messages.error(request, _('You must set a person with the role of Principal Investigator.'))
                 date = datetime.datetime.now()
                 context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
                 return render(request, 'anexo/anexo5.html', context)
