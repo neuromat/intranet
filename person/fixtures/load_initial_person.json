@@ -1,0 +1,23 @@
+[
+  {
+    "model": "person.Role",
+    "pk": 1,
+    "fields": {
+      "name": "Principal Investigator"
+    }
+  },
+  {
+    "model": "person.Role",
+    "pk": 2,
+    "fields": {
+      "name": "Co-principal Investigator"
+    }
+  },
+  {
+    "model": "person.Role",
+    "pk": 3,
+    "fields": {
+      "name": "Associate Investigator"
+    }
+  }
+]

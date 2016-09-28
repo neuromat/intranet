@@ -1,0 +1,23 @@
+[
+  {
+    "model": "research.TypeAcademicWork",
+    "pk": 1,
+    "fields": {
+      "name": "Post-doctoral"
+    }
+  },
+  {
+    "model": "research.TypeAcademicWork",
+    "pk": 2,
+    "fields": {
+      "name": "PhD"
+    }
+  },
+  {
+    "model": "research.TypeAcademicWork",
+    "pk": 3,
+    "fields": {
+      "name": "MSc"
+    }
+  }
+]

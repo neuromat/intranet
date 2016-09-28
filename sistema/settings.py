@@ -106,6 +106,13 @@ DATABASES = {
     }
 }
 
+# Fixtures
+
+FIXTURE_DIRS = (
+    '/person/fixtures/',
+    'research/fixtures/',
+)
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 

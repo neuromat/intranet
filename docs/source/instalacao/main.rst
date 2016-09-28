@@ -165,9 +165,10 @@ Crie um usuário administrador::
     python manage.py createsuperuser
 
 
-Coloque no banco de dados os perfis básicos de usuáriosL
+Coloque no banco de dados os perfis básicos de usuários e os tipos básicos para trabalhos acadêmicos::
 
-    python
+    python manage.py loaddata load_initial_person
+    python manage.py loaddata load_initial_research
 
 Para popular a base de dados com cidades de todos os continentes, faça::
 
