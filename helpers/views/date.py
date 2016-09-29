@@ -2,9 +2,6 @@
 import datetime
 
 
-TIME = " 00:00:00"
-
-
 def now_plus_thirty():
     date = datetime.datetime.now() + datetime.timedelta(days=30)
     date = date.strftime("%Y%m%d %H:%M:%S")
