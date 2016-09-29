@@ -66,8 +66,8 @@ class TrainingProgramTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # With date
-        response = self.client.post(reverse('training_programs_report'), {'start_date': '01-01-2015',
-                                                                          'end_date': '03-05-2017'})
+        response = self.client.post(reverse('training_programs_report'), {'start_date': '01/01/2015',
+                                                                          'end_date': '03/05/2017'})
         cont = response.context['training_programs']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
@@ -80,8 +80,8 @@ class TrainingProgramTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # With wrong date
-        response = self.client.post(reverse('training_programs_report'), {'start_date': '01-01-2017',
-                                                                          'end_date': '03-05-2015'})
+        response = self.client.post(reverse('training_programs_report'), {'start_date': '01/01/2017',
+                                                                          'end_date': '03/05/2015'})
         self.assertEqual(response.status_code, 200)
 
 

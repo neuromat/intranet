@@ -2,12 +2,13 @@
 import json as simplejson
 import os
 import StringIO  # PDF file
+
 from cgi import escape  # PDF file
-from xhtml2pdf import pisa  # PDF file
+from helpers.forms.date_range import DateRangeForm
 from helpers.views.date import *
-from activity.models import ProjectActivities, Seminar, SeminarType
 from helpers.views.latex import generate_latex
-from person.models import Person
+from xhtml2pdf import pisa  # PDF file
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -17,7 +18,8 @@ from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 
-from configuration.models import CepidName
+from activity.models import ProjectActivities, Seminar, SeminarType
+from person.models import Person
 
 
 def render_to_pdf(template_src, context_dict):
@@ -160,28 +162,38 @@ def seminar_show_titles(request):
 def training_programs_report(request):
 
     if request.method == 'POST':
-        start_date = request.POST['start_date']
-        if start_date:
-            start_date = start_date_typed(start_date)
-        else:
-            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
 
-        end_date = request.POST['end_date']
-        if end_date:
-            end_date = end_date_typed(end_date)
-        else:
-            end_date = now_plus_thirty()
+        form = DateRangeForm(request.POST)
 
-        training_programs = training_programs_search(start_date, end_date)
+        try:
+            if form.data['start_date'] == '':
+                start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+            else:
+                start_date = datetime.datetime.strptime(form.data['start_date'], "%d/%m/%Y").date()
+                start_date -= datetime.timedelta(days=1)
+        except ValueError:
+            start_date = False
 
-        if end_date >= start_date:
+        try:
+            if form.data['end_date'] == '':
+                end_date = now_plus_thirty()
+            else:
+                end_date = datetime.datetime.strptime(form.data['end_date'], "%d/%m/%Y").date()
+                end_date += datetime.timedelta(days=1)
+        except ValueError:
+            end_date = False
+
+        if start_date and end_date and end_date >= start_date:
+            training_programs = training_programs_search(start_date, end_date)
             context = {'start_date': start_date, 'end_date': end_date, 'training_programs': training_programs}
             return render(request, 'report/activity/training_programs_report.html', context)
         else:
-            messages.error(request, _('End date should be equal or greater than start date.'))
-            return render(request, 'report/activity/training_programs.html')
+            messages.error(request, _('You entered a wrong date format or the end date is not greater than or equal to'
+                                      ' the start date.'))
+    else:
+        form = DateRangeForm()
 
-    return render(request, 'report/activity/training_programs.html')
+    return render(request, 'report/activity/training_programs.html', {'form': form})
 
 
 @login_required
