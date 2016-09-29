@@ -2,7 +2,7 @@
 {% load i18n admin_static %}
 
 {% block extrahead %}
-<script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}" xmlns="http://www.w3.org/1999/html"></script>
+<script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
 <script src="{% static 'js/scientific_mission_report.js' %}"></script>
 {% endblock %}
 
@@ -11,9 +11,8 @@
 {% endblock %}
 
 {% block content %}
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get report" %}</button>
-</form>
-
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get report" %}</button>
+    </form>
 {% endblock %}

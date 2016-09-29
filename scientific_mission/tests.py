@@ -76,15 +76,15 @@ class ScientificMissionsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # With date
-        response = self.client.post(reverse('missions_report'), {'start_date': '01-01-2015',
-                                                                 'end_date': '03-05-2017'})
+        response = self.client.post(reverse('missions_report'), {'start_date': '01/01/2015',
+                                                                 'end_date': '03/05/2017'})
         cont = response.context['missions']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
         # With date, but out of range
-        response = self.client.post(reverse('missions_report'), {'start_date': '01-01-2016',
-                                                                 'end_date': '31-12-2016'})
+        response = self.client.post(reverse('missions_report'), {'start_date': '01/01/2016',
+                                                                 'end_date': '31/12/2016'})
         cont = response.context['missions']
         self.assertEqual(len(cont), 0)
         self.assertEqual(response.status_code, 200)
@@ -97,8 +97,8 @@ class ScientificMissionsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Wrong dates
-        response = self.client.post(reverse('missions_report'), {'start_date': '01-01-2016',
-                                                                 'end_date': '03-05-2015'})
+        response = self.client.post(reverse('missions_report'), {'start_date': '01/01/2016',
+                                                                 'end_date': '03/05/2015'})
         self.assertEqual(response.status_code, 200)
 
     def test_tex(self):

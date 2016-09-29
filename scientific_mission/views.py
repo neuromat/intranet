@@ -1,4 +1,3 @@
-import datetime
 import json as simplejson
 from activity.views import render_to_pdf
 from cities_light.models import City
@@ -10,6 +9,8 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
+
+from helpers.forms.date_range import DateRangeForm
 from helpers.views.date import *
 from helpers.views.latex import generate_latex
 from helpers.views.extenso import dExtenso
@@ -175,27 +176,40 @@ def missions_report(request):
 
     if request.method == 'POST':
 
-        start_date = request.POST['start_date']
-        if start_date:
-            start_date = start_date_typed(start_date)
-        else:
-            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+        form = DateRangeForm(request.POST)
 
-        end_date = request.POST['end_date']
-        if end_date:
-            end_date = end_date_typed(end_date)
-        else:
-            end_date = now_plus_thirty()
+        try:
+            if form.data['start_date'] == '':
+                start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+            else:
+                start_date = datetime.datetime.strptime(form.data['start_date'], "%d/%m/%Y").date()
+                start_date -= datetime.timedelta(days=1)
+        except ValueError:
+            start_date = False
 
-        if end_date >= start_date:
+        try:
+            if form.data['end_date'] == '':
+                end_date = now_plus_thirty()
+            else:
+                end_date = datetime.datetime.strptime(form.data['end_date'], "%d/%m/%Y").date()
+                end_date += datetime.timedelta(days=1)
+        except ValueError:
+            end_date = False
+
+        if start_date and end_date and end_date >= start_date:
             missions = get_missions(start_date, end_date)
             context = {'start_date': start_date, 'end_date': end_date, 'missions': missions}
             return render(request, 'report/scientific_mission/scientific_missions_report.html', context)
         else:
-            messages.error(request, 'End date should be equal or greater than start date.')
-            return render(request, 'report/scientific_mission/scientific_missions.html')
+            messages.error(request, _('You entered a wrong date format or the end date is not greater than or equal to'
+                                      ' the start date.'))
 
-    return render(request, 'report/scientific_mission/scientific_missions.html')
+    else:
+        form = DateRangeForm()
+        args = {}
+        args['form'] = form
+
+    return render(request, 'report/scientific_mission/scientific_missions.html', {'form': form})
 
 
 @login_required
