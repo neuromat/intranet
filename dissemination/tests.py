@@ -68,8 +68,8 @@ class DisseminationTest(TestCase):
 
         # With type external selected
         response = self.client.post(reverse('dissemination_report'), {'type': 'e',
-                                                                      'start_date': '01-01-2015',
-                                                                      'end_date': '01-02-2017'})
+                                                                      'start_date': '01/01/2015',
+                                                                      'end_date': '01/02/2017'})
         cont = response.context['disseminations']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
@@ -82,8 +82,8 @@ class DisseminationTest(TestCase):
             value = media['value']
             response = self.client.post(reverse('dissemination_report'), {'type': 'i',
                                                                           'internal_type': value,
-                                                                          'start_date': '01-01-2015',
-                                                                          'end_date': '03-05-2017'})
+                                                                          'start_date': '01/01/2015',
+                                                                          'end_date': '03/05/2017'})
             cont = response.context['disseminations']
             self.assertEqual(len(cont), 1)
             self.assertEqual(response.status_code, 200)
@@ -95,6 +95,6 @@ class DisseminationTest(TestCase):
     def test_dissemination_report_invalid_dates(self):
         # With type external selected
         response = self.client.post(reverse('dissemination_report'), {'type': 'e',
-                                                                      'start_date': '01-01-2019',
-                                                                      'end_date': '01-02-2017'})
+                                                                      'start_date': '01/01/2019',
+                                                                      'end_date': '01/02/2017'})
         self.assertEqual(response.status_code, 200)

@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
-from helpers.views.date import *
-from helpers.views.latex import escape_and_generate_latex
-from dissemination.models import Dissemination, Internal, InternalMediaOutlet, TYPE_OF_MEDIA
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 
+from helpers.views.date import *
+from helpers.views.latex import escape_and_generate_latex
+from dissemination.models import Dissemination, Internal, InternalMediaOutlet, TYPE_OF_MEDIA
+
 
 def internal_filter(internal_type, start_date, end_date):
-    disseminations = Internal.objects.filter(media_outlet_id=internal_type, date__gt=start_date,
-                                             date__lt=end_date).order_by('-date')
+    disseminations = Internal.objects.filter(media_outlet_id=internal_type, date__gte=start_date,
+                                             date__lte=end_date).order_by('-date')
     return disseminations
 
 
 def external_filter(start_date, end_date):
-    disseminations = Dissemination.objects.filter(type_of_media='e', date__gt=start_date,
-                                                  date__lt=end_date).order_by('-date')
+    disseminations = Dissemination.objects.filter(type_of_media='e', date__gte=start_date,
+                                                  date__lte=end_date).order_by('-date')
     return disseminations
 
 
@@ -29,50 +30,51 @@ def dissemination_report(request):
     internal_type = ''
 
     if request.method == 'POST':
-
         media_type = request.POST['type']
 
-        start_date = request.POST['start_date']
+        try:
+            if request.POST['start_date'] == '':
+                start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+            else:
+                start_date = datetime.datetime.strptime(request.POST['start_date'], "%d/%m/%Y").date()
+        except ValueError:
+            start_date = False
 
-        if start_date:
-            start_date = start_date_typed(start_date)
-        else:
-            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+        try:
+            if request.POST['end_date'] == '':
+                end_date = now_plus_thirty()
+            else:
+                end_date = datetime.datetime.strptime(request.POST['end_date'], "%d/%m/%Y").date()
+        except ValueError:
+            end_date = False
 
-        end_date = request.POST['end_date']
+        if media_type != '0':
+            if start_date and end_date and end_date >= start_date:
+                disseminations = ''
+                media_name = ''
 
-        if end_date:
-            end_date = end_date_typed(end_date)
-        else:
-            end_date = now_plus_thirty()
+                if media_type == 'i':
+                    internal_type = request.POST['internal_type']
+                    disseminations = internal_filter(internal_type, start_date, end_date)
+                    media_name = InternalMediaOutlet.objects.get(id=internal_type).name
 
-        # Internal, external or no type selected
-        type_selected = True
-        if media_type == 'i':
-            internal_type = request.POST['internal_type']
-            disseminations = internal_filter(internal_type, start_date, end_date)
-            media_name = InternalMediaOutlet.objects.get(id=internal_type).name
+                elif media_type == 'e':
+                    disseminations = external_filter(start_date, end_date)
+                    media_name = ''
 
-        elif media_type == 'e':
-            disseminations = external_filter(start_date, end_date)
-            media_name = ''
-
-        else:
-            type_selected = False
-
-        if type_selected:
-            if end_date >= start_date:
                 context = {'start_date': start_date,
                            'end_date': end_date,
                            'disseminations': disseminations,
                            'type': media_type,
                            'media_name': media_name,
                            'internal_type': internal_type}
+
                 return render(request, 'report/dissemination/dissemination_report.html', context)
+
             else:
-                context = {'types': types, 'internal_types': internal_types}
-                messages.error(request, _('End date should be equal or greater than start date.'))
-                return render(request, 'report/dissemination/dissemination.html', context)
+                messages.error(request, _('You entered a wrong date format or the end date is not greater than or equal'
+                                          ' to the start date.'))
+
         else:
             messages.error(request, _('You should choose a type.'))
 
