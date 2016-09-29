@@ -1,10 +1,11 @@
 import datetime
-import tempfile
-from activity.models import ProjectActivities, Seminar, SeminarType, TrainingProgram, Meeting
-from activity.views import render_to_pdf, training_programs_search, seminars_search
+
 from django.core.urlresolvers import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
+
+from activity.models import Seminar, SeminarType, TrainingProgram, Meeting
+from activity.views import training_programs_search, seminars_search
 from person.models import Person
 from research.tests import system_authentication
 
@@ -119,7 +120,6 @@ class SeminarsTest(TestCase):
         seminar2 = seminar('Seminar2', type2, self.date2)
         seminar2.save()
 
-
     def test_report(self):
 
         # With nothing
@@ -127,16 +127,16 @@ class SeminarsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # With date and all categories
-        response = self.client.post(reverse('seminars_report'), {'start_date': '01-01-2015',
-                                                                 'end_date': '03-05-2017',
+        response = self.client.post(reverse('seminars_report'), {'start_date': '01/01/2015',
+                                                                 'end_date': '03/05/2017',
                                                                  'category': '0'})
         cont = response.context['seminars']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
         # With date and specific category
-        response = self.client.post(reverse('seminars_report'), {'start_date': '01-01-2015',
-                                                                 'end_date': '03-05-2017',
+        response = self.client.post(reverse('seminars_report'), {'start_date': '01/01/2015',
+                                                                 'end_date': '03/05/2017',
                                                                  'category': 'All'})
         cont = response.context['seminars']
         self.assertEqual(len(cont), 1)
@@ -151,8 +151,8 @@ class SeminarsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Wrong dates
-        response = self.client.post(reverse('seminars_report'), {'start_date': '01-01-2016',
-                                                                 'end_date': '03-05-2015',
+        response = self.client.post(reverse('seminars_report'), {'start_date': '01/01/2016',
+                                                                 'end_date': '03/05/2015',
                                                                  'category': 'All'})
         self.assertEqual(response.status_code, 200)
 
@@ -232,22 +232,22 @@ class MeetingsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # With valid date, to each category
-        response = self.client.post(reverse('meetings_report'), {'start_date': '01-01-2014',
-                                                                 'end_date': '03-05-2017',
+        response = self.client.post(reverse('meetings_report'), {'start_date': '01/01/2014',
+                                                                 'end_date': '03/05/2017',
                                                                  'broad_audience': 0})
         cont = response.context['meetings']
         self.assertEqual(len(cont), 3)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('meetings_report'), {'start_date': '01-01-2014',
-                                                                 'end_date': '03-05-2017',
+        response = self.client.post(reverse('meetings_report'), {'start_date': '01/01/2014',
+                                                                 'end_date': '03/05/2017',
                                                                  'broad_audience': 1})
         cont = response.context['meetings']
         self.assertEqual(len(cont), 2)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('meetings_report'), {'start_date': '01-01-2014',
-                                                                 'end_date': '03-05-2015',
+        response = self.client.post(reverse('meetings_report'), {'start_date': '01/01/2014',
+                                                                 'end_date': '03/05/2015',
                                                                  'broad_audience': 2})
         cont = response.context['meetings']
         self.assertEqual(len(cont), 1)
@@ -262,6 +262,6 @@ class MeetingsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # With wrong date
-        response = self.client.post(reverse('meetings_report'), {'start_date': '01-01-2017',
-                                                                 'end_date': '03-05-2015'})
+        response = self.client.post(reverse('meetings_report'), {'start_date': '01/01/2017',
+                                                                 'end_date': '03/05/2015'})
         self.assertEqual(response.status_code, 200)

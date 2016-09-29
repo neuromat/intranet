@@ -61,35 +61,43 @@ def seminars_report(request):
     categories = SeminarType.objects.all()
 
     if request.method == 'POST':
-        start_date = request.POST['start_date']
-        if start_date:
-            start_date = start_date_typed(start_date)
-        else:
-            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
-
-        end_date = request.POST['end_date']
-        if end_date:
-            end_date = end_date_typed(end_date)
-        else:
-            end_date = now_plus_thirty()
-
         category = request.POST['category']
 
-        # All seminars
-        if category == '0':
-            seminars = seminars_search(start_date, end_date, 'All')
-            category = "All"
+        try:
+            if request.POST['start_date'] == '':
+                start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+            else:
+                start_date = datetime.datetime.strptime(request.POST['start_date'], "%d/%m/%Y").date()
+                start_date -= datetime.timedelta(days=1)
+        except ValueError:
+            start_date = False
 
-        # Specific category
-        else:
-            seminars = seminars_search(start_date, end_date, category)
+        try:
+            if request.POST['end_date'] == '':
+                end_date = now_plus_thirty()
+            else:
+                end_date = datetime.datetime.strptime(request.POST['end_date'], "%d/%m/%Y").date()
+                end_date += datetime.timedelta(days=1)
+        except ValueError:
+            end_date = False
 
-        if end_date >= start_date:
+        if start_date and end_date and end_date >= start_date:
+
+            # All seminars
+            if category == '0':
+                seminars = seminars_search(start_date, end_date, 'All')
+                category = "All"
+
+            # Specific category
+            else:
+                seminars = seminars_search(start_date, end_date, category)
+
             context = {'start_date': start_date, 'end_date': end_date, 'seminars': seminars, 'category': category}
             return render(request, 'report/activity/seminars_report.html', context)
+
         else:
-            messages.error(request, _('End date should be equal or greater than start date.'))
-            return render(request, 'report/activity/seminars.html')
+            messages.error(request, _('You entered a wrong date format or the end date is not greater than or equal to'
+                                      ' the start date.'))
 
     context = {'categories': categories}
 
@@ -213,44 +221,51 @@ def training_programs_latex(request):
 def meetings_report(request):
 
     if request.method == 'POST':
-        start_date = request.POST['start_date']
-        if start_date:
-            start_date = start_date_typed(start_date)
-        else:
-            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
-
-        end_date = request.POST['end_date']
-        if end_date:
-            end_date = end_date_typed(end_date)
-        else:
-            end_date = now_plus_thirty()
-
         broad_audience = request.POST.get('broad_audience', False)
 
-        meetings = []
+        try:
+            if request.POST['start_date'] == '':
+                start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+            else:
+                start_date = datetime.datetime.strptime(request.POST['start_date'], "%d/%m/%Y").date()
+                start_date -= datetime.timedelta(days=1)
+        except ValueError:
+            start_date = False
 
-        if broad_audience == '0':
-            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__start_date__gt=start_date,
-                                                        meeting__start_date__lt=end_date).\
-                order_by('meeting__start_date')
+        try:
+            if request.POST['end_date'] == '':
+                end_date = now_plus_thirty()
+            else:
+                end_date = datetime.datetime.strptime(request.POST['end_date'], "%d/%m/%Y").date()
+                end_date += datetime.timedelta(days=1)
+        except ValueError:
+            end_date = False
 
-        elif broad_audience == '1':
-            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__broad_audience='1',
-                                                        meeting__start_date__gt=start_date,
-                                                        meeting__start_date__lt=end_date).\
-                order_by('meeting__start_date')
+        if start_date and end_date and end_date >= start_date:
+            meetings = []
 
-        elif broad_audience == '2':
-            meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__broad_audience='0',
-                                                        meeting__start_date__gt=start_date,
-                                                        meeting__start_date__lt=end_date).\
-                order_by('meeting__start_date')
+            if broad_audience == '0':
+                meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__start_date__gt=start_date,
+                                                            meeting__start_date__lt=end_date).\
+                    order_by('meeting__start_date')
 
-        if end_date >= start_date:
+            elif broad_audience == '1':
+                meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__broad_audience='1',
+                                                            meeting__start_date__gt=start_date,
+                                                            meeting__start_date__lt=end_date).\
+                    order_by('meeting__start_date')
+
+            elif broad_audience == '2':
+                meetings = ProjectActivities.objects.filter(type_of_activity='m', meeting__broad_audience='0',
+                                                            meeting__start_date__gt=start_date,
+                                                            meeting__start_date__lt=end_date).\
+                    order_by('meeting__start_date')
+
             context = {'meetings': meetings}
             return render(request, 'report/activity/meetings_report.html', context)
+
         else:
-            messages.error(request, _('End date should be equal or greater than start date.'))
-            return render(request, 'report/activity/meetings.html')
+            messages.error(request, _('You entered a wrong date format or the end date is not greater than or equal to'
+                                      ' the start date.'))
 
     return render(request, 'report/activity/meetings.html')
