@@ -5,13 +5,6 @@ import datetime
 TIME = " 00:00:00"
 
 
-def valid_date(date):
-    day = date[0:2]
-    month = date[3:5]
-    year = date[6:]
-    return (01 <= int(day) <= 31) and (01 <= int(month) <= 12) and (int(year) >= 0)
-
-
 def start_date_typed(start_date):
     start_day = start_date[0:2]
     start_month = start_date[3:5]

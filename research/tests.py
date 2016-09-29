@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
                             PublishedInPeriodical, Periodical
-from research.views import scholar, scholar_info, valid_date, now_plus_five_years, arxiv, import_papers
+from research.views import scholar, scholar_info, now_plus_five_years, arxiv, import_papers
 
 
 USERNAME = 'myuser'
@@ -245,8 +245,8 @@ class ResearchTimelineTest(TestCase):
 
     def test_current_academic_works_report(self):
         """ Report of current academic works is fine """
-        start_date = '01-07-2014'
-        end_date = '31-07-2015'
+        start_date = '01/07/2014'
+        end_date = '31/07/2015'
 
         response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
 
@@ -265,8 +265,8 @@ class ResearchTimelineTest(TestCase):
 
     def test_previous_academic_works_report(self):
         """ Report of previous academic works is fine """
-        start_date = '01-07-2013'
-        end_date = '01-07-2014'
+        start_date = '01/07/2013'
+        end_date = '01/07/2014'
 
         response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
 
@@ -284,8 +284,8 @@ class ResearchTimelineTest(TestCase):
 
     def test_current_articles_report(self):
         """ Report of current articles is fine """
-        start_date = '01-07-2014'
-        end_date = '31-07-2015'
+        start_date = '01/07/2014'
+        end_date = '31/07/2015'
 
         response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
 
@@ -320,8 +320,8 @@ class ResearchTimelineTest(TestCase):
 
     def test_previous_articles_report(self):
         """ Report of previous articles is fine """
-        start_date = '01-07-2013'
-        end_date = '31-07-2014'
+        start_date = '01/07/2013'
+        end_date = '31/07/2014'
 
         response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
 
@@ -424,21 +424,6 @@ class DateTest(TestCase):
     """
     Testing methods that handle dates
     """
-
-    def setUp(self):
-        self.date = "29/12/1995"
-        self.invalid_day = "32/12/1995"
-        self.invalid_month = "20/13/1995"
-        self.invalid_year = "20/12/-1000"
-
-    def test_valid_dates(self):
-        """
-        Test if date is valid
-        """
-        self.assertTrue(valid_date(self.date))
-        self.assertFalse(valid_date(self.invalid_day))
-        self.assertFalse(valid_date(self.invalid_month))
-        self.assertFalse(valid_date(self.invalid_year))
 
     def test_now_plus_five_years(self):
         """

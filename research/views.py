@@ -89,47 +89,51 @@ def articles_report(request):
     if request.method == "POST":
 
         form = DateRangeForm(request.POST)
-        start_date = form.data['start_date']
-        end_date = form.data['end_date']
 
-        if start_date and end_date:
-
-            if valid_date(start_date) and valid_date(end_date):
-
-                start_date = start_date_typed(start_date)
-                end_date = end_date_typed(end_date)
-
-                if start_date < end_date:
-
-                    published_scientific, accepted_scientific, submitted_scientific, draft_scientific, published_dissemin, \
-                        accepted_dissemin, submitted_dissemin, draft_dissemin, published_tec_trans, accepted_tec_trans, \
-                        submitted_tec_trans, draft_tec_trans, published_scientific_in_event, accepted_scientific_in_event, \
-                        published_dissemin_in_event, accepted_dissemin_in_event, published_tec_trans_in_event, \
-                        accepted_tec_trans_in_event = search_articles(start_date, end_date)
-
-                    context = {'published_scientific': published_scientific, 'accepted_scientific': accepted_scientific,
-                               'submitted_scientific': submitted_scientific, 'draft_scientific': draft_scientific,
-                               'published_dissemin': published_dissemin, 'accepted_dissemin': accepted_dissemin,
-                               'submitted_dissemin': submitted_dissemin, 'draft_dissemin': draft_dissemin,
-                               'published_tec_trans': published_tec_trans, 'accepted_tec_trans': accepted_tec_trans,
-                               'submitted_tec_trans': submitted_tec_trans, 'draft_tec_trans': draft_tec_trans,
-                               'published_scientific_in_event': published_scientific_in_event,
-                               'accepted_scientific_in_event': accepted_scientific_in_event,
-                               'published_dissemin_in_event': published_dissemin_in_event,
-                               'accepted_dissemin_in_event': accepted_dissemin_in_event,
-                               'published_tec_trans_in_event': published_tec_trans_in_event,
-                               'accepted_tec_trans_in_event': accepted_tec_trans_in_event,
-                               'start_date': start_date, 'end_date': end_date}
-                    return render(request, 'report/research/articles_report.html', context)
-
-                else:
-                    messages.error(request, _('End date should be equal or greater than start date.'))
-
+        try:
+            if form.data['start_date'] == '':
+                start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
             else:
-                messages.error(request, _('Please, enter a valid pair of dates.'))
+                start_date = datetime.datetime.strptime(form.data['start_date'], "%d/%m/%Y").date()
+                start_date -= datetime.timedelta(days=1)
+        except ValueError:
+            start_date = False
+
+        try:
+            if form.data['end_date'] == '':
+                end_date = now_plus_thirty()
+            else:
+                end_date = datetime.datetime.strptime(form.data['end_date'], "%d/%m/%Y").date()
+                end_date += datetime.timedelta(days=1)
+        except ValueError:
+            end_date = False
+
+        if start_date and end_date and start_date < end_date:
+
+            published_scientific, accepted_scientific, submitted_scientific, draft_scientific, published_dissemin, \
+                accepted_dissemin, submitted_dissemin, draft_dissemin, published_tec_trans, accepted_tec_trans, \
+                submitted_tec_trans, draft_tec_trans, published_scientific_in_event, accepted_scientific_in_event, \
+                published_dissemin_in_event, accepted_dissemin_in_event, published_tec_trans_in_event, \
+                accepted_tec_trans_in_event = search_articles(start_date, end_date)
+
+            context = {'published_scientific': published_scientific, 'accepted_scientific': accepted_scientific,
+                       'submitted_scientific': submitted_scientific, 'draft_scientific': draft_scientific,
+                       'published_dissemin': published_dissemin, 'accepted_dissemin': accepted_dissemin,
+                       'submitted_dissemin': submitted_dissemin, 'draft_dissemin': draft_dissemin,
+                       'published_tec_trans': published_tec_trans, 'accepted_tec_trans': accepted_tec_trans,
+                       'submitted_tec_trans': submitted_tec_trans, 'draft_tec_trans': draft_tec_trans,
+                       'published_scientific_in_event': published_scientific_in_event,
+                       'accepted_scientific_in_event': accepted_scientific_in_event,
+                       'published_dissemin_in_event': published_dissemin_in_event,
+                       'accepted_dissemin_in_event': accepted_dissemin_in_event,
+                       'published_tec_trans_in_event': published_tec_trans_in_event,
+                       'accepted_tec_trans_in_event': accepted_tec_trans_in_event,
+                       'start_date': start_date, 'end_date': end_date}
+            return render(request, 'report/research/articles_report.html', context)
 
         else:
-            messages.error(request, _('Please, fill the dates.'))
+            messages.error(request, _('You entered a wrong date format or the end date is not greater than or equal to'
+                                      ' the start date.'))
 
     else:
         form = DateRangeForm()
@@ -202,36 +206,40 @@ def academic_works(request):
     if request.method == "POST":
 
         form = DateRangeForm(request.POST)
-        start_date = form.data['start_date']
-        end_date = form.data['end_date']
 
-        if start_date and end_date:
-
-            if valid_date(start_date) and valid_date(end_date):
-
-                start_date = start_date_typed(start_date)
-                end_date = end_date_typed(end_date)
-
-                if start_date < end_date:
-
-                    postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, \
-                    msc_in_progress = search_academic_works(start_date, end_date)
-
-                    context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
-                               'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-                               'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress,
-                               'start_date': start_date, 'end_date': end_date}
-
-                    return render(request, 'report/research/academic_works_report.html', context)
-
-                else:
-                    messages.error(request, _('End date should be equal or greater than start date.'))
-
+        try:
+            if form.data['start_date'] == '':
+                start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
             else:
-                messages.error(request, _('Please, enter a valid pair of dates.'))
+                start_date = datetime.datetime.strptime(form.data['start_date'], "%d/%m/%Y").date()
+                start_date -= datetime.timedelta(days=1)
+        except ValueError:
+            start_date = False
+
+        try:
+            if form.data['end_date'] == '':
+                end_date = now_plus_thirty()
+            else:
+                end_date = datetime.datetime.strptime(form.data['end_date'], "%d/%m/%Y").date()
+                end_date += datetime.timedelta(days=1)
+        except ValueError:
+            end_date = False
+
+        if start_date and end_date and start_date < end_date:
+
+            postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, \
+            msc_in_progress = search_academic_works(start_date, end_date)
+
+            context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
+                       'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
+                       'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress,
+                       'start_date': start_date, 'end_date': end_date}
+
+            return render(request, 'report/research/academic_works_report.html', context)
 
         else:
-            messages.error(request, _('Please, fill the dates.'))
+            messages.error(request, _('You entered a wrong date format or the end date is not greater than or equal to'
+                                      ' the start date.'))
 
     else:
         form = DateRangeForm()
