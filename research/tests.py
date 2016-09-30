@@ -32,7 +32,8 @@ def testing_session(instance):
 
     session = instance.client.session
     session['papers'] = []
-    session['periodicals_to_add'] = ['Journal of Statistical Physics','Brazilian Journal of Probability and Statistics']
+    session['periodicals_to_add'] = ['Journal of Statistical Physics',
+                                     'Brazilian Journal of Probability and Statistics']
     session['event_papers'] = []
     session['arxiv_papers'] = []
     session['periodical_update_papers'] = []
@@ -41,9 +42,9 @@ def testing_session(instance):
     return session
 
 
-def create_postdoc(type, title, advisee, advisor, start_date, end_date, abstract):
+def create_postdoc(type_of_work, title, advisee, advisor, start_date, end_date, abstract):
     postdoc = AcademicWork()
-    postdoc.type = type
+    postdoc.type = type_of_work
     postdoc.title = title
     postdoc.advisee = advisee
     postdoc.advisor = advisor

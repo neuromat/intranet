@@ -179,23 +179,29 @@ def articles_tex(request):
 
 def search_academic_works(start_date, end_date):
     # Get all the Postdocs among the chosen dates
-    postdoc_concluded = AcademicWork.objects.filter(type__name='Post-doctoral', end_date__gt=start_date,
-                                                    end_date__lt=end_date).order_by('-end_date')
-    postdoc_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gt=end_date),
+    postdoc_concluded = AcademicWork.objects.filter(type__name='Post-doctoral', end_date__gte=start_date,
+                                                    end_date__lte=end_date).order_by('-end_date')
+    postdoc_concluded_ids = postdoc_concluded.values_list('id', flat=True)
+    postdoc_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gte=end_date),
                                                       type__name='Post-doctoral',
-                                                      start_date__lt=end_date).order_by('-start_date')
+                                                      start_date__lte=end_date).order_by('-start_date')\
+        .exclude(id__in=postdoc_concluded_ids)
 
     # Get all the PhDs among the chosen dates
-    phd_concluded = AcademicWork.objects.filter(type__name='PhD', end_date__gt=start_date,
-                                                end_date__lt=end_date).order_by('-end_date')
-    phd_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gt=end_date),
-                                                  type__name='PhD', start_date__lt=end_date).order_by('-start_date')
+    phd_concluded = AcademicWork.objects.filter(type__name='PhD', end_date__gte=start_date,
+                                                end_date__lte=end_date).order_by('-end_date')
+    phd_concluded_ids = phd_concluded.values_list('id', flat=True)
+    phd_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gte=end_date),
+                                                  type__name='PhD', start_date__lte=end_date).order_by('-start_date')\
+        .exclude(id__in=phd_concluded_ids)
 
     # Get all the MScs among the chosen dates
-    msc_concluded = AcademicWork.objects.filter(type__name='MSc', end_date__gt=start_date,
-                                                end_date__lt=end_date).order_by('-end_date')
-    msc_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gt=end_date),
-                                                  type__name='MSc', start_date__lt=end_date).order_by('-start_date')
+    msc_concluded = AcademicWork.objects.filter(type__name='MSc', end_date__gte=start_date,
+                                                end_date__lte=end_date).order_by('-end_date')
+    msc_concluded_ids = msc_concluded.values_list('id', flat=True)
+    msc_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gte=end_date),
+                                                  type__name='MSc', start_date__lte=end_date).order_by('-start_date')\
+        .exclude(id__in=msc_concluded_ids)
 
     return postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress
 
@@ -212,7 +218,6 @@ def academic_works(request):
                 start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
             else:
                 start_date = datetime.datetime.strptime(form.data['start_date'], "%d/%m/%Y").date()
-                start_date -= datetime.timedelta(days=1)
         except ValueError:
             start_date = False
 
@@ -221,14 +226,13 @@ def academic_works(request):
                 end_date = now_plus_thirty()
             else:
                 end_date = datetime.datetime.strptime(form.data['end_date'], "%d/%m/%Y").date()
-                end_date += datetime.timedelta(days=1)
         except ValueError:
             end_date = False
 
         if start_date and end_date and start_date < end_date:
 
-            postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, \
-            msc_in_progress = search_academic_works(start_date, end_date)
+            postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress = \
+                search_academic_works(start_date, end_date)
 
             context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
                        'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
