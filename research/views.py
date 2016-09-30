@@ -4,21 +4,22 @@ import HTMLParser
 import re
 import requests
 import time
-from itertools import chain
-from random import randint
+
 from bs4 import BeautifulSoup
-from research.models import *
-from person.models import CitationName
-from helpers.views.latex import tex_escape
-from helpers.views.date import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render, HttpResponse, redirect
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
+from itertools import chain
+from random import randint
 
 from helpers.forms.date_range import DateRangeForm
+from helpers.views.latex import tex_escape
+from helpers.views.date import *
+from research.models import *
+from person.models import CitationName
 
 SCHOLAR = 'https://scholar.google.com.br'
 SCHOLAR_USER = '/citations?user=OaY57UIAAAAJ&cstart=00&pagesize=1000'
@@ -26,14 +27,14 @@ SCHOLAR_USER = '/citations?user=OaY57UIAAAAJ&cstart=00&pagesize=1000'
 
 def search_articles(start_date, end_date):
     # List of articles
-    published_periodical = PublishedInPeriodical.objects.filter(article__type='p', date__gt=start_date,
-                                                                date__lt=end_date).order_by('date')
+    published_periodical = PublishedInPeriodical.objects.filter(article__type='p', date__gte=start_date,
+                                                                date__lte=end_date).order_by('date')
     published_event = Published.objects.filter(
-        article__type='e', article__event__start_date__lt=end_date,
-        article__event__end_date__gt=start_date).order_by('article__event__start_date')
-    accepted = Accepted.objects.filter(date__lt=end_date).order_by('date')
-    submitted = Submitted.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
-    draft = Draft.objects.filter(date__lt=end_date).order_by('article_id').distinct('article_id')
+        article__type='e', article__event__start_date__lte=end_date,
+        article__event__end_date__gte=start_date).order_by('article__event__start_date')
+    accepted = Accepted.objects.filter(date__lte=end_date).order_by('date')
+    submitted = Submitted.objects.filter(date__lte=end_date).order_by('article_id').distinct('article_id')
+    draft = Draft.objects.filter(date__lte=end_date).order_by('article_id').distinct('article_id')
 
     # Articles IDs
     published_periodical_ids = published_periodical.values_list('article_id', flat=True)
@@ -95,7 +96,6 @@ def articles_report(request):
                 start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
             else:
                 start_date = datetime.datetime.strptime(form.data['start_date'], "%d/%m/%Y").date()
-                start_date -= datetime.timedelta(days=1)
         except ValueError:
             start_date = False
 
@@ -104,7 +104,6 @@ def articles_report(request):
                 end_date = now_plus_thirty()
             else:
                 end_date = datetime.datetime.strptime(form.data['end_date'], "%d/%m/%Y").date()
-                end_date += datetime.timedelta(days=1)
         except ValueError:
             end_date = False
 
@@ -137,8 +136,6 @@ def articles_report(request):
 
     else:
         form = DateRangeForm()
-        args = {}
-        args['form'] = form
 
     return render(request, 'report/research/articles.html', {
         'form': form
@@ -247,8 +244,6 @@ def academic_works(request):
 
     else:
         form = DateRangeForm()
-        args = {}
-        args['form'] = form
 
     return render(request, 'report/research/academic_works.html', {
         'form': form
