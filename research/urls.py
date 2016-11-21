@@ -4,6 +4,7 @@ from django.conf.urls import url
 
 urlpatterns = [
     url(r'^articles_tex/$', views.articles_tex, name='articles_tex'),
+    url(r'^articles_pdf/$', views.articles_pdf, name='articles_pdf'),
     url(r'^academic_works_tex/$', views.academic_works_tex, name='academic_works_tex'),
     url(r'^add_periodicals/$', views.add_periodicals, name='add_periodicals'),
     url(r'^add_papers/$', views.add_papers, name='add_papers'),

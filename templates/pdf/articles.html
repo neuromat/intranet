@@ -1,21 +1,68 @@
-{% extends "admin/base_site.html" %}
 {% load i18n %}
+<html>
+    <head>
+        <title>Report PDF</title>
+        <style type="text/css">
+            @page {
+                size: a4;
+                margin: 2cm 2cm 0.5cm 2cm;
+                padding:0;
+                font-family: Helvetica, Arial, sans-serif;
+            }
+            .page-break{
+                page-break-after: always;
+            }
+            .category_seminar{
+                font-size: 32pt;
+            }
+            .other_seminar{
+                text-align: center;
+                font-size: 50pt;
+            }
+            .seminar_big_title{
+                font-size: 38pt;
+                font-weight: bold;
+                line-height: 40pt;
+            }
+            .seminar_big_speaker{
+                font-size: 32pt;
+                line-height: 35pt;
+            }
+            .seminar_title{
+                font-size: 32pt;
+                font-weight: bold;
+                line-height: 40pt;
 
-{% block breadcrumbs %}
-    <div class="breadcrumbs"><a href="/">{% trans 'Home' %}</a> › <a href="/reports">{% trans 'Reports' %}</a> › <span class="active">{% trans 'Articles' %}</span></div>
-{% endblock %}
-
-{% block content %}
-
-{% if published_or_accepted or draft_or_submitted or event %}
-    <p>
-        <a class="btn btn-primary" href="{% url 'articles_tex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
-        <a class="btn btn-primary" href="{% url 'articles_pdf' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}"><i class="icon-download icon-white"></i> {% trans 'Download .pdf file' %}</a>
-    </p>
+            }
+            .seminar_speaker{
+                font-size: 26pt;
+            }
+            .seminar_details{
+                font-size: 16pt;
+                font-weight: bold;
+            }
+            .seminar_address{
+                font-size: 14pt;
+                font-weight: bold;
+            }
+            .footer{
+                font-size: 12pt;
+            }
+            table {
+                width: 100%;
+                height: 100%;
+                margin: 0 auto;
+            }
+            p.title {
+                font-weight: bold;
+                text-align: center;
+                font-size:15px;
+            }
+        </style>
+    </head>
 
     {% if published_or_accepted %}
-
-        <p><strong>{% trans "Published or accepted"%}</strong></p>
+        <p class="title"><strong>Annex 1a - Articles published or accepted for publication</strong></p>
         <ol type="1">
             {% for article in published_or_accepted %}
 
@@ -69,11 +116,13 @@
 
             {% endfor %}
         </ol>
+        <div>
+            <pdf:nextpage />
+        </div>
     {% endif %}
 
     {% if draft_or_submitted %}
-
-        <p><strong>{% trans "Draft or submitted"%}</strong></p>
+        <p class="title"><strong>Annex 1b - Articles submitted or uploaded to arXiv</strong></p>
         <ol type="1">
             {% for article in draft_or_submitted %}
                 {% if not article.article.hide %}
@@ -95,12 +144,13 @@
                 {% endif %}
             {% endfor %}
         </ol>
+        <div>
+            <pdf:nextpage />
+        </div>
     {% endif %}
 
     {% if event %}
-
-        <p><strong>Events</strong></p>
-
+        <p class="title"><strong>Annex 1c - Communications in meetings with referee</strong></p>
         <ol type="1">
         {% for article in event %}
             {% if article.article.status == 'a' %}
@@ -155,12 +205,14 @@
             {% endif %}
         {% endfor %}
         </ol>
+        <div>
+            <pdf:nextpage />
+        </div>
     {% endif %}
 
-{%  else %}
-    <strong>{% trans "No articles found!" %}</strong>
-{% endif %}
+</html>
 
-{% endblock %}
 
-4195-7054
+
+
+
