@@ -1,65 +1,11 @@
 {% load i18n %}
-<html>
-    <head>
-        <title>Report PDF</title>
-        <style type="text/css">
-            @page {
-                size: a4;
-                margin: 2cm 2cm 0.5cm 2cm;
-                padding:0;
-                font-family: Helvetica, Arial, sans-serif;
-            }
-            .page-break{
-                page-break-after: always;
-            }
-            .category_seminar{
-                font-size: 32pt;
-            }
-            .other_seminar{
-                text-align: center;
-                font-size: 50pt;
-            }
-            .seminar_big_title{
-                font-size: 38pt;
-                font-weight: bold;
-                line-height: 40pt;
-            }
-            .seminar_big_speaker{
-                font-size: 32pt;
-                line-height: 35pt;
-            }
-            .seminar_title{
-                font-size: 32pt;
-                font-weight: bold;
-                line-height: 40pt;
 
-            }
-            .seminar_speaker{
-                font-size: 26pt;
-            }
-            .seminar_details{
-                font-size: 16pt;
-                font-weight: bold;
-            }
-            .seminar_address{
-                font-size: 14pt;
-                font-weight: bold;
-            }
-            .footer{
-                font-size: 12pt;
-            }
-            table {
-                width: 100%;
-                height: 100%;
-                margin: 0 auto;
-            }
-            p.title {
-                font-weight: bold;
-                text-align: center;
-                font-size:15px;
-            }
-        </style>
-    </head>
+{% load static from staticfiles %}
+<html>
+    {% block extrahead %}
+        <title>Report PDF</title>
+        <link rel="stylesheet" type="text/css" href="{% static "css/articles.css" %}" />
+    {% endblock %}
 
     {% if published_or_accepted %}
         <p class="title"><strong>Annex 1a - Articles published or accepted for publication</strong></p>
@@ -211,8 +157,3 @@
     {% endif %}
 
 </html>
-
-
-
-
-

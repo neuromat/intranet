@@ -207,7 +207,7 @@ def articles_pdf(request):
                'event': event,
                'start_date': start_date, 'end_date': end_date}
 
-    return render_to_pdf('pdf/articles.html', context)
+    return render_to_pdf('report/research/pdf/articles.html', context)
 
 
 def search_academic_works(start_date, end_date):
@@ -302,6 +302,22 @@ def academic_works_tex(request):
                             content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
     return response
+
+
+@login_required
+def academic_works_pdf(request):
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, \
+        msc_in_progress = search_academic_works(start_date, end_date)
+
+    context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
+               'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
+               'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
+
+    return render_to_pdf('report/research/pdf/academic_works.html', context)
 
 
 def scholar():
