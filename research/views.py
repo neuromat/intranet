@@ -179,6 +179,7 @@ def articles_tex(request):
 
     return latex_response
 
+
 @login_required
 def articles_pdf(request):
 
@@ -197,7 +198,7 @@ def articles_pdf(request):
     submitted = list(chain(submitted_dissemin, submitted_scientific, submitted_tec_trans))
 
     event = list(chain(published_scientific_in_event, accepted_scientific_in_event, published_dissemin_in_event,
-            accepted_dissemin_in_event, published_tec_trans_in_event, accepted_tec_trans_in_event))
+                 accepted_dissemin_in_event, published_tec_trans_in_event, accepted_tec_trans_in_event))
 
     published_or_accepted = published + accepted
     draft_or_submitted = draft + submitted
