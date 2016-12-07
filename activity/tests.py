@@ -91,7 +91,7 @@ class SeminarsTest(TestCase):
     """
     The following tests are performed:
     1 - Seminars search;
-    2 - Seminars report in latex;
+    2 - Seminars report in latex and pdf;
     3 - Seminars report for internal with date;
     4 - Seminars report  without date;
     5 - Seminars report with invalid dates selected;
@@ -176,9 +176,17 @@ class SeminarsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_tex(self):
-        response = self.client.get(reverse('seminar_latex'), {'start_date': '2015-03-01',
+        response = self.client.get(reverse('seminar_report'), {'start_date': '2015-03-01',
                                                               'end_date': '2017-03-05',
-                                                              'category': 'All'})
+                                                              'category': 'All',
+                                                              'extension': '.tex'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_pdf(self):
+        response = self.client.get(reverse('seminar_report'), {'start_date': '2015-03-01',
+                                                              'end_date': '2017-03-05',
+                                                              'category': 'All',
+                                                              'extension': '.pdf'})
         self.assertEqual(response.status_code, 200)
 
     def test_search(self):

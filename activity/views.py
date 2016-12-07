@@ -105,19 +105,6 @@ def seminars_report(request):
 
 
 @login_required
-def seminar_latex(request):
-
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-    category = request.GET.get('category')
-
-    seminars = seminars_search(start_date, end_date, category)
-    context = {'seminars': seminars}
-
-    return generate_latex('report/activity/tex/seminars.tex', context, 'seminars')
-
-
-@login_required
 def seminar_poster(request):
 
     speakers = Person.objects.all()
@@ -150,6 +137,22 @@ def seminar_poster(request):
     context = {'speakers': speakers, 'seminars': seminars}
     return render(request, 'poster/seminar.html', context)
 
+
+@login_required
+def seminar_report(request):
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    category = request.GET.get('category')
+    extension = request.GET.get('extension')
+
+    seminars = seminars_search(start_date, end_date, category)
+    context = {'seminars': seminars}
+
+    if extension == ".tex":
+        return generate_latex('report/activity/tex/seminars.tex', context, 'seminars')
+    else:
+        return render_to_pdf('report/activity/pdf/seminars.html', context)
 
 @login_required
 def seminar_show_titles(request):
