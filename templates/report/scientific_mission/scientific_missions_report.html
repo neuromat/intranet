@@ -11,6 +11,7 @@
 
     <p>
         <a class="btn btn-primary" href="{% url 'scientific_missions_tex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
+        <a class="btn btn-primary" href="{% url 'scientific_missions_pdf' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}"><i class="icon-download icon-white"></i> {% trans 'Download .pdf file' %}</a>
     </p>
 
     <table class="table table-striped table-bordered">

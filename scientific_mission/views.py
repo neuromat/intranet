@@ -224,3 +224,17 @@ def missions_tex(request):
     context = {'missions': missions}
 
     return generate_latex('report/scientific_mission/tex/scientific_missions.tex', context, 'scientific_missions')
+
+
+@login_required
+def missions_pdf(request):
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    missions = get_missions(datetime.datetime.strptime(start_date, "%Y-%m-%d").date(),
+                            datetime.datetime.strptime(end_date, "%Y-%m-%d").date())
+
+    context = {'start_date': start_date, 'end_date': end_date, 'missions': missions}
+
+    return render_to_pdf('report/scientific_mission/pdf/scientific_missions.html', context)
