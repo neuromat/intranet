@@ -1,0 +1,44 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs"><a href="/">{% trans 'Home' %}</a> › <a href="/documents">{% trans 'Documents' %}</a> › <a class="active">{% trans 'Certificate' %}</a></div>
+{% endblock %}
+
+{% block content %}
+    <form role="form" method="post">{% csrf_token %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <label>{% trans "Participant" %}</label>
+                <select class="form-control" name="person" id="id_person">
+                    <option value=""></option>
+                    {% for person in people %}
+                        <option value={{ person.id }}>{{ person }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-sm-12">
+                <label>{% trans "Training programs" %}</label>
+                <select class="form-control" name="title" id="id_title">
+                    <option value=""></option>
+                    {% for training in training_programs %}
+                        <option value={{ training.id }}>{{ training }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-sm-12">
+                <label>{% trans "Number of hours" %}</label>
+                <input class="form-control" name="hours" id="id_hours" placeholder={{ process }}>
+            </div>
+            <br>
+            <div class="col-sm-12 btn-group">
+                <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get certificate" %}</button>
+            </div>
+        </div>
+    </div>
+    </form>
+
+{% endblock %}
