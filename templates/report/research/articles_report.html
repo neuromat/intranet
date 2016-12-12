@@ -9,8 +9,8 @@
 
 {% if published_or_accepted or draft_or_submitted or event %}
     <p>
-        <a class="btn btn-primary" href="{% url 'articles_tex' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
-        <a class="btn btn-primary" href="{% url 'articles_pdf' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}"><i class="icon-download icon-white"></i> {% trans 'Download .pdf file' %}</a>
+        <a class="btn btn-primary" href="{% url 'articles_file' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&extension=.tex"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
+        <a class="btn btn-primary" href="{% url 'articles_file' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&extension=.pdf"><i class="icon-download icon-white"></i> {% trans 'Download .pdf file' %}</a>
     </p>
 
     {% if published_or_accepted %}

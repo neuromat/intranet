@@ -105,7 +105,7 @@ def seminars_report(request):
 
 
 @login_required
-def seminar_poster(request):
+def seminars_poster(request):
 
     speakers = Person.objects.all()
     seminars = ProjectActivities.objects.filter(type_of_activity='s')
@@ -139,7 +139,7 @@ def seminar_poster(request):
 
 
 @login_required
-def seminar_report(request):
+def seminars_file(request):
 
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
@@ -154,8 +154,9 @@ def seminar_report(request):
     else:
         return render_to_pdf('report/activity/pdf/seminars.html', context)
 
+
 @login_required
-def seminar_show_titles(request):
+def seminars_show_titles(request):
     if request.method == 'GET':
         speaker_id = request.GET.get('speaker')
         speaker = get_object_or_404(Person, id=speaker_id)

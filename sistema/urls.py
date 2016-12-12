@@ -16,7 +16,7 @@ from scientific_mission import views as scientific_views
 
 document_patterns = [
     url(r'^anexo5/$', scientific_views.anexo5, name='anexo5'),
-    url(r'^seminar_poster/$', activity_views.seminar_poster, name='seminar_poster'),
+    url(r'^seminars_poster/$', activity_views.seminars_poster, name='seminars_poster'),
 ]
 
 reports_patterns = [
