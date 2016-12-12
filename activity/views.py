@@ -18,7 +18,7 @@ from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 
-from activity.models import ProjectActivities, Seminar, SeminarType
+from activity.models import ProjectActivities, Seminar, SeminarType, TrainingProgram
 from person.models import Person
 
 
@@ -273,3 +273,51 @@ def meetings_report(request):
                                       ' the start date.'))
 
     return render(request, 'report/activity/meetings.html')
+
+
+@login_required
+def training_programs_certificate(request):
+
+    people = Person.objects.all()
+    training_programs = ProjectActivities.objects.filter(type_of_activity='t')
+
+    if request.method == 'POST':
+
+        person_id = request.POST.get('person', None)
+        title_id = request.POST['title']
+        hours = request.POST['hours']
+
+        if person_id is None or person_id == '':
+            messages.error(request, _('You have to choose a person!'))
+            context = {'people': people, 'training_programs': training_programs}
+            return render(request, 'certificate/certificate.html', context)
+
+        if title_id is None or title_id == '':
+            messages.error(request, _('You have to choose a training program!'))
+            context = {'people': people, 'training_programs': training_programs}
+            return render(request, 'certificate/certificate.html', context)
+
+        else:
+
+            try:
+                person = Person.objects.get(id=person_id)
+            except Person.DoesNotExist:
+                raise Http404(_('No person matches the given query.'))
+
+            try:
+                training_program = TrainingProgram.objects.get(id=title_id)
+            except Seminar.DoesNotExist:
+                raise Http404(_('No training program matches the given query.'))
+
+            return render_to_pdf(
+                'certificate/certificate_pdf.html',
+                {
+                    'pagesize': 'A4',
+                    'person': person,
+                    'training_program': training_program,
+                    'hours': hours
+                }
+            )
+
+    context = {'people': people, 'training_programs': training_programs}
+    return render(request, 'certificate/certificate.html', context)
