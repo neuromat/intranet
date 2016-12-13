@@ -159,31 +159,31 @@ class SeminarsTest(TestCase):
     def test_poster(self):
 
         # Just load the page
-        response = self.client.get(reverse('seminar_poster'))
+        response = self.client.get(reverse('seminars_poster'))
         self.assertEqual(response.status_code, 200)
 
         # Test creation of seminar poster..
-        response = self.client.post(reverse('seminar_poster'), {'title': ''})
+        response = self.client.post(reverse('seminars_poster'), {'title': ''})
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('seminar_poster'), {'title': 0})
+        response = self.client.post(reverse('seminars_poster'), {'title': 0})
         self.assertEqual(response.status_code, 404)
 
         seminar_id = Seminar.objects.get(title='Seminar1')
         seminar_id = seminar_id.pk
 
-        response = self.client.post(reverse('seminar_poster'), {'title': seminar_id})
+        response = self.client.post(reverse('seminars_poster'), {'title': seminar_id})
         self.assertEqual(response.status_code, 200)
 
     def test_tex(self):
-        response = self.client.get(reverse('seminar_report'), {'start_date': '2015-03-01',
+        response = self.client.get(reverse('seminars_file'), {'start_date': '2015-03-01',
                                                               'end_date': '2017-03-05',
                                                               'category': 'All',
                                                               'extension': '.tex'})
         self.assertEqual(response.status_code, 200)
 
     def test_pdf(self):
-        response = self.client.get(reverse('seminar_report'), {'start_date': '2015-03-01',
+        response = self.client.get(reverse('seminars_file'), {'start_date': '2015-03-01',
                                                               'end_date': '2017-03-05',
                                                               'category': 'All',
                                                               'extension': '.pdf'})
@@ -199,7 +199,7 @@ class SeminarsTest(TestCase):
     def test_titles(self):
 
         speaker = self.person.pk
-        response = self.client.get(reverse('seminar_show_titles'), {'speaker': speaker})
+        response = self.client.get(reverse('seminars_show_titles'), {'speaker': speaker})
         self.assertEqual(response.status_code, 200)
 
 

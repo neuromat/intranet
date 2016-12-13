@@ -16,7 +16,7 @@ from itertools import chain
 from random import randint
 
 from helpers.forms.date_range import DateRangeForm
-from helpers.views.latex import tex_escape
+from helpers.views.latex import generate_latex
 from helpers.views.date import *
 from research.models import *
 from person.models import CitationName
@@ -124,7 +124,7 @@ def articles_report(request):
             submitted = list(chain(submitted_dissemin, submitted_scientific, submitted_tec_trans))
 
             event = list(chain(published_scientific_in_event, accepted_scientific_in_event, published_dissemin_in_event,
-                    accepted_dissemin_in_event, published_tec_trans_in_event, accepted_tec_trans_in_event))
+                         accepted_dissemin_in_event, published_tec_trans_in_event, accepted_tec_trans_in_event))
 
             published_or_accepted = published + accepted
             draft_or_submitted = draft + submitted
@@ -149,9 +149,11 @@ def articles_report(request):
 
 
 @login_required
-def articles_tex(request):
+def articles_file(request):
+
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
+    extension = request.GET.get('extension')
 
     published_scientific, accepted_scientific, submitted_scientific, draft_scientific, published_dissemin, \
         accepted_dissemin, submitted_dissemin, draft_dissemin, published_tec_trans, accepted_tec_trans, \
@@ -159,56 +161,39 @@ def articles_tex(request):
         published_dissemin_in_event, accepted_dissemin_in_event, published_tec_trans_in_event, \
         accepted_tec_trans_in_event = search_articles(start_date, end_date)
 
-    context = {'published_scientific': published_scientific, 'accepted_scientific': accepted_scientific,
-               'submitted_scientific': submitted_scientific, 'draft_scientific': draft_scientific,
-               'published_dissemin': published_dissemin, 'accepted_dissemin': accepted_dissemin,
-               'submitted_dissemin': submitted_dissemin, 'draft_dissemin': draft_dissemin,
-               'published_tec_trans': published_tec_trans, 'accepted_tec_trans': accepted_tec_trans,
-               'submitted_tec_trans': submitted_tec_trans, 'draft_tec_trans': draft_tec_trans,
-               'published_scientific_in_event': published_scientific_in_event,
-               'accepted_scientific_in_event': accepted_scientific_in_event,
-               'published_dissemin_in_event': published_dissemin_in_event,
-               'accepted_dissemin_in_event': accepted_dissemin_in_event,
-               'published_tec_trans_in_event': published_tec_trans_in_event,
-               'accepted_tec_trans_in_event': accepted_tec_trans_in_event}
+    if extension == '.tex':
+        context = {'published_scientific': published_scientific, 'accepted_scientific': accepted_scientific,
+                   'submitted_scientific': submitted_scientific, 'draft_scientific': draft_scientific,
+                   'published_dissemin': published_dissemin, 'accepted_dissemin': accepted_dissemin,
+                   'submitted_dissemin': submitted_dissemin, 'draft_dissemin': draft_dissemin,
+                   'published_tec_trans': published_tec_trans, 'accepted_tec_trans': accepted_tec_trans,
+                   'submitted_tec_trans': submitted_tec_trans, 'draft_tec_trans': draft_tec_trans,
+                   'published_scientific_in_event': published_scientific_in_event,
+                   'accepted_scientific_in_event': accepted_scientific_in_event,
+                   'published_dissemin_in_event': published_dissemin_in_event,
+                   'accepted_dissemin_in_event': accepted_dissemin_in_event,
+                   'published_tec_trans_in_event': published_tec_trans_in_event,
+                   'accepted_tec_trans_in_event': accepted_tec_trans_in_event}
 
-    response = render_to_string('report/research/tex/articles.tex', context)
-    response = tex_escape(response, table=False)
-    latex_response = HttpResponse(response, content_type='text/plain')
-    latex_response['Content-Disposition'] = 'attachment; filename="articles.tex"'
+        return generate_latex('report/research/tex/articles.tex', context, 'articles')
 
-    return latex_response
+    else:
+        accepted = list(chain(accepted_dissemin, accepted_scientific, accepted_tec_trans))
+        published = list(chain(published_dissemin, published_scientific, published_tec_trans))
+        draft = list(chain(draft_dissemin, draft_scientific, draft_tec_trans))
+        submitted = list(chain(submitted_dissemin, submitted_scientific, submitted_tec_trans))
+        event = list(chain(published_scientific_in_event, accepted_scientific_in_event, published_dissemin_in_event,
+                           accepted_dissemin_in_event, published_tec_trans_in_event, accepted_tec_trans_in_event))
 
+        published_or_accepted = published + accepted
+        draft_or_submitted = draft + submitted
 
-@login_required
-def articles_pdf(request):
+        context = {'published_or_accepted': published_or_accepted,
+                   'draft_or_submitted': draft_or_submitted,
+                   'event': event,
+                   'start_date': start_date, 'end_date': end_date}
 
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-
-    published_scientific, accepted_scientific, submitted_scientific, draft_scientific, published_dissemin, \
-        accepted_dissemin, submitted_dissemin, draft_dissemin, published_tec_trans, accepted_tec_trans, \
-        submitted_tec_trans, draft_tec_trans, published_scientific_in_event, accepted_scientific_in_event, \
-        published_dissemin_in_event, accepted_dissemin_in_event, published_tec_trans_in_event, \
-        accepted_tec_trans_in_event = search_articles(start_date, end_date)
-
-    accepted = list(chain(accepted_dissemin, accepted_scientific, accepted_tec_trans))
-    published = list(chain(published_dissemin, published_scientific, published_tec_trans))
-    draft = list(chain(draft_dissemin, draft_scientific, draft_tec_trans))
-    submitted = list(chain(submitted_dissemin, submitted_scientific, submitted_tec_trans))
-
-    event = list(chain(published_scientific_in_event, accepted_scientific_in_event, published_dissemin_in_event,
-                 accepted_dissemin_in_event, published_tec_trans_in_event, accepted_tec_trans_in_event))
-
-    published_or_accepted = published + accepted
-    draft_or_submitted = draft + submitted
-
-    context = {'published_or_accepted': published_or_accepted,
-               'draft_or_submitted': draft_or_submitted,
-               'event': event,
-               'start_date': start_date, 'end_date': end_date}
-
-    return render_to_pdf('report/research/pdf/articles.html', context)
+        return render_to_pdf('report/research/pdf/articles.html', context)
 
 
 def search_academic_works(start_date, end_date):
@@ -306,10 +291,11 @@ def academic_works_tex(request):
 
 
 @login_required
-def academic_works_pdf(request):
+def academic_works_file(request):
 
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
+    extension = request.GET.get('extension')
 
     postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, \
         msc_in_progress = search_academic_works(start_date, end_date)
@@ -318,7 +304,10 @@ def academic_works_pdf(request):
                'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
                'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
 
-    return render_to_pdf('report/research/pdf/academic_works.html', context)
+    if extension == '.tex':
+        return generate_latex('report/research/tex/academic_works.tex', context, 'academic_works')
+    else:
+        return render_to_pdf('report/research/pdf/academic_works.html', context)
 
 
 def scholar():
