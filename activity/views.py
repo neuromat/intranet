@@ -1,40 +1,19 @@
 # -*- coding: utf-8 -*-
 import json as simplejson
-import os
-import StringIO  # PDF file
 
-from cgi import escape  # PDF file
-from helpers.forms.date_range import DateRangeForm
-from helpers.views.date import *
-from helpers.views.latex import generate_latex
-from xhtml2pdf import pisa  # PDF file
-
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.template import Context
-from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 
 from activity.models import ProjectActivities, Seminar, SeminarType, TrainingProgram
 from person.models import Person
 
-
-def render_to_pdf(template_src, context_dict):
-    template = get_template(template_src)
-    context = Context(context_dict)
-    html = template.render(context)
-    result = StringIO.StringIO()
-    path = lambda uri, rel: os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
-
-    pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), dest=result, encoding='UTF-8', link_callback=path)
-
-    if not pdf.err:
-        return HttpResponse(result.getvalue(), content_type='application/pdf')
-
-    return HttpResponse('_(We had some errors<pre>%s</pre>)' % escape(html))
+from helpers.forms.date_range import DateRangeForm
+from helpers.views.date import *
+from helpers.views.latex import generate_latex
+from helpers.views.pdf import render as render_to_pdf
 
 
 def training_programs_search(start_date, end_date):

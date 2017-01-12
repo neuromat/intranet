@@ -21,7 +21,7 @@ from helpers.views.date import *
 from research.models import *
 from person.models import CitationName
 
-from activity.views import render_to_pdf
+from helpers.views.pdf import render as render_to_pdf
 from itertools import chain
 
 SCHOLAR = 'https://scholar.google.com.br'

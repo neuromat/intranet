@@ -1,5 +1,5 @@
 import json as simplejson
-from activity.views import render_to_pdf
+from helpers.views.pdf import render as render_to_pdf
 from cities_light.models import City
 from configuration.models import ProcessNumber
 from dal import autocomplete
