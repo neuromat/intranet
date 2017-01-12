@@ -102,8 +102,9 @@ class ScientificMissionsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_tex(self):
-        response = self.client.get(reverse('scientific_missions_tex'), {'start_date': '2015-01-01',
-                                                                        'end_date': '2015-12-31'})
+        response = self.client.get(reverse('scientific_missions_file'), {'start_date': '2015-01-01',
+                                                                         'end_date': '2015-12-31',
+                                                                         'extension': '.tex'})
         cont = response.context['missions']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
