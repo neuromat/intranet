@@ -13,8 +13,8 @@
 {% if disseminations %}
 
     <p>
-        <a class="btn btn-primary" href="{% url 'dissemination_file' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&type={{ type }}&internal_type={{ internal_type }}&filename=external&extension=.pdf"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
-        <a class="btn btn-primary" href="{% url 'dissemination_file' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&type={{ type }}&internal_type={{ internal_type }}&filename=external&extension=.tex"><i class="icon-download icon-white"></i> {% trans 'Download .pdf file' %}</a>
+        <a class="btn btn-primary" href="{% url 'dissemination_file' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&type={{ type }}&internal_type={{ internal_type }}&filename=external&extension=.tex"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
+        <a class="btn btn-primary" href="{% url 'dissemination_file' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&type={{ type }}&internal_type={{ internal_type }}&filename=external&extension=.pdf"><i class="icon-download icon-white"></i> {% trans 'Download .pdf file' %}</a>
     </p>
 
     {% if type == 'e' %}
