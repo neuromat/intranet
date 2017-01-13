@@ -154,11 +154,14 @@ Para obter os arquivos de static, faça::
     cd /var/lib/sistema-nira/nira/
     python manage.py collectstatic
 
+Permita que a pasta de mídia suporte para uploads de imagens::
+
+    chown www-data /media
+
 
 Configure o banco de dados com os apps do NIRA::
 
     python manage.py migrate
-
 
 Crie um usuário administrador::
 
