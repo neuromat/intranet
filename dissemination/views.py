@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from helpers.views.date import *
 from helpers.views.latex import escape_and_generate_latex
+from helpers.views.pdf import render as render_to_pdf
 from dissemination.models import Dissemination, Internal, InternalMediaOutlet, TYPE_OF_MEDIA
 
 
@@ -103,3 +104,32 @@ def dissemination_tex(request):
         context = {'disseminations': disseminations, 'type': media_type}
 
     return escape_and_generate_latex('report/dissemination/tex/disseminations.tex', context, filename, table=True)
+
+
+@login_required
+def dissemination_file(request):
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    media_type = request.GET.get('type')
+    internal_type = request.GET.get('internal_type')
+    filename = request.GET.get('filename')
+    extension = request.GET.get('extension')
+
+    if media_type == 'i':
+
+        disseminations = internal_filter(internal_type, start_date, end_date)
+        internal_media = InternalMediaOutlet.objects.get(pk=internal_type)
+        media = internal_media.name
+        context = {'disseminations': disseminations,'type': media_type, 'media': media, 'media_name': media,
+                   'extension': extension}
+
+    else:
+
+        disseminations = external_filter(start_date, end_date)
+        context = {'disseminations': disseminations, 'type': media_type, 'extension': extension}
+
+    if extension == ".tex":
+        return escape_and_generate_latex('report/dissemination/tex/disseminations.tex', context, filename, table=True)
+    else:
+        return render_to_pdf('report/dissemination/pdf/dissemination.html', context)

@@ -3,5 +3,5 @@ from django.conf.urls import url
 
 
 urlpatterns = [
-    url(r'^dissemination_tex/$', views.dissemination_tex, name='dissemination_tex'),
+    url(r'^dissemination_file/$', views.dissemination_file, name='dissemination_file'),
 ]
