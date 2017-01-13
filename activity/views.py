@@ -188,17 +188,20 @@ def training_programs_report(request):
 
 
 @login_required
-def training_programs_latex(request):
+def training_programs_file(request):
 
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
+    extension = request.GET.get('extension')
 
     training_programs = training_programs_search(start_date, end_date)
 
     context = {'training_programs': training_programs}
 
-    return generate_latex('report/activity/tex/training_programs.tex', context, 'training_programs')
-
+    if extension == '.tex':
+        return generate_latex('report/activity/tex/training_programs.tex', context, 'training_programs')
+    else:
+        return render_to_pdf('report/activity/pdf/training_programs.html', context)
 
 @login_required
 def meetings_report(request):

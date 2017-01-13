@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<table class="table table-striped table-bordered">
+
+    <tr>
+        <th>{% trans "Title" %}</th><th>{% trans "Speaker" %}</th><th>{% trans "Date" %}</th>
+        <th>{% trans "Duration" %}</th>
+    </tr>
+
+    {% for training in training_programs %}
+        <tr>
+            <td>{{ training.trainingprogram.title }}</td>
+            <td>{{ training.trainingprogram.speakers }}</td>
+            {% if training.trainingprogram.end_date %}
+                <td>
+                    {{ training.trainingprogram.start_date|date:"M d, Y" }} -
+                    {{ training.trainingprogram.end_date|date:"M d, Y" }}
+                </td>
+            {% else %}
+                <td>
+                    {{ training.trainingprogram.start_date|date:"M d, Y" }}
+                </td>
+            {% endif %}
+            {% if training.trainingprogram.duration == 'Other' %}
+                <td>{{ training.trainingprogram.other_duration }}</td>
+            {% else %}
+                <td>{{ training.trainingprogram.duration }}</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+
+</table>

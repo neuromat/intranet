@@ -32,10 +32,11 @@ class TrainingProgramTest(TestCase):
     """
     The following tests are performed:
     1 - Training programs search;
-    2 - Training programs report in latex;
+    2 - Training programs report in .tex;
     3 - Training programs report with date;
     4 - Training programs report without date;
     5 - Training programs report with invalid date.
+    6 - Training programs report in .pdf;
     """
 
     def setUp(self):
@@ -56,8 +57,14 @@ class TrainingProgramTest(TestCase):
         self.assertTrue(isinstance(response, QuerySet))
 
     def test_tex(self):
-        response = self.client.get(reverse('training_programs_latex'), {'start_date': '2015-03-01',
-                                                                        'end_date': '2017-03-05'})
+        response = self.client.get(reverse('training_programs_file'), {'start_date': '2015-03-01',
+                                                                       'end_date': '2017-03-05',
+                                                                       'extension': '.tex'})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(reverse('training_programs_file'), {'start_date': '2015-03-01',
+                                                                       'end_date': '2017-03-05',
+                                                                       'extension': '.pdf'})
         self.assertEqual(response.status_code, 200)
 
     def test_report(self):
