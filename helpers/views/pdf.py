@@ -1,12 +1,13 @@
 import os
 import StringIO
-from sistema import settings as sis_sett
+
 from cgi import escape
 from xhtml2pdf import pisa
-from django.conf import settings
 from django.http import HttpResponse
 from django.template import Context
 from django.template.loader import get_template
+
+from sistema import settings
 
 
 def fetch_resources(uri, rel):
@@ -45,7 +46,7 @@ def render(template_src, context_dict, css=None):
                                 dest=result,
                                 encoding='UTF-8',
                                 link_callback=fetch_resources,
-                                default_css=open(os.path.join(sis_sett.BASE_DIR, 'static/css')).read())
+                                default_css=open(os.path.join(settings.BASE_DIR, 'static', 'css', css)).read())
     else:
         pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")),
                                 dest=result,

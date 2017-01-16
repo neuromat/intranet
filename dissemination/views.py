@@ -132,4 +132,4 @@ def dissemination_file(request):
     if extension == ".tex":
         return escape_and_generate_latex('report/dissemination/tex/disseminations.tex', context, filename, table=True)
     else:
-        return render_to_pdf('report/dissemination/pdf/dissemination.html', context)
+        return render_to_pdf('report/dissemination/pdf/dissemination.html', context, 'xhtml2pdf-reports.css')

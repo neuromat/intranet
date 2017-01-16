@@ -9,8 +9,7 @@ from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from django.shortcuts import render, HttpResponse, redirect
-from django.template.loader import render_to_string
+from django.shortcuts import render, redirect
 from django.utils.translation import ugettext_lazy as _
 from itertools import chain
 from random import randint
@@ -193,7 +192,7 @@ def articles_file(request):
                    'event': event,
                    'start_date': start_date, 'end_date': end_date}
 
-        return render_to_pdf('report/research/pdf/articles.html', context)
+        return render_to_pdf('report/research/pdf/articles.html', context, 'xhtml2pdf-reports.css')
 
 
 def search_academic_works(start_date, end_date):
@@ -273,24 +272,6 @@ def academic_works(request):
 
 
 @login_required
-def academic_works_tex(request):
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-
-    postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, \
-        msc_in_progress = search_academic_works(start_date, end_date)
-
-    context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
-               'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-               'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress}
-
-    response = HttpResponse(render_to_string('report/research/tex/academic_works.tex', context),
-                            content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename="academic_works.tex"'
-    return response
-
-
-@login_required
 def academic_works_file(request):
 
     start_date = request.GET.get('start_date')
@@ -307,7 +288,7 @@ def academic_works_file(request):
     if extension == '.tex':
         return generate_latex('report/research/tex/academic_works.tex', context, 'academic_works')
     else:
-        return render_to_pdf('report/research/pdf/academic_works.html', context)
+        return render_to_pdf('report/research/pdf/academic_works.html', context, 'xhtml2pdf-reports.css')
 
 
 def scholar():

@@ -131,7 +131,7 @@ def seminars_file(request):
     if extension == ".tex":
         return generate_latex('report/activity/tex/seminars.tex', context, 'seminars')
     else:
-        return render_to_pdf('report/activity/pdf/seminars.html', context)
+        return render_to_pdf('report/activity/pdf/seminars.html', context, 'xhtml2pdf-reports.css')
 
 
 @login_required
@@ -201,7 +201,7 @@ def training_programs_file(request):
     if extension == '.tex':
         return generate_latex('report/activity/tex/training_programs.tex', context, 'training_programs')
     else:
-        return render_to_pdf('report/activity/pdf/training_programs.html', context)
+        return render_to_pdf('report/activity/pdf/training_programs.html', context, 'xhtml2pdf-reports.css')
 
 @login_required
 def meetings_report(request):
