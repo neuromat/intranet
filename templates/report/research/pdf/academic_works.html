@@ -5,10 +5,8 @@
 {% endblock %}
 
 {% block content %}
-
     {% if postdoc_concluded or postdoc_in_progress %}
         <h3><strong>{% trans 'Post-doctoral fellows' %}</strong></h3>
-
         {% if postdoc_concluded %}
             <p class="title"><strong>{% trans 'Concluded' %}</strong></p>
             <ol>
@@ -34,7 +32,6 @@
                 {% endfor %}
             </ol>
         {% endif %}
-
         {% if postdoc_in_progress %}
             <p class="title"><strong>{% trans 'In progress' %}</strong></p>
             <ol>
@@ -61,7 +58,6 @@
             </ol>
         {% endif %}
     {% endif %}
-
     {% if phd_concluded or phd_in_progress %}
         <h3 class="title"><strong>{% trans 'PhD thesis' %}</strong></h3>
         {% if phd_concluded %}
@@ -89,7 +85,6 @@
                 {% endfor %}
             </ol>
         {% endif %}
-
         {% if phd_in_progress %}
             <p class="title"><strong>{% trans 'In progress' %}</strong></p>
             <ol>
@@ -116,7 +111,6 @@
             </ol>
         {% endif %}
     {% endif %}
-
     {% if msc_concluded or msc_in_progress %}
         <h3><strong>{% trans 'MSc dissertations' %}</strong></h3>
         {% if msc_concluded %}
@@ -144,7 +138,6 @@
                 {% endfor %}
             </ol>
         {% endif %}
-
         {% if msc_in_progress %}
             <p class="title"><strong>{% trans 'In progress' %}</strong></p>
             <ol>
