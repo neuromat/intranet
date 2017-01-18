@@ -28,3 +28,9 @@ class ScientificMissionForm(forms.ModelForm):
             'destination_city': autocomplete.ModelSelect2(url='city_autocomplete'),
         }
         localized_fields = ('amount_paid',)
+
+
+class AnnexSevenForm(forms.ModelForm):
+
+    class Meta:
+        fields = ('origin_city', 'destination_city', 'departure', 'arrival')

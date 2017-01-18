@@ -141,6 +141,60 @@ def anexo5(request):
 
 
 @login_required
+def anexo7(request):
+
+    people = Person.objects.all()
+
+    if request.method == 'POST':
+
+        process = request.POST['process']
+        date = request.POST['issue_date']
+        value = request.POST['value']
+
+        if date:
+            date = date_typed(date)
+        else:
+            date = datetime.datetime.now()
+
+        if not process:
+            process = ProcessNumber.get_solo()
+            process = process.process_number
+
+            if process == '0000/00000-0':
+                messages.info(request, mark_safe(_('You should have configured your process number on configurations. '
+                                                   ' Click <a href="../../configuration">here</a> to configure it.')))
+
+        ext = dExtenso()
+        amount = str(float(value))
+        cents = str(float(value) - int(value))[2:4]  # Only two digits in cents
+        amount = ext.getExtenso(amount)
+        cents = ext.getExtenso(cents)
+
+        try:
+            people = Person.objects.all()
+            principal_investigator = people.get(role__name="Principal Investigator")
+
+        except:
+            messages.error(request, _('You must set a person with the role of Principal Investigator.'))
+            date = datetime.datetime.now()
+            context = {'people': people, 'default_date': date, 'process': process}
+            return render(request, 'anexo/anexo7.html', context)
+
+        return render_to_pdf(
+            'anexo/anexo5_pdf.html',
+            {
+                'amount': amount,
+                'cents': cents,
+                'date': date,
+                'pagesize': 'A4',
+                'person': person,
+                'process': process,
+                'principal_investigator': principal_investigator,
+            }
+        )
+
+
+@login_required
 def mission_show_titles(request):
     if request.method == 'GET':
         person_id = request.GET.get('person')

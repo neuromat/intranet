@@ -1,0 +1,62 @@
+<p lang="pt-BR" align="center">
+    <u><strong>ANEXO 7</strong></u>
+</p>
+
+<p lang="pt-BR" align="center">
+    <u><strong>DO MANUAL DE PRESTAÇÃO DE CONTAS</strong></u>
+</p>
+
+<p lang="pt-BR" align="center">
+    <u>
+        <strong>RECIBO DE REEMBOLSO DE RECURSOS AO VISITANTE REFERENTE</strong>
+    </u>
+</p>
+
+<p lang="pt-BR" align="center">
+    <u>
+        <strong>À AQUISIÇÃO DE PASSAGEM AÉREA-TERRESTRE / SEGURO SAÚDE</strong>
+    </u>
+</p>
+
+<h2 lang="pt-BR" align="center">
+</h2>
+
+<h2 align="center">
+    Recibo: R$      
+</h2>
+
+<h2 lang="pt-BR" align="justify">
+</h2>
+
+<h2 align="justify">
+    Recebi de Nome do Outorgado , a importância de R$       (     ) pagos com
+    recursos relativo ao processo FAPESP nº      , referente ao reembolso de
+    utilizado no trecho/período       /       /      , com a finalidade de
+         .
+</h2>
+
+
+        <p>Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
+
+        <p>Nome: {{ person.full_name }}</p>
+
+        <p>______________________________________________</p>
+        <p>Assinatura</p>
+
+        {% if person.rg %}
+            <p>Nº documento de Identidade: {{ person.rg }}</p>
+        {% endif %}
+
+        {% if person.passport %}
+            <p>Passaporte Nº:  {{ person.passport }}</p>
+        {% endif %}
+
+        <p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
+
+        <p>Número: {{ person.number }} &emsp;&emsp;&emsp;&emsp; {% if person.district %}Bairro: {{ person.district }}{% endif %}</p>
+
+        <p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}{% if person.zipcode %}- CEP: {{ person.zipcode }} {% endif %}</p>
+
+        <p lang="pt-BR" align="right">
+            <strong>FAPESP, NOVEMBRO DE 2012</strong>
+        </p>
