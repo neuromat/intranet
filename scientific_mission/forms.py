@@ -4,6 +4,8 @@ from django import forms
 
 from person.models import Person
 
+from helpers.forms.date_range import DateInput
+
 
 class ProcessField(forms.CharField):
 
@@ -49,6 +51,10 @@ class ScientificMissionForm(forms.ModelForm):
 
 class AnnexSevenForm(forms.Form):
 
+    period = forms.DateField(widget=DateInput, label='Date', required=False)
+    stretch = forms.CharField(required=True)
+    reimbursement = forms.CharField(required=True)
+    reason = forms.CharField(required=True)
     person = forms.ModelChoiceField(queryset=Person.objects.all(), empty_label="----------", required=True)
     value = forms.DecimalField(max_digits=10, decimal_places=2, required=True)
     process = ProcessField(widget=forms.TextInput(attrs={'placeholder': '0000/00000-0'}))

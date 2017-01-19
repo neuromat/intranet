@@ -42,6 +42,14 @@ def date_typed(date):
     return date
 
 
+def money_to_strings(value):
+    ext = dExtenso()
+    amount = str(int(value))
+    cents = str(value - int(value))[2:4]  # Only two digits in cents
+    amount = ext.getExtenso(amount)
+    cents = ext.getExtenso(cents)
+    return amount, cents
+
 @login_required
 def anexo5(request):
 
@@ -97,11 +105,7 @@ def anexo5(request):
                     context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
                     return render(request, 'anexo/anexo5.html', context)
 
-            ext = dExtenso()
-            amount = str(int(mission.amount_paid))
-            cents = str(mission.amount_paid - int(mission.amount_paid))[2:4]  # Only two digits in cents
-            amount = ext.getExtenso(amount)
-            cents = ext.getExtenso(cents)
+            amount, cents = money_to_strings(mission.amount_paid)
 
             try:
                 people = Person.objects.all()
@@ -150,20 +154,17 @@ def anexo7(request):
 
         form = AnnexSevenForm(request.POST)
 
-        person_id = form.data['person']  # this is the id of that person
-        person = Person.objects.filter(pk=person_id)
-
         if form.is_valid():
 
             value = form.cleaned_data['value']
             person = form.cleaned_data['person']
             process = form.cleaned_data['process']
+            reason = form.cleaned_data['reason']
+            reimbursement = form.cleaned_data['reimbursement']
+            period = form.cleaned_data['period']
+            stretch = form.cleaned_data['stretch']
 
-            ext = dExtenso()
-            amount = str(int(value))
-            cents = str(value - int(value))[2:4]  # Only two digits in cents
-            amount = ext.getExtenso(amount)
-            cents = ext.getExtenso(cents)
+            amount, cents = money_to_strings(value)
 
             if not process:
                 process = ProcessNumber.get_solo()
@@ -180,20 +181,24 @@ def anexo7(request):
 
             except:
                 messages.error(request, _('You must set a person with the role of Principal Investigator.'))
-                date = datetime.datetime.now()
-                context = {'people': people, 'default_date': date, 'process': process}
-                return render(request, 'anexo/anexo7.html', context)
+                return render(request, 'anexo/anexo7.html', {'people': people,
+                                                             'default_date': datetime.datetime.now(),
+                                                             'process': process})
 
             return render_to_pdf(
                 'anexo/anexo7_pdf.html',
                 {
+                    'reimbursement': reimbursement,
+                    'value': value,
                     'amount': amount,
                     'cents': cents,
-                    'pagesize': 'A4',
+                    'period': period,
+                    'stretch': stretch,
                     'person': person,
                     'process': process,
                     'principal_investigator': principal_investigator,
-                    'form': form,
+                    'reason': reason,
+                    'date': datetime.datetime.now(),
                 }
             )
 

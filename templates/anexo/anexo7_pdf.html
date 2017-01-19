@@ -1,35 +1,34 @@
-<p lang="pt-BR" align="center">
-    <u><strong>ANEXO 7</strong></u>
-</p>
+    <p lang="pt-BR" align="center">
+        <u><strong>ANEXO 7</strong></u>
+    </p>
 
-<p lang="pt-BR" align="center">
-    <u><strong>DO MANUAL DE PRESTAÇÃO DE CONTAS</strong></u>
-</p>
+    <p lang="pt-BR" align="center">
+        <u><strong>DO MANUAL DE PRESTAÇÃO DE CONTAS</strong></u>
+    </p>
 
-<p lang="pt-BR" align="center">
-    <u>
-        <strong>RECIBO DE REEMBOLSO DE RECURSOS AO VISITANTE REFERENTE</strong>
-    </u>
-</p>
+    <p lang="pt-BR" align="center">
+        <u>
+            <strong>RECIBO DE REEMBOLSO DE RECURSOS AO VISITANTE REFERENTE</strong>
+        </u>
+    </p>
 
-<p lang="pt-BR" align="center">
-    <u>
-        <strong>À AQUISIÇÃO DE PASSAGEM AÉREA-TERRESTRE / SEGURO SAÚDE</strong>
-    </u>
-</p>
-
-
-<h2 align="center">
-    Recibo: R$      
-</h2>
+    <p lang="pt-BR" align="center">
+        <u>
+            <strong>À AQUISIÇÃO DE PASSAGEM AÉREA-TERRESTRE / SEGURO SAÚDE</strong>
+        </u>
+    </p>
 
 
-<h2 align="justify">
-    Recebi de Nome do Outorgado , a importância de R$       (     ) pagos com
-    recursos relativo ao processo FAPESP nº      , referente ao reembolso de
-    utilizado no trecho/período       /       /      , com a finalidade de
-         .
-</h2>
+    <h2 align="center">
+        Recibo: R$ {{ value }}
+    </h2>
+
+
+    <h2 align="justify">
+        Recebi de {{ principal_investigator.full_name }}, a importância de R${{ value }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}) pagos com
+        recursos relativo ao processo FAPESP nº {{ process }}, referente ao reembolso de {{ reimbursement }}
+        utilizado no trecho {{ stretch }} no dia {{ period }}, com a finalidade de {{ reason }}.
+    </h2>
 
 
         <p>Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
