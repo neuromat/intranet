@@ -2,9 +2,6 @@
 {% load i18n admin_static %}
 {% load static %}
 
-{#{% block extrahead %}#}
-{#    <script src="{% static 'js/anexo.js' %}"></script>#}
-{#{% endblock extrahead %}#}
 
 {% block breadcrumbs %}
     <div class="breadcrumbs"><a href="/" class="active">{% trans 'Home' %}</a> › <a href="/documents">{% trans 'Documents' %}</a> › {% trans 'Appendix 7' %}</div>
@@ -12,46 +9,13 @@
 
 {% block content %}
 
-    {% if people %}
-        <form role="form" method="post">{% csrf_token %}
+    <div class="col-xs-6 col-sm-6">
 
-            <div class="container-fluid">
-
-                <div class="row">
-
-                    <div class="col-xs-6 col-sm-6">
-                        <label>{% trans "Person" %}</label>
-{#                        <select class="form-control" name="person" id="id_person" onchange="ajax_select_mission(this.value)">#}
-                        <select class="form-control" name="person" id="id_person">
-                            <option value=""></option>
-                            {% for person in people %}
-                                <option value={{ person.id }}>{{ person }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="col-xs-2 col-sm-2">
-                        <label>{% trans "Date of issue" %}</label>
-                        <input class="datepicker" name="issue_date" id="id_issue_date" placeholder={{ default_date|date:" d/m/Y" }}>
-                    </div>
-
-                    <div class="col-xs-2 col-sm-2">
-                        <label>{% trans "Number of process" %}</label>
-                        <input class="form-control" name="process" id="id_process" placeholder={{ process }}>
-                    </div>
-
-                </div>
-
-                <br>
-
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get document" %}</button>
-                </div>
-
-            </div>
-
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get document" %}</button>
         </form>
 
-    {% endif %}
+    </div>
 
 {% endblock %}

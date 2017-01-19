@@ -16,6 +16,7 @@ from helpers.views.latex import generate_latex
 from helpers.views.extenso import dExtenso
 from person.models import Person
 from scientific_mission.models import ScientificMission, Route
+from scientific_mission.forms import AnnexSevenForm
 
 
 class CityAutocomplete(autocomplete.Select2QuerySetView):
@@ -147,51 +148,69 @@ def anexo7(request):
 
     if request.method == 'POST':
 
-        process = request.POST['process']
-        date = request.POST['issue_date']
-        value = request.POST['value']
+        form = AnnexSevenForm(request.POST)
 
-        if date:
-            date = date_typed(date)
+        person_id = form.data['person']  # this is the id of that person
+        person = Person.objects.filter(pk=person_id)
+
+        if form.is_valid():
+
+            value = form.cleaned_data['value']
+            person = form.cleaned_data['person']
+            process = form.cleaned_data['process']
+
+            ext = dExtenso()
+            amount = str(int(value))
+            cents = str(value - int(value))[2:4]  # Only two digits in cents
+            amount = ext.getExtenso(amount)
+            cents = ext.getExtenso(cents)
+
+            if not process:
+                process = ProcessNumber.get_solo()
+                process = process.process_number
+
+                if process == '0000/00000-0':
+                    messages.info(request,
+                                  mark_safe(_('You should have configured your process number on configurations. '
+                                              ' Click <a href="../../configuration">here</a> to configure it.')))
+
+            try:
+                people = Person.objects.all()
+                principal_investigator = people.get(role__name="Principal Investigator")
+
+            except:
+                messages.error(request, _('You must set a person with the role of Principal Investigator.'))
+                date = datetime.datetime.now()
+                context = {'people': people, 'default_date': date, 'process': process}
+                return render(request, 'anexo/anexo7.html', context)
+
+            return render_to_pdf(
+                'anexo/anexo7_pdf.html',
+                {
+                    'amount': amount,
+                    'cents': cents,
+                    'pagesize': 'A4',
+                    'person': person,
+                    'process': process,
+                    'principal_investigator': principal_investigator,
+                    'form': form,
+                }
+            )
+
         else:
-            date = datetime.datetime.now()
 
-        if not process:
-            process = ProcessNumber.get_solo()
-            process = process.process_number
+            messages.info(request,
+                          mark_safe(_('Your form is not valid.')))
 
-            if process == '0000/00000-0':
-                messages.info(request, mark_safe(_('You should have configured your process number on configurations. '
-                                                   ' Click <a href="../../configuration">here</a> to configure it.')))
+            form = AnnexSevenForm()
+            return render(request, 'anexo/anexo7.html', {'form': form})
 
-        ext = dExtenso()
-        amount = str(float(value))
-        cents = str(float(value) - int(value))[2:4]  # Only two digits in cents
-        amount = ext.getExtenso(amount)
-        cents = ext.getExtenso(cents)
+    else:
 
-        try:
-            people = Person.objects.all()
-            principal_investigator = people.get(role__name="Principal Investigator")
+        form = AnnexSevenForm()
 
-        except:
-            messages.error(request, _('You must set a person with the role of Principal Investigator.'))
-            date = datetime.datetime.now()
-            context = {'people': people, 'default_date': date, 'process': process}
-            return render(request, 'anexo/anexo7.html', context)
+    return render(request, 'anexo/anexo7.html', {'form': form})
 
-        return render_to_pdf(
-            'anexo/anexo5_pdf.html',
-            {
-                'amount': amount,
-                'cents': cents,
-                'date': date,
-                'pagesize': 'A4',
-                'person': person,
-                'process': process,
-                'principal_investigator': principal_investigator,
-            }
-        )
 
 
 @login_required
