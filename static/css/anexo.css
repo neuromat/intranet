@@ -1,32 +1,35 @@
 @page {
     size: a4;
-    margin: 2cm 2cm 0.5cm 2cm;
+    margin: 1cm 2cm;
     padding:0;
-    font-family: Helvetica, Arial, sans-serif;
-    background-color: #00A000;
-}
-h3.title{
-    font-weight: bold;
-    text-align: center;
-    font-size:15px;
-    color: blue;
+    font-size: 13px;
 }
 table {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+    text-align: left;
+    border-collapse: collapse;
+    border: 1px solid black;
+    padding-top: 3px;
+    padding-left: 3px;
 }
-p.title {
-    font-weight: bold;
+body {
+    all: unset;
+    line-height: 1.5pt;
+    font-size: 10pt;
+    text-align: justify;
+}
+div.title {
     text-align: center;
-    font-size:15px;
+    text-decoration: underline;
+    line-height: 1pt;
 }
-.text-center{
-    text-align:center;
+.bottom {
+    all: unset;
+    display:inline;
+    padding-left: 4cm;
 }
+
 
 /* Default configurations below */
-
 html {
     font-family: Helvetica;
     font-size: 10px;

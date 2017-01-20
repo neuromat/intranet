@@ -50,6 +50,7 @@ def money_to_strings(value):
     cents = ext.getExtenso(cents)
     return amount, cents
 
+
 @login_required
 def anexo5(request):
 
@@ -130,7 +131,8 @@ def anexo5(request):
                     'principal_investigator': principal_investigator,
                     'routes': routes,
                     'start_date': start_date.departure,
-                }
+                },
+                'anexo.css',
             )
 
     date = datetime.datetime.now()
@@ -199,7 +201,8 @@ def anexo7(request):
                     'principal_investigator': principal_investigator,
                     'reason': reason,
                     'date': datetime.datetime.now(),
-                }
+                },
+                'anexo.css'
             )
 
         else:

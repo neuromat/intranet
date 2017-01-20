@@ -35,18 +35,18 @@ def fetch_resources(uri, rel):
     return path
 
 
-def render(template_src, context_dict, css=None):
+def render(template_src, context_dict, css_source=None):
     template = get_template(template_src)
     context = Context(context_dict)
     html = template.render(context)
     result = StringIO.StringIO()
 
-    if css:
+    if css_source:
         pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")),
                                 dest=result,
                                 encoding='UTF-8',
                                 link_callback=fetch_resources,
-                                default_css=open(os.path.join(settings.BASE_DIR, 'static', 'css', css)).read())
+                                default_css=open(os.path.join(settings.BASE_DIR, 'static', 'css', css_source)).read())
     else:
         pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")),
                                 dest=result,
