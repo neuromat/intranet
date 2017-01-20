@@ -22,12 +22,27 @@ div.title {
     text-decoration: underline;
     line-height: 1pt;
 }
+.center {
+    text-align: center;
+}
 .bottom {
     all: unset;
     display:inline;
     padding-left: 4cm;
 }
 
+th.big {
+    text-align: left;
+    colspan: 3;
+}
+
+th.medium {
+
+}
+
+.bla tr th {
+    text-align: center;
+}
 
 /* Default configurations below */
 html {
