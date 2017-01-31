@@ -2,20 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-12 15:57-0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+
 
 #: activity/admin.py:12 activity/models.py:88
 msgid "Link"
@@ -45,12 +32,16 @@ msgstr "Seminário"
 
 #: activity/models.py:64 dissemination/models.py:39 research/models.py:46
 #: research/models.py:297 templates/report/activity/meetings_report.html:12
-#: templates/report/activity/pdf/seminars.html:6
+#: templates/report/activity/pdf/seminars.html:11
+#: templates/report/activity/pdf/training_programs.html:10
 #: templates/report/activity/seminars_report.html:19
-#: templates/report/activity/training_programs_report.html:16
-#: templates/report/dissemination/dissemination_report.html:22
-#: templates/report/dissemination/dissemination_report.html:51
-#: templates/report/dissemination/dissemination_report.html:57
+#: templates/report/activity/training_programs_report.html:17
+#: templates/report/dissemination/dissemination_report.html:24
+#: templates/report/dissemination/dissemination_report.html:53
+#: templates/report/dissemination/dissemination_report.html:59
+#: templates/report/dissemination/pdf/dissemination.html:12
+#: templates/report/dissemination/pdf/dissemination.html:41
+#: templates/report/dissemination/pdf/dissemination.html:47
 #: templates/report/research/add_event_papers.html:25
 #: templates/report/research/arxiv_papers.html:25
 #: templates/report/research/periodical_published_papers.html:25
@@ -59,7 +50,7 @@ msgid "Title"
 msgstr "Título"
 
 #: activity/models.py:65 research/models.py:153
-#: templates/report/scientific_mission/pdf/scientific_missions.html:36
+#: templates/report/scientific_mission/pdf/scientific_missions.html:10
 #: templates/report/scientific_mission/scientific_missions_report.html:19
 msgid "Local"
 msgstr "Local"
@@ -70,9 +61,12 @@ msgstr "Tipo de atividade"
 
 #: activity/models.py:82 dissemination/models.py:42 research/models.py:47
 #: research/models.py:304 templates/report/activity/meetings_report.html:20
-#: templates/report/dissemination/dissemination_report.html:24
-#: templates/report/dissemination/dissemination_report.html:52
-#: templates/report/dissemination/dissemination_report.html:58
+#: templates/report/dissemination/dissemination_report.html:26
+#: templates/report/dissemination/dissemination_report.html:54
+#: templates/report/dissemination/dissemination_report.html:60
+#: templates/report/dissemination/pdf/dissemination.html:14
+#: templates/report/dissemination/pdf/dissemination.html:42
+#: templates/report/dissemination/pdf/dissemination.html:48
 msgid "URL"
 msgstr "URL"
 
@@ -101,7 +95,7 @@ msgstr "Descrição"
 #: research/models.py:305 templates/report/activity/meetings.html:26
 #: templates/report/activity/seminars.html:28
 #: templates/report/dissemination/dissemination.html:36
-#: templates/report/scientific_mission/pdf/scientific_missions.html:37
+#: templates/report/scientific_mission/pdf/scientific_missions.html:11
 #: templates/report/scientific_mission/scientific_missions_report.html:20
 msgid "Start date"
 msgstr "Início"
@@ -110,13 +104,13 @@ msgstr "Início"
 #: research/models.py:306 templates/report/activity/meetings.html:30
 #: templates/report/activity/seminars.html:33
 #: templates/report/dissemination/dissemination.html:41
-#: templates/report/scientific_mission/pdf/scientific_missions.html:37
+#: templates/report/scientific_mission/pdf/scientific_missions.html:11
 #: templates/report/scientific_mission/scientific_missions_report.html:20
 msgid "End date"
 msgstr "Término"
 
 #: activity/models.py:113 docs/source/interface/interface.py:16
-#: sistema/settings_local.py:92 templates/admin/default_index.html:110
+#: sistema/settings_local.py:78 templates/admin/default_index.html:110
 #: templates/report/activity/meetings.html:10
 #: templates/report/activity/meetings_report.html:5
 #: templates/report/reports.html:34 templates/report/reports_suit.html:30
@@ -125,14 +119,16 @@ msgstr "Reuniões"
 
 #: activity/models.py:129 activity/models.py:184
 #: templates/poster/seminar.html:18
-#: templates/report/activity/pdf/seminars.html:6
+#: templates/report/activity/pdf/seminars.html:11
+#: templates/report/activity/pdf/training_programs.html:10
 #: templates/report/activity/seminars_report.html:19
-#: templates/report/activity/training_programs_report.html:16
+#: templates/report/activity/training_programs_report.html:17
 msgid "Speaker"
 msgstr "Palestrante"
 
 #: activity/models.py:134
-#: templates/report/activity/training_programs_report.html:17
+#: templates/report/activity/pdf/training_programs.html:11
+#: templates/report/activity/training_programs_report.html:18
 msgid "Duration"
 msgstr "Duração"
 
@@ -191,24 +187,28 @@ msgstr "Palestrante de uma instituição do exterior?"
 #: templates/report/research/academic_works_report.html:114
 #: templates/report/research/academic_works_report.html:142
 #: templates/report/research/academic_works_report.html:167
-#: templates/report/research/pdf/academic_works.html:53
-#: templates/report/research/pdf/academic_works.html:79
-#: templates/report/research/pdf/academic_works.html:108
-#: templates/report/research/pdf/academic_works.html:134
-#: templates/report/research/pdf/academic_works.html:163
-#: templates/report/research/pdf/academic_works.html:189
+#: templates/report/research/pdf/academic_works.html:29
+#: templates/report/research/pdf/academic_works.html:54
+#: templates/report/research/pdf/academic_works.html:82
+#: templates/report/research/pdf/academic_works.html:107
+#: templates/report/research/pdf/academic_works.html:135
+#: templates/report/research/pdf/academic_works.html:160
 msgid "Abstract"
 msgstr "Resumo"
 
 #: activity/models.py:189 dissemination/models.py:40 research/models.py:87
 #: research/models.py:230 research/models.py:240 research/models.py:250
 #: research/models.py:272 scientific_mission/models.py:41
-#: templates/report/activity/pdf/seminars.html:7
+#: templates/report/activity/pdf/seminars.html:12
+#: templates/report/activity/pdf/training_programs.html:10
 #: templates/report/activity/seminars_report.html:20
-#: templates/report/activity/training_programs_report.html:16
-#: templates/report/dissemination/dissemination_report.html:24
-#: templates/report/dissemination/dissemination_report.html:53
-#: templates/report/dissemination/dissemination_report.html:58
+#: templates/report/activity/training_programs_report.html:17
+#: templates/report/dissemination/dissemination_report.html:26
+#: templates/report/dissemination/dissemination_report.html:55
+#: templates/report/dissemination/dissemination_report.html:60
+#: templates/report/dissemination/pdf/dissemination.html:14
+#: templates/report/dissemination/pdf/dissemination.html:43
+#: templates/report/dissemination/pdf/dissemination.html:48
 #: templates/report/research/arxiv_papers.html:28
 #: templates/report/research/periodical_published_papers.html:32
 #: templates/report/research/periodical_update_papers.html:32
@@ -229,42 +229,42 @@ msgid "Room"
 msgstr "Sala"
 
 #: activity/models.py:196 docs/source/interface/interface.py:19
-#: sistema/settings_local.py:95 templates/admin/default_index.html:122
+#: sistema/settings_local.py:81 templates/admin/default_index.html:122
 #: templates/report/activity/seminars.html:10
 #: templates/report/activity/seminars_report.html:5
 #: templates/report/reports.html:46 templates/report/reports_suit.html:39
 msgid "Seminars"
 msgstr "Seminários"
 
-#: activity/views.py:99 activity/views.py:202 activity/views.py:271
-#: dissemination/views.py:75 research/views.py:140 research/views.py:279
-#: scientific_mission/views.py:204
+#: activity/views.py:78 activity/views.py:182 activity/views.py:254
+#: dissemination/views.py:76 research/views.py:139 research/views.py:263
+#: scientific_mission/views.py:285
 msgid ""
 "You entered a wrong date format or the end date is not greater than or equal "
 "to the start date."
 msgstr ""
 
-#: activity/views.py:118
+#: activity/views.py:97
 msgid "You have to choose a seminar!"
 msgstr "Você tem que escolher um seminário!"
 
-#: activity/views.py:127
+#: activity/views.py:106
 msgid "No seminar matches the given query."
 msgstr "Nenhum seminário corresponde a esta consulta."
 
-#: activity/views.py:290
+#: activity/views.py:273
 msgid "You have to choose a person!"
 msgstr "Você tem que escolher uma pessoa!"
 
-#: activity/views.py:295
+#: activity/views.py:278
 msgid "You have to choose a training program!"
 msgstr "Você tem que escolher um programa de treinamento!"
 
-#: activity/views.py:304
+#: activity/views.py:287
 msgid "No person matches the given query."
 msgstr "Nenhuma pessoa corresponde a esta consulta."
 
-#: activity/views.py:309
+#: activity/views.py:292
 msgid "No training program matches the given query."
 msgstr "Nenhum programa de treinamento corresponde a esta consulta."
 
@@ -404,7 +404,7 @@ msgid "User"
 msgstr "Usuário"
 
 #: custom_auth/models.py:78 docs/source/interface/interface.py:34
-#: sistema/settings_local.py:111
+#: sistema/settings_local.py:97
 msgid "Users"
 msgstr "Usuários"
 
@@ -435,7 +435,7 @@ msgid "Dissemination"
 msgstr "Difusão"
 
 #: dissemination/apps.py:10 docs/source/interface/interface.py:15
-#: sistema/settings_local.py:91
+#: sistema/settings_local.py:77
 msgid "Disseminations"
 msgstr "Difusões"
 
@@ -454,9 +454,12 @@ msgid "Topic"
 msgstr "Tópico"
 
 #: dissemination/models.py:28
-#: templates/report/dissemination/dissemination_report.html:23
-#: templates/report/dissemination/dissemination_report.html:52
-#: templates/report/dissemination/dissemination_report.html:57
+#: templates/report/dissemination/dissemination_report.html:25
+#: templates/report/dissemination/dissemination_report.html:54
+#: templates/report/dissemination/dissemination_report.html:59
+#: templates/report/dissemination/pdf/dissemination.html:13
+#: templates/report/dissemination/pdf/dissemination.html:42
+#: templates/report/dissemination/pdf/dissemination.html:47
 msgid "Topics"
 msgstr "Tópicos"
 
@@ -474,7 +477,8 @@ msgstr "Meios de comunicação interna"
 
 #: dissemination/models.py:80 dissemination/models.py:121
 #: templates/report/dissemination/dissemination.html:27
-#: templates/report/dissemination/dissemination_report.html:23
+#: templates/report/dissemination/dissemination_report.html:25
+#: templates/report/dissemination/pdf/dissemination.html:13
 msgid "Media outlet"
 msgstr "Meio de comunicação"
 
@@ -490,11 +494,11 @@ msgstr "Meio de comunicação externa"
 msgid "External media outlets"
 msgstr "Meios de comunicação externa"
 
-#: dissemination/views.py:79
+#: dissemination/views.py:80
 msgid "You should choose a type."
 msgstr "Você deve escolher um tipo."
 
-#: docs/source/interface/interface.py:11 sistema/settings_local.py:87
+#: docs/source/interface/interface.py:11 sistema/settings_local.py:73
 #: templates/admin/default_index.html:95
 #: templates/report/activity/meetings.html:10
 #: templates/report/activity/meetings_report.html:5
@@ -517,32 +521,32 @@ msgstr "Você deve escolher um tipo."
 msgid "Reports"
 msgstr "Relatórios"
 
-#: docs/source/interface/interface.py:13 sistema/settings_local.py:89
+#: docs/source/interface/interface.py:13 sistema/settings_local.py:75
 #: templates/admin/default_index.html:98 templates/report/reports.html:22
 #: templates/report/reports_suit.html:21
 msgid "Academic works"
 msgstr "Trabalhos acadêmicos"
 
 #: docs/source/interface/interface.py:14 research/models.py:217
-#: sistema/settings_local.py:90 templates/admin/default_index.html:102
+#: sistema/settings_local.py:76 templates/admin/default_index.html:102
 #: templates/report/reports.html:26 templates/report/reports_suit.html:24
 #: templates/report/research/articles.html:10
 #: templates/report/research/articles_report.html:5
 msgid "Articles"
 msgstr "Artigos"
 
-#: docs/source/interface/interface.py:17 sistema/settings_local.py:93
+#: docs/source/interface/interface.py:17 sistema/settings_local.py:79
 #: templates/admin/default_index.html:114
 #: templates/report/person/researchers.html:5 templates/report/reports.html:38
 #: templates/report/reports_suit.html:33
 msgid "Researchers"
 msgstr "Pesquisadores"
 
-#: docs/source/interface/interface.py:18 sistema/settings_local.py:94
+#: docs/source/interface/interface.py:18 sistema/settings_local.py:80
 msgid "Scientific missions"
 msgstr "Missões científicas"
 
-#: docs/source/interface/interface.py:20 sistema/settings_local.py:96
+#: docs/source/interface/interface.py:20 sistema/settings_local.py:82
 #: templates/admin/default_index.html:126
 #: templates/certificate/certificate.html:23
 #: templates/report/activity/training_programs.html:10
@@ -551,7 +555,7 @@ msgstr "Missões científicas"
 msgid "Training programs"
 msgstr "Programas de treinamento"
 
-#: docs/source/interface/interface.py:22 sistema/settings_local.py:98
+#: docs/source/interface/interface.py:22 sistema/settings_local.py:84
 #: templates/add_content/add_content.html:5
 #: templates/add_content/add_content.html:8
 #: templates/add_content/add_content.html:13
@@ -563,11 +567,11 @@ msgstr "Programas de treinamento"
 msgid "Add content"
 msgstr "Adicionar conteúdo"
 
-#: docs/source/interface/interface.py:24 sistema/settings_local.py:100
+#: docs/source/interface/interface.py:24 sistema/settings_local.py:86
 msgid "Create/Update citation name"
 msgstr "Criar/Atualizar nome de citação"
 
-#: docs/source/interface/interface.py:25 sistema/settings_local.py:101
+#: docs/source/interface/interface.py:25 sistema/settings_local.py:87
 #: templates/add_content/add_content.html:20
 #: templates/add_content/add_content_suit.html:18
 #: templates/admin/default_index.html:61
@@ -581,9 +585,9 @@ msgstr "Criar/Atualizar nome de citação"
 msgid "Import papers"
 msgstr "Importar artigos"
 
-#: docs/source/interface/interface.py:27 sistema/settings_local.py:103
+#: docs/source/interface/interface.py:27 sistema/settings_local.py:89
 #: templates/admin/default_index.html:76 templates/anexo/anexo5.html:9
-#: templates/certificate/certificate.html:5
+#: templates/anexo/anexo7.html:7 templates/certificate/certificate.html:5
 #: templates/documents/documents.html:5 templates/documents/documents.html:8
 #: templates/documents/documents.html:13 templates/documents/documents.html:17
 #: templates/documents/documents_suit.html:7
@@ -591,22 +595,22 @@ msgstr "Importar artigos"
 msgid "Documents"
 msgstr "Documentos"
 
-#: docs/source/interface/interface.py:29 sistema/settings_local.py:106
+#: docs/source/interface/interface.py:29 sistema/settings_local.py:91
 msgid "FAPESP - appendix 5"
 msgstr "FAPESP - anexo 5"
 
-#: docs/source/interface/interface.py:30 sistema/settings_local.py:107
+#: docs/source/interface/interface.py:30 sistema/settings_local.py:93
 #: templates/admin/default_index.html:84 templates/documents/documents.html:30
 #: templates/documents/documents_suit.html:30 templates/poster/seminar.html:9
 #: templates/poster/seminar_poster.html:7
 msgid "Seminar poster"
 msgstr "Poster de um seminário"
 
-#: docs/source/interface/interface.py:33 sistema/settings_local.py:110
+#: docs/source/interface/interface.py:33 sistema/settings_local.py:96
 msgid "Cities"
 msgstr "Cidades"
 
-#: docs/source/interface/interface.py:35 sistema/settings_local.py:112
+#: docs/source/interface/interface.py:35 sistema/settings_local.py:98
 msgid "Groups"
 msgstr "Grupos"
 
@@ -690,12 +694,12 @@ msgstr "Bairro"
 #: templates/report/research/academic_works_report.html:107
 #: templates/report/research/academic_works_report.html:135
 #: templates/report/research/academic_works_report.html:160
-#: templates/report/research/pdf/academic_works.html:46
-#: templates/report/research/pdf/academic_works.html:72
-#: templates/report/research/pdf/academic_works.html:101
-#: templates/report/research/pdf/academic_works.html:127
-#: templates/report/research/pdf/academic_works.html:156
-#: templates/report/research/pdf/academic_works.html:182
+#: templates/report/research/pdf/academic_works.html:22
+#: templates/report/research/pdf/academic_works.html:47
+#: templates/report/research/pdf/academic_works.html:75
+#: templates/report/research/pdf/academic_works.html:100
+#: templates/report/research/pdf/academic_works.html:128
+#: templates/report/research/pdf/academic_works.html:153
 msgid "Institution"
 msgstr "Instituição"
 
@@ -845,8 +849,10 @@ msgid "Order of author"
 msgstr "Ordem dos autores"
 
 #: research/models.py:70
-#: templates/report/dissemination/dissemination_report.html:22
-#: templates/report/dissemination/dissemination_report.html:51
+#: templates/report/dissemination/dissemination_report.html:24
+#: templates/report/dissemination/dissemination_report.html:53
+#: templates/report/dissemination/pdf/dissemination.html:12
+#: templates/report/dissemination/pdf/dissemination.html:41
 #: templates/report/research/add_event_papers.html:26
 #: templates/report/research/arxiv_papers.html:26
 #: templates/report/research/periodical_published_papers.html:26
@@ -962,12 +968,12 @@ msgstr "Tipos de trabalho acadêmico"
 #: templates/report/research/academic_works_report.html:102
 #: templates/report/research/academic_works_report.html:130
 #: templates/report/research/academic_works_report.html:155
-#: templates/report/research/pdf/academic_works.html:41
-#: templates/report/research/pdf/academic_works.html:67
-#: templates/report/research/pdf/academic_works.html:96
-#: templates/report/research/pdf/academic_works.html:122
-#: templates/report/research/pdf/academic_works.html:151
-#: templates/report/research/pdf/academic_works.html:177
+#: templates/report/research/pdf/academic_works.html:17
+#: templates/report/research/pdf/academic_works.html:42
+#: templates/report/research/pdf/academic_works.html:70
+#: templates/report/research/pdf/academic_works.html:95
+#: templates/report/research/pdf/academic_works.html:123
+#: templates/report/research/pdf/academic_works.html:148
 msgid "Advisee"
 msgstr "Orientado"
 
@@ -978,12 +984,12 @@ msgstr "Orientado"
 #: templates/report/research/academic_works_report.html:103
 #: templates/report/research/academic_works_report.html:131
 #: templates/report/research/academic_works_report.html:156
-#: templates/report/research/pdf/academic_works.html:42
-#: templates/report/research/pdf/academic_works.html:68
-#: templates/report/research/pdf/academic_works.html:97
-#: templates/report/research/pdf/academic_works.html:123
-#: templates/report/research/pdf/academic_works.html:152
-#: templates/report/research/pdf/academic_works.html:178
+#: templates/report/research/pdf/academic_works.html:18
+#: templates/report/research/pdf/academic_works.html:43
+#: templates/report/research/pdf/academic_works.html:71
+#: templates/report/research/pdf/academic_works.html:96
+#: templates/report/research/pdf/academic_works.html:124
+#: templates/report/research/pdf/academic_works.html:149
 msgid "Advisor"
 msgstr "Orientador"
 
@@ -1008,25 +1014,25 @@ msgstr "Trabalho acadêmico"
 msgid "Academic Works"
 msgstr "Trabalhos acadêmicos"
 
-#: research/views.py:507
+#: research/views.py:477
 msgid "Please, select a .ris file to upload."
 msgstr "Por favor, selecione um arquivo .ris para fazer o upload."
 
-#: research/views.py:533
+#: research/views.py:503
 msgid "Successfully added one Periodical."
 msgstr "Periódico adicionado com sucesso."
 
-#: research/views.py:535
+#: research/views.py:505
 #, python-format
 msgid "Successfully added %d Periodicals."
 msgstr "%d periódicos adicionados com sucesso."
 
-#: research/views.py:538 research/views.py:917 research/views.py:993
-#: research/views.py:1070 research/views.py:1190
+#: research/views.py:508 research/views.py:887 research/views.py:963
+#: research/views.py:1040 research/views.py:1160
 msgid "You have selected no item. Nothing to be done!"
 msgstr "Você não selecionou nenhum item. Não há nada para fazer!"
 
-#: research/views.py:903 research/views.py:1176
+#: research/views.py:873 research/views.py:1146
 #, python-format
 msgid ""
 "The paper \"%s\" has no journal and the date field is empty or has an "
@@ -1035,7 +1041,7 @@ msgstr ""
 "O paper \"%s\" está sem periódico e o campo data está vazio ou com um "
 "formato incorreto."
 
-#: research/views.py:906 research/views.py:985 research/views.py:1179
+#: research/views.py:876 research/views.py:955 research/views.py:1149
 #, python-format
 msgid ""
 "The date field is empty or has an incorrect format for the paper \"%s\". It "
@@ -1044,7 +1050,7 @@ msgstr ""
 "O campo data está vazio ou com um formato incorreto para o paper \"%s\". O "
 "fomato correto é o YYYY-MM-DD."
 
-#: research/views.py:909 research/views.py:1182
+#: research/views.py:879 research/views.py:1152
 #, python-format
 msgid "You should select a journal for the paper \"%s\"."
 msgstr "Você deve escolher um periódico para o paper \"%s\"."
@@ -1071,7 +1077,7 @@ msgstr "Rotas"
 #: scientific_mission/apps.py:9 templates/admin/default_index.html:118
 #: templates/anexo/anexo5.html:28 templates/report/reports.html:42
 #: templates/report/reports_suit.html:36
-#: templates/report/scientific_mission/pdf/scientific_missions.html:36
+#: templates/report/scientific_mission/pdf/scientific_missions.html:10
 #: templates/report/scientific_mission/scientific_missions.html:10
 #: templates/report/scientific_mission/scientific_missions_report.html:5
 #: templates/report/scientific_mission/scientific_missions_report.html:19
@@ -1138,7 +1144,8 @@ msgstr "Chegada"
 msgid "Order"
 msgstr "Ordem"
 
-#: scientific_mission/views.py:66 scientific_mission/views.py:136
+#: scientific_mission/views.py:76 scientific_mission/views.py:143
+#: scientific_mission/views.py:177
 msgid ""
 "You should have configured your process number on configurations.  Click <a "
 "href=\"../../configuration\">here</a> to configure it."
@@ -1146,38 +1153,38 @@ msgstr ""
 "Você devetia ter configurado seu número de processo em configurações. Clique "
 "<ahref=\"../../configuration\">aqui</a> para configurar."
 
-#: scientific_mission/views.py:71
+#: scientific_mission/views.py:81
 msgid "You have to choose a scientific mission!"
 msgstr "Você tem que escolher uma missão científica!"
 
-#: scientific_mission/views.py:81
+#: scientific_mission/views.py:91
 msgid "No scientific mission matches the given query."
 msgstr "Nenhum missão científica corresponde a esta consulta."
 
-#: scientific_mission/views.py:95
+#: scientific_mission/views.py:105
 msgid "You should've set routes for this mission."
 msgstr "Você deveria ter configurado rotas para essa missão."
 
-#: scientific_mission/views.py:109
+#: scientific_mission/views.py:115 scientific_mission/views.py:185
 msgid "You must set a person with the role of Principal Investigator."
-msgstr ""
-"Você deve escolher alguma pessoa para o papel de principal "
-"investigador."
+msgstr "Você deve escolher alguma pessoa para o papel de principal investigador."
 
-#: sistema/settings_local.py:105 templates/certificate/certificate.html:5
-#: templates/documents/documents.html:20
-#: templates/documents/documents_suit.html:24
-msgid "Certificate"
-msgstr "Certificado"
+#: scientific_mission/views.py:211
+msgid "Your form is not valid."
+msgstr "Seu formulário não é válido."
 
-#: sistema/urls.py:64
+#: sistema/settings_local.py:92
+msgid "FAPESP - appendix 7"
+msgstr "FAPESP - anexo 7"
+
+#: sistema/urls.py:65
 msgid "Features of the NIRA system"
 msgstr "Funcionalidades do sistema"
 
 #: templates/add_content/add_content.html:8
 #: templates/add_content/add_content_suit.html:6
 #: templates/admin/default_index.html:12 templates/anexo/anexo5.html:9
-#: templates/certificate/certificate.html:5
+#: templates/anexo/anexo7.html:7 templates/certificate/certificate.html:5
 #: templates/documents/documents.html:8
 #: templates/documents/documents_suit.html:6 templates/poster/seminar.html:9
 #: templates/poster/seminar_poster.html:6
@@ -1309,9 +1316,19 @@ msgstr "Data de emissão"
 msgid "Number of process"
 msgstr "Número de processo"
 
-#: templates/anexo/anexo5.html:50
+#: templates/anexo/anexo5.html:50 templates/anexo/anexo7.html:17
 msgid "Get document"
 msgstr "Obter documentos"
+
+#: templates/anexo/anexo7.html:7
+msgid "Appendix 7"
+msgstr "Anexo 7"
+
+#: templates/certificate/certificate.html:5
+#: templates/documents/documents.html:20
+#: templates/documents/documents_suit.html:24
+msgid "Certificate"
+msgstr "Certificado"
 
 #: templates/certificate/certificate.html:33
 msgid "Number of hours"
@@ -1363,12 +1380,12 @@ msgstr "Obter relatório"
 #: templates/report/research/academic_works_report.html:101
 #: templates/report/research/academic_works_report.html:129
 #: templates/report/research/academic_works_report.html:154
-#: templates/report/research/pdf/academic_works.html:40
-#: templates/report/research/pdf/academic_works.html:66
-#: templates/report/research/pdf/academic_works.html:95
-#: templates/report/research/pdf/academic_works.html:121
-#: templates/report/research/pdf/academic_works.html:150
-#: templates/report/research/pdf/academic_works.html:176
+#: templates/report/research/pdf/academic_works.html:16
+#: templates/report/research/pdf/academic_works.html:41
+#: templates/report/research/pdf/academic_works.html:69
+#: templates/report/research/pdf/academic_works.html:94
+#: templates/report/research/pdf/academic_works.html:122
+#: templates/report/research/pdf/academic_works.html:147
 msgid "Period"
 msgstr "Período"
 
@@ -1378,8 +1395,7 @@ msgstr "Nenhuma conferência encontrada!"
 
 #: templates/report/activity/seminars_report.html:13
 #: templates/report/activity/training_programs_report.html:12
-#: templates/report/dissemination/dissemination_report.html:17
-#: templates/report/dissemination/dissemination_report.html:42
+#: templates/report/dissemination/dissemination_report.html:16
 #: templates/report/research/academic_works_report.html:12
 #: templates/report/research/articles_report.html:12
 #: templates/report/scientific_mission/scientific_missions_report.html:13
@@ -1387,6 +1403,8 @@ msgid "Download .tex file"
 msgstr "Baixar o arquivo .tex"
 
 #: templates/report/activity/seminars_report.html:14
+#: templates/report/activity/training_programs_report.html:13
+#: templates/report/dissemination/dissemination_report.html:17
 #: templates/report/research/academic_works_report.html:13
 #: templates/report/research/articles_report.html:13
 #: templates/report/scientific_mission/scientific_missions_report.html:14
@@ -1397,7 +1415,7 @@ msgstr "Baixar versão em PDF"
 msgid "No seminars found!"
 msgstr "Nenhum seminário encontrado!"
 
-#: templates/report/activity/training_programs_report.html:43
+#: templates/report/activity/training_programs_report.html:44
 msgid "No training programs found!"
 msgstr "Nenhum programa de treinamento encontrado!"
 
@@ -1405,7 +1423,7 @@ msgstr "Nenhum programa de treinamento encontrado!"
 msgid "Dissemination report"
 msgstr "Relatório de difusão"
 
-#: templates/report/dissemination/dissemination_report.html:75
+#: templates/report/dissemination/dissemination_report.html:77
 msgid "No disseminations found!"
 msgstr "Nenhuma difusão encontrada!"
 
@@ -1426,16 +1444,16 @@ msgid "Reports available"
 msgstr "Relatórios disponíveis"
 
 #: templates/report/research/academic_works_report.html:16
-#: templates/report/research/pdf/academic_works.html:32
+#: templates/report/research/pdf/academic_works.html:9
 msgid "Post-doctoral fellows"
 msgstr "Pós-doutorandos"
 
 #: templates/report/research/academic_works_report.html:18
 #: templates/report/research/academic_works_report.html:71
 #: templates/report/research/academic_works_report.html:124
-#: templates/report/research/pdf/academic_works.html:35
-#: templates/report/research/pdf/academic_works.html:90
-#: templates/report/research/pdf/academic_works.html:145
+#: templates/report/research/pdf/academic_works.html:11
+#: templates/report/research/pdf/academic_works.html:64
+#: templates/report/research/pdf/academic_works.html:117
 msgid "Concluded"
 msgstr "Concluído"
 
@@ -1445,12 +1463,12 @@ msgstr "Concluído"
 #: templates/report/research/academic_works_report.html:99
 #: templates/report/research/academic_works_report.html:127
 #: templates/report/research/academic_works_report.html:152
-#: templates/report/research/pdf/academic_works.html:38
-#: templates/report/research/pdf/academic_works.html:64
-#: templates/report/research/pdf/academic_works.html:93
-#: templates/report/research/pdf/academic_works.html:119
-#: templates/report/research/pdf/academic_works.html:148
-#: templates/report/research/pdf/academic_works.html:174
+#: templates/report/research/pdf/academic_works.html:14
+#: templates/report/research/pdf/academic_works.html:39
+#: templates/report/research/pdf/academic_works.html:67
+#: templates/report/research/pdf/academic_works.html:92
+#: templates/report/research/pdf/academic_works.html:120
+#: templates/report/research/pdf/academic_works.html:145
 msgid "Title of the project"
 msgstr "Título do projeto"
 
@@ -1460,12 +1478,12 @@ msgstr "Título do projeto"
 #: templates/report/research/academic_works_report.html:105
 #: templates/report/research/academic_works_report.html:133
 #: templates/report/research/academic_works_report.html:158
-#: templates/report/research/pdf/academic_works.html:44
-#: templates/report/research/pdf/academic_works.html:70
-#: templates/report/research/pdf/academic_works.html:99
-#: templates/report/research/pdf/academic_works.html:125
-#: templates/report/research/pdf/academic_works.html:154
-#: templates/report/research/pdf/academic_works.html:180
+#: templates/report/research/pdf/academic_works.html:20
+#: templates/report/research/pdf/academic_works.html:45
+#: templates/report/research/pdf/academic_works.html:73
+#: templates/report/research/pdf/academic_works.html:98
+#: templates/report/research/pdf/academic_works.html:126
+#: templates/report/research/pdf/academic_works.html:151
 msgid "Co-advisor"
 msgstr "Coorientador"
 
@@ -1475,12 +1493,12 @@ msgstr "Coorientador"
 #: templates/report/research/academic_works_report.html:109
 #: templates/report/research/academic_works_report.html:137
 #: templates/report/research/academic_works_report.html:162
-#: templates/report/research/pdf/academic_works.html:48
-#: templates/report/research/pdf/academic_works.html:74
-#: templates/report/research/pdf/academic_works.html:103
-#: templates/report/research/pdf/academic_works.html:129
-#: templates/report/research/pdf/academic_works.html:158
-#: templates/report/research/pdf/academic_works.html:184
+#: templates/report/research/pdf/academic_works.html:24
+#: templates/report/research/pdf/academic_works.html:49
+#: templates/report/research/pdf/academic_works.html:77
+#: templates/report/research/pdf/academic_works.html:102
+#: templates/report/research/pdf/academic_works.html:130
+#: templates/report/research/pdf/academic_works.html:155
 msgid "Funding"
 msgstr "Agência financiadora"
 
@@ -1490,31 +1508,31 @@ msgstr "Agência financiadora"
 #: templates/report/research/academic_works_report.html:112
 #: templates/report/research/academic_works_report.html:140
 #: templates/report/research/academic_works_report.html:165
-#: templates/report/research/pdf/academic_works.html:51
-#: templates/report/research/pdf/academic_works.html:77
-#: templates/report/research/pdf/academic_works.html:106
-#: templates/report/research/pdf/academic_works.html:132
-#: templates/report/research/pdf/academic_works.html:161
-#: templates/report/research/pdf/academic_works.html:187
+#: templates/report/research/pdf/academic_works.html:27
+#: templates/report/research/pdf/academic_works.html:52
+#: templates/report/research/pdf/academic_works.html:80
+#: templates/report/research/pdf/academic_works.html:105
+#: templates/report/research/pdf/academic_works.html:133
+#: templates/report/research/pdf/academic_works.html:158
 msgid "Funding information"
 msgstr "Informações sobre o financiamento"
 
 #: templates/report/research/academic_works_report.html:43
 #: templates/report/research/academic_works_report.html:96
 #: templates/report/research/academic_works_report.html:149
-#: templates/report/research/pdf/academic_works.html:61
-#: templates/report/research/pdf/academic_works.html:116
-#: templates/report/research/pdf/academic_works.html:171
+#: templates/report/research/pdf/academic_works.html:36
+#: templates/report/research/pdf/academic_works.html:89
+#: templates/report/research/pdf/academic_works.html:142
 msgid "In progress"
 msgstr "Em andamento"
 
 #: templates/report/research/academic_works_report.html:69
-#: templates/report/research/pdf/academic_works.html:88
+#: templates/report/research/pdf/academic_works.html:62
 msgid "PhD thesis"
 msgstr "Tese de PhD"
 
 #: templates/report/research/academic_works_report.html:122
-#: templates/report/research/pdf/academic_works.html:143
+#: templates/report/research/pdf/academic_works.html:115
 msgid "MSc dissertations"
 msgstr "Dissertações de mestrado"
 
@@ -1685,13 +1703,12 @@ msgstr "Adicionar periódicos"
 msgid "No periodicals to be added!"
 msgstr "Sem periódicos para adicionar!"
 
-#: templates/report/scientific_mission/pdf/scientific_missions.html:36
+#: templates/report/scientific_mission/pdf/scientific_missions.html:10
 #: templates/report/scientific_mission/scientific_missions_report.html:19
 msgid "Researcher"
 msgstr "Pesquisador"
 
-#: templates/report/scientific_mission/pdf/scientific_missions.html:57
-#: templates/report/scientific_mission/pdf/scientific_missions.html:73
+#: templates/report/scientific_mission/pdf/scientific_missions.html:30
 #: templates/report/scientific_mission/scientific_missions_report.html:39
 #: templates/report/scientific_mission/scientific_missions_report.html:55
 msgid "No scientific missions found!"
