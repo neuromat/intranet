@@ -1130,10 +1130,8 @@ msgid "Value"
 msgstr "Valor"
 
 #: scientific_mission/forms.py:61
-#, fuzzy
-#| msgid "Process number"
 msgid "Process"
-msgstr "Número do processo"
+msgstr "Processo"
 
 #: scientific_mission/models.py:15
 msgid "Scientific Mission"
