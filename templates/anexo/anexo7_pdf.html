@@ -8,79 +8,50 @@
     <body>
 
         <div class="title">
-
-            <p>
-                <strong>ANEXO 7</strong>
-            </p>
-
-            <p>
-                <strong>DO MANUAL DE PRESTAÇÃO DE CONTAS</strong>
-            </p>
-
-            <p>
-                <strong>RECIBO DE REEMBOLSO DE RECURSOS AO VISITANTE REFERENTE</strong>
-            </p>
-
-            <p>
-                <strong>À AQUISIÇÃO DE PASSAGEM AÉREA-TERRESTRE / SEGURO SAÚDE</strong>
-            </p>
-
+            <p>ANEXO 7</p>
+            <p>DO MANUAL DE PRESTAÇÃO DE CONTAS</p>
+            <p>RECIBO DE REEMBOLSO DE RECURSOS AO VISITANTE REFERENTE</p>
+            <p>À AQUISIÇÃO DE PASSAGEM AÉREA-TERRESTRE / SEGURO SAÚDE</p>
         </div>
 
 
-        <div class="center">
-            <p>
-                <strong>Recibo: R$ {{ value }}</strong>
-            </p>
+        <div class="value">
+            <p>Recibo: R$ {{ value }}</p>
         </div>
 
+        <div class="text">
+            <p>Recebi de {{ principal_investigator.full_name }}, a importância de R${{ value }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}) pagos com recursos relativo ao processo FAPESP nº {{ process }}, referente ao reembolso de {{ reimbursement }} utilizado no trecho {{ stretch }} no dia {{ period }}, com a finalidade de {{ reason }}.</p>
+        </div>
 
-        <p>
-            Recebi de {{ principal_investigator.full_name }}, a importância de R${{ value }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}) pagos com recursos relativo ao processo FAPESP nº {{ process }}, referente ao reembolso de {{ reimbursement }} utilizado no trecho {{ stretch }} no dia {{ period }}, com a finalidade de {{ reason }}.
-        </p>
+        <div class="infos">
+            <p>
+                Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}
+            </p>
 
+            <p>Nome: {{ person.full_name }}</p>
 
-        <p>
-            Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}
-        </p>
+            <p>______________________________________________</p>
+            <p>Assinatura</p>
 
-        <p>
-            Nome: {{ person.full_name }}
-        </p>
+            {% if person.rg %}
+                <p>Nº documento de Identidade: {{ person.rg }}</p>
+            {% endif %}
 
-        <p>______________________________________________</p>
+            {% if person.passport %}
+                <p>Passaporte Nº:  {{ person.passport }}</p>
+            {% endif %}
 
-        <p>
-            Assinatura
-        </p>
+            <p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
 
-    {% if person.rg %}
-        <p>
-            Nº documento de Identidade: {{ person.rg }}
-        </p>
-    {% endif %}
+            <p>Número: {{ person.number }} &emsp;&emsp;&emsp;&emsp; {% if person.district %}Bairro: {{ person.district }}{% endif %}</p>
 
-    {% if person.passport %}
-        <p>
-            Passaporte Nº:  {{ person.passport }}
-        </p>
-    {% endif %}
+            <p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}{% if person.zipcode %}- CEP: {{ person.zipcode }} {% endif %}</p>
 
-        <p>
-            Endereço (Rua/Av./Pça): {{ person.street }}
-        </p>
+        </div>
 
-        <p>
-            Número: {{ person.number }} &emsp;&emsp;&emsp;&emsp; {% if person.district %}Bairro: {{ person.district }}{% endif %}
-        </p>
-
-        <p>
-            Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}{% if person.zipcode %}- CEP: {{ person.zipcode }} {% endif %}
-        </p>
-
-        <p align="right">
-            <strong>FAPESP, NOVEMBRO DE 2012</strong>
-        </p>
+        <div class="footer">
+            <p>FAPESP, NOVEMBRO DE 2012</p>
+        </div>
 
     </body>
 

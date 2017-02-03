@@ -7,116 +7,126 @@
 
     <body>
 
-    <br />
+        <br />
 
         <div class="title">
-
-            <p><strong>ANEXO 5</strong></p>
-
-            <p><strong>DO MANUAL DE PRESTAÇÃO DE CONTAS</strong></p>
-
-            <p><strong>RECIBO PARA PAGAMENTO A PESQUISADORES VISITANTES E A </strong></p>
-
-            <p><strong>TERCEIROS, POR RECEBIMENTO DE DIÁRIAS/MANUTENÇÃO</strong></p>
-
+            <p>ANEXO 5</p>p>
+            <p>DO MANUAL DE PRESTAÇÃO DE CONTAS</p>
+            <p>RECIBO PARA PAGAMENTO A PESQUISADORES VISITANTES E A</p>
+            <p>TERCEIROS, POR RECEBIMENTO DE DIÁRIAS/MANUTENÇÃO</p>
         </div>
 
         <br />
 
         <br />
 
-        <div class="center">
+        <div class="value">
+            <p>Recibo: R$ {{ mission.amount_paid }}</p>
+        </div>
+
+        <br />
+
+        <br />
+
+        <div class="text">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi de {{ principal_investigator.full_name }} a importância de R${{ mission.amount_paid }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente à minha manutenção (diárias), compreendida entre o período de {{ start_date.date|date:" d/m/Y" }} até {{ end_date.date|date:" d/m/Y" }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
+        </div>
+
+         <br />
+
+        <div class="infos">
+            <p>Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
+
+            <p>Nome: {{ person.full_name }}</p>
+
+            <br />
+
+            <p>______________________________________________</p>
+            <p>Assinatura</p>
+
+            <br />
+
+            {% if person.rg %}
+                <p>Nº documento de Identidade: {{ person.rg }}</p>
+            {% elif person.passport %}
+                <p>Nº documento de Identidade/Passaporte: {{ person.passport }}</p>
+            {% endif %}
+
+            {% if person.cpf %}
+                <p>Nº do CPF: {{ person.cpf }}</p>
+            {% endif %}
+
+            <p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
+
+            <p>Número: {{ person.number }} &emsp;&emsp;&emsp;&emsp; {% if person.district %}Bairro: {{ person.district }}{% endif %}</p>
+
+            <p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}{% if person.zipcode %}- CEP: {{ person.zipcode }} {% endif %}</p>
+
+        </div>
+
+        <br />
+
+        <div class="routes">
+
+            <p><strong>ROTEIRO DE VIAGENS PARA COMPROVAÇÃO DE DIÁRIAS</strong></p>
+
+            <table>
+
+                <tr>
+                    <th colspan="3">SAÍDA</th>
+                    <th colspan="3">CHEGADA</th>
+                </tr>
+
+                <tr class="th_left">
+                    <th>DATA</th>
+                    <th>HORA</th>
+                    <th>LOCALIDADE</th>
+                    <th>DATA</th>
+                    <th>HORA</th>
+                    <th>LOCALIDADE</th>
+                </tr>
+
+                {% for route in routes %}
+                <tr>
+                    <td>{{ route.departure.date|date:" d/m/Y"  }}</td>
+                    <td>{{ route.departure.time }}</td>
+                    <td>
+                        {% if route.origin_city.country.name == 'Brazil' %}
+                          {{ route.origin_city.name }}, {{ route.origin_city.region.alternate_names }}
+                        {% else %}
+                          {{ route.origin_city.name }}, {{ route.origin_city.country }}
+                        {% endif %}
+                    </td>
+                    <td>{{ route.arrival.date|date:" d/m/Y"  }}</td>
+                    <td>{{ route.arrival.time }}</td>
+                    <td>
+                        {% if route.destination_city.country.name == 'Brazil' %}
+                            {{ route.destination_city.name }}, {{ route.destination_city.region.alternate_names }}
+                        {% else %}
+                            {{ route.destination_city.name }}, {{ route.destination_city.country }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+        <br />
+
+        <div class="bottom_obs">
+            <p><strong>Nota</strong>: <span class="bottom">A importância deverá ser paga de acordo com o tempo de permanência do pesquisador visitante, até o limite estabelecido no Termo de Outorga.</span></p>
+        </div>
+
+        <br />
+
+        <div class="footer">
             <p>
-                <strong>Recibo: R$</strong> {{ mission.amount_paid }}
+                FAPESP, ABRIL DE 2010.
             </p>
         </div>
 
-        <br />
-
-        <br />
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi de {{ principal_investigator.full_name }} a importância de R${{ mission.amount_paid }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente à minha manutenção (diárias), compreendida entre o período de {{ start_date.date|date:" d/m/Y" }} até {{ end_date.date|date:" d/m/Y" }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
-
-        <br />
-
-        <p>Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
-
-        <p>Nome: {{ person.full_name }}</p>
-
-        <br />
-
-        <p>______________________________________________</p>
-        <p>Assinatura</p>
-
-        <br />
-
-        {% if person.rg %}
-            <p>Nº documento de Identidade: {{ person.rg }}</p>
-        {% elif person.passport %}
-            <p>Nº documento de Identidade/Passaporte: {{ person.passport }}</p>
-        {% endif %}
-
-        {% if person.cpf %}
-            <p>Nº do CPF: {{ person.cpf }}</p>
-        {% endif %}
-
-        <p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
-
-        <p>Número: {{ person.number }} &emsp;&emsp;&emsp;&emsp; {% if person.district %}Bairro: {{ person.district }}{% endif %}</p>
-
-        <p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}{% if person.zipcode %}- CEP: {{ person.zipcode }} {% endif %}</p>
-
-        <br />
-
-        <p><strong>ROTEIRO DE VIAGENS PARA COMPROVAÇÃO DE DIÁRIAS</strong></p>
-
-        <table>
-
-            <tr class="bla" >
-                <th colspan="3">SAÍDA</th>
-                <th colspan="3">CHEGADA</th>
-            </tr>
-
-            <tr>
-                <th style="text-align: left">DATA</th>
-                <th style="text-align: left">HORA</th>
-                <th style="text-align: left">LOCALIDADE</th>
-                <th style="text-align: left">DATA</th>
-                <th style="text-align: left">HORA</th>
-                <th style="text-align: left">LOCALIDADE</th>
-            </tr>
-
-            {% for route in routes %}
-            <tr>
-                <td>{{ route.departure.date|date:" d/m/Y"  }}</td>
-                <td>{{ route.departure.time }}</td>
-                <td>
-                    {% if route.origin_city.country.name == 'Brazil' %}
-                      {{ route.origin_city.name }}, {{ route.origin_city.region.alternate_names }}
-                    {% else %}
-                      {{ route.origin_city.name }}, {{ route.origin_city.country }}
-                    {% endif %}
-                </td>
-                <td>{{ route.arrival.date|date:" d/m/Y"  }}</td>
-                <td>{{ route.arrival.time }}</td>
-                <td>
-                    {% if route.destination_city.country.name == 'Brazil' %}
-                        {{ route.destination_city.name }}, {{ route.destination_city.region.alternate_names }}
-                    {% else %}
-                        {{ route.destination_city.name }}, {{ route.destination_city.country }}
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-
-        </table>
-
-        <br />
-
-        <p><strong>Nota</strong>: <span class="bottom">A importância deverá ser paga de acordo com o tempo de permanência do pesquisador visitante, até o limite estabelecido no Termo de Outorga.</span></p>
-
-        <br />
-
-        <p style="text-align:right"><strong>FAPESP, ABRIL DE 2010.</strong></p>
     </body>
+
 </html>

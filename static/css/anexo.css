@@ -1,3 +1,4 @@
+/* Page settings */
 @page {
     size: a4;
     margin: 1cm 2cm;
@@ -17,32 +18,44 @@ body {
     font-size: 10pt;
     text-align: justify;
 }
-div.title {
+/* End of page settings*/
+
+/* FAPESP styles */
+
+.title {
     text-align: center;
     text-decoration: underline;
     line-height: 1pt;
+    font-weight: bold;
 }
-.center {
+
+.value {
     text-align: center;
+    font-weight: bold;
 }
-.bottom {
+
+.text {}
+
+.infos {}
+
+.routes {}
+
+.footer {
+    text-align: right;
+    font-weight: bold;
+}
+
+.bottom_obs {
     all: unset;
     display:inline;
     padding-left: 4cm;
 }
 
-th.big {
+.th_left th {
     text-align: left;
-    colspan: 3;
 }
 
-th.medium {
-
-}
-
-.bla tr th {
-    text-align: center;
-}
+/* End of FAPESP styles */
 
 /* Default configurations below */
 html {
