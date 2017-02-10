@@ -1,3 +1,4 @@
+from configuration.models import ProcessNumber
 from dal import autocomplete
 from models import ScientificMission, Route
 from django import forms
@@ -51,6 +52,8 @@ class ScientificMissionForm(forms.ModelForm):
 
 class AnnexSevenForm(forms.Form):
 
+    process = ProcessNumber.get_solo()
+
     period = forms.DateField(label=_('Period'), widget=DateInput, required=False)
     stretch = forms.CharField(label=_('Stretch'), required=True)
     reimbursement = forms.CharField(label=_('Reimbursement'), required=True)
@@ -58,10 +61,25 @@ class AnnexSevenForm(forms.Form):
     person = forms.ModelChoiceField(label=_('Person'), queryset=Person.objects.all(),
                                     empty_label="----------", required=True)
     value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
-    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': '0000/00000-0'}))
+    process = ProcessField(label=_('Process'), widget=forms.TextInput(
+        attrs={'placeholder': process.process_number}))
 
     def clean(self):
         cleaned_data = super(AnnexSevenForm, self).clean()
         person = cleaned_data.get('person')
         value = cleaned_data.get('value')
+        process = cleaned_data.get('process')
+
+
+class AnnexSixForm(forms.Form):
+
+    process = ProcessNumber.get_solo()
+
+    daily_stipend = forms.ModelChoiceField(label=_('Diaria'), queryset=ScientificMission.objects.all(),
+                                           empty_label="----------", required=True)
+    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
+
+    def clean(self):
+        cleaned_data = super(AnnexSixForm, self).clean()
+        daily_stipend = cleaned_data.get('daily_stipend')
         process = cleaned_data.get('process')

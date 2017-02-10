@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+{% load static %}
+
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs"><a href="/" class="active">{% trans 'Home' %}</a> › <a href="/documents">{% trans 'Documents' %}</a> › {% trans 'Appendix 6' %}</div>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="col-xs-6 col-sm-6">
+
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get document" %}</button>
+        </form>
+
+    </div>
+
+{% endblock %}

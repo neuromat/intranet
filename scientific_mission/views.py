@@ -16,7 +16,7 @@ from helpers.views.latex import generate_latex
 from helpers.views.extenso import dExtenso
 from person.models import Person
 from scientific_mission.models import ScientificMission, Route
-from scientific_mission.forms import AnnexSevenForm
+from scientific_mission.forms import AnnexSixForm, AnnexSevenForm
 
 
 class CityAutocomplete(autocomplete.Select2QuerySetView):
@@ -145,6 +145,81 @@ def anexo5(request):
 
     context = {'people': people, 'missions': missions, 'default_date': date, 'process': process_number}
     return render(request, 'anexo/anexo5.html', context)
+
+
+@login_required
+def anexo6(request):
+
+    people = Person.objects.all()
+
+    if request.method == 'POST':
+
+        try:
+            principal_investigator = people.get(role__name="Principal Investigator")
+
+        except:
+            messages.error(request, _('You must set a person with the role of Principal Investigator.'))
+            return render(request, 'anexo/anexo6.html', {'form': AnnexSixForm()})
+
+        form = AnnexSixForm(request.POST)
+
+        if form.is_valid():
+
+            daily_stipend = form.cleaned_data['daily_stipend']
+            process = form.cleaned_data['process']
+
+            value = daily_stipend.amount_paid
+            amount, cents = money_to_strings(value)
+
+            # Routes stuff
+            mission = ScientificMission.objects.get(id=daily_stipend.pk)
+            routes = Route.objects.filter(scientific_mission=mission).order_by('order')
+            if routes:
+                departure = routes.first()
+                arrival = routes.last()
+            else:
+                messages.error(request, _("You should've set routes for this mission."))
+                return render(request, 'anexo/anexo6.html', {'form': AnnexSixForm()})
+            # end of routes
+
+            if not process:
+                process = ProcessNumber.get_solo()
+                process = process.process_number
+
+                if process == '0000/00000-0':
+                    messages.info(request,
+                                  mark_safe(_('You should have configured your process number on configurations. '
+                                              ' Click <a href="../../configuration">here</a> to configure it.')))
+
+            return render_to_pdf(
+                'anexo/anexo6_pdf.html',
+                {
+                    'mission': daily_stipend,
+                    'value': value,
+                    'amount': amount,
+                    'cents': cents,
+                    'departure': departure.departure,
+                    'arrival': arrival.arrival,
+                    'process': process,
+                    'person': principal_investigator,
+                    'date': datetime.datetime.now(),
+                },
+                'anexo.css'
+            )
+
+        else:
+
+            messages.info(request,
+                          mark_safe(_('Your form is not valid.')))
+
+            form = AnnexSixForm()
+            return render(request, 'anexo/anexo6.html', {'form': form})
+
+    else:
+
+        form = AnnexSixForm()
+
+    return render(request, 'anexo/anexo6.html', {'form': form})
 
 
 @login_required

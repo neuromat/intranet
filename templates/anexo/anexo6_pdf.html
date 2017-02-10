@@ -7,51 +7,56 @@
 
     <body>
 
+        <br />
+
         <div class="title">
             <p>RECIBO DE DIÁRIAS/MANUTENÇÃO PARA O OUTORGADO</p>
         </div>
+
+        <br />
+        <br />
 
         <div class="value">
             <p>Recibo: R$ {{ value }}</p>
         </div>
 
+        <br />
+        <br />
+
         <div class="text">
-            <p>Recebi da FAPESP, a importância de R$ {{ value }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente a minha manutenção (diárias), compreendida entre o período de {{ start_date }} até {{ end_date }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi da FAPESP, a importância de R${{ value }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente a minha manutenção (diárias), compreendida entre o período de {{ departure }} até {{ arrival }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
         </div>
 
         <div class="center">
 
-            <p> Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
+            <p>Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
 
-            <p>Nome completo: {{ principal_investigator.name }}</p>
+            <p>Nome completo: {{ person.name }}</p>
 
             <p>__________________________________________________</p>
             <p>Assinatura</p>
 
         </div>
 
-        {# Need to check this part #}
-        <table cellpadding="6" cellspacing="0"> <colgroup><col > <col > </colgroup>
+        {# Checar se essa parte está ok #}
+        {# <table cellpadding="6" cellspacing="0"> <colgroup><col > <col > </colgroup> #}
+        <table>
+           {# <colgroup> <col > <col ></colgroup> #}
             <tbody>
                 <tr>
                     <td ><p>Nº documento de Identidade: {{ person.rg }}</p></td>
-                    <td><p> </p></td>
                 </tr>
                 <tr>
                     <td ><p>Nº do CPF: {{ person.cpf }}</p></td>
-                    <td><p> </p></td>
                 </tr>
                 <tr>
                     <td ><p>Endereço (Rua/Av./Pça): {{ person.street }}</p></td>
-                    <td><p> </p></td>
                 </tr>
                 <tr>
                     <td ><p>Bairro: {{ person.district }}</p></td>
-                    <td><p> </p></td>
                 </tr>
                 <tr>
                     <td ><p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}</p></td>
-                    <td><p> </p></td>
                 </tr>
             </tbody>
         </table>
