@@ -50,6 +50,20 @@ class ScientificMissionForm(forms.ModelForm):
         localized_fields = ('amount_paid',)
 
 
+class AnnexSixForm(forms.Form):
+
+    process = ProcessNumber.get_solo()
+
+    daily_stipend = forms.ModelChoiceField(label=_('Diaria'), queryset=ScientificMission.objects.all(),
+                                           empty_label="----------", required=True)
+    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
+
+    def clean(self):
+        cleaned_data = super(AnnexSixForm, self).clean()
+        daily_stipend = cleaned_data.get('daily_stipend')
+        process = cleaned_data.get('process')
+
+
 class AnnexSevenForm(forms.Form):
 
     process = ProcessNumber.get_solo()
@@ -71,15 +85,19 @@ class AnnexSevenForm(forms.Form):
         process = cleaned_data.get('process')
 
 
-class AnnexSixForm(forms.Form):
+class AnnexNineForm(forms.Form):
 
     process = ProcessNumber.get_solo()
 
-    daily_stipend = forms.ModelChoiceField(label=_('Diaria'), queryset=ScientificMission.objects.all(),
-                                           empty_label="----------", required=True)
-    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
+    job = forms.CharField(label=_('Job'), required=True)
+    person = forms.ModelChoiceField(label=_('Service provider'), queryset=Person.objects.all(),
+                                    empty_label="----------", required=True)
+    value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
+    process = ProcessField(label=_('Process'), widget=forms.TextInput(
+        attrs={'placeholder': process.process_number}))
 
     def clean(self):
-        cleaned_data = super(AnnexSixForm, self).clean()
-        daily_stipend = cleaned_data.get('daily_stipend')
+        cleaned_data = super(AnnexNineForm, self).clean()
+        person = cleaned_data.get('person')
+        value = cleaned_data.get('value')
         process = cleaned_data.get('process')

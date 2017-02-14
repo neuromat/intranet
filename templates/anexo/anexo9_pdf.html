@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anexo 9</title>
+</head>
+
+<body>
+
+    <br />
+
+    <div class="title">
+        <p>ANEXO 9</p>
+        <p>DO MANUAL DE PRESTAÇÃO DE CONTAS</p>
+        <p>RECIBO PARA PAGAMENTO DE SERVIÇOS</p>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="value">
+        <p>Recibo: R$ {{ value }}</p>     
+    </div>
+
+    <br />
+    <br />
+
+    <div class="text">
+        <p>
+            Recebi de {{ principal_investigator.full_name }} a importância de R${{ value }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente a serviços de {{ service_provided }} prestados em caráter eventual (sem vínculo empregatício), para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.
+        </p>
+    </div>
+
+    <br />
+
+    <div class="infos">
+
+        <p>Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
+        <p>Nome: {{ person.full_name }}</p>
+
+        <br />
+        <br />
+
+        <p>__________________________________________________</p>
+        <p>Assinatura</p>
+
+        {% if person.rg %}
+            <p>RG.: {{ person.rg }}</p>
+        {% endif %}
+
+        {% if person.cpf %}
+            <p>CPF: {{ person.cpf }}</p>
+        {% endif %}
+
+        <br />
+
+        <p>ENDEREÇO:</p>
+
+        <p>Rua: {{ person.street }} &emsp;&emsp;&emsp;&emsp; Nº: {{ person.number }}</p>
+
+        <p>{% if person.district %}Bairro: {{ person.district }}{% endif %}</p>
+        <p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}</p>
+
+    </div>
+
+    <br />
+
+    <div class="bottom_obs">
+        <p><strong>Nota</strong>: Estou ciente de que a importância supra, recebida nesta data, deverá constar de minha Declaração de Imposto de Renda.</p>
+        <p>Recebi cópia, que servirá como documento de Declaração da Fonte Pagadora.</p>
+    </div>
+
+
+    <p>_____________________________________________________________</p>
+    <p>Assinatura</p>
+
+    <div class="footer">
+        <p>FAPESP, ABRIL DE 2010.</p>
+    </div>
+</body>
+</html>

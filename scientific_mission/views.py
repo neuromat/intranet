@@ -16,7 +16,7 @@ from helpers.views.latex import generate_latex
 from helpers.views.extenso import dExtenso
 from person.models import Person
 from scientific_mission.models import ScientificMission, Route
-from scientific_mission.forms import AnnexSixForm, AnnexSevenForm
+from scientific_mission.forms import AnnexSixForm, AnnexSevenForm, AnnexNineForm
 
 
 class CityAutocomplete(autocomplete.Select2QuerySetView):
@@ -294,6 +294,72 @@ def anexo7(request):
 
     return render(request, 'anexo/anexo7.html', {'form': form})
 
+
+@login_required
+def anexo9(request):
+
+    people = Person.objects.all()
+
+    if request.method == 'POST':
+
+        form = AnnexNineForm(request.POST)
+
+        if form.is_valid():
+
+            value = form.cleaned_data['value']
+            person = form.cleaned_data['person']
+            process = form.cleaned_data['process']
+            service_provided = form.cleaned_data['job']
+
+            amount, cents = money_to_strings(value)
+
+            if not process:
+                process = ProcessNumber.get_solo()
+                process = process.process_number
+
+                if process == '0000/00000-0':
+                    messages.info(request,
+                                  mark_safe(_('You should have configured your process number on configurations. '
+                                              ' Click <a href="../../configuration">here</a> to configure it.')))
+
+            try:
+                people = Person.objects.all()
+                principal_investigator = people.get(role__name="Principal Investigator")
+
+            except:
+                messages.error(request, _('You must set a person with the role of Principal Investigator.'))
+                return render(request, 'anexo/anexo7.html', {'people': people,
+                                                             'default_date': datetime.datetime.now(),
+                                                             'process': process})
+
+            return render_to_pdf(
+                'anexo/anexo9_pdf.html',
+                {
+                    'value': value,
+                    'amount': amount,
+                    'cents': cents,
+                    'person': person,
+                    'process': process,
+                    'principal_investigator': principal_investigator,
+                    'service_provided': service_provided,
+                    'date': datetime.datetime.now(),
+                },
+                'anexo.css'
+            )
+
+        else:
+
+            messages.info(request,
+                          mark_safe(_('Your form is not valid.')))
+
+            form = AnnexNineForm()
+            return render(request, 'anexo/anexo9.html', {'form': form})
+
+    else:
+
+        form = AnnexNineForm()
+
+    return render(request, 'anexo/anexo9.html', {'form': form})
 
 
 @login_required
