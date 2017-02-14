@@ -54,7 +54,7 @@ class AnnexSixForm(forms.Form):
 
     process = ProcessNumber.get_solo()
 
-    daily_stipend = forms.ModelChoiceField(label=_('Diaria'), queryset=ScientificMission.objects.all(),
+    daily_stipend = forms.ModelChoiceField(label=_('Daily Stipend'), queryset=ScientificMission.objects.all(),
                                            empty_label="----------", required=True)
     process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
 
@@ -78,12 +78,6 @@ class AnnexSevenForm(forms.Form):
     process = ProcessField(label=_('Process'), widget=forms.TextInput(
         attrs={'placeholder': process.process_number}))
 
-    def clean(self):
-        cleaned_data = super(AnnexSevenForm, self).clean()
-        person = cleaned_data.get('person')
-        value = cleaned_data.get('value')
-        process = cleaned_data.get('process')
-
 
 class AnnexNineForm(forms.Form):
 
@@ -95,9 +89,3 @@ class AnnexNineForm(forms.Form):
     value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
     process = ProcessField(label=_('Process'), widget=forms.TextInput(
         attrs={'placeholder': process.process_number}))
-
-    def clean(self):
-        cleaned_data = super(AnnexNineForm, self).clean()
-        person = cleaned_data.get('person')
-        value = cleaned_data.get('value')
-        process = cleaned_data.get('process')

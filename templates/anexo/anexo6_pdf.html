@@ -39,28 +39,17 @@
 
         </div>
 
-        {# Checar se essa parte está ok #}
-        {# <table cellpadding="6" cellspacing="0"> <colgroup><col > <col > </colgroup> #}
-        <table>
-           {# <colgroup> <col > <col ></colgroup> #}
-            <tbody>
-                <tr>
-                    <td ><p>Nº documento de Identidade: {{ person.rg }}</p></td>
-                </tr>
-                <tr>
-                    <td ><p>Nº do CPF: {{ person.cpf }}</p></td>
-                </tr>
-                <tr>
-                    <td ><p>Endereço (Rua/Av./Pça): {{ person.street }}</p></td>
-                </tr>
-                <tr>
-                    <td ><p>Bairro: {{ person.district }}</p></td>
-                </tr>
-                <tr>
-                    <td ><p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}</p></td>
-                </tr>
-            </tbody>
-        </table>
+        <br />
+        <br />
+
+        <p>Nº documento de Identidade: {{ person.rg }}</p>
+        <p>Nº do CPF: {{ person.cpf }}</p>
+        <p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
+        <p>Bairro: {{ person.district }}</p>
+        <p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}</p>
+
+        <br />
+        <br />
 
         <div class="bottom_obs">
             <p>OBS.: Na ausência de passagem que comprove a realização da viagem no período citado acima, apresentar declaração do chefe do departamento/orientador ou declaração da instituição visitada, mencionando o local da pesquisa ou local do evento.</p>

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-31 15:35-0200\n"
+"POT-Creation-Date: 2017-02-14 14:23-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -249,11 +249,13 @@ msgstr "Seminários"
 
 #: activity/views.py:78 activity/views.py:182 activity/views.py:254
 #: dissemination/views.py:76 research/views.py:139 research/views.py:263
-#: scientific_mission/views.py:285
+#: scientific_mission/views.py:426
 msgid ""
 "You entered a wrong date format or the end date is not greater than or equal "
 "to the start date."
 msgstr ""
+"Você digitou uma data em formato errado ou a data final não é maior ou "
+"iguala data inicial."
 
 #: activity/views.py:97
 msgid "You have to choose a seminar!"
@@ -415,7 +417,7 @@ msgid "User"
 msgstr "Usuário"
 
 #: custom_auth/models.py:78 docs/source/interface/interface.py:34
-#: sistema/settings_local.py:97
+#: sistema/settings_local.py:99
 msgid "Users"
 msgstr "Usuários"
 
@@ -598,7 +600,8 @@ msgstr "Importar artigos"
 
 #: docs/source/interface/interface.py:27 sistema/settings_local.py:89
 #: templates/admin/default_index.html:76 templates/anexo/anexo5.html:9
-#: templates/anexo/anexo7.html:7 templates/certificate/certificate.html:5
+#: templates/anexo/anexo6.html:7 templates/anexo/anexo7.html:7
+#: templates/anexo/anexo9.html:7 templates/certificate/certificate.html:5
 #: templates/documents/documents.html:5 templates/documents/documents.html:8
 #: templates/documents/documents.html:13 templates/documents/documents.html:17
 #: templates/documents/documents_suit.html:7
@@ -610,18 +613,18 @@ msgstr "Documentos"
 msgid "FAPESP - appendix 5"
 msgstr "FAPESP - anexo 5"
 
-#: docs/source/interface/interface.py:30 sistema/settings_local.py:93
+#: docs/source/interface/interface.py:30 sistema/settings_local.py:95
 #: templates/admin/default_index.html:84 templates/documents/documents.html:30
 #: templates/documents/documents_suit.html:30 templates/poster/seminar.html:9
 #: templates/poster/seminar_poster.html:7
 msgid "Seminar poster"
 msgstr "Poster de um seminário"
 
-#: docs/source/interface/interface.py:33 sistema/settings_local.py:96
+#: docs/source/interface/interface.py:33 sistema/settings_local.py:98
 msgid "Cities"
 msgstr "Cidades"
 
-#: docs/source/interface/interface.py:35 sistema/settings_local.py:98
+#: docs/source/interface/interface.py:35 sistema/settings_local.py:100
 msgid "Groups"
 msgstr "Grupos"
 
@@ -750,7 +753,7 @@ msgstr "Estado"
 msgid "Country"
 msgstr "País"
 
-#: person/models.py:182 person/models.py:183 scientific_mission/forms.py:58
+#: person/models.py:182 person/models.py:183 scientific_mission/forms.py:75
 #: templates/anexo/anexo5.html:18
 msgid "Person"
 msgstr "Pessoa"
@@ -1096,7 +1099,16 @@ msgstr "Rotas"
 msgid "Scientific mission"
 msgstr "Missão científica"
 
-#: scientific_mission/forms.py:54
+#: scientific_mission/forms.py:57
+msgid "Daily Stipend"
+msgstr "Diária"
+
+#: scientific_mission/forms.py:59 scientific_mission/forms.py:78
+#: scientific_mission/forms.py:90
+msgid "Process"
+msgstr "Processo"
+
+#: scientific_mission/forms.py:71
 #: templates/report/activity/meetings_report.html:14
 #: templates/report/research/academic_works_report.html:23
 #: templates/report/research/academic_works_report.html:48
@@ -1113,25 +1125,29 @@ msgstr "Missão científica"
 msgid "Period"
 msgstr "Período"
 
-#: scientific_mission/forms.py:55
+#: scientific_mission/forms.py:72
 msgid "Stretch"
 msgstr "Trecho"
 
-#: scientific_mission/forms.py:56
+#: scientific_mission/forms.py:73
 msgid "Reimbursement"
 msgstr "Reembolso"
 
-#: scientific_mission/forms.py:57
+#: scientific_mission/forms.py:74
 msgid "Reason"
 msgstr "Motivo"
 
-#: scientific_mission/forms.py:60
+#: scientific_mission/forms.py:77 scientific_mission/forms.py:89
 msgid "Value"
 msgstr "Valor"
 
-#: scientific_mission/forms.py:61
-msgid "Process"
-msgstr "Processo"
+#: scientific_mission/forms.py:86
+msgid "Job"
+msgstr "Serviço"
+
+#: scientific_mission/forms.py:87
+msgid "Service provider"
+msgstr "Provedor de serviço"
 
 #: scientific_mission/models.py:15
 msgid "Scientific Mission"
@@ -1194,7 +1210,8 @@ msgid "Order"
 msgstr "Ordem"
 
 #: scientific_mission/views.py:76 scientific_mission/views.py:143
-#: scientific_mission/views.py:177
+#: scientific_mission/views.py:191 scientific_mission/views.py:252
+#: scientific_mission/views.py:322
 msgid ""
 "You should have configured your process number on configurations.  Click <a "
 "href=\"../../configuration\">here</a> to configure it."
@@ -1210,31 +1227,42 @@ msgstr "Você tem que escolher uma missão científica!"
 msgid "No scientific mission matches the given query."
 msgstr "Nenhum missão científica corresponde a esta consulta."
 
-#: scientific_mission/views.py:105
+#: scientific_mission/views.py:105 scientific_mission/views.py:181
 msgid "You should've set routes for this mission."
 msgstr "Você deveria ter configurado rotas para essa missão."
 
-#: scientific_mission/views.py:115 scientific_mission/views.py:185
+#: scientific_mission/views.py:115 scientific_mission/views.py:161
+#: scientific_mission/views.py:260 scientific_mission/views.py:330
 msgid "You must set a person with the role of Principal Investigator."
 msgstr ""
 "Você deve escolher alguma pessoa para o papel de principal investigador."
 
-#: scientific_mission/views.py:211
+#: scientific_mission/views.py:213 scientific_mission/views.py:286
+#: scientific_mission/views.py:353
 msgid "Your form is not valid."
 msgstr "Seu formulário não é válido."
 
 #: sistema/settings_local.py:92
+msgid "FAPESP - appendix 6"
+msgstr "FAPESP - anexo 6"
+
+#: sistema/settings_local.py:93
 msgid "FAPESP - appendix 7"
 msgstr "FAPESP - anexo 7"
 
-#: sistema/urls.py:65
+#: sistema/settings_local.py:94
+msgid "FAPESP - appendix 9"
+msgstr "FAPESP - anexo 9"
+
+#: sistema/urls.py:67
 msgid "Features of the NIRA system"
 msgstr "Funcionalidades do sistema"
 
 #: templates/add_content/add_content.html:8
 #: templates/add_content/add_content_suit.html:6
 #: templates/admin/default_index.html:12 templates/anexo/anexo5.html:9
-#: templates/anexo/anexo7.html:7 templates/certificate/certificate.html:5
+#: templates/anexo/anexo6.html:7 templates/anexo/anexo7.html:7
+#: templates/anexo/anexo9.html:7 templates/certificate/certificate.html:5
 #: templates/documents/documents.html:8
 #: templates/documents/documents_suit.html:6 templates/poster/seminar.html:9
 #: templates/poster/seminar_poster.html:6
@@ -1366,13 +1394,22 @@ msgstr "Data de emissão"
 msgid "Number of process"
 msgstr "Número de processo"
 
-#: templates/anexo/anexo5.html:50 templates/anexo/anexo7.html:17
+#: templates/anexo/anexo5.html:50 templates/anexo/anexo6.html:17
+#: templates/anexo/anexo7.html:17 templates/anexo/anexo9.html:17
 msgid "Get document"
 msgstr "Obter documentos"
 
+#: templates/anexo/anexo6.html:7
+msgid "Appendix 6"
+msgstr "Anexo 6"
+
 #: templates/anexo/anexo7.html:7
 msgid "Appendix 7"
-msgstr "Anexo 5"
+msgstr "Anexo 7"
+
+#: templates/anexo/anexo9.html:7
+msgid "Appendix 9"
+msgstr "Anexo 9"
 
 #: templates/certificate/certificate.html:5
 #: templates/documents/documents.html:20
@@ -1747,3 +1784,6 @@ msgstr "Pesquisador"
 #: templates/report/scientific_mission/scientific_missions_report.html:55
 msgid "No scientific missions found!"
 msgstr "Nenhuma missão científica encontrada!"
+
+#~ msgid "Diaria"
+#~ msgstr "Diária"
