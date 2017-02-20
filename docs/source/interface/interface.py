@@ -27,6 +27,9 @@ SUIT_CONFIG = {
         {'label': _('Documents'), 'url': '/documents',
          'icon': 'icon-list-alt', 'permissions': 'custom_auth.create_documents', 'models': (
             {'label': _('FAPESP - appendix 5'), 'url': '/documents/anexo5'},
+            {'label': _('FAPESP - appendix 6'), 'url': '/documents/anexo6'},
+            {'label': _('FAPESP - appendix 7'), 'url': '/documents/anexo7'},
+            {'label': _('FAPESP - appendix 9'), 'url': '/documents/anexo9'},
             {'label': _('Seminar poster'), 'url': '/documents/seminar_poster'},
         )},
         '-',

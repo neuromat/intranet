@@ -1,64 +1,63 @@
-{% load i18n admin_static %}
-<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Anexo 6</title>
+</head>
 
-    <head>
-        <meta charset="UTF-8">
-        <title>Anexo 6</title>
-    </head>
+<body>
+    <br />
 
-    <body>
+    <div class="title">
+        <p>RECIBO DE DIÁRIAS/MANUTENÇÃO PARA O OUTORGADO</p>
+    </div>
 
-        <br />
+    <br />
+    <br />
 
-        <div class="title">
-            <p>RECIBO DE DIÁRIAS/MANUTENÇÃO PARA O OUTORGADO</p>
-        </div>
+    <div class="value">
+        <p>Recibo: R$ {{ value }}</p>
+    </div>
 
-        <br />
-        <br />
+    <br />
+    <br />
 
-        <div class="value">
-            <p>Recibo: R$ {{ value }}</p>
-        </div>
+    <div>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi da FAPESP, a importância de R${{ value }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente a minha manutenção (diárias), compreendida entre o período de {{ departure }} até {{ arrival }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
+    </div>
 
-        <br />
-        <br />
+    <div class="center">
 
-        <div class="text">
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi da FAPESP, a importância de R${{ value }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente a minha manutenção (diárias), compreendida entre o período de {{ departure }} até {{ arrival }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
-        </div>
+        <p>Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
 
-        <div class="center">
+        <p>Nome completo: {{ person.name }}</p>
 
-            <p>Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
+        <p>__________________________________________________</p>
+        <p>Assinatura</p>
 
-            <p>Nome completo: {{ person.name }}</p>
+    </div>
 
-            <p>__________________________________________________</p>
-            <p>Assinatura</p>
+    <br />
+    <br />
 
-        </div>
-
-        <br />
-        <br />
-
+    <div class="infos">
         <p>Nº documento de Identidade: {{ person.rg }}</p>
         <p>Nº do CPF: {{ person.cpf }}</p>
         <p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
         <p>Bairro: {{ person.district }}</p>
         <p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}</p>
+    </div>
 
-        <br />
-        <br />
+    <br />
+    <br />
 
-        <div class="bottom_obs">
-            <p>OBS.: Na ausência de passagem que comprove a realização da viagem no período citado acima, apresentar declaração do chefe do departamento/orientador ou declaração da instituição visitada, mencionando o local da pesquisa ou local do evento.</p>
-        </div>
+    <div class="bottom_obs">
+        <p>OBS.: Na ausência de passagem que comprove a realização da viagem no período citado acima, apresentar declaração do chefe do departamento/orientador ou declaração da instituição visitada, mencionando o local da pesquisa ou local do evento.</p>
+    </div>
 
-        <div class="footer">
-            <p>FAPESP, FEVEREIRO DE 2013.</p>
-        </div>
+    <div class="footer">
+        <p>FAPESP, FEVEREIRO DE 2013.</p>
+    </div>
 
-    </body>
+</body>
 
-</html>
+
+

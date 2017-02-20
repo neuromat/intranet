@@ -209,8 +209,7 @@ def anexo6(request):
 
         else:
 
-            messages.info(request,
-                          mark_safe(_('Your form is not valid.')))
+            messages.error(request, mark_safe(_('Your form is not valid.')))
 
             form = AnnexSixForm()
             return render(request, 'anexo/anexo6.html', {'form': form})
