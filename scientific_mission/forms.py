@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from configuration.models import ProcessNumber
 from dal import autocomplete
 from models import ScientificMission, Route
@@ -6,6 +7,11 @@ from django.utils.translation import ugettext_lazy as _
 from person.models import Person
 
 from helpers.forms.date_range import DateInput
+
+annex_seven_choices = ((0, '----------------'),
+                       (1, 'transporte aéreo'),
+                       (2, 'transporte terrestre'),
+                       (3, 'seguro saúde'))
 
 
 class ProcessField(forms.CharField):
@@ -68,10 +74,13 @@ class AnnexSevenForm(forms.Form):
 
     process = ProcessNumber.get_solo()
 
-    period = forms.DateField(label=_('Period'), widget=DateInput, required=False)
+    start_date = forms.DateField(label=_('Start date'), widget=DateInput, required=False)
+    end_date = forms.DateField(label=_('End date'), widget=DateInput, required=False)
+
     stretch = forms.CharField(label=_('Stretch'), required=True)
-    reimbursement = forms.CharField(label=_('Reimbursement'), required=True)
-    reason = forms.CharField(label=_('Reason'), required=True)
+    reimbursement = forms.ChoiceField(label=_('Reimbursement'), choices=annex_seven_choices,
+                                      required=True)
+
     person = forms.ModelChoiceField(label=_('Person'), queryset=Person.objects.all(),
                                     empty_label="----------", required=True)
     value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)

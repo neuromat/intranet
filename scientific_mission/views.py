@@ -9,7 +9,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-
+from forms import annex_seven_choices as choices
 from helpers.forms.date_range import DateRangeForm
 from helpers.views.date import *
 from helpers.views.latex import generate_latex
@@ -124,7 +124,7 @@ def anexo5(request):
                     'cents': cents,
                     'date': date,
                     'end_date': end_date.departure,
-                    'mission': mission,
+                    'value': mission.amount_paid,
                     'pagesize': 'A4',
                     'person': mission.person,
                     'process': process,
@@ -235,9 +235,9 @@ def anexo7(request):
             value = form.cleaned_data['value']
             person = form.cleaned_data['person']
             process = form.cleaned_data['process']
-            reason = form.cleaned_data['reason']
             reimbursement = form.cleaned_data['reimbursement']
-            period = form.cleaned_data['period']
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
             stretch = form.cleaned_data['stretch']
 
             amount, cents = money_to_strings(value)
@@ -264,16 +264,16 @@ def anexo7(request):
             return render_to_pdf(
                 'anexo/anexo7_pdf.html',
                 {
-                    'reimbursement': reimbursement,
+                    'reimbursement': choices[int(reimbursement)][1],
                     'value': value,
                     'amount': amount,
                     'cents': cents,
-                    'period': period,
+                    'start_date': start_date,
+                    'end_date': end_date,
                     'stretch': stretch,
                     'person': person,
                     'process': process,
                     'principal_investigator': principal_investigator,
-                    'reason': reason,
                     'date': datetime.datetime.now(),
                 },
                 'anexo.css'

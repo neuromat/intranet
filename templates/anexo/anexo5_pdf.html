@@ -21,14 +21,14 @@
         <br />
 
         <div class="value">
-            <p>Recibo: R$ {{ mission.amount_paid }}</p>
+            <p>Recibo: R$ {{ value }}</p>
         </div>
 
         <br />
         <br />
 
         <div class="text">
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi de {{ principal_investigator.full_name }} a importância de R${{ mission.amount_paid }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente à minha manutenção (diárias), compreendida entre o período de {{ start_date.date|date:" d/m/Y" }} até {{ end_date.date|date:" d/m/Y" }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi de {{ principal_investigator.full_name }} a importância de R${{ value }} ({% if value > 0 and value < 2 %}{{ amount }} real{% elif value > 1 %}{{ amount }} reais {% else %}{% endif %}{% if amount and cents %} e {% endif %}{% if cents %}{{ cents }} centavos{% endif %}), referente à minha manutenção (diárias), compreendida entre o período de {{ start_date.date|date:" d/m/Y" }} até {{ end_date.date|date:" d/m/Y" }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
         </div>
 
          <br />

@@ -21,7 +21,7 @@
     <br />
 
     <div>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi da FAPESP, a importância de R${{ value }} ({{ amount }} reais{% if cents %} e {{ cents }} centavos{% endif %}), referente a minha manutenção (diárias), compreendida entre o período de {{ departure }} até {{ arrival }}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi da FAPESP, a importância de R${{ value }} ({% if value > 0 and value < 2 %}{{ amount }} real{% elif value > 1 %}{{ amount }} reais {% else %}{% endif %}{% if amount and cents %} e {% endif %}{% if cents %}{{ cents }} centavos{% endif %}), referente a minha manutenção (diárias), compreendida entre o período de {{ departure | date:"d/m/Y"}} até {{ arrival | date:"d/m/Y"}} em ALGUMA COISA, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
     </div>
 
     <div class="center">
