@@ -165,22 +165,13 @@ def anexo6(request):
 
         if form.is_valid():
 
-            daily_stipend = form.cleaned_data['daily_stipend']
+            value = form.cleaned_data['value']
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            city = form.cleaned_data['city']
             process = form.cleaned_data['process']
 
-            value = daily_stipend.amount_paid
             amount, cents = money_to_strings(value)
-
-            # Routes stuff
-            mission = ScientificMission.objects.get(id=daily_stipend.pk)
-            routes = Route.objects.filter(scientific_mission=mission).order_by('order')
-            if routes:
-                departure = routes.first()
-                arrival = routes.last()
-            else:
-                messages.error(request, _("You should've set routes for this mission."))
-                return render(request, 'anexo/anexo6.html', {'form': AnnexSixForm()})
-            # end of routes
 
             if not process:
                 process = ProcessNumber.get_solo()
@@ -194,14 +185,13 @@ def anexo6(request):
             return render_to_pdf(
                 'anexo/anexo6_pdf.html',
                 {
-                    'mission': daily_stipend,
                     'value': value,
                     'amount': amount,
                     'cents': cents,
-                    'departure': departure.departure,
-                    'arrival': arrival.arrival,
+                    'start_date': start_date,
+                    'end_date': end_date,
                     'process': process,
-                    'person': principal_investigator,
+                    'city': city,
                     'date': datetime.datetime.now(),
                 },
                 'anexo.css'

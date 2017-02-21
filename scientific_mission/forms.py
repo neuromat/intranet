@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from configuration.models import ProcessNumber
 from dal import autocomplete
 from models import ScientificMission, Route
@@ -60,8 +61,10 @@ class AnnexSixForm(forms.Form):
 
     process = ProcessNumber.get_solo()
 
-    daily_stipend = forms.ModelChoiceField(label=_('Daily Stipend'), queryset=ScientificMission.objects.all(),
-                                           empty_label="----------", required=True)
+    value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
+    start_date = forms.DateField(label=_('Start date'), widget=DateInput, required=False)
+    end_date = forms.DateField(label=_('End date'), widget=DateInput, required=False)
+    city = forms.CharField(label=_('City'), required=True)
     process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
 
     def clean(self):
@@ -76,7 +79,6 @@ class AnnexSevenForm(forms.Form):
 
     start_date = forms.DateField(label=_('Start date'), widget=DateInput, required=False)
     end_date = forms.DateField(label=_('End date'), widget=DateInput, required=False)
-
     stretch = forms.CharField(label=_('Stretch'), required=True)
     reimbursement = forms.ChoiceField(label=_('Reimbursement'), choices=annex_seven_choices,
                                       required=True)

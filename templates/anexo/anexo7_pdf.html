@@ -28,7 +28,7 @@
         <br />
 
         <div class="text">
-            <p>Recebi de {{ principal_investigator.full_name }}, a importância de R${{ value }} ({% if value > 0 and value < 2 %}{{ amount }} real{% elif value > 1 %}{{ amount }} reais {% else %}{% endif %}{% if amount and cents %} e {% endif %}{% if cents %}{{ cents }} centavos{% endif %}) pagos com recursos relativo ao processo FAPESP nº {{ process }}, referente ao reembolso de {{ reimbursement }} utilizado no trecho {{ stretch }} no período de {{ start_date | date:"d/m/Y" }} até {{ end_date | date:"d/m/Y" }}, com a finalidade de desenvolvimento de pesquisa.</p>
+            <p>Recebi de {{ principal_investigator.full_name }}, a importância de R${{ value }} ({% if value > 0 and value < 2 %}{{ amount }} real{% elif value > 1 %}{{ amount }} reais {% else %}{% endif %}{% if amount and cents %} e {% endif %}{% if cents %}{{ cents }} centavos{% endif %}) pagos com recursos relativo ao processo FAPESP nº {{ process }}, referente ao reembolso de {{ reimbursement }} utilizado no trecho {{ stretch }} {% if start_date and end_date %}no período de {{ start_date | date:"d/m/Y" }} até {{ end_date | date:"d/m/Y" }}{% else %}na data {{ start_date | date:"d/m/Y" }}{% endif %}, com a finalidade de desenvolvimento de pesquisa.</p>
         </div>
 
         <br />
