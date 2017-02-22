@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from cities_light.models import City
 from configuration.models import ProcessNumber
 from dal import autocomplete
 from models import ScientificMission, Route
@@ -64,8 +64,14 @@ class AnnexSixForm(forms.Form):
     value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
     start_date = forms.DateField(label=_('Start date'), widget=DateInput, required=False)
     end_date = forms.DateField(label=_('End date'), widget=DateInput, required=False)
-    city = forms.CharField(label=_('City'), required=True)
+    city = forms.ModelChoiceField(queryset=City.objects.all(),
+                                  widget=autocomplete.ModelSelect2(url='city_autocomplete'))
     process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
+
+    class Media:
+        css = {
+            'all': ('/static/css/inline_autocomplete.css',)
+        }
 
     def clean(self):
         cleaned_data = super(AnnexSixForm, self).clean()

@@ -1,6 +1,11 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_static %}
+
 {% load static %}
+
+{% block extrahead %}
+    {% include "anexo/date_and_city_pick.html" %}
+{% endblock %}
 
 
 {% block breadcrumbs %}
