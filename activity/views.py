@@ -131,7 +131,7 @@ def seminars_file(request):
     if extension == ".tex":
         return generate_latex('report/activity/tex/seminars.tex', context, 'seminars')
     else:
-        return render_to_pdf('report/activity/pdf/seminars.html', context, 'xhtml2pdf-reports.css')
+        return render_to_pdf('report/activity/pdf/seminars.html', context, 'reports.css')
 
 
 @login_required

@@ -6,10 +6,20 @@
 
 {% block content %}
     {% if seminars %}
-        <table class="table">
+
+        <div class="report-title">
+            Seminars
+        </div>
+
+        <div class="report-date">
+            DATA
+        </div>
+
+        <table class="report-table">
         <tr>
-            <th width="40%">{% trans "Title" %}</th><th width="25%">{% trans "Speaker" %}</th>
-            <th width="10%">{% trans "Date" %}</th>
+            <th width="45%">{% trans "Title" %}</th>
+            <th width="35%">{% trans "Speaker" %}</th>
+            <th width="20%">{% trans "Date" %}</th>
         </tr>
         {% for seminar in seminars %}
             <tr>
