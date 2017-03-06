@@ -1,14 +1,22 @@
 {% load i18n %}
 
 {% block extrahead %}
-    <title>Report PDF</title>
+    <title>{% trans "Scientific missions report" %}</title>
 {% endblock %}
 
 {% block content %}
-    <table class="table">
+
+    <div class="report-title">
+        <p>{% trans "Scientific missions" %}</p>
+    </div>
+
+    <table id="report-table">
         <tr>
-            <th>{% trans "Researcher" %}</th><th>{% trans "Scientific mission" %}</th><th>{% trans "Local" %}</th>
-            <th>{% trans "Start date" %}</th><th>{% trans "End date" %}</th>
+            <th width="27%">{% trans "Researcher" %}</th>
+            <th width="37%">{% trans "Scientific mission" %}</th>
+            <th width="12%">{% trans "Local" %}</th>
+            <th width="12%">{% trans "Start date" %}</th>
+            <th width="12%">{% trans "End date" %}</th>
         </tr>
         {% for item in missions %}
             <tr>

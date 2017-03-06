@@ -2,14 +2,13 @@
 {% load static from staticfiles %}
 
 {% block extrahead %}
-    <title>Report PDF</title>
+    <title>{%  trans "Articles report" %}</title>
 {% endblock %}
 
 {% block content %}
     {% if published_or_accepted %}
-        <p class="title">
-            <strong>Annex 1a - Articles published or accepted for publication</strong>
-        </p>
+        <p class="report-title">Annex 1a - Articles published or accepted for publication</p>
+
         <ol type="1">
             {% for article in published_or_accepted %}
                 {% if article.article.status == 'p' %}
@@ -67,7 +66,7 @@
         </div>
     {% endif %}
     {% if draft_or_submitted %}
-        <p class="title"><strong>Annex 1b - Articles submitted or uploaded to arXiv</strong></p>
+        <p class="report-title">Annex 1b - Articles submitted or uploaded to arXiv</p>
         <ol type="1">
             {% for article in draft_or_submitted %}
                 {% if not article.article.hide %}
@@ -94,7 +93,7 @@
         </div>
     {% endif %}
     {% if event %}
-        <p class="title"><strong>Annex 1c - Communications in meetings with referee</strong></p>
+        <p class="report-title">Annex 1c - Communications in meetings with referee</p>
         <ol type="1">
         {% for article in event %}
             {% if article.article.status == 'a' %}

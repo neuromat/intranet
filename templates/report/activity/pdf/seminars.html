@@ -1,33 +1,30 @@
 {% load i18n %}
 
 {% block extrahead %}
-    <title>Report PDF</title>
+    <title>{%  trans "Seminars report" %}</title>
 {% endblock %}
 
 {% block content %}
     {% if seminars %}
 
         <div class="report-title">
-            Seminars
+            <p>{% trans "Seminars" %}</p>
         </div>
 
-        <div class="report-date">
-            DATA
-        </div>
-
-        <table class="report-table">
-        <tr>
-            <th width="45%">{% trans "Title" %}</th>
-            <th width="35%">{% trans "Speaker" %}</th>
-            <th width="20%">{% trans "Date" %}</th>
-        </tr>
-        {% for seminar in seminars %}
+        <table id="report-table">
             <tr>
-                <td>{{ seminar.seminar.title }}</td>
-                <td>{{ seminar.seminar.speakers }}</td>
-                <td>{{ seminar.seminar.date|date:"M d, Y" }}</td>
+                <th width="45%">{% trans "Title" %}</th>
+                <th width="35%">{% trans "Speaker" %}</th>
+                <th width="20%">{% trans "Date" %}</th>
             </tr>
-        {% endfor %}
+            {% for seminar in seminars %}
+                <tr>
+                    <td>{{ seminar.seminar.title }}</td>
+                    <td>{{ seminar.seminar.speakers }}</td>
+                    <td>{{ seminar.seminar.date|date:"M d, Y" }}</td>
+                </tr>
+            {% endfor %}
         </table>
+
     {% endif %}
 {% endblock %}

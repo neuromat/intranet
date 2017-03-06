@@ -1,14 +1,19 @@
 {% load i18n %}
 
 {% block extrahead %}
-    <title>Report PDF</title>
+    <title>{%  trans "Academic works report" %}</title>
 {% endblock %}
 
 {% block content %}
+
+    <div class="report-title">
+        <p>{% trans "Academic works" %}</p>
+    </div>
+
     {% if postdoc_concluded or postdoc_in_progress %}
-        <h3><strong>{% trans 'Post-doctoral fellows' %}</strong></h3>
+        <p class="report-type"><strong>{% trans 'Post-doctoral fellows' %}</strong></p>
         {% if postdoc_concluded %}
-            <p class="title"><strong>{% trans 'Concluded' %}</strong></p>
+            <p class="report-status"><strong>{% trans 'Concluded' %}</strong></p>
             <ol>
                 {% for result in postdoc_concluded %}
                     <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
@@ -33,7 +38,7 @@
             </ol>
         {% endif %}
         {% if postdoc_in_progress %}
-            <p class="title"><strong>{% trans 'In progress' %}</strong></p>
+            <p class="report-status"><strong>{% trans 'In progress' %}</strong></p>
             <ol>
                 {% for result in postdoc_in_progress %}
                     <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
@@ -59,9 +64,9 @@
         {% endif %}
     {% endif %}
     {% if phd_concluded or phd_in_progress %}
-        <h3 class="title"><strong>{% trans 'PhD thesis' %}</strong></h3>
+        <p class="report-type"><strong>{% trans 'PhD thesis' %}</strong></p>
         {% if phd_concluded %}
-            <p class="title"><strong>{% trans 'Concluded' %}</strong></p>
+            <p class="report-status"><strong>{% trans 'Concluded' %}</strong></p>
             <ol>
                 {% for result in phd_concluded %}
                     <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
@@ -86,7 +91,7 @@
             </ol>
         {% endif %}
         {% if phd_in_progress %}
-            <p class="title"><strong>{% trans 'In progress' %}</strong></p>
+            <p class="report-status"><strong>{% trans 'In progress' %}</strong></p>
             <ol>
                 {% for result in phd_in_progress %}
                     <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
@@ -112,9 +117,9 @@
         {% endif %}
     {% endif %}
     {% if msc_concluded or msc_in_progress %}
-        <h3><strong>{% trans 'MSc dissertations' %}</strong></h3>
+        <p class="report-type"><strong>{% trans 'MSc dissertations' %}</strong></p>
         {% if msc_concluded %}
-            <p class="title"><strong>{% trans 'Concluded' %}</strong></p>
+            <p class="report-status"><strong>{% trans 'Concluded' %}</strong></p>
             <ol>
                 {% for result in msc_concluded %}
                     <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
@@ -139,7 +144,7 @@
             </ol>
         {% endif %}
         {% if msc_in_progress %}
-            <p class="title"><strong>{% trans 'In progress' %}</strong></p>
+            <p class="report-status"><strong>{% trans 'In progress' %}</strong></p>
             <ol>
                 {% for result in msc_in_progress %}
                     <li>{% trans 'Title of the project' %}: {{ result.title }}</li>

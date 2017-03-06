@@ -1,11 +1,16 @@
 {% load i18n %}
 
 {% block extrahead %}
-    <title>Report PDF</title>
+    <title>{% trans "Training programs report" %}</title>
 {% endblock %}
 
 {% block content %}
-    <table class="table">
+
+    <div class="report-title">
+        <p>{% trans "Training programs" %}</p>
+    </div>
+
+    <table id="report-table">
         <tr>
             <th>{% trans "Title" %}</th><th>{% trans "Speaker" %}</th><th>{% trans "Date" %}</th>
             <th>{% trans "Duration" %}</th>
@@ -32,4 +37,5 @@
             </tr>
         {% endfor %}
     </table>
+
 {% endblock %}

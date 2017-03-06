@@ -192,7 +192,7 @@ def articles_file(request):
                    'event': event,
                    'start_date': start_date, 'end_date': end_date}
 
-        return render_to_pdf('report/research/pdf/articles.html', context, 'xhtml2pdf-reports.css')
+        return render_to_pdf('report/research/pdf/articles.html', context, 'reports.css')
 
 
 def search_academic_works(start_date, end_date):
@@ -288,7 +288,7 @@ def academic_works_file(request):
     if extension == '.tex':
         return generate_latex('report/research/tex/academic_works.tex', context, 'academic_works')
     else:
-        return render_to_pdf('report/research/pdf/academic_works.html', context, 'xhtml2pdf-reports.css')
+        return render_to_pdf('report/research/pdf/academic_works.html', context, 'reports.css')
 
 
 def scholar():

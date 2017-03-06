@@ -1,13 +1,18 @@
 {% load i18n %}
 
 {% block extrahead %}
-    <title>Report PDF</title>
+    <title>{%  trans "Dissemination report" %}</title>
 {% endblock %}
 
 {% block content %}
 
     {% if type == 'e' %}
-        <table class="table">
+
+        <div class="report-title">
+            <p>{% trans 'NeuroMat Research on Communication Science' %}</p>
+        </div>
+
+        <table id="report-table">
             <tr>
                 <th width="20%">{% trans "Title" %}</th><th width="20%">{% trans "Authors" %}</th>
                 <th width="15%">{% trans "Media outlet" %}</th><th width="20%">{% trans "Topics" %}</th>
@@ -27,15 +32,16 @@
             {% endfor %}
         </table>
 
-        <div>
-            <strong>Total:</strong> {{ disseminations|length }}
+    {% elif type == 'i'%}
+
+        <div class="report-title">
+            <p>{% trans 'NeuroMat dissemination blog "Traço de Ciência"' %}</p>
         </div>
 
-    {% elif type == 'i'%}
-        <table class="table">
-            {% if media_name  %}
-                <div class="text-center"><strong>{{ media_name }}</strong></div><br>
-            {% endif %}
+        <table id="report-table">
+{#            {% if media_name  %}#}
+{#                <div class="text-center"><strong>{{ media_name }}</strong></div><br>#}
+{#            {% endif %}#}
             {% if media_name != 'Newsletter' %}
                 <tr>
                     <th width="25%">{% trans "Title" %}</th><th width="15%">{% trans "Authors" %}</th>
@@ -59,8 +65,5 @@
             {% endfor %}
         </table>
 
-        <div>
-            <strong>Total:</strong> {{ disseminations|length }}
-        </div>
     {% endif %}
 {% endblock %}

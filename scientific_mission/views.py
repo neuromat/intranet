@@ -438,4 +438,4 @@ def missions_file(request):
     if extension == ".tex":
         return generate_latex('report/scientific_mission/tex/scientific_missions.tex', context, 'scientific_missions')
     else:
-        return render_to_pdf('report/scientific_mission/pdf/scientific_missions.html', context, 'xhtml2pdf-reports.css')
+        return render_to_pdf('report/scientific_mission/pdf/scientific_missions.html', context, 'reports.css')
