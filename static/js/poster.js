@@ -3,7 +3,7 @@ function ajax_select_seminar(id_speaker)
    $("#id_title").html('<option value="">Loading...</option>');
    $.ajax({
        type: "GET",
-       url: "/activity/seminar_show_titles",
+       url: "/activity/seminars_show_titles",
        dataType: "json",
        data: {'speaker':id_speaker},
        success: function(retorno) {
