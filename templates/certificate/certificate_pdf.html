@@ -49,7 +49,7 @@
 
         <br />
 
-        <div class="content">Declaro para os devidos fins que {{ person.full_name }}, do(a) {{ person.institution.name }}, participou do(a) <strong>{{ training_program.title }}</strong>, promovido pela Equipe de Difusão do CEPID NeuroMat, realizado nos dias {{ training_program.start_date|date:" d/m/Y" }} até {{ training_program.end_date|date:" d/m/Y" }}, em São Paulo, SP. Sua participação foi registrada durante todo o evento, num total de {{ hours }} horas de atividades.</div>
+        <div class="content">Declaro para os devidos fins que {{ person.full_name }}{% if person.institution.name %}, do(a) {{ person.institution.name }},{% endif %} participou do(a) <strong>{{ training_program.title }}</strong>, promovido pela Equipe de Difusão do CEPID NeuroMat, realizado {% if training_program.start_date and training_program.end_date %}nos dias {{ training_program.start_date|date:" d/m/Y" }} até {{ training_program.end_date|date:" d/m/Y" }}{% else %}no dia {{ training_program.start_date|date:" d/m/Y" }}{% endif %}, em São Paulo, SP. Sua participação foi registrada durante todo o evento, num total de {{ hours }} horas de atividades.</div>
 
         <br><br><br><br>
 
