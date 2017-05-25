@@ -299,7 +299,8 @@ def training_programs_certificate(request):
                     'person': person,
                     'training_program': training_program,
                     'hours': hours
-                }
+                },
+                'xhtml2pdf.css'
             )
 
     context = {'people': people, 'training_programs': training_programs}
