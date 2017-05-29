@@ -86,7 +86,7 @@
                 </tr>
                 {% for route in routes %}
                 <tr>
-                    <td>{{ route.departure.date|date:" d/m/Y"  }}</td>
+                    <td>{{ route.departure|date:" d/m/Y"  }}</td>
                     <td>{{ route.departure|date:" H:i " }}</td>
                     <td>
                         {% if route.origin_city.country.name == 'Brazil' %}
@@ -95,7 +95,7 @@
                           {{ route.origin_city.name }}, {{ route.origin_city.country }}
                         {% endif %}
                     </td>
-                    <td>{{ route.arrival.date|date:" d/m/Y"  }}</td>
+                    <td>{{ route.arrival|date:" d/m/Y"  }}</td>
                     <td>{{ route.arrival|date:" H:i " }}</td>
                     <td>
                         {% if route.destination_city.country.name == 'Brazil' %}
