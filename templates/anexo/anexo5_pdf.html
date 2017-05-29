@@ -1,4 +1,4 @@
-{% load i18n admin_static %}
+{% load i18n admin_static tz %}
 <html>
 
     <head>
@@ -84,11 +84,10 @@
                     <th>HORA</th>
                     <th>LOCALIDADE</th>
                 </tr>
-
                 {% for route in routes %}
                 <tr>
                     <td>{{ route.departure.date|date:" d/m/Y"  }}</td>
-                    <td>{{ route.departure.time }}</td>
+                    <td>{{ route.departure|date:" H:i " }}</td>
                     <td>
                         {% if route.origin_city.country.name == 'Brazil' %}
                           {{ route.origin_city.name }}, {{ route.origin_city.region.alternate_names }}
@@ -97,7 +96,7 @@
                         {% endif %}
                     </td>
                     <td>{{ route.arrival.date|date:" d/m/Y"  }}</td>
-                    <td>{{ route.arrival.time }}</td>
+                    <td>{{ route.arrival|date:" H:i " }}</td>
                     <td>
                         {% if route.destination_city.country.name == 'Brazil' %}
                             {{ route.destination_city.name }}, {{ route.destination_city.region.alternate_names }}
@@ -107,7 +106,6 @@
                     </td>
                 </tr>
                 {% endfor %}
-
             </table>
 
         </div>
