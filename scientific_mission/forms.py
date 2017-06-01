@@ -64,9 +64,6 @@ class AnnexSixForm(forms.Form):
     value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
     start_date = forms.DateField(label=_('Start date'), widget=DateInput, required=False)
     end_date = forms.DateField(label=_('End date'), widget=DateInput, required=False)
-    city = forms.ModelChoiceField(queryset=City.objects.all(),
-                                  widget=autocomplete.ModelSelect2(url='city_autocomplete'),
-                                  required=True)
     process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
 
     class Media:

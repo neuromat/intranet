@@ -166,12 +166,11 @@ def anexo6(request):
         if form.is_valid():
 
             value = form.cleaned_data['value']
+            amount, cents = money_to_strings(value)
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
-            city = form.cleaned_data['city']
+            person = principal_investigator
             process = form.cleaned_data['process']
-
-            amount, cents = money_to_strings(value)
 
             if not process:
                 process = ProcessNumber.get_solo()
@@ -188,10 +187,10 @@ def anexo6(request):
                     'value': value,
                     'amount': amount,
                     'cents': cents,
+                    'person': person,
                     'start_date': start_date,
                     'end_date': end_date,
                     'process': process,
-                    'city': city,
                     'date': datetime.datetime.now(),
                 },
                 'anexo.css'

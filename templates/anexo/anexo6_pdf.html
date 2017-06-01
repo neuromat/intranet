@@ -21,14 +21,21 @@
     <br />
 
     <div>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi da FAPESP, a importância de R${{ value }} ({% if value > 0 and value < 2 %}{{ amount }} real{% elif value > 1 %}{{ amount }} reais{% else %}{% endif %}{% if amount and cents %} e {% endif %}{% if cents %}{{ cents }}centavos{% endif %}), referente a minha manutenção (diárias), compreendida entre o período de {{ start_date | date:"d/m/Y"}} até {{ end_date | date:"d/m/Y"}} em {% if city.country.name == 'Brazil' %}{{ city.name }} - {{ city.region.alternate_names }}{% else %}{{ city.name }} - {{ city.country }}{% endif %}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;Recebi da FAPESP, a importância de R${{ value }} ({% if value > 0 and value < 2 %}{{ amount }} real{% elif value > 1 %}{{ amount }} reais{% else %}{% endif %}{% if amount and cents %} e {% endif %}{% if cents %}{{ cents }}centavos{% endif %}), referente a minha manutenção (diárias), compreendida entre o período de {{ start_date | date:"d/m/Y"}} até {{ end_date | date:"d/m/Y"}}, para o desenvolvimento do projeto de pesquisa relativo ao processo FAPESP nº {{ process }}.</p>
     </div>
 
     <div class="center">
 
+        <br />
+
         <p>Local e data: São Paulo, {{ date.day }}&emsp; de {{ date|date:"F" }}&emsp; de {{ date|date:"Y" }}</p>
 
-        <p>Nome completo: {{ person.name }}</p>
+        <br />
+
+        <p>Nome completo: {{ person.full_name }}</p>
+
+        <br />
+        <br />
 
         <p>__________________________________________________</p>
         <p>Assinatura</p>
