@@ -221,6 +221,7 @@ def anexo7(request):
 
         if form.is_valid():
 
+            choice = form.cleaned_data['choice']
             value = form.cleaned_data['value']
             person = form.cleaned_data['person']
             process = form.cleaned_data['process']
@@ -257,6 +258,7 @@ def anexo7(request):
                     'value': value,
                     'amount': amount,
                     'cents': cents,
+                    'choice': choice,
                     'start_date': start_date,
                     'end_date': end_date,
                     'stretch': stretch,

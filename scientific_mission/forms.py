@@ -79,7 +79,17 @@ class AnnexSixForm(forms.Form):
 
 class AnnexSevenForm(forms.Form):
 
+    people = Person.objects.all()
+    principal_investigator = people.get(role__name="Principal Investigator")
+
+    CHOICES = (
+        ('1', 'FAPESP'),
+        ('2', principal_investigator.full_name),
+    )
+
     process = ProcessNumber.get_solo()
+
+    choice = forms.ChoiceField(label=_('Provider'), choices=CHOICES, required=True)
 
     start_date = forms.DateField(label=_('Start date'), widget=DateInput, required=False)
     end_date = forms.DateField(label=_('End date'), widget=DateInput, required=False)
