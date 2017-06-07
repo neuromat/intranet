@@ -79,13 +79,23 @@ class AnnexSixForm(forms.Form):
 
 class AnnexSevenForm(forms.Form):
 
-    people = Person.objects.all()
-    principal_investigator = people.get(role__name="Principal Investigator")
+    try:
+        people = Person.objects.all()
+        principal_investigator = people.get(role__name="Principal Investigator")
+        name = principal_investigator.full_name
 
-    CHOICES = (
-        ('1', 'FAPESP'),
-        ('2', principal_investigator.full_name),
-    )
+    except:
+        name = None
+
+    if name:
+        CHOICES = (
+            ('1', 'FAPESP'),
+            ('2', name),
+        )
+    else:
+        CHOICES = (
+            ('1', 'FAPESP'),
+        )
 
     process = ProcessNumber.get_solo()
 
