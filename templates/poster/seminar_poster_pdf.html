@@ -1,5 +1,5 @@
-{% load i18n admin_static %}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load i18n staticfiles %}
+<!DOCTYPE HTML>
 <html>
     <head>
         <title>Seminar poster</title>
@@ -104,7 +104,7 @@
                         <tr>
                             <td>
                                 <span class="footer">{% trans "Supported by" %}</span>&nbsp
-                                <img alt="Logo FAPESP" src="images/logo-fapesp.jpg" height="46" width="200">
+                                <img alt="Logo FAPESP" src="{% static "images/logo-fapesp.jpg"%}" height="46" width="200">
                             </td>
                             {% if seminar.category.qr_code %}
                             <td align="right">
