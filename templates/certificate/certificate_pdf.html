@@ -1,8 +1,8 @@
 {% load i18n admin_static %}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
     <head>
-        <title>Anexo 5</title>
+        <title>Certificate</title>
         <style type="text/css">
             @page {
                 size: a4;
@@ -39,7 +39,7 @@
     <body>
         <br />
 
-        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="images/neuromat920x220.png"></div>
+        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="{% static "images/neuromat920x220.png" %}"></div>
 
         <br />
 
@@ -53,13 +53,13 @@
 
         <br><br><br><br>
 
-        <div class="signature"><img alt="Assinatura do Fernando da Paixão" src="images/assinatura_paixao.jpg"></div>
+        <div class="signature"><img alt="Assinatura do Fernando da Paixão" src="{% static "images/assinatura_paixao.jpg"%}"></div>
         <div class="signature">Fernando da Paixão</div>
         <div class="signature">Coordenador de Difusão Científica</div>
 
         <br><br><br><br>
 
-        <div class="signature"><img alt="Assinatura do João Peschanski" src="images/assinatura_joao.jpg"></div>
+        <div class="signature"><img alt="Assinatura do João Peschanski" src="{% static "images/assinatura_joao.jpg" %}"></div>
         <div class="signature">João Alexandre Peschanski</div>
         <div class="signature">Supervisor de Comunicação</div>
 
