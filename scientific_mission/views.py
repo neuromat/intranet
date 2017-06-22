@@ -298,6 +298,7 @@ def anexo9(request):
 
             value = form.cleaned_data['value']
             person = form.cleaned_data['person']
+            note = form.cleaned_data['note']
             process = form.cleaned_data['process']
             service_provided = form.cleaned_data['job']
 
@@ -318,7 +319,7 @@ def anexo9(request):
 
             except:
                 messages.error(request, _('You must set a person with the role of Principal Investigator.'))
-                return render(request, 'anexo/anexo7.html', {'people': people,
+                return render(request, 'anexo/anexo9.html', {'people': people,
                                                              'default_date': datetime.datetime.now(),
                                                              'process': process})
 
@@ -328,6 +329,7 @@ def anexo9(request):
                     'value': value,
                     'amount': amount,
                     'cents': cents,
+                    'note': note,
                     'person': person,
                     'process': process,
                     'principal_investigator': principal_investigator,
