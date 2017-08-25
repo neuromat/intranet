@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-08 15:43-0300\n"
+"POT-Creation-Date: 2017-06-22 15:34-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,7 +123,7 @@ msgid "End date"
 msgstr "Término"
 
 #: activity/models.py:113 docs/source/interface/interface.py:16
-#: sistema/settings_local.py:92 templates/admin/default_index.html:110
+#: sistema/settings_local.py:72 templates/admin/default_index.html:110
 #: templates/report/activity/meetings.html:10
 #: templates/report/activity/meetings_report.html:5
 #: templates/report/reports.html:34 templates/report/reports_suit.html:30
@@ -242,7 +242,7 @@ msgid "Room"
 msgstr "Sala"
 
 #: activity/models.py:196 docs/source/interface/interface.py:19
-#: sistema/settings_local.py:95 templates/admin/default_index.html:122
+#: sistema/settings_local.py:75 templates/admin/default_index.html:122
 #: templates/report/activity/pdf/seminars.html:11
 #: templates/report/activity/seminars.html:10
 #: templates/report/activity/seminars_report.html:5
@@ -252,7 +252,7 @@ msgstr "Seminários"
 
 #: activity/views.py:78 activity/views.py:182 activity/views.py:255
 #: dissemination/views.py:76 research/views.py:139 research/views.py:263
-#: scientific_mission/views.py:416
+#: scientific_mission/views.py:418
 msgid ""
 "You entered a wrong date format or the end date is not greater than or equal "
 "to the start date."
@@ -420,7 +420,7 @@ msgid "User"
 msgstr "Usuário"
 
 #: custom_auth/models.py:78 docs/source/interface/interface.py:37
-#: sistema/settings_local.py:111
+#: sistema/settings_local.py:93
 msgid "Users"
 msgstr "Usuários"
 
@@ -451,7 +451,7 @@ msgid "Dissemination"
 msgstr "Difusão"
 
 #: dissemination/apps.py:10 docs/source/interface/interface.py:15
-#: sistema/settings_local.py:91
+#: sistema/settings_local.py:71
 msgid "Disseminations"
 msgstr "Difusões"
 
@@ -514,7 +514,7 @@ msgstr "Meios de comunicação externa"
 msgid "You should choose a type."
 msgstr "Você deve escolher um tipo."
 
-#: docs/source/interface/interface.py:11 sistema/settings_local.py:87
+#: docs/source/interface/interface.py:11 sistema/settings_local.py:67
 #: templates/admin/default_index.html:95
 #: templates/report/activity/meetings.html:10
 #: templates/report/activity/meetings_report.html:5
@@ -537,7 +537,7 @@ msgstr "Você deve escolher um tipo."
 msgid "Reports"
 msgstr "Relatórios"
 
-#: docs/source/interface/interface.py:13 sistema/settings_local.py:89
+#: docs/source/interface/interface.py:13 sistema/settings_local.py:69
 #: templates/admin/default_index.html:98 templates/report/reports.html:22
 #: templates/report/reports_suit.html:21
 #: templates/report/research/pdf/academic_works.html:10
@@ -545,26 +545,26 @@ msgid "Academic works"
 msgstr "Trabalhos acadêmicos"
 
 #: docs/source/interface/interface.py:14 research/models.py:217
-#: sistema/settings_local.py:90 templates/admin/default_index.html:102
+#: sistema/settings_local.py:70 templates/admin/default_index.html:102
 #: templates/report/reports.html:26 templates/report/reports_suit.html:24
 #: templates/report/research/articles.html:10
 #: templates/report/research/articles_report.html:5
 msgid "Articles"
 msgstr "Artigos"
 
-#: docs/source/interface/interface.py:17 sistema/settings_local.py:93
+#: docs/source/interface/interface.py:17 sistema/settings_local.py:73
 #: templates/admin/default_index.html:114
 #: templates/report/person/researchers.html:5 templates/report/reports.html:38
 #: templates/report/reports_suit.html:33
 msgid "Researchers"
 msgstr "Pesquisadores"
 
-#: docs/source/interface/interface.py:18 sistema/settings_local.py:94
+#: docs/source/interface/interface.py:18 sistema/settings_local.py:74
 #: templates/report/scientific_mission/pdf/scientific_missions.html:10
 msgid "Scientific missions"
 msgstr "Missões científicas"
 
-#: docs/source/interface/interface.py:20 sistema/settings_local.py:96
+#: docs/source/interface/interface.py:20 sistema/settings_local.py:76
 #: templates/admin/default_index.html:126
 #: templates/certificate/certificate.html:23
 #: templates/report/activity/pdf/training_programs.html:10
@@ -574,7 +574,7 @@ msgstr "Missões científicas"
 msgid "Training programs"
 msgstr "Programas de treinamento"
 
-#: docs/source/interface/interface.py:22 sistema/settings_local.py:98
+#: docs/source/interface/interface.py:22 sistema/settings_local.py:78
 #: templates/add_content/add_content.html:5
 #: templates/add_content/add_content.html:8
 #: templates/add_content/add_content.html:13
@@ -586,11 +586,11 @@ msgstr "Programas de treinamento"
 msgid "Add content"
 msgstr "Adicionar conteúdo"
 
-#: docs/source/interface/interface.py:24 sistema/settings_local.py:100
+#: docs/source/interface/interface.py:24 sistema/settings_local.py:80
 msgid "Create/Update citation name"
 msgstr "Criar/Atualizar nome de citação"
 
-#: docs/source/interface/interface.py:25 sistema/settings_local.py:101
+#: docs/source/interface/interface.py:25 sistema/settings_local.py:81
 #: templates/add_content/add_content.html:20
 #: templates/add_content/add_content_suit.html:18
 #: templates/admin/default_index.html:61
@@ -604,7 +604,7 @@ msgstr "Criar/Atualizar nome de citação"
 msgid "Import papers"
 msgstr "Importar artigos"
 
-#: docs/source/interface/interface.py:27 sistema/settings_local.py:103
+#: docs/source/interface/interface.py:27 sistema/settings_local.py:83
 #: templates/admin/default_index.html:76 templates/anexo/anexo5.html:9
 #: templates/anexo/anexo6.html:12 templates/anexo/anexo7.html:7
 #: templates/anexo/anexo9.html:7 templates/certificate/certificate.html:5
@@ -615,34 +615,34 @@ msgstr "Importar artigos"
 msgid "Documents"
 msgstr "Documentos"
 
-#: docs/source/interface/interface.py:29 sistema/settings_local.py:106
+#: docs/source/interface/interface.py:29 sistema/settings_local.py:85
 msgid "FAPESP - appendix 5"
 msgstr "FAPESP - anexo 5"
 
-#: docs/source/interface/interface.py:30
+#: docs/source/interface/interface.py:30 sistema/settings_local.py:86
 msgid "FAPESP - appendix 6"
 msgstr "FAPESP - anexo 6"
 
-#: docs/source/interface/interface.py:31
+#: docs/source/interface/interface.py:31 sistema/settings_local.py:87
 msgid "FAPESP - appendix 7"
 msgstr "FAPESP - anexo 7"
 
-#: docs/source/interface/interface.py:32
+#: docs/source/interface/interface.py:32 sistema/settings_local.py:88
 msgid "FAPESP - appendix 9"
 msgstr "FAPESP - anexo 9"
 
-#: docs/source/interface/interface.py:33 sistema/settings_local.py:107
+#: docs/source/interface/interface.py:33 sistema/settings_local.py:89
 #: templates/admin/default_index.html:84 templates/documents/documents.html:45
 #: templates/documents/documents_suit.html:48 templates/poster/seminar.html:9
 #: templates/poster/seminar_poster.html:7
 msgid "Seminar poster"
 msgstr "Poster de um seminário"
 
-#: docs/source/interface/interface.py:36 sistema/settings_local.py:110
+#: docs/source/interface/interface.py:36 sistema/settings_local.py:92
 msgid "Cities"
 msgstr "Cidades"
 
-#: docs/source/interface/interface.py:38 sistema/settings_local.py:112
+#: docs/source/interface/interface.py:38 sistema/settings_local.py:94
 msgid "Groups"
 msgstr "Grupos"
 
@@ -869,9 +869,9 @@ msgstr "Evento"
 msgid "Team"
 msgstr "Equipe"
 
-#: research/models.py:48
+#: research/models.py:48 scientific_mission/forms.py:124
 msgid "Note"
-msgstr "Observação"
+msgstr "Nota no rodapé"
 
 #: research/models.py:50
 msgid "RIS file authors"
@@ -1118,12 +1118,12 @@ msgid "Scientific mission"
 msgstr "Missão científica"
 
 #: scientific_mission/forms.py:64 scientific_mission/forms.py:112
-#: scientific_mission/forms.py:124
+#: scientific_mission/forms.py:125
 msgid "Value"
 msgstr "Valor"
 
 #: scientific_mission/forms.py:67 scientific_mission/forms.py:113
-#: scientific_mission/forms.py:125
+#: scientific_mission/forms.py:126
 msgid "Process"
 msgstr "Processo"
 
@@ -1209,7 +1209,7 @@ msgstr "Ordem"
 
 #: scientific_mission/views.py:76 scientific_mission/views.py:143
 #: scientific_mission/views.py:181 scientific_mission/views.py:241
-#: scientific_mission/views.py:312
+#: scientific_mission/views.py:313
 msgid ""
 "You should have configured your process number on configurations.  Click <a "
 "href=\"../../configuration\">here</a> to configure it."
@@ -1230,21 +1230,15 @@ msgid "You should've set routes for this mission."
 msgstr "Você deveria ter configurado rotas para essa missão."
 
 #: scientific_mission/views.py:115 scientific_mission/views.py:161
-#: scientific_mission/views.py:249 scientific_mission/views.py:320
+#: scientific_mission/views.py:249 scientific_mission/views.py:321
 msgid "You must set a person with the role of Principal Investigator."
 msgstr ""
 "Você deve escolher alguma pessoa para o papel de principal investigador."
 
 #: scientific_mission/views.py:201 scientific_mission/views.py:276
-#: scientific_mission/views.py:343
+#: scientific_mission/views.py:345
 msgid "Your form is not valid."
 msgstr "Seu formulário não é válido."
-
-#: sistema/settings_local.py:105 templates/certificate/certificate.html:5
-#: templates/documents/documents.html:20
-#: templates/documents/documents_suit.html:42
-msgid "Certificate"
-msgstr "Certificado"
 
 #: sistema/urls.py:67
 msgid "Features of the NIRA system"
@@ -1410,6 +1404,12 @@ msgstr "Anexo 7"
 #: templates/documents/documents_suit.html:36
 msgid "Appendix 9"
 msgstr "Anexo 9"
+
+#: templates/certificate/certificate.html:5
+#: templates/documents/documents.html:20
+#: templates/documents/documents_suit.html:42
+msgid "Certificate"
+msgstr "Certificado"
 
 #: templates/certificate/certificate.html:33
 msgid "Number of hours"
@@ -1751,12 +1751,10 @@ msgid "Submit"
 msgstr "Enviar"
 
 #: templates/report/research/pdf/academic_works.html:4
-#| msgid "Academic works"
 msgid "Academic works report"
 msgstr "Relatório de trabalhos acadêmicos"
 
 #: templates/report/research/pdf/articles.html:5
-#| msgid "Articles"
 msgid "Articles report"
 msgstr "Relatório de artigos"
 
@@ -1812,7 +1810,6 @@ msgid "No periodicals to be added!"
 msgstr "Sem periódicos para adicionar!"
 
 #: templates/report/scientific_mission/pdf/scientific_missions.html:4
-#| msgid "Scientific missions"
 msgid "Scientific missions report"
 msgstr "Relatório de missões científicas"
 

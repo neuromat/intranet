@@ -121,6 +121,7 @@ class AnnexNineForm(forms.Form):
     job = forms.CharField(label=_('Job'), required=True)
     person = forms.ModelChoiceField(label=_('Service provider'), queryset=Person.objects.all(),
                                     empty_label="----------", required=True)
+    note = forms.BooleanField(label=_('Note'), initial=True, required=False)
     value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
     process = ProcessField(label=_('Process'), widget=forms.TextInput(
         attrs={'placeholder': process.process_number}))
