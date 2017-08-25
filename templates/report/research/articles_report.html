@@ -19,7 +19,7 @@
         <ol type="1">
             {% for article in published_or_accepted %}
 
-                {% if article.article.status == 'p' %}
+                {% if 'p' in article.article.status %}
                     {% if not article.article.hide %}
                         <li style="text-align: justify">
                             {% if article.article.url %}
@@ -49,7 +49,7 @@
                     {% endif %}
                 {% endif %}
 
-                {% if article.article.status == 'a' %}
+                {% if 'a' in article.article.status %}
                     {% if not article.article.hide %}
                         <li style="text-align: justify">
                             {% if article.article.url %}
@@ -103,7 +103,7 @@
 
         <ol type="1">
         {% for article in event %}
-            {% if article.article.status == 'a' %}
+            {% if 'a' in article.article.status %}
                 {% if not article.article.hide %}
                 <li style="text-align: justify">
                     {% if article.article.url %}
