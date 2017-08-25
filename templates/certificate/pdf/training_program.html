@@ -1,0 +1,67 @@
+{% load i18n admin_static %}
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Certificate</title>
+        <style type="text/css">
+            @page {
+                size: a4;
+                margin: 1cm 2cm;
+                padding:0;
+                font-size: 13px;
+            }
+            table {
+                text-align: left;
+                border-collapse: collapse;
+                border: 1px solid black;
+                padding-top: 3px;
+                padding-left: 3px;
+            }
+            body {
+                all: unset;
+                line-height: 25px;
+                font-size: 16px;
+                text-align: justify;
+            }
+            div.title {
+                text-align: center;
+                font-size: 20px;
+            }
+            div.content {
+                text-indent: 40px;
+            }
+            div.signature {
+                text-align: center;
+                font-size: 16px;
+            }
+        </style>
+    </head>
+    <body>
+        <br />
+
+        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="{% static "images/neuromat920x220.png" %}"></div>
+
+        <br />
+
+        <div class="title"><p><strong>{{ training_program.title }}</strong></p></div>
+
+        <br />
+
+        <br />
+
+        <div class="content">Declaro para os devidos fins que {{ person.full_name }}{% if person.institution.name %}, do(a) {{ person.institution.name }},{% endif %} participou do(a) <strong>{{ training_program.title }}</strong>, promovido pela Equipe de Difusão do CEPID NeuroMat, realizado {% if training_program.start_date and training_program.end_date %}nos dias {{ training_program.start_date|date:" d/m/Y" }} até {{ training_program.end_date|date:" d/m/Y" }}{% else %}no dia {{ training_program.start_date|date:" d/m/Y" }}{% endif %}, em São Paulo, SP. Sua participação foi registrada durante todo o evento, num total de {{ hours }} horas de atividades.</div>
+
+        <br><br><br><br>
+
+        <div class="signature"><img alt="Assinatura do Fernando da Paixão" src="{% static "images/assinatura_paixao.jpg"%}"></div>
+        <div class="signature">Fernando da Paixão</div>
+        <div class="signature">Coordenador de Difusão Científica</div>
+
+        <br><br><br><br>
+
+        <div class="signature"><img alt="Assinatura do João Peschanski" src="{% static "images/assinatura_joao.jpg" %}"></div>
+        <div class="signature">João Alexandre Peschanski</div>
+        <div class="signature">Supervisor de Comunicação</div>
+
+    </body>
+</html>

@@ -311,9 +311,11 @@ def project_activities_certificate(request):
                             'meeting': meeting,
                             'hours': hours
                         })
+
                 else:
+
                     return render_to_pdf(
-                        'certificate/certificate_pdf.html',
+                        'certificate/pdf/seminar.html',
                         {
                             'pagesize': 'A4',
                             'person': person,
@@ -326,30 +328,26 @@ def project_activities_certificate(request):
                 meeting = chosen_activity
 
                 return render_to_pdf(
-                    'certificate/certificate_pdf.html',
+                    'certificate/pdf/meeting.html',
                     {
                         'pagesize': 'A4',
                         'person': person,
                         'training_program': meeting,
                         'hours': hours
-                    },
-                    'xhtml2pdf.css'
-                )
+                    })
 
             if chosen_activity.type_of_activity == u't':
 
                 training_program = chosen_activity
 
                 return render_to_pdf(
-                    'certificate/certificate_pdf.html',
+                    'certificate/pdf/training_program.html',
                     {
                         'pagesize': 'A4',
                         'person': person,
                         'training_program': training_program,
                         'hours': hours
-                    },
-                    'xhtml2pdf.css'
-                )
+                    })
 
     context = {'people': people, 'project_activities': project_activities}
     return render(request, 'certificate/certificate.html', context)
