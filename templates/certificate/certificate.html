@@ -20,11 +20,11 @@
             </div>
 
             <div class="col-sm-12">
-                <label>{% trans "Training programs" %}</label>
+                <label>{% trans "Project activities" %}</label>
                 <select class="form-control" name="title" id="id_title">
                     <option value=""></option>
-                    {% for training in training_programs %}
-                        <option value={{ training.id }}>{{ training }}</option>
+                    {% for activity in project_activities %}
+                        <option value={{ activity.id }}>{{ activity }}</option>
                     {% endfor %}
                 </select>
             </div>
