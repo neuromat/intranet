@@ -19,7 +19,7 @@ document_patterns = [
     url(r'^anexo6/$', scientific_views.anexo6, name='anexo6'),
     url(r'^anexo7/$', scientific_views.anexo7, name='anexo7'),
     url(r'^anexo9/$', scientific_views.anexo9, name='anexo9'),
-    url(r'^certificate/$', activity_views.training_programs_certificate, name='certificate'),
+    url(r'^certificate/$', activity_views.project_activities_certificate, name='certificate'),
     url(r'^seminars_poster/$', activity_views.seminars_poster, name='seminars_poster'),
 ]
 

@@ -259,10 +259,12 @@ def meetings_report(request):
 
 
 @login_required
-def training_programs_certificate(request):
+def project_activities_certificate(request):
 
     people = Person.objects.all()
     training_programs = ProjectActivities.objects.filter(type_of_activity='t')
+    seminars = ProjectActivities.objects.filter(type_of_activity='s')
+    project_activities = training_programs | seminars
 
     if request.method == 'POST':
 
@@ -288,20 +290,66 @@ def training_programs_certificate(request):
                 raise Http404(_('No person matches the given query.'))
 
             try:
-                training_program = TrainingProgram.objects.get(id=title_id)
-            except Seminar.DoesNotExist:
+                chosen_activity = ProjectActivities.objects.get(id=title_id)
+            except ProjectActivities.DoesNotExist:
                 raise Http404(_('No training program matches the given query.'))
 
-            return render_to_pdf(
-                'certificate/certificate_pdf.html',
-                {
-                    'pagesize': 'A4',
-                    'person': person,
-                    'training_program': training_program,
-                    'hours': hours
-                },
-                'xhtml2pdf.css'
-            )
+            if chosen_activity.type_of_activity == u's':
+                seminar = chosen_activity.seminar
 
-    context = {'people': people, 'training_programs': training_programs}
+                #  check if it was at some meeting
+                if seminar.belongs_to:
+
+                    meeting = seminar.belongs_to
+
+                    return render_to_pdf(
+                        'certificate/pdf/seminar_at_meeting.html',
+                        {
+                            'pagesize': 'A4',
+                            'person': person,
+                            'seminar': seminar,
+                            'meeting': meeting,
+                            'hours': hours
+                        })
+                else:
+                    return render_to_pdf(
+                        'certificate/certificate_pdf.html',
+                        {
+                            'pagesize': 'A4',
+                            'person': person,
+                            'training_program': seminar,
+                            'hours': hours
+                        })
+
+            if chosen_activity.type_of_activity == u'm':
+
+                meeting = chosen_activity
+
+                return render_to_pdf(
+                    'certificate/certificate_pdf.html',
+                    {
+                        'pagesize': 'A4',
+                        'person': person,
+                        'training_program': meeting,
+                        'hours': hours
+                    },
+                    'xhtml2pdf.css'
+                )
+
+            if chosen_activity.type_of_activity == u't':
+
+                training_program = chosen_activity
+
+                return render_to_pdf(
+                    'certificate/certificate_pdf.html',
+                    {
+                        'pagesize': 'A4',
+                        'person': person,
+                        'training_program': training_program,
+                        'hours': hours
+                    },
+                    'xhtml2pdf.css'
+                )
+
+    context = {'people': people, 'project_activities': project_activities}
     return render(request, 'certificate/certificate.html', context)
