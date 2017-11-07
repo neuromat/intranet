@@ -51,7 +51,7 @@ def render(template_src, context_dict, css_source=None):
     else:
         pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")),
                                 dest=result,
-                                encoding="UTF-8",
+                                encoding='UTF-8',
                                 link_callback=fetch_resources)
 
     if not pdf.err:

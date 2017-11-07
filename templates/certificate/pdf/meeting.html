@@ -39,29 +39,17 @@
     <body>
         <br />
 
-        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="{% static "images/neuromat920x220.png" %}"></div>
+        <div><img alt="Banner do evento" src="media/{{ meeting.meeting.banner }}"></div>
 
-        <br />
+        <br><br><br>
 
-        <div class="title"><p><strong>{{ training_program.title }}</strong></p></div>
-
-        <br />
-
-        <br />
-
-        <div class="content">Declaro para os devidos fins que {{ person.full_name }}{% if person.institution.name %}, do(a) {{ person.institution.name }},{% endif %} participou do(a) <strong>{{ training_program.title }}</strong>, promovido pela Equipe de Difusão do CEPID NeuroMat, realizado {% if training_program.start_date and training_program.end_date %}nos dias {{ training_program.start_date|date:" d/m/Y" }} até {{ training_program.end_date|date:" d/m/Y" }}{% else %}no dia {{ training_program.start_date|date:" d/m/Y" }}{% endif %}, em São Paulo, SP. Sua participação foi registrada durante todo o evento, num total de {{ hours }} horas de atividades.</div>
+        <div class="content">I hereby certify that {{ person.full_name }}{% if person.institution.name %}, from the {{ person.institution.name }},{% endif %} attended the Workshop <strong>{{ meeting.title }}</strong>, that was held in São Paulo{% if meeting.meeting.start_date and meeting.meeting.end_date %}, from {{ meeting.meeting.start_date|date:" d/m/Y" }} to {{ meeting.meeting.end_date|date:" d/m/Y" }}{% else %} in {{ meeting.meeting.start_date|date:" d/m/Y" }}{% endif %}. His/her attendance was recorded during the whole event, in a total of {{ hours }} hours of activity.</div>
 
         <br><br><br><br>
 
-        <div class="signature"><img alt="Assinatura do Fernando da Paixão" src="{% static "images/assinatura_paixao.jpg"%}"></div>
-        <div class="signature">Fernando da Paixão</div>
-        <div class="signature">Coordenador de Difusão Científica</div>
-
-        <br><br><br><br>
-
-        <div class="signature"><img alt="Assinatura do João Peschanski" src="{% static "images/assinatura_joao.jpg" %}"></div>
-        <div class="signature">João Alexandre Peschanski</div>
-        <div class="signature">Supervisor de Comunicação</div>
+{#        <div class="signature"><img alt="Assinatura do Fernando da Paixão" src="{% static "images/assinatura_paixao.jpg"%}"></div>#}
+        <div class="signature">Antonio Galves</div>
+        <div class="signature">Chairman</div>
 
     </body>
 </html>

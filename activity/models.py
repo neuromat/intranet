@@ -107,6 +107,7 @@ class Meeting(ProjectActivities):
     description = models.TextField(_('Description'), blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'))
+    banner = models.ImageField(_('Banner'), upload_to='banners/', blank=True, null=True)
 
     class Meta:
         verbose_name = _('Meeting')

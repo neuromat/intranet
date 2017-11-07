@@ -17,7 +17,7 @@ class MeetingAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ['title', 'broad_audience', 'cepid_event', 'local', 'description', 'start_date', 'end_date',
-                       'participant']
+                       'participant', 'banner']
         }),
     )
     inlines = [NewsInline]
