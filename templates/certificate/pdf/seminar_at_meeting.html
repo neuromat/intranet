@@ -39,25 +39,17 @@
     <body>
         <br />
 
-        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="{% static "images/neuromat920x220.png" %}"></div>
-
-        <br />
-
-        <br />
-
-        <div>I hereby certify that {{ person.full_name }}{% if person.institution.name %}, from {{ person.institution.name }}{% endif %}, attended the <strong>{{ meeting.title }}</strong> that was held in São Paulo, {% if meeting.start_date and meeting.end_date %}from {{ meeting.start_date|date:" d/m/Y" }} to {{ meeting.end_date|date:" d/m/Y" }}{% else %}on {{ meeting.start_date|date:" d/m/Y" }}{% endif %}. He/She presented a seminar titled {{ seminar.title }}, on {{ seminar.date|date:" d/m/Y" }}. His/Her attendance was recorded during the whole event, in a total of {{ hours }} hours of activity.</div>
+        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="{% if meeting.meeting.banner %}media/{{ meeting.meeting.banner }}{% else %}static/images/neuromat920x220.png{% endif %}"></div>
 
         <br><br><br><br>
 
-        <div class="signature"><img alt="Assinatura do Fernando da Paixão" src="{% static "images/assinatura_paixao.jpg"%}"></div>
-        <div class="signature">Fernando da Paixão</div>
-        <div class="signature">Coordenador de Difusão Científica</div>
+        <div>I hereby certify that <b>{{ person.full_name }}</b>{% if person.institution.name %}, from {{ person.institution.name }}{% endif %}, attended the <b>{{ meeting.title }}</b> that was held in São Paulo, {% if meeting.start_date and meeting.end_date %}from {{ meeting.start_date|date:" d/m/Y" }} to {{ meeting.end_date|date:" d/m/Y" }}{% else %}on {{ meeting.start_date|date:" d/m/Y" }}{% endif %}. He/She presented a seminar titled <b>{{ seminar.title }}</b>, on {{ seminar.date|date:" d/m/Y" }}. The attendance was recorded during the whole event, in a total of {{ hours }} {% if hours == '1' %}hour{% else %}hours{% endif %} of activity.</div>
 
         <br><br><br><br>
 
-        <div class="signature"><img alt="Assinatura do João Peschanski" src="{% static "images/assinatura_joao.jpg" %}"></div>
-        <div class="signature">João Alexandre Peschanski</div>
-        <div class="signature">Supervisor de Comunicação</div>
+        <div class="signature"><img alt="Assinatura do responsável" src="media/{{ signature.signature }}"></div>
+        <div class="signature">{% if signature.full_name == 'Jefferson Antonio Galves' %}Antonio Galves{% else %}{{ signature.full_name }}{% endif %}</div>
+        <div class="signature">{{ signature.role.name }}</div>
 
     </body>
 </html>

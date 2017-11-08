@@ -266,7 +266,7 @@ def project_activities_certificate(request):
     seminars = ProjectActivities.objects.filter(type_of_activity='s')
     meetings = ProjectActivities.objects.filter(type_of_activity='m')
     project_activities = training_programs | seminars | meetings
-    signatures = Person.objects.all()
+    signatures = Person.objects.exclude(signature__isnull=True).exclude(signature__exact='')
 
     if request.method == 'POST':
 
@@ -332,7 +332,8 @@ def project_activities_certificate(request):
                         {
                             'pagesize': 'A4',
                             'person': person,
-                            'training_program': seminar,
+                            'seminar': seminar,
+                            'signature': signature,
                             'hours': hours
                         })
 
@@ -360,6 +361,7 @@ def project_activities_certificate(request):
                         'pagesize': 'A4',
                         'person': person,
                         'training_program': training_program,
+                        'signature': signature,
                         'hours': hours
                     })
 

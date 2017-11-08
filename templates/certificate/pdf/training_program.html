@@ -39,7 +39,7 @@
     <body>
         <br />
 
-        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="{% static "images/neuromat920x220.png" %}"></div>
+        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="static/images/neuromat920x220.png"></div>
 
         <br />
 
@@ -53,15 +53,9 @@
 
         <br><br><br><br>
 
-        <div class="signature"><img alt="Assinatura do Fernando da Paixão" src="{% static "images/assinatura_paixao.jpg"%}"></div>
-        <div class="signature">Fernando da Paixão</div>
-        <div class="signature">Coordenador de Difusão Científica</div>
-
-        <br><br><br><br>
-
-        <div class="signature"><img alt="Assinatura do João Peschanski" src="{% static "images/assinatura_joao.jpg" %}"></div>
-        <div class="signature">João Alexandre Peschanski</div>
-        <div class="signature">Supervisor de Comunicação</div>
+        <div class="signature"><img alt="Assinatura do responsável" src="media/{{ signature.signature }}"></div>
+        <div class="signature">{% if signature.full_name == 'Jefferson Antonio Galves' %}Antonio Galves{% else %}{{ signature.full_name }}{% endif %}</div>
+        <div class="signature">{{ signature.role.name }}</div>
 
     </body>
 </html>
