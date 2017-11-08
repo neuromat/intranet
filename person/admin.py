@@ -13,7 +13,7 @@ class PersonAdmin(admin.ModelAdmin):
             'fields': ['full_name', 'email', 'role', 'institution']
         }),
         (None, {
-            'fields': ('rg', 'cpf', 'passport')
+            'fields': ('rg', 'cpf', 'passport', 'signature')
         }),
         (_('Contact Info'), {
             'fields': ('phone', 'cellphone', 'zipcode', 'street', 'street_complement', 'number', 'district', 'city',

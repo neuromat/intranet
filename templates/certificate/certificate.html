@@ -30,9 +30,20 @@
             </div>
 
             <div class="col-sm-12">
+                <label>{% trans "Who will sign the certificate?" %}</label>
+                <select class="form-control" name="signature" id="id_signature">
+                    <option value=""></option>
+                    {% for person in signatures %}
+                        <option value={{ person.id }} {% if person.role.name == 'Principal Investigator' %}selected{% endif %}>{{ person }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-sm-12">
                 <label>{% trans "Number of hours" %}</label>
                 <input class="form-control" name="hours" id="id_hours" placeholder={{ process }}>
             </div>
+
             <br>
             <div class="col-sm-12 btn-group">
                 <button type="submit" class="btn btn-primary btn-lg" style="font-size:16px;" role="button" id="submit">{% trans "Get certificate" %}</button>

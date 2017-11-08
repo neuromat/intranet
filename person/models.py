@@ -153,6 +153,7 @@ class Person(models.Model):
     city = models.CharField(_('City'), max_length=255, blank=True, null=True)
     state = models.CharField(_('State'), max_length=255, blank=True, null=True)
     country = models.CharField(_('Country'), max_length=255, blank=True, null=True)
+    signature = models.ImageField(_('Signature'), upload_to='signatures/', blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.full_name

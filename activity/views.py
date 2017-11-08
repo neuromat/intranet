@@ -266,21 +266,28 @@ def project_activities_certificate(request):
     seminars = ProjectActivities.objects.filter(type_of_activity='s')
     meetings = ProjectActivities.objects.filter(type_of_activity='m')
     project_activities = training_programs | seminars | meetings
+    signatures = Person.objects.all()
 
     if request.method == 'POST':
 
         person_id = request.POST.get('person', None)
         title_id = request.POST['title']
+        signature_id = request.POST.get('signature', None)
         hours = request.POST['hours']
 
         if person_id is None or person_id == '':
             messages.error(request, _('You have to choose a person!'))
-            context = {'people': people, 'training_programs': training_programs}
+            context = {'people': people, 'project_activities': project_activities, 'signatures': signatures}
             return render(request, 'certificate/certificate.html', context)
 
         if title_id is None or title_id == '':
-            messages.error(request, _('You have to choose a training program!'))
-            context = {'people': people, 'training_programs': training_programs}
+            messages.error(request, _('You have to choose a project activity!'))
+            context = {'people': people, 'project_activities': project_activities, 'signatures': signatures}
+            return render(request, 'certificate/certificate.html', context)
+
+        if signature_id is None or signature_id == '':
+            messages.error(request, _('You have to choose who will sign the certificate!'))
+            context = {'people': people, 'project_activities': project_activities, 'signatures': signatures}
             return render(request, 'certificate/certificate.html', context)
 
         else:
@@ -294,6 +301,11 @@ def project_activities_certificate(request):
                 chosen_activity = ProjectActivities.objects.get(id=title_id)
             except ProjectActivities.DoesNotExist:
                 raise Http404(_('No training program matches the given query.'))
+
+            try:
+                signature = Person.objects.get(id=signature_id)
+            except Person.DoesNotExist:
+                raise Http404(_('No person matches the given query.'))
 
             if chosen_activity.type_of_activity == u's':
                 seminar = chosen_activity.seminar
@@ -334,6 +346,7 @@ def project_activities_certificate(request):
                         'pagesize': 'A4',
                         'person': person,
                         'meeting': meeting,
+                        'signature': signature,
                         'hours': hours
                     })
 
@@ -350,5 +363,5 @@ def project_activities_certificate(request):
                         'hours': hours
                     })
 
-    context = {'people': people, 'project_activities': project_activities}
+    context = {'people': people, 'project_activities': project_activities, 'signatures': signatures}
     return render(request, 'certificate/certificate.html', context)

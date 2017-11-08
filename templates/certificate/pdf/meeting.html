@@ -41,14 +41,14 @@
 
         <div><img alt="Banner do evento" src="media/{{ meeting.meeting.banner }}"></div>
 
-        <br><br><br>
+        <br><br><br><br><br><br>
 
-        <div class="content">I hereby certify that {{ person.full_name }}{% if person.institution.name %}, from the {{ person.institution.name }},{% endif %} attended the Workshop <strong>{{ meeting.title }}</strong>, that was held in São Paulo{% if meeting.meeting.start_date and meeting.meeting.end_date %}, from {{ meeting.meeting.start_date|date:" d/m/Y" }} to {{ meeting.meeting.end_date|date:" d/m/Y" }}{% else %} in {{ meeting.meeting.start_date|date:" d/m/Y" }}{% endif %}. His/her attendance was recorded during the whole event, in a total of {{ hours }} hours of activity.</div>
+        <div class="content">I hereby certify that <b>{{ person.full_name }}</b>{% if person.institution.name %}, from the <b>{{ person.institution.name }}</b>,{% endif %} attended the Workshop {{ meeting.title }}, that was held in São Paulo{% if meeting.meeting.start_date and meeting.meeting.end_date %}, from {{ meeting.meeting.start_date|date:" d/m/Y" }} to {{ meeting.meeting.end_date|date:" d/m/Y" }}{% else %} in {{ meeting.meeting.start_date|date:" d/m/Y" }}{% endif %}. The attendance was recorded during the whole event, in a total of <b>{{ hours }}</b> {% if hours == '1' %}hour{% else %}hours{% endif %} of activity.</div>
 
-        <br><br><br><br>
+        <br><br><br><br><br><br>
 
-{#        <div class="signature"><img alt="Assinatura do Fernando da Paixão" src="{% static "images/assinatura_paixao.jpg"%}"></div>#}
-        <div class="signature">Antonio Galves</div>
+        <div class="signature"><img alt="Assinatura do responsável" src="media/{{ signature.signature }}"></div>
+        <div class="signature">{% if signature.full_name == 'Jefferson Antonio Galves' %}Antonio Galves{% else %}{{ signature.full_name }}{% endif %}</div>
         <div class="signature">Chairman</div>
 
     </body>
