@@ -27,4 +27,6 @@ docs/build*
 docs/source/_static/
 docs/source/_templates/
 
-static/images/assinatura_*
+# Uploaded images
+media/banners/*
+media/signatures/*

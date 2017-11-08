@@ -272,7 +272,7 @@ def project_activities_certificate(request):
 
         person_id = request.POST.get('person', None)
         title_id = request.POST['title']
-        signature_id = request.POST.get('signature', None)
+        signature_id = request.POST.getlist('signature', None)
         hours = request.POST['hours']
 
         if person_id is None or person_id == '':
@@ -303,7 +303,7 @@ def project_activities_certificate(request):
                 raise Http404(_('No training program matches the given query.'))
 
             try:
-                signature = Person.objects.get(id=signature_id)
+                signature = Person.objects.filter(id__in=signature_id)
             except Person.DoesNotExist:
                 raise Http404(_('No person matches the given query.'))
 
@@ -322,6 +322,7 @@ def project_activities_certificate(request):
                             'person': person,
                             'seminar': seminar,
                             'meeting': meeting,
+                            'signature': signature,
                             'hours': hours
                         })
 
