@@ -1,10 +1,18 @@
 from django.contrib import admin
-from person.models import *
 from django.utils.translation import ugettext_lazy as _
-from forms import *
+from modeltranslation.admin import TranslationAdmin
 
-admin.site.register(Role)
+from forms import *
+from models import *
+
+
 admin.site.register(InstitutionType)
+
+
+class RoleAdmin(TranslationAdmin):
+    pass
+
+admin.site.register(Role, RoleAdmin)
 
 
 class PersonAdmin(admin.ModelAdmin):

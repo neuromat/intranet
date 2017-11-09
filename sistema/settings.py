@@ -35,6 +35,7 @@ AUTH_USER_MODEL = 'custom_auth.User'
 # Application definition
 
 INSTALLED_APPS = (
+    'modeltranslation',
     'dal',
     'dal_select2',
     'django.contrib.admin',
