@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-22 15:34-0300\n"
+"POT-Creation-Date: 2017-11-09 09:54-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,24 +19,24 @@ msgstr ""
 msgid "Link"
 msgstr "Link"
 
-#: activity/apps.py:9
+#: activity/apps.py:9 templates/certificate/certificate.html:23
 msgid "Project activities"
 msgstr "Atividades do projeto"
 
-#: activity/models.py:49 activity/models.py:135
+#: activity/models.py:49 activity/models.py:136
 msgid "Other duration time"
 msgstr "Outro tempo de duração"
 
-#: activity/models.py:57 activity/models.py:140
+#: activity/models.py:57 activity/models.py:141
 msgid "Training Program"
 msgstr "Programa de treinamento"
 
-#: activity/models.py:58 activity/models.py:112 activity/models.py:130
-#: activity/models.py:185
+#: activity/models.py:58 activity/models.py:113 activity/models.py:131
+#: activity/models.py:186
 msgid "Meeting"
 msgstr "Reunião"
 
-#: activity/models.py:59 activity/models.py:195
+#: activity/models.py:59 activity/models.py:196
 #: templates/poster/seminar.html:28 templates/poster/seminar_poster_pdf.html:65
 msgid "Seminar"
 msgstr "Seminário"
@@ -97,12 +97,12 @@ msgstr "Organizado pelo CEPID? "
 msgid "Participant"
 msgstr "Participante"
 
-#: activity/models.py:107 activity/models.py:131
+#: activity/models.py:107 activity/models.py:132
 #: templates/report/activity/meetings_report.html:13
 msgid "Description"
 msgstr "Descrição"
 
-#: activity/models.py:108 activity/models.py:132 helpers/forms/date_range.py:11
+#: activity/models.py:108 activity/models.py:133 helpers/forms/date_range.py:11
 #: research/models.py:305 scientific_mission/forms.py:65
 #: scientific_mission/forms.py:104 templates/report/activity/meetings.html:26
 #: templates/report/activity/seminars.html:28
@@ -112,7 +112,7 @@ msgstr "Descrição"
 msgid "Start date"
 msgstr "Início"
 
-#: activity/models.py:109 activity/models.py:133 helpers/forms/date_range.py:12
+#: activity/models.py:109 activity/models.py:134 helpers/forms/date_range.py:12
 #: research/models.py:306 scientific_mission/forms.py:66
 #: scientific_mission/forms.py:105 templates/report/activity/meetings.html:30
 #: templates/report/activity/seminars.html:33
@@ -122,15 +122,19 @@ msgstr "Início"
 msgid "End date"
 msgstr "Término"
 
-#: activity/models.py:113 docs/source/interface/interface.py:16
-#: sistema/settings_local.py:72 templates/admin/default_index.html:110
+#: activity/models.py:110
+msgid "Banner"
+msgstr "Banner"
+
+#: activity/models.py:114 docs/source/interface/interface.py:16
+#: sistema/settings_local.py:92 templates/admin/default_index.html:110
 #: templates/report/activity/meetings.html:10
 #: templates/report/activity/meetings_report.html:5
 #: templates/report/reports.html:34 templates/report/reports_suit.html:30
 msgid "Meetings"
 msgstr "Reuniões"
 
-#: activity/models.py:129 activity/models.py:184
+#: activity/models.py:130 activity/models.py:185
 #: templates/poster/seminar.html:18
 #: templates/report/activity/pdf/seminars.html:17
 #: templates/report/activity/pdf/training_programs.html:15
@@ -139,61 +143,61 @@ msgstr "Reuniões"
 msgid "Speaker"
 msgstr "Palestrante"
 
-#: activity/models.py:134
+#: activity/models.py:135
 #: templates/report/activity/pdf/training_programs.html:16
 #: templates/report/activity/training_programs_report.html:18
 msgid "Duration"
 msgstr "Duração"
 
-#: activity/models.py:137 templates/report/activity/meetings_report.html:16
+#: activity/models.py:138 templates/report/activity/meetings_report.html:16
 msgid "Number of participants"
 msgstr "Total de participantes"
 
-#: activity/models.py:141
+#: activity/models.py:142
 msgid "Training Programs"
 msgstr "Programas de treinamento"
 
-#: activity/models.py:163 dissemination/models.py:21 dissemination/models.py:62
+#: activity/models.py:164 dissemination/models.py:21 dissemination/models.py:62
 #: dissemination/models.py:103 person/models.py:28 person/models.py:46
-#: person/models.py:67 person/models.py:191 research/models.py:111
+#: person/models.py:67 person/models.py:192 research/models.py:111
 #: research/models.py:129 research/models.py:146 research/models.py:171
 #: research/models.py:280
 msgid "Name"
 msgstr "Nome"
 
-#: activity/models.py:164
+#: activity/models.py:165
 msgid "Image"
 msgstr "Imagem"
 
-#: activity/models.py:165
+#: activity/models.py:166
 msgid "Logo for poster. We recommend an image with size 400x100."
 msgstr "Logo para o pôster. Recomendamos uma imagem com tamanho 400x100."
 
-#: activity/models.py:166
+#: activity/models.py:167
 msgid "QR Code"
 msgstr "QR code"
 
-#: activity/models.py:166
+#: activity/models.py:167
 msgid "QR code with link to some page."
 msgstr "QR code com link para alguma página."
 
-#: activity/models.py:172
+#: activity/models.py:173
 msgid "Type of seminar"
 msgstr "Tipo de seminário"
 
-#: activity/models.py:173
+#: activity/models.py:174
 msgid "Types of seminar"
 msgstr "Tipos de seminário"
 
-#: activity/models.py:186 templates/report/activity/seminars.html:18
+#: activity/models.py:187 templates/report/activity/seminars.html:18
 msgid "Category"
 msgstr "Categoria"
 
-#: activity/models.py:187
+#: activity/models.py:188
 msgid "International guest lecturer?"
 msgstr "Palestrante de uma instituição do exterior?"
 
-#: activity/models.py:188 research/models.py:307
+#: activity/models.py:189 research/models.py:307
 #: templates/report/research/academic_works_report.html:36
 #: templates/report/research/academic_works_report.html:61
 #: templates/report/research/academic_works_report.html:89
@@ -209,7 +213,7 @@ msgstr "Palestrante de uma instituição do exterior?"
 msgid "Abstract"
 msgstr "Resumo"
 
-#: activity/models.py:189 dissemination/models.py:40 research/models.py:87
+#: activity/models.py:190 dissemination/models.py:40 research/models.py:87
 #: research/models.py:230 research/models.py:240 research/models.py:250
 #: research/models.py:272 scientific_mission/models.py:41
 #: templates/report/activity/pdf/seminars.html:18
@@ -228,21 +232,21 @@ msgstr "Resumo"
 msgid "Date"
 msgstr "Data"
 
-#: activity/models.py:190
+#: activity/models.py:191
 msgid "Time"
 msgstr "Hora"
 
-#: activity/models.py:191 research/models.py:229 research/models.py:239
+#: activity/models.py:192 research/models.py:229 research/models.py:239
 #: research/models.py:249 research/models.py:262
 msgid "Attachment"
 msgstr "Anexo"
 
-#: activity/models.py:192
+#: activity/models.py:193
 msgid "Room"
 msgstr "Sala"
 
-#: activity/models.py:196 docs/source/interface/interface.py:19
-#: sistema/settings_local.py:75 templates/admin/default_index.html:122
+#: activity/models.py:197 docs/source/interface/interface.py:19
+#: sistema/settings_local.py:95 templates/admin/default_index.html:122
 #: templates/report/activity/pdf/seminars.html:11
 #: templates/report/activity/seminars.html:10
 #: templates/report/activity/seminars_report.html:5
@@ -268,19 +272,23 @@ msgstr "Você tem que escolher um seminário!"
 msgid "No seminar matches the given query."
 msgstr "Nenhum seminário corresponde a esta consulta."
 
-#: activity/views.py:274
-msgid "You have to choose a person!"
-msgstr "Você tem que escolher uma pessoa!"
-
 #: activity/views.py:279
-msgid "You have to choose a training program!"
-msgstr "Você tem que escolher um programa de treinamento!"
+msgid "You have to choose a person!"
+msgstr "Você precisa escolher uma pessoa!"
 
-#: activity/views.py:288
+#: activity/views.py:284
+msgid "You have to choose a project activity!"
+msgstr "Você precisa escolher uma atividade!"
+
+#: activity/views.py:289
+msgid "You have to choose who will sign the certificate!"
+msgstr "Você precisa selecionar quem irá assinar o documento!"
+
+#: activity/views.py:298 activity/views.py:308
 msgid "No person matches the given query."
 msgstr "Nenhuma pessoa corresponde a esta consulta."
 
-#: activity/views.py:293
+#: activity/views.py:303
 msgid "No training program matches the given query."
 msgstr "Nenhum programa de treinamento corresponde a esta consulta."
 
@@ -420,7 +428,7 @@ msgid "User"
 msgstr "Usuário"
 
 #: custom_auth/models.py:78 docs/source/interface/interface.py:37
-#: sistema/settings_local.py:93
+#: sistema/settings_local.py:114
 msgid "Users"
 msgstr "Usuários"
 
@@ -451,7 +459,7 @@ msgid "Dissemination"
 msgstr "Difusão"
 
 #: dissemination/apps.py:10 docs/source/interface/interface.py:15
-#: sistema/settings_local.py:71
+#: sistema/settings_local.py:91
 msgid "Disseminations"
 msgstr "Difusões"
 
@@ -514,7 +522,7 @@ msgstr "Meios de comunicação externa"
 msgid "You should choose a type."
 msgstr "Você deve escolher um tipo."
 
-#: docs/source/interface/interface.py:11 sistema/settings_local.py:67
+#: docs/source/interface/interface.py:11 sistema/settings_local.py:87
 #: templates/admin/default_index.html:95
 #: templates/report/activity/meetings.html:10
 #: templates/report/activity/meetings_report.html:5
@@ -537,7 +545,7 @@ msgstr "Você deve escolher um tipo."
 msgid "Reports"
 msgstr "Relatórios"
 
-#: docs/source/interface/interface.py:13 sistema/settings_local.py:69
+#: docs/source/interface/interface.py:13 sistema/settings_local.py:89
 #: templates/admin/default_index.html:98 templates/report/reports.html:22
 #: templates/report/reports_suit.html:21
 #: templates/report/research/pdf/academic_works.html:10
@@ -545,28 +553,27 @@ msgid "Academic works"
 msgstr "Trabalhos acadêmicos"
 
 #: docs/source/interface/interface.py:14 research/models.py:217
-#: sistema/settings_local.py:70 templates/admin/default_index.html:102
+#: sistema/settings_local.py:90 templates/admin/default_index.html:102
 #: templates/report/reports.html:26 templates/report/reports_suit.html:24
 #: templates/report/research/articles.html:10
 #: templates/report/research/articles_report.html:5
 msgid "Articles"
 msgstr "Artigos"
 
-#: docs/source/interface/interface.py:17 sistema/settings_local.py:73
+#: docs/source/interface/interface.py:17 sistema/settings_local.py:93
 #: templates/admin/default_index.html:114
 #: templates/report/person/researchers.html:5 templates/report/reports.html:38
 #: templates/report/reports_suit.html:33
 msgid "Researchers"
 msgstr "Pesquisadores"
 
-#: docs/source/interface/interface.py:18 sistema/settings_local.py:74
+#: docs/source/interface/interface.py:18 sistema/settings_local.py:94
 #: templates/report/scientific_mission/pdf/scientific_missions.html:10
 msgid "Scientific missions"
 msgstr "Missões científicas"
 
-#: docs/source/interface/interface.py:20 sistema/settings_local.py:76
+#: docs/source/interface/interface.py:20 sistema/settings_local.py:96
 #: templates/admin/default_index.html:126
-#: templates/certificate/certificate.html:23
 #: templates/report/activity/pdf/training_programs.html:10
 #: templates/report/activity/training_programs.html:10
 #: templates/report/activity/training_programs_report.html:5
@@ -574,7 +581,7 @@ msgstr "Missões científicas"
 msgid "Training programs"
 msgstr "Programas de treinamento"
 
-#: docs/source/interface/interface.py:22 sistema/settings_local.py:78
+#: docs/source/interface/interface.py:22 sistema/settings_local.py:98
 #: templates/add_content/add_content.html:5
 #: templates/add_content/add_content.html:8
 #: templates/add_content/add_content.html:13
@@ -586,11 +593,11 @@ msgstr "Programas de treinamento"
 msgid "Add content"
 msgstr "Adicionar conteúdo"
 
-#: docs/source/interface/interface.py:24 sistema/settings_local.py:80
+#: docs/source/interface/interface.py:24 sistema/settings_local.py:100
 msgid "Create/Update citation name"
 msgstr "Criar/Atualizar nome de citação"
 
-#: docs/source/interface/interface.py:25 sistema/settings_local.py:81
+#: docs/source/interface/interface.py:25 sistema/settings_local.py:101
 #: templates/add_content/add_content.html:20
 #: templates/add_content/add_content_suit.html:18
 #: templates/admin/default_index.html:61
@@ -604,7 +611,7 @@ msgstr "Criar/Atualizar nome de citação"
 msgid "Import papers"
 msgstr "Importar artigos"
 
-#: docs/source/interface/interface.py:27 sistema/settings_local.py:83
+#: docs/source/interface/interface.py:27 sistema/settings_local.py:103
 #: templates/admin/default_index.html:76 templates/anexo/anexo5.html:9
 #: templates/anexo/anexo6.html:12 templates/anexo/anexo7.html:7
 #: templates/anexo/anexo9.html:7 templates/certificate/certificate.html:5
@@ -615,34 +622,34 @@ msgstr "Importar artigos"
 msgid "Documents"
 msgstr "Documentos"
 
-#: docs/source/interface/interface.py:29 sistema/settings_local.py:85
+#: docs/source/interface/interface.py:29 sistema/settings_local.py:106
 msgid "FAPESP - appendix 5"
 msgstr "FAPESP - anexo 5"
 
-#: docs/source/interface/interface.py:30 sistema/settings_local.py:86
+#: docs/source/interface/interface.py:30 sistema/settings_local.py:107
 msgid "FAPESP - appendix 6"
 msgstr "FAPESP - anexo 6"
 
-#: docs/source/interface/interface.py:31 sistema/settings_local.py:87
+#: docs/source/interface/interface.py:31 sistema/settings_local.py:108
 msgid "FAPESP - appendix 7"
 msgstr "FAPESP - anexo 7"
 
-#: docs/source/interface/interface.py:32 sistema/settings_local.py:88
+#: docs/source/interface/interface.py:32 sistema/settings_local.py:109
 msgid "FAPESP - appendix 9"
 msgstr "FAPESP - anexo 9"
 
-#: docs/source/interface/interface.py:33 sistema/settings_local.py:89
+#: docs/source/interface/interface.py:33 sistema/settings_local.py:110
 #: templates/admin/default_index.html:84 templates/documents/documents.html:45
 #: templates/documents/documents_suit.html:48 templates/poster/seminar.html:9
 #: templates/poster/seminar_poster.html:7
 msgid "Seminar poster"
 msgstr "Poster de um seminário"
 
-#: docs/source/interface/interface.py:36 sistema/settings_local.py:92
+#: docs/source/interface/interface.py:36 sistema/settings_local.py:113
 msgid "Cities"
 msgstr "Cidades"
 
-#: docs/source/interface/interface.py:38 sistema/settings_local.py:94
+#: docs/source/interface/interface.py:38 sistema/settings_local.py:115
 msgid "Groups"
 msgstr "Grupos"
 
@@ -771,20 +778,24 @@ msgstr "Estado"
 msgid "Country"
 msgstr "País"
 
-#: person/models.py:182 person/models.py:183 scientific_mission/forms.py:110
+#: person/models.py:156
+msgid "Signature"
+msgstr "Assinatura"
+
+#: person/models.py:183 person/models.py:184 scientific_mission/forms.py:110
 #: templates/anexo/anexo5.html:18
 msgid "Person"
 msgstr "Pessoa"
 
-#: person/models.py:192
+#: person/models.py:193
 msgid "Name in bibliographic citation"
 msgstr "Nome em citação bibliográfica"
 
-#: person/models.py:193
+#: person/models.py:194
 msgid "Default name?"
 msgstr "Nome default?"
 
-#: person/models.py:211 person/models.py:212
+#: person/models.py:212 person/models.py:213
 msgid "Citation name"
 msgstr "Nome de citação"
 
@@ -1240,6 +1251,12 @@ msgstr ""
 msgid "Your form is not valid."
 msgstr "Seu formulário não é válido."
 
+#: sistema/settings_local.py:105 templates/certificate/certificate.html:5
+#: templates/documents/documents.html:20
+#: templates/documents/documents_suit.html:42
+msgid "Certificate"
+msgstr "Certificado"
+
 #: sistema/urls.py:67
 msgid "Features of the NIRA system"
 msgstr "Funcionalidades do sistema"
@@ -1405,17 +1422,15 @@ msgstr "Anexo 7"
 msgid "Appendix 9"
 msgstr "Anexo 9"
 
-#: templates/certificate/certificate.html:5
-#: templates/documents/documents.html:20
-#: templates/documents/documents_suit.html:42
-msgid "Certificate"
-msgstr "Certificado"
-
 #: templates/certificate/certificate.html:33
+msgid "Who will sign the certificate?"
+msgstr "Quem vai assinar o certificado?"
+
+#: templates/certificate/certificate.html:43
 msgid "Number of hours"
 msgstr "Total de horas"
 
-#: templates/certificate/certificate.html:38
+#: templates/certificate/certificate.html:49
 msgid "Get certificate"
 msgstr "Obter certificado"
 
