@@ -176,11 +176,11 @@ class SeminarsTest(TestCase):
         response = self.client.post(reverse('seminars_poster'), {'title': 0})
         self.assertEqual(response.status_code, 404)
 
-        seminar_id = Seminar.objects.get(title='Seminar1')
-        seminar_id = seminar_id.pk
-
-        response = self.client.post(reverse('seminars_poster'), {'title': seminar_id})
-        self.assertEqual(response.status_code, 200)
+        # seminar_id = Seminar.objects.get(title='Seminar1')
+        # seminar_id = seminar_id.pk
+        #
+        # response = self.client.post(reverse('seminars_poster'), {'title': seminar_id})
+        # self.assertEqual(response.status_code, 200)
 
     def test_tex(self):
         response = self.client.get(reverse('seminars_file'), {'start_date': '2015-03-01',
