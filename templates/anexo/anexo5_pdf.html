@@ -57,9 +57,9 @@
 
             <p>Endereço (Rua/Av./Pça): {{ person.street }}</p>
 
-            <p>Número: {{ person.number }} &emsp;&emsp;&emsp;&emsp; {% if person.district %}Bairro: {{ person.district }}{% endif %}</p>
+            <p>Número: {{ person.number }}{% if person.district %}. Bairro: {{ person.district }}{% endif %}</p>
 
-            <p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}{% if person.zipcode %}- CEP: {{ person.zipcode }} {% endif %}</p>
+            <p>Cidade: {{ person.city }}{% if person.state %}, {{ person.state }}{% endif %}{% if person.country %}, {{ person.country }}{% endif %}{% if person.zipcode %}. CEP: {{ person.zipcode }} {% endif %}</p>
 
         </div>
 
