@@ -59,7 +59,7 @@
             {% block content %}
                 {% if seminar %}
                     {% if seminar.category.image %}
-                        <img alt="Category logo" src=media/{{ seminar.category.image.url }}><span class="category_seminar">&nbsp&nbsp seminar</span>
+                        <img alt="Category logo" src="media/{{ seminar.category.image }}"><span class="category_seminar">&nbsp&nbsp seminar</span>
                         <br>
                     {% else %}
                         <p class="other_seminar">{% trans "Seminar" %}</p>
@@ -108,7 +108,7 @@
                             </td>
                             {% if seminar.category.qr_code %}
                             <td align="right">
-                                <img alt="QR Code with category link" src=media/{{ seminar.category.qr_code.url }} height="95" width="95">
+                                <img alt="QR Code with category link" src="media/{{ seminar.category.qr_code }}" height="95" width="95">
                             </td>
                             {% endif %}
                         </tr>
