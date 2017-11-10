@@ -162,9 +162,10 @@ class SeminarType(models.Model):
 
     """
     name = models.CharField(_('Name'), max_length=255)
-    image = models.ImageField(_('Image'), blank=True, null=True,
+    image = models.ImageField(_('Image'), upload_to='banners/', blank=True, null=True,
                               help_text=_('Logo for poster. We recommend an image with size 400x100.'))
-    qr_code = models.ImageField(_('QR Code'), blank=True, null=True, help_text=_('QR code with link to some page.'))
+    qr_code = models.ImageField(_('QR Code'), upload_to='qr_code/', blank=True, null=True,
+                                help_text=_('QR code with link to some page.'))
 
     def __unicode__(self):
         return u'%s' % self.name
