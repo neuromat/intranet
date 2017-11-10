@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from cities_light.models import City
-from configuration.models import ProcessNumber
+from configuration.models import ProcessNumber, PrincipalInvestigator
 from dal import autocomplete
 from models import ScientificMission, Route
 from django import forms
@@ -80,9 +80,8 @@ class AnnexSixForm(forms.Form):
 class AnnexSevenForm(forms.Form):
 
     try:
-        people = Person.objects.all()
-        principal_investigator = people.get(role__name="Principal Investigator")
-        name = principal_investigator.full_name
+        principal_investigator = PrincipalInvestigator.get_solo()
+        name = principal_investigator.name
 
     except:
         name = None

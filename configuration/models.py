@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from solo.models import SingletonModel
 
+from person.models import Person
+
 
 class ProcessNumber(SingletonModel):
 
@@ -19,3 +21,12 @@ class CepidName(SingletonModel):
     class Meta:
         verbose_name = _('Cepid name')
         permissions = (("change_cepid_name", _("Can change the Cepid name.")),)
+
+
+class PrincipalInvestigator(SingletonModel):
+
+    name = models.ForeignKey(Person, verbose_name=_('Name'), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('Principal Investigator')
+        permissions = (("change_principal_investigator", _("Can change the Principal Investigator.")),)

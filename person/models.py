@@ -160,21 +160,15 @@ class Person(models.Model):
 
     # Get the value of the email and put it in the email field of the User class.
     def save(self, *args, **kw):
-
-        if self.role:
-
-            role = self.role
-
-            if role.name == "Principal Investigator":
+        if self.pk is not None:
+            orig = Person.objects.get(pk=self.pk)
+            if orig.email != self.email:
+                from custom_auth.models import User
                 try:
-                    people = Person.objects.all()
-                    person = people.get(role__name="Principal Investigator")
-
-                    if person:
-                        person.role = None
-                        person.save()
-
-                except Person.DoesNotExist:
+                    user = User.objects.get(user_profile=orig.pk)
+                    user.email = self.email
+                    user.save()
+                except User.DoesNotExist:
                     pass
 
         super(Person, self).save(*args, **kw)

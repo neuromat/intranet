@@ -1,5 +1,6 @@
 import json as simplejson
 from helpers.views.pdf import render as render_to_pdf
+from helpers.views.principal_investigator import principal_investigator_name
 from cities_light.models import City
 from configuration.models import ProcessNumber
 from dal import autocomplete
@@ -108,11 +109,10 @@ def anexo5(request):
 
             amount, cents = money_to_strings(mission.amount_paid)
 
-            try:
-                people = Person.objects.all()
-                principal_investigator = people.get(role__name="Principal Investigator")
-            except:
-                messages.error(request, _('You must set a person with the role of Principal Investigator.'))
+            principal_investigator = principal_investigator_name()
+
+            if principal_investigator is None:
+                messages.error(request, _('You must set the Principal Investigator.'))
                 date = datetime.datetime.now()
                 context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
                 return render(request, 'anexo/anexo5.html', context)
@@ -150,15 +150,12 @@ def anexo5(request):
 @login_required
 def anexo6(request):
 
-    people = Person.objects.all()
-
     if request.method == 'POST':
 
-        try:
-            principal_investigator = people.get(role__name="Principal Investigator")
+        principal_investigator = principal_investigator_name()
 
-        except:
-            messages.error(request, _('You must set a person with the role of Principal Investigator.'))
+        if principal_investigator is None:
+            messages.error(request, _('You must set the Principal Investigator.'))
             return render(request, 'anexo/anexo6.html', {'form': AnnexSixForm()})
 
         form = AnnexSixForm(request.POST)
@@ -241,12 +238,10 @@ def anexo7(request):
                                   mark_safe(_('You should have configured your process number on configurations. '
                                               ' Click <a href="../../configuration">here</a> to configure it.')))
 
-            try:
-                people = Person.objects.all()
-                principal_investigator = people.get(role__name="Principal Investigator")
+            principal_investigator = principal_investigator_name()
 
-            except:
-                messages.error(request, _('You must set a person with the role of Principal Investigator.'))
+            if principal_investigator is None:
+                messages.error(request, _('You must set the Principal Investigator.'))
                 return render(request, 'anexo/anexo7.html', {'people': people,
                                                              'default_date': datetime.datetime.now(),
                                                              'process': process})
@@ -313,12 +308,10 @@ def anexo9(request):
                                   mark_safe(_('You should have configured your process number on configurations. '
                                               ' Click <a href="../../configuration">here</a> to configure it.')))
 
-            try:
-                people = Person.objects.all()
-                principal_investigator = people.get(role__name="Principal Investigator")
+            principal_investigator = principal_investigator_name()
 
-            except:
-                messages.error(request, _('You must set a person with the role of Principal Investigator.'))
+            if principal_investigator is None:
+                messages.error(request, _('You must set the Principal Investigator.'))
                 return render(request, 'anexo/anexo9.html', {'people': people,
                                                              'default_date': datetime.datetime.now(),
                                                              'process': process})

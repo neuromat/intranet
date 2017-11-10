@@ -39,10 +39,7 @@ class ScientificMissionsTest(TestCase):
         city = City(country=country)
         city.save()
 
-        role = Role(name="Principal Investigator")
-        role.save()
-
-        person = Person(full_name="Fulano Testeiro", role=role)
+        person = Person(full_name="Fulano Testeiro")
         person.save()
 
         date_departure1 = datetime.date(2015, 1, 15)
