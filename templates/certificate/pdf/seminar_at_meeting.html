@@ -39,7 +39,7 @@
     <body>
         <br />
 
-        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="{% if meeting.meeting.banner %}media/{{ meeting.meeting.banner }}{% else %}static/images/neuromat920x220.png{% endif %}"></div>
+        <div><img alt="Logo NeuroMat - Planeta by Leon Ferrari" src="{% if meeting.meeting.banner %}{{ meeting.meeting.banner.url }}{% else %}{% static "images/neuromat920x220.png" %}{% endif %}"></div>
 
         <br><br><br><br>
 
