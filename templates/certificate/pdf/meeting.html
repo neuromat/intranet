@@ -48,7 +48,7 @@
         <br><br><br><br><br><br>
 
         {% for sign in signature %}
-            <div class="signature"><img alt="Assinatura do responsável" src="media/{{ sign.signature }}"></div>
+            <div class="signature"><img alt="Assinatura do responsável" src="{{ sign.signature.url }}"></div>
             <div class="signature">{% if sign.full_name == 'Jefferson Antonio Galves' %}Antonio Galves{% else %}{{ sign.full_name }}{% endif %}</div>
             <div class="signature">Chairman</div>
             <br>
