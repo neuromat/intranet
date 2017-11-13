@@ -11,21 +11,18 @@ from sistema import settings
 
 
 def fetch_resources(uri, rel):
-
-    # use short variable names
-    base = settings.BASE_DIR
-    sUrl = settings.STATIC_URL  # Typically /static/
-    sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
-    mUrl = settings.MEDIA_URL  # Typically /static/media/
-    mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
+    sUrl = settings.STATIC_URL
+    sRoot = settings.STATIC_ROOT
+    mUrl = settings.MEDIA_URL
+    mRoot = settings.MEDIA_ROOT
 
     # convert URIs to absolute system paths
     if uri.startswith(mUrl):
-        path = base + os.path.join(mRoot, uri.replace(mUrl, ""))
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
     elif uri.startswith(sUrl):
-        path = base + os.path.join(sRoot, uri.replace(sUrl, ""))
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
     else:
-        return uri  # handle absolute uri (ie: http://some.tld/foo.png)
+        return uri
 
     # make sure that file exists
     if not os.path.isfile(path):

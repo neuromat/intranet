@@ -28,5 +28,4 @@ docs/source/_static/
 docs/source/_templates/
 
 # Uploaded images
-media/banners/*
-media/signatures/*
+media/*
