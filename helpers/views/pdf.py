@@ -35,8 +35,7 @@ def fetch_resources(uri, rel):
 
 def render(template_src, context_dict, css_source=None):
     template = get_template(template_src)
-    context = Context(context_dict)
-    html = template.render(context)
+    html = template.render(context_dict)
     result = StringIO.StringIO()
 
     if css_source:
