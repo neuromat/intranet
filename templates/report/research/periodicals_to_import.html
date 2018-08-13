@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-    <form role="form" method="post" action="{% url 'research.views.add_periodicals' %}">{% csrf_token %}
+    <form role="form" method="post" action="{% url 'add_periodicals' %}">{% csrf_token %}
         {% if periodicals_to_add %}
             <strong>{% trans "List of periodicals to add:" %}</strong><br><br>
             <table class="table table-striped">

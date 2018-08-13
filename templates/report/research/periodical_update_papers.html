@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-    <form role="form" method="post" name="published_form" action="{% url 'research.views.update_papers' %}">{% csrf_token %}
+    <form role="form" method="post" name="published_form" action="{% url 'update_papers' %}">{% csrf_token %}
         {% if periodical_update_papers %}
             <strong>{% trans "List of papers to update:" %}</strong><br><br>
             <span><input type="checkbox" value='all_papers' id="select_all_papers"> {% trans 'Select all' %}</span>
