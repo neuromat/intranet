@@ -67,27 +67,25 @@ class TrainingProgramTest(TestCase):
                                                                        'extension': '.pdf'})
         self.assertEqual(response.status_code, 200)
 
-    def test_report(self):
-
-        # With nothing
+    def test_report_status_code(self):
         response = self.client.get(reverse('training_programs_report'))
         self.assertEqual(response.status_code, 200)
 
-        # With date
+    def test_report_with_date(self):
         response = self.client.post(reverse('training_programs_report'), {'start_date': '01/01/2015',
                                                                           'end_date': '03/05/2017'})
         cont = response.context['training_programs']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
-        # Without date
+    def test_report_without_date(self):
         response = self.client.post(reverse('training_programs_report'), {'start_date': '',
                                                                           'end_date': ''})
         cont = response.context['training_programs']
         self.assertEqual(len(cont), 2)
         self.assertEqual(response.status_code, 200)
 
-        # With wrong date
+    def test_report_with_wrong_date(self):
         response = self.client.post(reverse('training_programs_report'), {'start_date': '01/01/2017',
                                                                           'end_date': '03/05/2015'})
         self.assertEqual(response.status_code, 200)
@@ -127,13 +125,12 @@ class SeminarsTest(TestCase):
         seminar2 = seminar('Seminar2', type2, self.date2)
         seminar2.save()
 
-    def test_report(self):
-
-        # With nothing
+    def test_report_status_code(self):
         response = self.client.get(reverse('seminars_report'))
         self.assertEqual(response.status_code, 200)
 
-        # With date and all categories
+    def test_report_with_dates_and_all_categories(self):
+
         response = self.client.post(reverse('seminars_report'), {'start_date': '01/01/2015',
                                                                  'end_date': '03/05/2017',
                                                                  'category': '0'})
@@ -141,7 +138,7 @@ class SeminarsTest(TestCase):
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
-        # With date and specific category
+    def test_report_with_dates_and_specific_category(self):
         response = self.client.post(reverse('seminars_report'), {'start_date': '01/01/2015',
                                                                  'end_date': '03/05/2017',
                                                                  'category': 'All'})
@@ -149,7 +146,7 @@ class SeminarsTest(TestCase):
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
-        # Without date
+    def test_report_without_dates(self):
         response = self.client.post(reverse('seminars_report'), {'start_date': '',
                                                                  'end_date': '',
                                                                  'category': '0'})
@@ -157,7 +154,7 @@ class SeminarsTest(TestCase):
         self.assertEqual(len(cont), 2)
         self.assertEqual(response.status_code, 200)
 
-        # Wrong dates
+    def test_report_with_wrong_dates(self):
         response = self.client.post(reverse('seminars_report'), {'start_date': '01/01/2016',
                                                                  'end_date': '03/05/2015',
                                                                  'category': 'All'})
@@ -231,22 +228,21 @@ class MeetingsTest(TestCase):
         self.date2 = base_date1
         self.date3 = base_date3
 
-        meeting1 = meeting('First meeting', self.date1, self.date2, 0)
+        meeting1 = meeting('First meeting', self.date1, self.date2, False)
         meeting1.save()
 
-        meeting2 = meeting('Second meeting', self.date1, self.date3, 1)
+        meeting2 = meeting('Second meeting', self.date1, self.date3, True)
         meeting2.save()
 
-        meeting3 = meeting('Third meeting', self.date1, self.date3, 2)
+        meeting3 = meeting('Third meeting', self.date1, self.date3, True)
         meeting3.save()
 
-    def test_report(self):
-
-        # With nothing
+    def test_report_status_code(self):
         response = self.client.get(reverse('meetings_report'))
         self.assertEqual(response.status_code, 200)
 
-        # With valid date, to each category
+    def test_report_with_valid_date(self):
+        # With valid date, to each audience
         response = self.client.post(reverse('meetings_report'), {'start_date': '01/01/2014',
                                                                  'end_date': '03/05/2017',
                                                                  'broad_audience': 0})
@@ -268,7 +264,8 @@ class MeetingsTest(TestCase):
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
-        # Without date, all categories
+    def test_report_without_date(self):
+        # Without date, all categories. Should get all results.
         response = self.client.post(reverse('meetings_report'), {'start_date': '',
                                                                  'end_date': '',
                                                                  'broad_audience': 0})
@@ -276,7 +273,7 @@ class MeetingsTest(TestCase):
         self.assertEqual(len(cont), 3)
         self.assertEqual(response.status_code, 200)
 
-        # With wrong date
+    def test_report_wrong_date(self):
         response = self.client.post(reverse('meetings_report'), {'start_date': '01/01/2017',
                                                                  'end_date': '03/05/2015'})
         self.assertEqual(response.status_code, 200)
