@@ -4,7 +4,6 @@ import StringIO
 from cgi import escape
 from xhtml2pdf import pisa
 from django.http import HttpResponse
-from django.template import Context
 from django.template.loader import get_template
 
 from sistema import settings
