@@ -39,7 +39,13 @@
     <body>
         <br />
 
-        <div><img alt="Banner do evento" src="{{ meeting.meeting.banner.url }}"></div>
+        <div>
+            {% if meeting.meeting.banner %}
+                <img alt="Banner do evento" src="{{ meeting.meeting.banner.url }}">
+            {% else %}
+                <img alt="Logo NeuroMat - Planeta by Leon Ferrari" src={% static "images/neuromat920x220.png" %}>
+            {% endif %}
+        </div>
 
         <br><br><br><br><br><br>
 
