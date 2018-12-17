@@ -50,22 +50,28 @@ def search_articles(start_date, end_date):
                                                                    Q(article_id__in=submitted_ids))
 
     # Articles from the scientific team
-    published_scientific = published_periodical.filter(article__team='s')
-    accepted_scientific = accepted.filter(article__type='p', article__team='s', article_id__in=accepted_ids)
-    submitted_scientific = submitted.filter(article__team='s', article_id__in=submitted_ids)
-    draft_scientific = draft.filter(article__team='s', article_id__in=draft_ids)
+    published_scientific = published_periodical.filter(article__team='s').order_by("-date")
+    accepted_scientific = accepted.filter(article__type='p',
+                                          article__team='s',
+                                          article_id__in=accepted_ids).order_by("-date")
+    submitted_scientific = submitted.filter(article__team='s', article_id__in=submitted_ids).order_by("-date")
+    draft_scientific = draft.filter(article__team='s', article_id__in=draft_ids).order_by("-date")
 
     # Articles from the dissemination team
-    published_dissemin = published_periodical.filter(article__team='d')
-    accepted_dissemin = accepted.filter(article__type='p', article__team='d', article_id__in=accepted_ids)
-    submitted_dissemin = submitted.filter(article__team='d', article_id__in=submitted_ids)
-    draft_dissemin = draft.filter(article__team='d', article_id__in=draft_ids)
+    published_dissemin = published_periodical.filter(article__team='d').order_by("-date")
+    accepted_dissemin = accepted.filter(article__type='p',
+                                        article__team='d',
+                                        article_id__in=accepted_ids).order_by("-date")
+    submitted_dissemin = submitted.filter(article__team='d', article_id__in=submitted_ids).order_by("-date")
+    draft_dissemin = draft.filter(article__team='d', article_id__in=draft_ids).order_by("-date")
 
     # Articles from the technology transfer team
-    published_tec_trans = published_periodical.filter(article__team='t')
-    accepted_tec_trans = accepted.filter(article__type='p', article__team='t', article_id__in=accepted_ids)
-    submitted_tec_trans = submitted.filter(article__team='t', article_id__in=submitted_ids)
-    draft_tec_trans = draft.filter(article__team='t', article_id__in=draft_ids)
+    published_tec_trans = published_periodical.filter(article__team='t').order_by("-date")
+    accepted_tec_trans = accepted.filter(article__type='p',
+                                         article__team='t',
+                                         article_id__in=accepted_ids).order_by("-date")
+    submitted_tec_trans = submitted.filter(article__team='t', article_id__in=submitted_ids).order_by("-date")
+    draft_tec_trans = draft.filter(article__team='t', article_id__in=draft_ids).order_by("-date")
 
     # Event articles from the scientific team
     published_scientific_in_event = published_event.filter(article__team='s')
