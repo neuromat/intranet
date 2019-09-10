@@ -3,11 +3,12 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.urls import path
 from django.utils.translation import ugettext_lazy as _
 
 from helpers.views.show_page import display_documents, display_reports, display_add_content
 
-from views import language_change
+from .views import language_change
 from activity import views as activity_views
 from dissemination import views as dissemination_views
 from person import views as person_views
@@ -40,13 +41,13 @@ content_patterns = [
 ]
 
 urlpatterns = [
-    url(r'^', include(admin.site.urls)),
+    path('', admin.site.urls),
     url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^admin/password_reset/$', auth_views.password_reset, name='admin_password_reset'),
-    url(r'^admin/password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.password_reset_confirm,
+    url(r'^admin/password_reset/$', auth_views.PasswordResetView, name='admin_password_reset'),
+    url(r'^admin/password_reset/done/$', auth_views.PasswordResetDoneView, name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.PasswordResetConfirmView,
         name='password_reset_confirm'),
-    url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+    url(r'^reset/done/$', auth_views.PasswordResetCompleteView, name='password_reset_complete'),
     url(r'^language/(?P<language_code>(?:(?:\w{2})|(?:\w{2}\-\w{2})))$', language_change, name='language_change'),
     url(r'^activity/', include('activity.urls')),
     url(r'^research/', include('research.urls')),

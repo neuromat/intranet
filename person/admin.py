@@ -2,8 +2,8 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from modeltranslation.admin import TranslationAdmin
 
-from forms import *
-from models import *
+from .forms import *
+from .models import *
 
 
 admin.site.register(InstitutionType)

@@ -62,7 +62,7 @@ TYPE_OF_ACTIVITY = (
 
 class ProjectActivities(models.Model):
     title = models.CharField(_('Title'), max_length=255)
-    local = models.ForeignKey(Institution, verbose_name=_('Local'), blank=True, null=True)
+    local = models.ForeignKey(Institution, verbose_name=_('Local'), blank=True, null=True, on_delete=models.CASCADE)
     type_of_activity = models.CharField(_('Type of activity'), max_length=1, choices=TYPE_OF_ACTIVITY, blank=True)
 
     def __unicode__(self):
@@ -78,7 +78,7 @@ class News(models.Model):
 
     'class Meta'		Sets the description model (singular and plural) and define ordering of data by url.
     """
-    activity = models.ForeignKey(ProjectActivities)
+    activity = models.ForeignKey(ProjectActivities, on_delete=models.CASCADE)
     url = models.URLField(_('URL'))
 
     def __unicode__(self):
@@ -97,8 +97,8 @@ class Meeting(ProjectActivities):
     'class Meta'		Sets the description model (singular and plural) and define ordering of data by start_date.
     """
     # import CEPID name
-    cepid = CepidName.get_solo()
-    cepid_name = cepid.cepid_name
+    # cepid = CepidName.get_solo()
+    # cepid_name = cepid.cepid_name
 
     # fields
     broad_audience = models.BooleanField(_('Broad audience?'), default=False)
@@ -128,7 +128,7 @@ class TrainingProgram(ProjectActivities):
     'speakers'          Get the speakers of the training program and their institutions.
     """
     speaker = models.ManyToManyField(Person, verbose_name=_('Speaker'))
-    belongs_to = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
+    belongs_to = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True, on_delete=models.CASCADE)
     description = models.TextField(_('Description'), blank=True, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
@@ -184,8 +184,8 @@ class Seminar(ProjectActivities):
     'speakers'          Get the speakers of the seminar and their institutions.
     """
     speaker = models.ManyToManyField(Person, verbose_name=_('Speaker'))
-    belongs_to = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True)
-    category = models.ForeignKey(SeminarType, verbose_name=_('Category'))
+    belongs_to = models.ForeignKey(Meeting, verbose_name=_('Meeting'), blank=True, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(SeminarType, verbose_name=_('Category'), on_delete=models.CASCADE)
     international_guest_lecturer = models.BooleanField(_('International guest lecturer?'), default=False)
     abstract = models.TextField(_('Abstract'), blank=True, null=True)
     date = models.DateField(_('Date'))

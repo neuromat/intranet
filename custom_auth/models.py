@@ -59,7 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                                         help_text=_('Designates whether this user has special permissions, '
                                                     'e.g. add content on behalf of another user.'))
     date_joined = models.DateTimeField(_('Date joined'), default=timezone.now)
-    user_profile = models.OneToOneField(Person, verbose_name=_('User profile'), blank=True, null=True)
+    user_profile = models.OneToOneField(Person, verbose_name=_('User profile'), blank=True, null=True, on_delete=models.CASCADE)
 
     USERNAME_FIELD = 'username'
 

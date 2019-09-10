@@ -1,5 +1,6 @@
 from modeltranslation.translator import translator, TranslationOptions
-from models import Role
+from .models import Role
+
 
 class RoleTranslationOptions(TranslationOptions):
     fields = ('name',)

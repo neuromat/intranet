@@ -50,10 +50,10 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
+    'configuration',
     'custom_auth',
     'person',
     'activity',
-    'configuration',
     'dissemination',
     'research',
     'scientific_mission',
@@ -61,13 +61,13 @@ PROJECT_APPS = (
 
 INSTALLED_APPS += PROJECT_APPS
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -154,6 +154,7 @@ MEDIA_URL = '/media/'
 LOGIN_URL = '/login/'
 
 try:
-    from settings_local import *
+    from .settings_local import *
 except ImportError:
+    print("ERROR IMPORT")
     pass

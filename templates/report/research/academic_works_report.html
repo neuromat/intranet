@@ -65,6 +65,7 @@
             </ol>
         {% endif %}
     {% endif %}
+
     {% if phd_concluded or phd_in_progress %}
         <h3><strong>{% trans 'PhD thesis' %}</strong></h3>
         {% if phd_concluded %}
@@ -118,6 +119,7 @@
             </ol>
         {% endif %}
     {% endif %}
+
     {% if msc_concluded or msc_in_progress %}
         <h3><strong>{% trans 'MSc dissertations' %}</strong></h3>
         {% if msc_concluded %}
@@ -171,7 +173,6 @@
             </ol>
         {% endif %}
     {% endif %}
-
 {%  else %}
     {% trans "No academic works found!" %}
 {% endif %}

@@ -1,6 +1,6 @@
 from dal import autocomplete
 from cities_light.models import City
-from models import Institution, Person
+from .models import Institution, Person
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 

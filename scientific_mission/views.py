@@ -10,7 +10,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-from forms import annex_seven_choices as choices
+from .forms import annex_seven_choices as choices
 from helpers.forms.date_range import DateRangeForm
 from helpers.views.date import *
 from helpers.views.latex import generate_latex

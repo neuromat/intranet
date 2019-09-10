@@ -1,5 +1,5 @@
-from forms import *
-from models import *
+from .forms import *
+from .models import *
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.forms import BaseInlineFormSet

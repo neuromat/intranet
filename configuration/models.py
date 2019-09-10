@@ -25,7 +25,7 @@ class CepidName(SingletonModel):
 
 class PrincipalInvestigator(SingletonModel):
 
-    name = models.ForeignKey(Person, verbose_name=_('Name'), blank=True, null=True)
+    name = models.ForeignKey(Person, verbose_name=_('Name'), blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _('Principal Investigator')

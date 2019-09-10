@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import urllib2
-import HTMLParser
+import urllib as urllib2
+from html.parser import HTMLParser
 import re
 import requests
 import time
@@ -226,6 +226,9 @@ def search_academic_works(start_date, end_date):
     msc_in_progress = AcademicWork.objects.filter(Q(end_date__isnull=True) | Q(end_date__gte=end_date),
                                                   type__name='MSc', start_date__lte=end_date).order_by('-start_date')\
         .exclude(id__in=msc_concluded_ids)
+
+    array_list = []
+    array_list.extend([postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress])
 
     return postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress
 

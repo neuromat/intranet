@@ -121,7 +121,7 @@ class dExtenso():
         trioLista = [ ''.join([a,b,c]) for a, b, c in zip(it, it, it)]
 
         if len(trioLista) > len(self.classextenso):
-            raise IndexError,'Número muito grande'
+            raise IndexError('Número muito grande')
 
         contador=0
         saida=''

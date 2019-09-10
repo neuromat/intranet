@@ -32,11 +32,12 @@ class ScientificMission(models.Model):
                         date_of_registration.
     'value'             Returns the symbol for the Brazilian currency and the amount paid
     """
-    person = models.ForeignKey(Person, verbose_name=_('Paid to'))
-    mission = models.ForeignKey(Type, verbose_name=_('Mission'), blank=True, null=True)
-    project_activity = models.ForeignKey(ProjectActivities, verbose_name=_('Project activity'), blank=True, null=True)
+    person = models.ForeignKey(Person, verbose_name=_('Paid to'), on_delete=models.CASCADE)
+    mission = models.ForeignKey(Type, verbose_name=_('Mission'), blank=True, null=True, on_delete=models.CASCADE)
+    project_activity = models.ForeignKey(ProjectActivities, verbose_name=_('Project activity'), blank=True, null=True,
+                                         on_delete=models.CASCADE)
     destination_city = models.ForeignKey(City, verbose_name=_('City of destination'), null=True,
-                                         related_name='destination_city')
+                                         related_name='destination_city', on_delete=models.CASCADE)
     amount_paid = models.DecimalField(_('Amount paid'), max_digits=10, decimal_places=2)
     date_of_registration = models.DateTimeField(_('Date'), auto_now_add=True, null=True)
 
@@ -59,9 +60,9 @@ class Route(models.Model):
     'class Meta'		Ordering of route by scientific_mission and order.
     'save'              Set an integer value to order
     """
-    scientific_mission = models.ForeignKey(ScientificMission)
-    origin_city = models.ForeignKey(City, related_name='origin', verbose_name=_('From'))
-    destination_city = models.ForeignKey(City, related_name='destination', verbose_name=_('To'))
+    scientific_mission = models.ForeignKey(ScientificMission, on_delete=models.CASCADE)
+    origin_city = models.ForeignKey(City, related_name='origin', verbose_name=_('From'), on_delete=models.CASCADE)
+    destination_city = models.ForeignKey(City, related_name='destination', verbose_name=_('To'), on_delete=models.CASCADE)
     departure = models.DateTimeField(_('Departure'))
     arrival = models.DateTimeField(_('Arrival'))
     order = models.PositiveIntegerField(_('Order'))
