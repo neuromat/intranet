@@ -15,6 +15,7 @@ __pycache__/
 
 # Project’s settings.py
 sistema/settings_local.py
+sistema/wsgi.py
 
 # Database
 db.sqlite3
@@ -29,3 +30,13 @@ docs/source/_templates/
 
 # Uploaded images
 media/*
+
+# Temporary files
+*~
+*.swap
+
+# SQLite3 file
+*.db
+
+# Backup file
+*.bk
