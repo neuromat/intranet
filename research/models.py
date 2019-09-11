@@ -312,7 +312,7 @@ class AcademicWork(models.Model):
         return u'%s' % self.title
 
     def co_advisors(self):
-        return ', '.join([unicode(co_advisor.full_name) for co_advisor in self.co_advisor.all()])
+        return ', '.join([co_advisor.full_name for co_advisor in self.co_advisor.all()])
 
     class Meta:
         verbose_name = _('Academic Work')

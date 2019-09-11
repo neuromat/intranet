@@ -261,6 +261,28 @@ def academic_works(request):
             postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress = \
                 search_academic_works(start_date, end_date)
 
+            # TEST
+            for obj in postdoc_concluded:
+                    print(obj.title)
+
+            # END TEST
+
+            # res = {
+            #     list: [
+            #         {
+            #             'category': 'post_doc',
+            #             'data': [
+            #                 {
+            #                     'title': 'Context tree modeling of neuronal spike trains',
+            #                     'concluded': False,
+            #                 }
+            #             ]
+            #         }
+            #     ]
+            # }
+
+
+
             context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
                        'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
                        'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress,
