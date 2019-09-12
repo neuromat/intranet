@@ -281,7 +281,7 @@ class TypeAcademicWork(models.Model):
     """
     name = models.CharField(_('Name'), max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:

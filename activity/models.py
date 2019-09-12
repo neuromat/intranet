@@ -149,7 +149,7 @@ class TrainingProgram(ProjectActivities):
 
     def speakers(self):
         return format_html("<br>".join([
-            unicode(speaker) +
+             speaker +
             unicode(" / " + speaker.institution.get_person_institution() if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
