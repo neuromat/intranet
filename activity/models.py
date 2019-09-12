@@ -167,7 +167,7 @@ class SeminarType(models.Model):
     qr_code = models.ImageField(_('QR Code'), upload_to='qr_code/', blank=True, null=True,
                                 help_text=_('QR code with link to some page.'))
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:
