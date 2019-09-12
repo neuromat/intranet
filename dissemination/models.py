@@ -20,7 +20,7 @@ class Topic(models.Model):
     """
     name = models.CharField(_('Name'), max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:
@@ -56,12 +56,12 @@ class InternalMediaOutlet(models.Model):
     """
     An instance of this class is an internal media outlet.
 
-    '__unicode__'		Returns the name.
+    '__str__'		Returns the name.
     'class Meta'		Sets the description model (singular and plural) and defines ordering of data by name.
     """
     name = models.CharField(_('Name'), max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:
@@ -97,12 +97,12 @@ class ExternalMediaOutlet(models.Model):
     """
     An instance of this class is an external media outlet.
 
-    '__unicode__'		Returns the name.
+    '__str__'		Returns the name.
     'class Meta'		Sets the description model (singular and plural) and defines ordering of data by name.
     """
     name = models.CharField(_('Name'), max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:
