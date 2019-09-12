@@ -75,7 +75,7 @@ class Institution(models.Model):
     district = models.CharField(_('District'), max_length=255, blank=True)
     city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.belongs_to:
             if self.belongs_to.belongs_to:
                 if self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
@@ -155,7 +155,7 @@ class Person(models.Model):
     country = models.CharField(_('Country'), max_length=255, blank=True, null=True)
     signature = models.ImageField(_('Signature'), upload_to='signatures/', blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.full_name
 
     # Get the value of the email and put it in the email field of the User class.
