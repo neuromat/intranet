@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from custom_auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
 from unittest import skip

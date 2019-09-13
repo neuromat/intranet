@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from dissemination.models import InternalMediaOutlet, Internal, ExternalMediaOutlet, External
-from research.tests import system_authentication
-from django.core.urlresolvers import reverse
+from research.tests.test_orig import system_authentication
+from django.urls import reverse
 from django.test import TestCase
 
 

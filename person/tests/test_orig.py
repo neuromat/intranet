@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import TestCase
 from person.models import Person, CitationName
 from person.views import name_with_first_letters, names_without_last_name, first_name_and_first_letter, \
