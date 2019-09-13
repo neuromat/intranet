@@ -2,8 +2,8 @@
 {% load i18n admin_static %}
 
 {% block extrahead %}
-<script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
-<script src="{% static 'js/scientific_mission_report.js' %}"></script>
+    <script src="{% static 'js/masked_input/jquery.maskedinput.min.js' %}"></script>
+    <script src="{% static 'js/scientific_mission_report.js' %}"></script>
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -24,11 +24,11 @@
         </div>
         <div class="col-xs-2 col-sm-2">
             <label>{% trans "Start date" %}</label>
-            <input class="datepicker" name="start_date" id="id_start_date">
+            <input class="datepicker" autocomplete="off" name="start_date" id="id_start_date">
         </div>
         <div class="col-xs-2 col-sm-2">
             <label>{% trans "End date" %}</label>
-            <input class="datepicker" name="end_date" id="id_end_date">
+            <input class="datepicker"  autocomplete="off" name="end_date" id="id_end_date">
         </div>
         <div class="col-xs-2 col-sm-2">
             <br>
