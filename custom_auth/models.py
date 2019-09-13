@@ -40,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     An instance of this class represents a user of the system. The email field of this class is not editable,
     it is a copy from the email field of the User class (to be used at "Forgotten your password or username?").
 
-    '__unicode__'		Returns the username.
+    '__str__'		Returns the username.
     'get_short_name'    Used at welcome message.
     'class Meta'		Sets the description model (singular and plural).
     """
@@ -66,7 +66,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     # Returns the username
-    def __unicode__(self):
+    def __str__(self):
         return self.username
 
     # Used at welcome message.

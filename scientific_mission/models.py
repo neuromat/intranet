@@ -9,7 +9,7 @@ class Type(models.Model):
     """
     An instance of this class is a type of scientific mission.
 
-    '__unicode__'		Returns the mission.
+    '__str__'		Returns the mission.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by mission.
     """
     mission = models.CharField(_('Scientific Mission'), max_length=255, blank=True, null=True)
@@ -27,7 +27,7 @@ class ScientificMission(models.Model):
     """
     An instance of this class is a daily stipend paid to a person.
 
-    '__unicode__'		Returns the person and the amount paid.
+    '__str__'		Returns the person and the amount paid.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by
                         date_of_registration.
     'value'             Returns the symbol for the Brazilian currency and the amount paid
@@ -41,7 +41,7 @@ class ScientificMission(models.Model):
     amount_paid = models.DecimalField(_('Amount paid'), max_digits=10, decimal_places=2)
     date_of_registration = models.DateTimeField(_('Date'), auto_now_add=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s - R$ %s' % (self.person, self.amount_paid)
 
     class Meta:

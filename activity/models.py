@@ -81,7 +81,7 @@ class News(models.Model):
     activity = models.ForeignKey(ProjectActivities, on_delete=models.CASCADE)
     url = models.URLField(_('URL'))
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.url
 
     class Meta:
@@ -149,8 +149,8 @@ class TrainingProgram(ProjectActivities):
 
     def speakers(self):
         return format_html("<br>".join([
-             speaker +
-            unicode(" / " + speaker.institution.get_person_institution() if speaker.institution else "")
+             str(speaker) +
+             (" / " + str(speaker.institution.get_person_institution()) if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True
@@ -205,8 +205,8 @@ class Seminar(ProjectActivities):
 
     def speakers(self):
         return format_html("<br>".join([
-            unicode(speaker) +
-            unicode(" / " + speaker.institution.get_person_institution() if speaker.institution else "")
+            str(speaker) +
+            (" / " + str(speaker.institution.get_person_institution()) if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True

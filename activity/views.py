@@ -143,7 +143,7 @@ def seminars_show_titles(request):
         select = ProjectActivities.objects.filter(type_of_activity='s', seminar__speaker=speaker)
         titles = []
         for title in select:
-            titles.append({'pk': title.id, 'valor': title.__unicode__()})
+            titles.append({'pk': title.id, 'valor': title.__str__()})
 
         json = simplejson.dumps(titles)
         return HttpResponse(json, content_type="application/json")

@@ -49,14 +49,14 @@ class ResearchResult(models.Model):
     research_result_type = models.CharField(_('Type'), max_length=1, choices=TYPE, blank=True)
     ris_file_authors = models.CharField(_('RIS file authors'), max_length=255, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.title
 
     def authors(self):
         if self.ris_file_authors != '':
             return self.ris_file_authors
         else:
-            return '; '.join([unicode(name) for name in CitationName.objects.filter(person_id__in=self.person.all(),
+            return '; '.join([str(name) for name in CitationName.objects.filter(person_id__in=self.person.all(),
                                                                                     default_name=True)])
 
 
@@ -89,7 +89,7 @@ class Book(ResearchResult):
     start_page = models.IntegerField(_('Start page'), blank=True, null=True)
     end_page = models.IntegerField(_('End page'), blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.title
 
     class Meta:
@@ -111,7 +111,7 @@ class Periodical(models.Model):
     name = models.CharField(_('Name'), max_length=255)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:
@@ -128,7 +128,7 @@ class PeriodicalRISFile(models.Model):
     periodical = models.ForeignKey(Periodical, on_delete=models.CASCADE)
     name = models.CharField(_('Name'), max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:
@@ -153,7 +153,7 @@ class Event(models.Model):
     local = models.CharField(_('Local'), max_length=255, help_text='Where the conference was held, '
                                                                    'e.g., "Rio de Janeiro, RJ, Brazil".')
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:
@@ -170,7 +170,7 @@ class EventRISFile(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     name = models.CharField(_('Name'), max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:
@@ -193,7 +193,7 @@ class Article(ResearchResult):
     status = models.CharField(_('Status'), max_length=50)
     hide = models.BooleanField(_('Hide this paper in the report'), default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.title
 
     def current_status(self):
@@ -308,7 +308,7 @@ class AcademicWork(models.Model):
     end_date = models.DateField(_('End date'), blank=True, null=True)
     abstract = models.TextField(_('Abstract'))
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.title
 
     def co_advisors(self):

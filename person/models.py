@@ -22,7 +22,7 @@ class Role(models.Model):
     """
     An instance of this class is a role of a person.
 
-    '__unicode__'		Returns the name.
+    '__str__'		Returns the name.
     'class Meta'		Sets the description model (singular and plural) and define ordering of data by name.
     """
     name = models.CharField(_('Name'), max_length=255)
@@ -40,7 +40,7 @@ class InstitutionType(models.Model):
     """
     An instance of this class is a type of institution.
 
-    '__unicode__'		Returns the name.
+    '__str__'		Returns the name.
     'class Meta'		Sets the description model (singular and plural) and define ordering of data by name.
     """
     name = models.CharField(_('Name'), max_length=255,)
@@ -58,7 +58,7 @@ class Institution(models.Model):
     """
     An instance of this class represents an institution.
 
-    '__unicode__'		        Returns the name. If the institution belongs to another institution, then show the
+    '__str__'		        Returns the name. If the institution belongs to another institution, then show the
                                 acronym or the name of this institution.
     'get_person_institution'    Used at the reports. The system tries to show only the acronym of the institution.
                                 If there isn't an acronym, then it shows the name.
@@ -130,7 +130,7 @@ class Person(models.Model):
     """
     An instance of this class represents a person that is a member or a visitor.
 
-    '__unicode__'		Returns the full name.
+    '__str__'		Returns the full name.
     'save'              Copy the value of the email and save this value in the email field of the User class (from
                         custom_auth app). This is used because of the function "Forgotten your password or username?"
                         at the login page. This function looks for an email field in the User class.
@@ -187,7 +187,7 @@ class CitationName(models.Model):
     name = models.CharField(_('Name in bibliographic citation'), max_length=255)
     default_name = models.BooleanField(_('Default name?'), choices=DEFAULT_CHOICES, max_length=3, default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     def save(self, *args, **kwargs):

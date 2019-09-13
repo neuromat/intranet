@@ -33,7 +33,7 @@ class Dissemination(models.Model):
     """
     An instance of this class is a publication in a media outlet.
 
-    '__unicode__'		Returns the title.
+    '__str__'		Returns the title.
     'class Meta'		Defines ordering of data by title.
     """
     title = models.CharField(_('Title'), max_length=255)
@@ -42,14 +42,14 @@ class Dissemination(models.Model):
     link = models.URLField(_('URL'), blank=True, null=True)
     type_of_media = models.CharField(_('Type of media'), max_length=1, choices=TYPE_OF_MEDIA, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.title
 
     class Meta:
         ordering = ('-date', 'title')
 
     def topics(self):
-        return ', '.join([unicode(topic) for topic in self.topic.all()])
+        return ', '.join([str(topic) for topic in self.topic.all()])
 
 
 class InternalMediaOutlet(models.Model):
@@ -90,7 +90,7 @@ class Internal(Dissemination):
         super(Internal, self).save(*args, **kwargs)
 
     def authors(self):
-        return ', '.join([unicode(author) for author in self.author.all()])
+        return ', '.join([str(author) for author in self.author.all()])
 
 
 class ExternalMediaOutlet(models.Model):
@@ -131,4 +131,4 @@ class External(Dissemination):
         super(External, self).save(*args, **kwargs)
 
     def authors(self):
-        return ', '.join([unicode(author) for author in self.author.all()])
+        return ', '.join([str(author) for author in self.author.all()])
