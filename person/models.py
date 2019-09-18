@@ -187,7 +187,7 @@ class CitationName(models.Model):
     name = models.CharField(_('Name in bibliographic citation'), max_length=255)
     default_name = models.BooleanField(_('Default name?'), choices=DEFAULT_CHOICES, max_length=3, default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     def save(self, *args, **kwargs):
