@@ -1,5 +1,5 @@
 import os
-from io import StringIO
+from io import StringIO, BytesIO
 
 from cgi import escape
 from xhtml2pdf import pisa
@@ -35,16 +35,17 @@ def fetch_resources(uri, rel):
 def render(template_src, context_dict, css_source=None):
     template = get_template(template_src)
     html = template.render(context_dict)
-    result = StringIO.StringIO()
+    result = BytesIO()
 
     if css_source:
-        pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")),
+        txt_obj = StringIO(html)
+        pdf = pisa.pisaDocument(txt_obj,
                                 dest=result,
                                 encoding='UTF-8',
                                 link_callback=fetch_resources,
                                 default_css=open(os.path.join(settings.BASE_DIR, 'static', 'css', css_source)).read())
     else:
-        pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")),
+        pdf = pisa.pisaDocument(txt_obj,
                                 dest=result,
                                 encoding='UTF-8',
                                 link_callback=fetch_resources)
