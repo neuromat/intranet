@@ -1,0 +1,50 @@
+/* Report list */
+
+:root{
+    --report-list-border-color: #ccc;
+}
+
+.report-item{
+    margin-left: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--report-list-border-color);
+}
+
+.report-item h3{
+    margin: 0;
+    padding: 0;
+}
+
+.report-item p:first-child{
+    margin-left: 30px;
+    margin-bottom: 20px;
+
+}
+
+.report-item ol{
+    margin-bottom: 5px;
+    margin-left: 10px;
+    list-style-position: inside;
+}
+
+.report-item ol li{
+    margin-bottom: 5px;
+}
+
+.report-item ol li.sub-list{
+    /*list-style: none;*/
+}
+
+.report-item ol ul{
+    margin-bottom: 25px;
+}
+
+.abstract{
+    width: 50%;
+    text-align: justify;
+}
+
+.abstract span{
+    padding-left: 20px;
+    display: block;
+}

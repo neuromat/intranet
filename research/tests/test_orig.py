@@ -171,11 +171,11 @@ class ResearchTimelineTest(TestCase):
         # List of academic works
 
         # First academic work
-        self.postdoc_01 = create_postdoc(academic_work, 'postdoc_01', advisee, advisor, '2013-08-20', '2014-08-26',
+        self.postdoc_01 = create_postdoc(academic_work, 'postdoc_01', advisee, advisor, '2018-07-01', '2019-10-19',
                                          abstract)
 
         # Second academic work
-        self.postdoc_02 = create_postdoc(academic_work, 'postdoc_02', advisee, advisor, '2013-07-01', '2014-05-26',
+        self.postdoc_02 = create_postdoc(academic_work, 'postdoc_02', advisee, advisor, '2018-07-01', '2019-11-22',
                                          abstract)
 
         # Third academic work
@@ -266,42 +266,53 @@ class ResearchTimelineTest(TestCase):
 
     def test_current_academic_works_report(self):
         """ Report of current academic works is fine """
-        start_date = '01/07/2014'
-        end_date = '31/07/2015'
+        start_date = '01/07/2018'
+        end_date = '19/09/2019'
 
         response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
 
-        self.assertEqual(len(response.context['postdoc_concluded']), 3)
-        self.assertEqual(len(response.context['postdoc_in_progress']), 3)
+        titles = []
+        concluded_count = 0
 
-        titles_concluded = [item.title for item in response.context['postdoc_concluded']]
-        self.assertTrue(self.postdoc_01.title in titles_concluded)
-        self.assertTrue(self.postdoc_03.title in titles_concluded)
-        self.assertTrue(self.postdoc_07.title in titles_concluded)
+        for list in response.context['data']['list']:
+            if not list['concluded']:
+                concluded_count += 1
 
-        titles_in_progress = [item.title for item in response.context['postdoc_in_progress']]
-        self.assertTrue(self.postdoc_04.title in titles_in_progress)
-        self.assertTrue(self.postdoc_06.title in titles_in_progress)
-        self.assertTrue(self.postdoc_08.title in titles_in_progress)
+            for item in list['data']:
+                titles.append(item.title)
+
+        self.assertEqual(len(response.context['data']['list']), 2)
+        self.assertEqual(concluded_count, 2);
+        self.assertTrue(self.postdoc_01.title in titles)
+        self.assertTrue(self.postdoc_02.title in titles)
+
 
     def test_previous_academic_works_report(self):
         """ Report of previous academic works is fine """
-        start_date = '01/07/2013'
-        end_date = '01/07/2014'
+        start_date = '01/01/2013'
+        end_date = '01/01/2019'
 
         response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
 
-        self.assertEqual(len(response.context['postdoc_concluded']), 2)
-        self.assertEqual(len(response.context['postdoc_in_progress']), 3)
+        titles = []
+        concluded_count = 0
 
-        titles_concluded = [item.title for item in response.context['postdoc_concluded']]
-        self.assertTrue(self.postdoc_02.title in titles_concluded)
-        self.assertTrue(self.postdoc_07.title in titles_concluded)
+        for list in response.context['data']['list']:
+            if not list['concluded']:
+                concluded_count += 1
 
-        titles_in_progress = [item.title for item in response.context['postdoc_in_progress']]
-        self.assertTrue(self.postdoc_01.title in titles_in_progress)
-        self.assertTrue(self.postdoc_06.title in titles_in_progress)
-        self.assertTrue(self.postdoc_08.title in titles_in_progress)
+            for item in list['data']:
+                titles.append(item.title)
+
+        self.assertEqual(len(response.context['data']['list']), 8)
+        self.assertEqual(concluded_count, 2)
+        self.assertTrue(self.postdoc_01.title in titles)
+        self.assertTrue(self.postdoc_02.title in titles)
+        self.assertTrue(self.postdoc_03.title in titles)
+        self.assertTrue(self.postdoc_04.title in titles)
+        self.assertTrue(self.postdoc_05.title in titles)
+        self.assertTrue(self.postdoc_06.title in titles)
+        self.assertTrue(self.postdoc_08.title in titles)
 
     def test_current_articles_report(self):
 

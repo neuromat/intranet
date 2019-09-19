@@ -261,32 +261,28 @@ def academic_works(request):
             postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress = \
                 search_academic_works(start_date, end_date)
 
-            # TEST
-            for obj in postdoc_concluded:
-                    print(obj.title)
+            # ACADEMIC WORKS RES
+            res = {
+                'start_date': start_date,
+                'end_date': end_date,
+            }
 
-            # END TEST
+            academic_works_list = [postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress]
 
-            # res = {
-            #     list: [
-            #         {
-            #             'category': 'post_doc',
-            #             'data': [
-            #                 {
-            #                     'title': 'Context tree modeling of neuronal spike trains',
-            #                     'concluded': False,
-            #                 }
-            #             ]
-            #         }
-            #     ]
-            # }
-
-
-
-            context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
-                       'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-                       'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress,
-                       'start_date': start_date, 'end_date': end_date}
+            query_list = []
+            for query in academic_works_list:
+                if query:
+                    for obj in query:
+                        if obj in query_list:
+                            pass
+                        else:
+                            query_list.append({
+                                'category': str(obj.type),
+                                'data': query,
+                                'concluded': obj.end_date < res['end_date']
+                            })
+            res.update({'list': query_list})
+            context = {'data': res}
 
             return render(request, 'report/research/academic_works_report.html', context)
 
