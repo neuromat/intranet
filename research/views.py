@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import urllib as urllib2
+import urllib.request as urllib2
 from html.parser import HTMLParser
 import re
 import requests
@@ -467,19 +467,19 @@ def import_papers(request):
                 words = line.split()
                 if words == []:
                     continue
-                elif words[0] == 'ER':
+                elif words[0] == b'ER':
                     paper['A1'] = list_a1
                     papers.append(paper)
                     paper = {}
                     list_a1 = []
-                elif words[0] == 'A1':
+                elif words[0] == b'A1':
                     values = words[2:]
-                    values = ' '.join(values)
+                    values = ' '.join(map(bytes.decode, values))
                     list_a1.append(values)
                 else:
-                    key = words[0]
+                    key = words[0].decode()
                     values = words[2:]
-                    values = ' '.join(values)
+                    values = ' '.join(map(bytes.decode, values))
                     paper[key] = values
 
             # Look for periodical to be registered. Remove duplicates and arXiv papers.
@@ -1197,9 +1197,13 @@ def update_papers(request):
 
         # Back to the initial page
         elif request.POST['action'] == "finish":
+            keys_to_be_deleted = []
             for key in request.session.keys():
                 if key != '_auth_user_hash' and key != '_auth_user_id' and key != '_auth_user_backend':
-                    del request.session[key]
+                    keys_to_be_deleted.append(key)
+
+            for key_tbd in keys_to_be_deleted:
+                del request.session[key_tbd]
             return redirect('import_papers')
 
     return redirect('import_papers')

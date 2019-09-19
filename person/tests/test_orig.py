@@ -1,12 +1,30 @@
 # -*- coding: utf-8 -*-
 from django.urls import reverse
-from django.test import TestCase
-from person.models import Person, CitationName
+from django.test import TestCase, RequestFactory
+from person.models import Person, CitationName, Role
 from person.views import name_with_first_letters, names_without_last_name, first_name_and_first_letter, \
     generate_citation_names
 from person.validation import CPF
+from custom_auth.models import User
+from django.contrib.messages import get_messages
+
 
 prep = ['e', 'da', 'do', 'de', 'dos', 'E', 'Da', 'Do', 'De', 'Dos']
+
+
+USERNAME = "Test_user"
+PASSWORD = "Test_psswd"
+
+
+def system_authentication(instance):
+    user = User.objects.create_user(username=USERNAME, password=PASSWORD)
+    user.is_active = True
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
+    factory = RequestFactory()
+    logged = instance.client.login(username=USERNAME, password=PASSWORD)
+    return logged, user, factory
 
 
 class CpfValidationTest(TestCase):
@@ -111,6 +129,9 @@ class CpfValidationTest(TestCase):
 class CitationsTest(TestCase):
 
     def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
         self.person1 = Person(full_name='João Carlos da Silva')
         self.person1.save()
 
@@ -159,5 +180,24 @@ class CitationsTest(TestCase):
         self.assertEqual('da Silva, A', citation[0].name)
 
     def test_citation_names(self):
-        response = self.client.get(reverse('citation_names'))
-        self.assertEqual(response.status_code, 302)
+        response = self.client.get(reverse('citation_names'), follow=True)
+        messages = list(response.context['messages'])
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEquals(str(messages[0]), "Successfully updated citation names.")
+        self.assertRedirects(response, reverse("admin:index"))
+
+    def test_researchers(self):
+        self.person1.role = Role.objects.create(name="Role1")
+        self.person1.save()
+        self.person2.role = Role.objects.create(name="Role2")
+        self.person2.save()
+
+        response = self.client.get(reverse('researchers_report'), follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "report/person/researchers.html")
+        self.assertContains(response, self.person1.full_name)
+        self.assertContains(response, self.person2.full_name)
+        self.assertContains(response, self.person1.role)
+        self.assertContains(response, self.person2.role)

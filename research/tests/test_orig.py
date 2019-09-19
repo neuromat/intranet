@@ -4,7 +4,8 @@ from custom_auth.models import User
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
-from unittest import skip
+from unittest import skip, mock
+
 
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
                             PublishedInPeriodical, Periodical
@@ -567,6 +568,8 @@ class ImportPaperTest(TestCase):
         request = req.post(reverse('import_papers'), {'file': TEST_FILE})
         request.user = self.user
         request.session = {}
+        request.resolver_match = mock.Mock()
+        request.resolver_match.url_name = "import_papers"
         response = import_papers(request)
         self.assertEqual(response.status_code, 200)
 
@@ -695,10 +698,11 @@ class CacheTest(TestCase):
         session.save()
 
     def test_major_cache(self):
-
         request = self.factory.post(reverse('import_papers'), {'file': TEST_FILE})
         request.user = self.user
         request.session = {}
+        request.resolver_match = mock.Mock()
+        request.resolver_match.url_name = "import_papers"
 
         response = import_papers(request)
         self.assertEqual(response.status_code, 200)
@@ -769,7 +773,7 @@ class CacheTest(TestCase):
                                      'paper_team_0': [u's'],
                                      'paper_title_0': [u'Combining multivariate Markov chains'],
                                      'paper_author_0': [u'García, JE'],
-                                     'paper_event_0': [u'1'],
+                                     'paper_event_0': [str(event.id)],
                                      'paper_start_page_0': [u'60003'],
                                      'paper_end_page_0': [u'60004']})
         self.assertEqual(response.status_code, 200)
@@ -790,3 +794,4 @@ class CacheTest(TestCase):
                                      'paper_end_page_0': [u'459'],
                                      'paper_date_0': [u'2015-01-06']})
         self.assertEqual(response.status_code, 200)
+
