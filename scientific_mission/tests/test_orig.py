@@ -33,11 +33,9 @@ class ScientificMissionsTest(TestCase):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-        country = Country(id=31)
-        country.save()
+        country, created = Country.objects.get_or_create(name_ascii='Brazil', slug='brazil')
 
-        city = City(country=country)
-        city.save()
+        city, created = City.objects.get_or_create(country=country, name_ascii='Sao Paulo', slug='sao-paulo')
 
         person = Person(full_name="Fulano Testeiro")
         person.save()
