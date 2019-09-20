@@ -7,6 +7,7 @@ from person.views import name_with_first_letters, names_without_last_name, first
 from person.validation import CPF
 from custom_auth.models import User
 from django.contrib.messages import get_messages
+from django.utils.translation import ugettext_lazy as _
 
 
 prep = ['e', 'da', 'do', 'de', 'dos', 'E', 'Da', 'Do', 'De', 'Dos']
@@ -124,6 +125,23 @@ class CpfValidationTest(TestCase):
             '1234567890123456789012345678901234567890123456789012\
             34567890123456789012345678901234567890123456789012345678901234567890').isValid()
         self.assertEqual(result, False)
+
+    def test_get_item(self):
+        self.assertEqual(CPF('24772594078').__getitem__(0), 2)
+
+    def test_repr(self):
+        self.assertEqual(CPF('24772594078').__repr__(), "CPF('24772594078')")
+
+    def test_cpfs_iguais(self):
+        self.assertEqual(CPF('24772594078').__eq__(CPF('247.725.940-78')), True)
+
+    def test_cpf_str(self):
+        self.assertEqual(CPF('24772594078').__str__(),'247.725.940-78')
+
+    def test_cpf_init_raises_error_with_cpf_passed_as_number(self):
+        with self.assertRaises(TypeError) as cm:
+            CPF(24772594078)
+        self.assertEqual(str(TypeError(_('CPF values must be passed as strings'))), str(cm.exception))
 
 
 class CitationsTest(TestCase):
