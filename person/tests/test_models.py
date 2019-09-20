@@ -1,6 +1,7 @@
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 
-from person.models import Person, Institution, Role, InstitutionType, CitationName
+from person.models import Person, Institution, Role, InstitutionType, CitationName, validate_cpf
 from custom_auth.models import User
 
 
@@ -18,6 +19,17 @@ class CitationModelTest(TestCase):
         name2 = 'NAME 2, Citation'
         CitationName.objects.create(person=person, name=name1, default_name=True)
         self.assertTrue(CitationName.objects.get(name=name1).default_name)
+
+        CitationName.objects.create(person=person, name=name2, default_name=True)
+        self.assertFalse(CitationName.objects.get(name=name1).default_name)
+        self.assertTrue(CitationName.objects.get(name=name2).default_name)
+
+    def test_save_new_citation_name_as_default(self):
+        person = Person.objects.create()
+        name1 = 'NAME 1, Citation'
+        name2 = 'NAME 2, Citation'
+        CitationName.objects.create(person=person, name=name1)
+        self.assertFalse(CitationName.objects.get(name=name1).default_name)
 
         CitationName.objects.create(person=person, name=name2, default_name=True)
         self.assertFalse(CitationName.objects.get(name=name1).default_name)
@@ -90,6 +102,111 @@ class InstitutionModelTest(TestCase):
         self.assertEqual(child_institution.__str__(),
                          child_name + " - " + parent_name + "/" + grand_parent_name)
 
+    def test_person_institution_without_acronym(self):
+        name = 'Fundação de Amparo à Pesquisa do Estado de São Paulo'
+        institution = Institution(name=name)
+
+        self.assertEqual(institution.get_person_institution(), name)
+
+    def test_person_institution_with_acronym(self):
+        name = 'Fundação de Amparo à Pesquisa do Estado de São Paulo'
+        acronym = 'FAPESP'
+        institution = Institution(name=name, acronym=acronym)
+
+        self.assertEqual(institution.get_person_institution(), acronym)
+
+    def test_person_child_institution_with_acronym_and_parent_with_acronym(self):
+        parent_name = "Fundação de Amparo à Pesquisa do Estado de São Paulo"
+        parent_acronym = "FAPESP"
+        parent_institution = Institution(name=parent_name, acronym=parent_acronym)
+        child_name = "Centro de Pesquisa, Inovação e Difusão em Neuromatemática"
+        child_acronym = "NeuroMat"
+        child_institution = Institution(name=child_name, acronym=child_acronym, belongs_to=parent_institution)
+        self.assertEqual(child_institution.get_person_institution(), child_acronym + "-" + parent_acronym)
+
+    def test_person_child_institution_with_acronym_and_parent_without_acronym(self):
+        parent_name = "Fundação de Amparo à Pesquisa do Estado de São Paulo"
+        parent_institution = Institution(name=parent_name)
+        child_name = "Centro de Pesquisa, Inovação e Difusão em Neuromatemática"
+        child_acronym = "NeuroMat"
+        child_institution = Institution(name=child_name, acronym=child_acronym, belongs_to=parent_institution)
+        self.assertEqual(child_institution.get_person_institution(), child_acronym + "-" + parent_name)
+
+    def test_person_child_institution_without_acronym_and_parent_with_acronym(self):
+        parent_name = "Fundação de Amparo à Pesquisa do Estado de São Paulo"
+        parent_acronym = "FAPESP"
+        parent_institution = Institution(name=parent_name, acronym=parent_acronym)
+        child_name = "Centro de Pesquisa, Inovação e Difusão em Neuromatemática"
+        child_institution = Institution(name=child_name, belongs_to=parent_institution)
+        self.assertEqual(child_institution.get_person_institution(), child_name + "-" + parent_acronym)
+
+    def test_person_child_institution_without_acronym_and_parent_without_acronym(self):
+        parent_name = "Fundação de Amparo à Pesquisa do Estado de São Paulo"
+        parent_institution = Institution(name=parent_name)
+        child_name = "Centro de Pesquisa, Inovação e Difusão em Neuromatemática"
+        child_institution = Institution(name=child_name, belongs_to=parent_institution)
+        self.assertEqual(child_institution.get_person_institution(), child_name + "-" + parent_name)
+
+    def test_person_parent_institution_with_acronym_and_grandparent_with_acronym(self):
+        grand_parent_name = "Estado de São Paulo"
+        grand_parent_acronym = "SP"
+        grand_parent_institution = Institution(name=grand_parent_name, acronym=grand_parent_acronym)
+        parent_name = "Fundação de Amparo à Pesquisa do Estado de São Paulo"
+        parent_acronym = "FAPESP"
+        parent_institution = Institution(name=parent_name, acronym=parent_acronym, belongs_to=grand_parent_institution)
+        child_name = "Centro de Pesquisa, Inovação e Difusão em Neuromatemática"
+        child_institution = Institution(name=child_name, belongs_to=parent_institution)
+        self.assertEqual(child_institution.get_person_institution(),
+                         child_name + " - " + parent_acronym + "/" + grand_parent_acronym)
+
+    def test_person_parent_institution_with_acronym_and_grandparent_without_acronym(self):
+        grand_parent_name = "Estado de São Paulo"
+        grand_parent_institution = Institution(name=grand_parent_name)
+        parent_name = "Fundação de Amparo à Pesquisa do Estado de São Paulo"
+        parent_acronym = "FAPESP"
+        parent_institution = Institution(name=parent_name, acronym=parent_acronym, belongs_to=grand_parent_institution)
+        child_name = "Centro de Pesquisa, Inovação e Difusão em Neuromatemática"
+        child_institution = Institution(name=child_name, belongs_to=parent_institution)
+        self.assertEqual(child_institution.get_person_institution(),
+                         child_name + " - " + parent_acronym + "/" + grand_parent_name)
+
+    def test_person_parent_institution_without_acronym_and_grandparent_with_acronym(self):
+        grand_parent_name = "Estado de São Paulo"
+        grand_parent_acronym = "SP"
+        grand_parent_institution = Institution(name=grand_parent_name, acronym=grand_parent_acronym)
+        parent_name = "Fundação de Amparo à Pesquisa do Estado de São Paulo"
+        parent_institution = Institution(name=parent_name, belongs_to=grand_parent_institution)
+        child_name = "Centro de Pesquisa, Inovação e Difusão em Neuromatemática"
+        child_institution = Institution(name=child_name, belongs_to=parent_institution)
+        self.assertEqual(child_institution.get_person_institution(),
+                         child_name + " - " + parent_name + "/" + grand_parent_acronym)
+
+    def test_person_parent_institution_without_acronym_and_grandparent_without_acronym(self):
+        grand_parent_name = "Estado de São Paulo"
+        grand_parent_institution = Institution(name=grand_parent_name)
+        parent_name = "Fundação de Amparo à Pesquisa do Estado de São Paulo"
+        parent_institution = Institution(name=parent_name, belongs_to=grand_parent_institution)
+        child_name = "Centro de Pesquisa, Inovação e Difusão em Neuromatemática"
+        child_institution = Institution(name=child_name, belongs_to=parent_institution)
+        self.assertEqual(child_institution.get_person_institution(),
+                         child_name + " - " + parent_name + "/" + grand_parent_name)
+
+
+class InstitutionTypeModelTest(TestCase):
+    def test_institution_type_string_representation(self):
+        name = 'Fundação'
+        institution_type = InstitutionType.objects.create(name=name)
+
+        self.assertEqual(institution_type.__str__(), name)
+
+
+class RoleModelTest(TestCase):
+    def test_role_string_representation(self):
+        name = 'Associate Investigator'
+        role = Role.objects.create(name=name)
+
+        self.assertEqual(role.__str__(), name)
+
 
 class PersonModelTest(TestCase):
 
@@ -122,14 +239,10 @@ class PersonModelTest(TestCase):
 
         self.assertEqual(User.objects.first().email, email)
 
-    def test_role_string_representation(self):
-        name = 'Associate Investigator'
-        role = Role.objects.create(name=name)
 
-        self.assertEqual(role.__str__(), name)
-
-    def test_institution_type_string_representation(self):
-        name = 'Fundação'
-        institution_type = InstitutionType.objects.create(name=name)
-
-        self.assertEqual(institution_type.__str__(), name)
+class CPFValidation(TestCase):
+    def test_validation_of_cpf_fails_with_dummy_cpf(self):
+        value = '00000000000'
+        with self.assertRaises(ValidationError) as cm:
+            validate_cpf(value).full_clean()
+        self.assertEqual(ValidationError('%s is not a valid CPF' % value).message, cm.exception.message)
