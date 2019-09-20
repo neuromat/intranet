@@ -424,9 +424,10 @@ def scholar_info(scholar_list, paper_title):
     else:
         return '', ''
 
-
+import ssl
 def arxiv(arxiv_url):
-    html = urllib2.urlopen(arxiv_url).read()
+    context = ssl._create_unverified_context()
+    html = urllib2.urlopen(arxiv_url, context=context).read()
     soup = BeautifulSoup(html, "html5lib")
     line = soup.find_all("div", class_="dateline")
     line = str(line[0])
