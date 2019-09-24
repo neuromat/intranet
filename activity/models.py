@@ -149,8 +149,8 @@ class TrainingProgram(ProjectActivities):
 
     def speakers(self):
         return format_html("<br>".join([
-             str(speaker) +
-             (" / " + str(speaker.institution.get_person_institution()) if speaker.institution else "")
+            str(speaker) +
+            (" / " + str(speaker.institution.get_person_institution()) if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True

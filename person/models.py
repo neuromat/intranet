@@ -62,12 +62,17 @@ class Institution(models.Model):
                                 acronym or the name of this institution.
     'get_person_institution'    Used at the reports. The system tries to show only the acronym of the institution.
                                 If there isn't an acronym, then it shows the name.
-    'class Meta'		        Sets the description model (singular and plural) and and define ordering of data by name.
+    'class Meta'		        Sets the description model (sing. and plural) and and define ordering of data by name.
     """
     name = models.CharField(_('Name'), max_length=255)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
     type = models.ForeignKey(InstitutionType, verbose_name=_('Type'), on_delete=models.CASCADE)
-    belongs_to = models.ForeignKey('self', verbose_name=_('Belongs to'), blank=True, null=True, on_delete=models.CASCADE)
+    belongs_to = models.ForeignKey(
+        'self',
+        verbose_name=_('Belongs to'),
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE)
     zipcode = models.CharField(_('Zip Code'), max_length=9, blank=True)
     street = models.CharField(_('Address'), max_length=255, blank=True)
     street_complement = models.CharField(_('Complement'), max_length=255, blank=True)
@@ -137,7 +142,12 @@ class Person(models.Model):
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by user.
     """
     role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True, on_delete=models.CASCADE)
-    institution = models.ForeignKey(Institution, verbose_name=_('Institution'), blank=True, null=True, on_delete=models.CASCADE)
+    institution = models.ForeignKey(
+        Institution,
+        verbose_name=_('Institution'),
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE)
     full_name = models.CharField(_('Full name'), unique=True, max_length=255)
     email = models.EmailField(_('Email'), blank=True, null=True)
     rg = models.CharField(_('RG'), max_length=12, blank=True, null=True)

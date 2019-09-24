@@ -62,7 +62,11 @@ class Route(models.Model):
     """
     scientific_mission = models.ForeignKey(ScientificMission, on_delete=models.CASCADE)
     origin_city = models.ForeignKey(City, related_name='origin', verbose_name=_('From'), on_delete=models.CASCADE)
-    destination_city = models.ForeignKey(City, related_name='destination', verbose_name=_('To'), on_delete=models.CASCADE)
+    destination_city = models.ForeignKey(
+        City,
+        related_name='destination',
+        verbose_name=_('To'),
+        on_delete=models.CASCADE)
     departure = models.DateTimeField(_('Departure'))
     arrival = models.DateTimeField(_('Arrival'))
     order = models.PositiveIntegerField(_('Order'))

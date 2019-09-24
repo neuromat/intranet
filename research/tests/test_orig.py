@@ -283,10 +283,9 @@ class ResearchTimelineTest(TestCase):
                 titles.append(item.title)
 
         self.assertEqual(len(response.context['data']['list']), 2)
-        self.assertEqual(concluded_count, 2);
+        self.assertEqual(concluded_count, 2)
         self.assertTrue(self.postdoc_01.title in titles)
         self.assertTrue(self.postdoc_02.title in titles)
-
 
     def test_previous_academic_works_report(self):
         """ Report of previous academic works is fine """
@@ -451,15 +450,17 @@ class ResearchTimelineTest(TestCase):
 #
 #     def setUp(self):
 #         self.papers_list = [
-#             {'Hydrodynamic limit for interacting neurons': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&'
-#                                                            'amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_'
-#                                                            'view=OaY57UIAAAAJ:u-x6o8ySG0sC'},
+#             {'Hydrodynamic limit for interacting neurons':
+#                  '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&'
+#                  'amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_'
+#                  'view=OaY57UIAAAAJ:u-x6o8ySG0sC'},
 #             {'The solution of the complete nontrivial cycle intersection problem for permutations':
 #              '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;'
 #              'citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'},
 #             {'Infinite systems of interacting chains with memory of variable length\xe2\x80\x94a stochastic model '
-#              'for biological neural nets': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UI'
-#                                            'AAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
+#              'for biological neural nets':
+#                  '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UI'
+#                  'AAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
 #         self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
 #         self.specific_paper_date = datetime.date(2015, 2, 1)
 #         self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
@@ -794,4 +795,3 @@ class CacheTest(TestCase):
                                      'paper_end_page_0': [u'459'],
                                      'paper_date_0': [u'2015-01-06']})
         self.assertEqual(response.status_code, 200)
-

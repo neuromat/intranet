@@ -6,7 +6,6 @@ from person.views import name_with_first_letters, names_without_last_name, first
     generate_citation_names
 from person.validation import CPF
 from custom_auth.models import User
-from django.contrib.messages import get_messages
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -136,7 +135,7 @@ class CpfValidationTest(TestCase):
         self.assertEqual(CPF('24772594078').__eq__(CPF('247.725.940-78')), True)
 
     def test_cpf_str(self):
-        self.assertEqual(CPF('24772594078').__str__(),'247.725.940-78')
+        self.assertEqual(CPF('24772594078').__str__(), '247.725.940-78')
 
     def test_cpf_init_raises_error_with_cpf_passed_as_number(self):
         with self.assertRaises(TypeError) as cm:

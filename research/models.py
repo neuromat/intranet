@@ -37,7 +37,7 @@ ARTICLE_TYPE = (
     (EVENT, _('Event (Conference, congress, meeting, etc)')),
 )
 
-FUNDING_CHOICES = ((True,'Yes'), (False, 'No'))
+FUNDING_CHOICES = ((True, 'Yes'), (False, 'No'))
 
 
 class ResearchResult(models.Model):
@@ -56,8 +56,9 @@ class ResearchResult(models.Model):
         if self.ris_file_authors != '':
             return self.ris_file_authors
         else:
-            return '; '.join([str(name) for name in CitationName.objects.filter(person_id__in=self.person.all(),
-                                                                                    default_name=True)])
+            return '; '.join([str(name) for name in CitationName.objects.filter(
+                person_id__in=self.person.all(),
+                default_name=True)])
 
 
 class Author(models.Model):
@@ -145,7 +146,12 @@ class Event(models.Model):
     """
     name = models.CharField(_('Name'), max_length=255)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
-    publisher = models.ForeignKey(Institution, verbose_name=_('Publisher'), blank=True, null=True, on_delete=models.CASCADE)
+    publisher = models.ForeignKey(
+        Institution,
+        verbose_name=_('Publisher'),
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE)
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
     start_date = models.DateField(_('Start date of the event'))
@@ -298,7 +304,11 @@ class AcademicWork(models.Model):
     type = models.ForeignKey(TypeAcademicWork, verbose_name=_('Type'), on_delete=models.CASCADE)
     title = models.CharField(_('Title'), max_length=255)
     advisee = models.ForeignKey(Person, verbose_name=_('Advisee'), on_delete=models.CASCADE)
-    advisor = models.ForeignKey(Person, verbose_name=_('Advisor'), related_name='advisor_academic_work', on_delete=models.CASCADE)
+    advisor = models.ForeignKey(
+        Person,
+        verbose_name=_('Advisor'),
+        related_name='advisor_academic_work',
+        on_delete=models.CASCADE)
     co_advisor = models.ManyToManyField(Person, verbose_name=_('Co-Advisor'), related_name='co_advisor_academic_work',
                                         blank=True)
     funding = models.BooleanField(_('Financially supported?'), choices=FUNDING_CHOICES, max_length=3)

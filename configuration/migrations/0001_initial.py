@@ -36,7 +36,10 @@ class Migration(migrations.Migration):
             name='ProcessNumber',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('process_number', models.CharField(default='0000/00000-0', max_length=255, verbose_name='Process number')),
+                ('process_number', models.CharField(
+                    default='0000/00000-0',
+                    max_length=255,
+                    verbose_name='Process number')),
             ],
             options={
                 'verbose_name': 'Process number',
