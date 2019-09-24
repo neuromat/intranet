@@ -75,9 +75,7 @@ class CPF(object):
 
     def __repr__(self):
         """Retorna uma representação 'real', ou seja:
-
-        eval(repr(cpf)) == cpf
-        
+                eval(repr(cpf)) == cpf
         """
 
         return "CPF('%s')" % ''.join(str(x) for x in self.cpf)

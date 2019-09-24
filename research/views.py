@@ -427,6 +427,7 @@ def scholar_info(scholar_list, paper_title):
     else:
         return '', ''
 
+
 def arxiv(arxiv_url):
     context = ssl._create_unverified_context()
     html = urllib2.urlopen(arxiv_url, context=context).read()
