@@ -17,7 +17,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='projectactivities',
             name='local',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='person.Institution', verbose_name='Local'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='person.Institution',
+                verbose_name='Local'),
         ),
         migrations.AddField(
             model_name='news',
@@ -27,7 +32,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='trainingprogram',
             name='belongs_to',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='activity.Meeting', verbose_name='Meeting'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='activity.Meeting',
+                verbose_name='Meeting'),
         ),
         migrations.AddField(
             model_name='trainingprogram',
@@ -37,12 +47,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='seminar',
             name='belongs_to',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='activity.Meeting', verbose_name='Meeting'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='activity.Meeting',
+                verbose_name='Meeting'),
         ),
         migrations.AddField(
             model_name='seminar',
             name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='activity.SeminarType', verbose_name='Category'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    to='activity.SeminarType',
+                                    verbose_name='Category'),
         ),
         migrations.AddField(
             model_name='seminar',

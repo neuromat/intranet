@@ -1,13 +1,13 @@
 import datetime
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
 
 from activity.models import Seminar, SeminarType, TrainingProgram, Meeting
 from activity.views import training_programs_search, seminars_search
 from person.models import Person
-from research.tests import system_authentication
+from research.tests.test_orig import system_authentication
 
 # DRY with dates
 base_date1 = datetime.date(2015, 1, 16)

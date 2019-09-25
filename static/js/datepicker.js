@@ -1,5 +1,8 @@
 $(document).ready(function() {
-    $( ".datepicker" ).datepicker({
+
+    $('.datepicker').attr('autocomplete', 'off');
+
+    $('.datepicker').datepicker({
       changeMonth: true,
       changeYear: true,
       autoSize: true,

@@ -36,8 +36,15 @@ class Migration(migrations.Migration):
                 ('number', models.CharField(blank=True, max_length=255, null=True, verbose_name='Number')),
                 ('start_date', models.DateField(verbose_name='Start date of the event')),
                 ('end_date', models.DateField(verbose_name='End date of the event')),
-                ('local', models.CharField(help_text='Where the conference was held, e.g., "Rio de Janeiro, RJ, Brazil".', max_length=255, verbose_name='Local')),
-                ('publisher', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='person.Institution', verbose_name='Publisher')),
+                ('local', models.CharField(
+                    help_text='Where the conference was held, e.g., "Rio de Janeiro, RJ, Brazil".',
+                    max_length=255,
+                    verbose_name='Local')),
+                ('publisher', models.ForeignKey(
+                    blank=True,
+                    null=True, on_delete=django.db.models.deletion.CASCADE,
+                    to='person.Institution',
+                    verbose_name='Publisher')),
             ],
             options={
                 'verbose_name': 'Event',
@@ -76,12 +83,22 @@ class Migration(migrations.Migration):
             name='ResearchResult',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('team', models.CharField(choices=[('s', 'Scientific'), ('d', 'Dissemination'), ('t', 'Technology transfer')], max_length=1, verbose_name='Team')),
+                ('team', models.CharField(
+                    choices=[('s', 'Scientific'), ('d', 'Dissemination'), ('t', 'Technology transfer')],
+                    max_length=1,
+                    verbose_name='Team')),
                 ('title', models.CharField(max_length=255, verbose_name='Title')),
                 ('url', models.URLField(blank=True, max_length=255, null=True, verbose_name='URL')),
                 ('note', models.CharField(blank=True, max_length=255, null=True, verbose_name='Note')),
-                ('research_result_type', models.CharField(blank=True, choices=[('a', 'Article'), ('b', 'Book')], max_length=1, verbose_name='Type')),
-                ('ris_file_authors', models.CharField(blank=True, max_length=255, null=True, verbose_name='RIS file authors')),
+                ('research_result_type', models.CharField(
+                    blank=True, choices=[('a', 'Article'), ('b', 'Book')],
+                    max_length=1,
+                    verbose_name='Type')),
+                ('ris_file_authors', models.CharField(
+                    blank=True,
+                    max_length=255,
+                    null=True,
+                    verbose_name='RIS file authors')),
                 ('person', models.ManyToManyField(through='research.Author', to='person.Person')),
             ],
         ),
@@ -100,12 +117,35 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Article',
             fields=[
-                ('researchresult_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='research.ResearchResult')),
-                ('type', models.CharField(blank=True, choices=[('p', 'Periodical (Journal or magazine)'), ('e', 'Event (Conference, congress, meeting, etc)')], max_length=1, null=True, verbose_name='Where?')),
+                ('researchresult_ptr', models.OneToOneField(
+                    auto_created=True,
+                    on_delete=django.db.models.deletion.CASCADE,
+                    parent_link=True,
+                    primary_key=True,
+                    serialize=False,
+                    to='research.ResearchResult')),
+                ('type', models.CharField(
+                    blank=True,
+                    choices=[('p', 'Periodical (Journal or magazine)'),
+                             ('e', 'Event (Conference, congress, meeting, etc)')],
+                    max_length=1,
+                    null=True,
+                    verbose_name='Where?')),
                 ('status', models.CharField(max_length=50, verbose_name='Status')),
                 ('hide', models.BooleanField(default=False, verbose_name='Hide this paper in the report')),
-                ('event', models.ForeignKey(blank=True, help_text='Name of the conference, congress, meeting or symposium', null=True, on_delete=django.db.models.deletion.CASCADE, to='research.Event', verbose_name='Event')),
-                ('periodical', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='research.Periodical', verbose_name='Periodical')),
+                ('event', models.ForeignKey(
+                    blank=True,
+                    help_text='Name of the conference, congress, meeting or symposium',
+                    null=True,
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='research.Event',
+                    verbose_name='Event')),
+                ('periodical', models.ForeignKey(
+                    blank=True,
+                    null=True,
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='research.Periodical',
+                    verbose_name='Periodical')),
             ],
             options={
                 'verbose_name': 'Article',
@@ -117,7 +157,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PublishedInPeriodical',
             fields=[
-                ('published_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='research.Published')),
+                ('published_ptr', models.OneToOneField(
+                    auto_created=True,
+                    on_delete=django.db.models.deletion.CASCADE,
+                    parent_link=True,
+                    primary_key=True,
+                    serialize=False,
+                    to='research.Published')),
                 ('volume', models.CharField(blank=True, max_length=255, null=True, verbose_name='Volume')),
                 ('number', models.CharField(blank=True, max_length=255, null=True, verbose_name='Number')),
                 ('date', models.DateField(verbose_name='Date')),
@@ -129,7 +175,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('periodical', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='research.Periodical')),
+                ('periodical', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='research.Periodical')),
             ],
             options={
                 'verbose_name': 'Periodical name on the RIS file',
@@ -160,16 +208,38 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255, verbose_name='Title')),
-                ('funding', models.BooleanField(choices=[(True, 'Yes'), (False, 'No')], max_length=3, verbose_name='Financially supported?')),
+                ('funding', models.BooleanField(
+                    choices=[(True, 'Yes'), (False, 'No')],
+                    max_length=3,
+                    verbose_name='Financially supported?')),
                 ('funding_agency', models.CharField(blank=True, max_length=255, verbose_name='Funding agency')),
-                ('url', models.URLField(blank=True, help_text='URL to funding information.', max_length=255, null=True, verbose_name='URL')),
+                ('url', models.URLField(
+                    blank=True,
+                    help_text='URL to funding information.',
+                    max_length=255,
+                    null=True,
+                    verbose_name='URL')),
                 ('start_date', models.DateField(verbose_name='Start date')),
                 ('end_date', models.DateField(blank=True, null=True, verbose_name='End date')),
                 ('abstract', models.TextField(verbose_name='Abstract')),
-                ('advisee', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='person.Person', verbose_name='Advisee')),
-                ('advisor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='advisor_academic_work', to='person.Person', verbose_name='Advisor')),
-                ('co_advisor', models.ManyToManyField(blank=True, related_name='co_advisor_academic_work', to='person.Person', verbose_name='Co-Advisor')),
-                ('type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='research.TypeAcademicWork', verbose_name='Type')),
+                ('advisee', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='person.Person',
+                    verbose_name='Advisee')),
+                ('advisor', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name='advisor_academic_work',
+                    to='person.Person',
+                    verbose_name='Advisor')),
+                ('co_advisor', models.ManyToManyField(
+                    blank=True,
+                    related_name='co_advisor_academic_work',
+                    to='person.Person',
+                    verbose_name='Co-Advisor')),
+                ('type', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='research.TypeAcademicWork',
+                    verbose_name='Type')),
             ],
             options={
                 'verbose_name': 'Academic Work',
@@ -193,7 +263,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='published',
             name='article',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='research.Article', verbose_name='Article'),
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='research.Article',
+                verbose_name='Article'),
         ),
         migrations.CreateModel(
             name='Draft',
@@ -211,8 +284,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Book',
             fields=[
-                ('researchresult_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='research.ResearchResult')),
-                ('type', models.CharField(choices=[('b', 'Book'), ('c', 'Chapter')], max_length=1, verbose_name='Type')),
+                ('researchresult_ptr', models.OneToOneField(
+                    auto_created=True,
+                    on_delete=django.db.models.deletion.CASCADE,
+                    parent_link=True,
+                    primary_key=True,
+                    serialize=False,
+                    to='research.ResearchResult')),
+                ('type', models.CharField(
+                    choices=[('b', 'Book'), ('c', 'Chapter')],
+                    max_length=1,
+                    verbose_name='Type')),
                 ('isbn', models.CharField(blank=True, max_length=30, null=True, verbose_name='ISBN')),
                 ('volume', models.CharField(blank=True, max_length=255, null=True, verbose_name='Volume/Number')),
                 ('serie', models.CharField(blank=True, max_length=255, null=True, verbose_name='Serie')),
@@ -222,7 +304,10 @@ class Migration(migrations.Migration):
                 ('chapter', models.CharField(blank=True, max_length=255, null=True, verbose_name='Chapter')),
                 ('start_page', models.IntegerField(blank=True, null=True, verbose_name='Start page')),
                 ('end_page', models.IntegerField(blank=True, null=True, verbose_name='End page')),
-                ('publisher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='person.Institution', verbose_name='Publisher')),
+                ('publisher', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='person.Institution',
+                    verbose_name='Publisher')),
             ],
             options={
                 'verbose_name': 'Book and chapter',

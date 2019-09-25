@@ -19,7 +19,11 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=255, verbose_name='Title')),
                 ('date', models.DateField(verbose_name='Date')),
                 ('link', models.URLField(blank=True, null=True, verbose_name='URL')),
-                ('type_of_media', models.CharField(blank=True, choices=[('i', 'Internal'), ('e', 'External')], max_length=1, verbose_name='Type of media')),
+                ('type_of_media', models.CharField(
+                    blank=True,
+                    choices=[('i', 'Internal'), ('e', 'External')],
+                    max_length=1,
+                    verbose_name='Type of media')),
             ],
             options={
                 'ordering': ('-date', 'title'),
@@ -64,7 +68,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='External',
             fields=[
-                ('dissemination_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='dissemination.Dissemination')),
+                ('dissemination_ptr', models.OneToOneField(
+                    auto_created=True,
+                    on_delete=django.db.models.deletion.CASCADE,
+                    parent_link=True,
+                    primary_key=True,
+                    serialize=False,
+                    to='dissemination.Dissemination')),
             ],
             options={
                 'verbose_name': 'External',
@@ -75,7 +85,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Internal',
             fields=[
-                ('dissemination_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='dissemination.Dissemination')),
+                ('dissemination_ptr', models.OneToOneField(
+                    auto_created=True,
+                    on_delete=django.db.models.deletion.CASCADE,
+                    parent_link=True,
+                    primary_key=True,
+                    serialize=False,
+                    to='dissemination.Dissemination')),
             ],
             options={
                 'verbose_name': 'Internal',

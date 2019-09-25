@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-import urllib as urllib2
+import urllib.request as urllib2
 from html.parser import HTMLParser
 import re
 import requests
 import time
+import ssl
 
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
@@ -228,7 +229,8 @@ def search_academic_works(start_date, end_date):
         .exclude(id__in=msc_concluded_ids)
 
     array_list = []
-    array_list.extend([postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress])
+    array_list.extend(
+        [postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress])
 
     return postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress
 
@@ -261,32 +263,29 @@ def academic_works(request):
             postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress = \
                 search_academic_works(start_date, end_date)
 
-            # TEST
-            for obj in postdoc_concluded:
-                    print(obj.title)
+            # ACADEMIC WORKS RES
+            res = {
+                'start_date': start_date,
+                'end_date': end_date,
+            }
 
-            # END TEST
+            academic_works_list = [
+                postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress]
 
-            # res = {
-            #     list: [
-            #         {
-            #             'category': 'post_doc',
-            #             'data': [
-            #                 {
-            #                     'title': 'Context tree modeling of neuronal spike trains',
-            #                     'concluded': False,
-            #                 }
-            #             ]
-            #         }
-            #     ]
-            # }
-
-
-
-            context = {'postdoc_concluded': postdoc_concluded, 'postdoc_in_progress': postdoc_in_progress,
-                       'phd_concluded': phd_concluded, 'phd_in_progress': phd_in_progress,
-                       'msc_concluded': msc_concluded, 'msc_in_progress': msc_in_progress,
-                       'start_date': start_date, 'end_date': end_date}
+            query_list = []
+            for query in academic_works_list:
+                if query:
+                    for obj in query:
+                        if obj in query_list:
+                            pass
+                        else:
+                            query_list.append({
+                                'category': str(obj.type),
+                                'data': query,
+                                'concluded': obj.end_date < res['end_date']
+                            })
+            res.update({'list': query_list})
+            context = {'data': res}
 
             return render(request, 'report/research/academic_works_report.html', context)
 
@@ -430,7 +429,8 @@ def scholar_info(scholar_list, paper_title):
 
 
 def arxiv(arxiv_url):
-    html = urllib2.urlopen(arxiv_url).read()
+    context = ssl._create_unverified_context()
+    html = urllib2.urlopen(arxiv_url, context=context).read()
     soup = BeautifulSoup(html, "html5lib")
     line = soup.find_all("div", class_="dateline")
     line = str(line[0])
@@ -471,19 +471,19 @@ def import_papers(request):
                 words = line.split()
                 if words == []:
                     continue
-                elif words[0] == 'ER':
+                elif words[0] == b'ER':
                     paper['A1'] = list_a1
                     papers.append(paper)
                     paper = {}
                     list_a1 = []
-                elif words[0] == 'A1':
+                elif words[0] == b'A1':
                     values = words[2:]
-                    values = ' '.join(values)
+                    values = ' '.join(map(bytes.decode, values))
                     list_a1.append(values)
                 else:
-                    key = words[0]
+                    key = words[0].decode()
                     values = words[2:]
-                    values = ' '.join(values)
+                    values = ' '.join(map(bytes.decode, values))
                     paper[key] = values
 
             # Look for periodical to be registered. Remove duplicates and arXiv papers.
@@ -1201,9 +1201,13 @@ def update_papers(request):
 
         # Back to the initial page
         elif request.POST['action'] == "finish":
+            keys_to_be_deleted = []
             for key in request.session.keys():
                 if key != '_auth_user_hash' and key != '_auth_user_id' and key != '_auth_user_backend':
-                    del request.session[key]
+                    keys_to_be_deleted.append(key)
+
+            for key_tbd in keys_to_be_deleted:
+                del request.session[key_tbd]
             return redirect('import_papers')
 
     return redirect('import_papers')

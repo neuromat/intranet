@@ -65,7 +65,7 @@ class ProjectActivities(models.Model):
     local = models.ForeignKey(Institution, verbose_name=_('Local'), blank=True, null=True, on_delete=models.CASCADE)
     type_of_activity = models.CharField(_('Type of activity'), max_length=1, choices=TYPE_OF_ACTIVITY, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s - %s' % (self.get_type_of_activity_display(), self.title)
 
     class Meta:
@@ -81,7 +81,7 @@ class News(models.Model):
     activity = models.ForeignKey(ProjectActivities, on_delete=models.CASCADE)
     url = models.URLField(_('URL'))
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.url
 
     class Meta:
@@ -149,8 +149,8 @@ class TrainingProgram(ProjectActivities):
 
     def speakers(self):
         return format_html("<br>".join([
-            unicode(speaker) +
-            unicode(" / " + speaker.institution.get_person_institution() if speaker.institution else "")
+            str(speaker) +
+            (" / " + str(speaker.institution.get_person_institution()) if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True
@@ -167,7 +167,7 @@ class SeminarType(models.Model):
     qr_code = models.ImageField(_('QR Code'), upload_to='qr_code/', blank=True, null=True,
                                 help_text=_('QR code with link to some page.'))
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     class Meta:
@@ -205,8 +205,8 @@ class Seminar(ProjectActivities):
 
     def speakers(self):
         return format_html("<br>".join([
-            unicode(speaker) +
-            unicode(" / " + speaker.institution.get_person_institution() if speaker.institution else "")
+            str(speaker) +
+            (" / " + str(speaker.institution.get_person_institution()) if speaker.institution else "")
             for speaker in self.speaker.all()]))
 
     speakers.allow_tags = True

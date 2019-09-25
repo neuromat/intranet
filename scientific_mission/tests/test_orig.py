@@ -1,10 +1,11 @@
 import datetime
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import TestCase
 from cities_light.models import City, Country
 from scientific_mission.models import ScientificMission, Route
 from person.models import Person, Role
-from research.tests import system_authentication
+from research.tests.test_orig import system_authentication
+from django.utils import timezone
 
 
 # Create a scientific mission for testing
@@ -33,20 +34,18 @@ class ScientificMissionsTest(TestCase):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-        country = Country(id=31)
-        country.save()
+        country, created = Country.objects.get_or_create(name_ascii='Brazil', slug='brazil')
 
-        city = City(country=country)
-        city.save()
+        city, created = City.objects.get_or_create(country=country, name_ascii='Sao Paulo', slug='sao-paulo')
 
         person = Person(full_name="Fulano Testeiro")
         person.save()
 
-        date_departure1 = datetime.date(2015, 1, 15)
-        date_arrival1 = datetime.date(2015, 1, 16)
+        date_departure1 = timezone.now() - timezone.timedelta(1)
+        date_arrival1 = timezone.now()
 
-        date_departure2 = datetime.date(2014, 1, 15)
-        date_arrival2 = datetime.date(2014, 1, 16)
+        date_departure2 = timezone.now() - timezone.timedelta(366)
+        date_arrival2 = timezone.now() - timezone.timedelta(365)
         order_01 = 0
         order_02 = 1
 
@@ -72,16 +71,24 @@ class ScientificMissionsTest(TestCase):
         response = self.client.get(reverse('missions_report'))
         self.assertEqual(response.status_code, 200)
 
+        start_date = timezone.now() - timezone.timedelta(363)
+        start_date_str = str(start_date.day) + '/' + str(start_date.month) + '/' + str(start_date.year)
+        end_date = timezone.now() + timezone.timedelta(363)
+        end_date_str = str(end_date.day) + '/' + str(end_date.month) + '/' + str(end_date.year)
+
         # With date
-        response = self.client.post(reverse('missions_report'), {'start_date': '01/01/2015',
-                                                                 'end_date': '03/05/2017'})
+        response = self.client.post(reverse('missions_report'),
+                                    {'start_date': start_date_str, 'end_date': end_date_str})
         cont = response.context['missions']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
+        end_date_2 = timezone.now() + timezone.timedelta(363)
+        end_date_str_2 = str(end_date_2.day) + '/' + str(end_date_2.month) + '/' + str(end_date_2.year)
+
         # With date, but out of range
-        response = self.client.post(reverse('missions_report'), {'start_date': '01/01/2016',
-                                                                 'end_date': '31/12/2016'})
+        response = self.client.post(reverse('missions_report'), {'start_date': end_date_str,
+                                                                 'end_date': end_date_str_2})
         cont = response.context['missions']
         self.assertEqual(len(cont), 0)
         self.assertEqual(response.status_code, 200)
@@ -94,13 +101,18 @@ class ScientificMissionsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Wrong dates
-        response = self.client.post(reverse('missions_report'), {'start_date': '01/01/2016',
-                                                                 'end_date': '03/05/2015'})
+        response = self.client.post(reverse('missions_report'), {'start_date': end_date_str_2,
+                                                                 'end_date': end_date_str})
         self.assertEqual(response.status_code, 200)
 
     def test_tex(self):
-        response = self.client.get(reverse('scientific_missions_file'), {'start_date': '2015-01-01',
-                                                                         'end_date': '2015-12-31',
+        start_date = timezone.now() - timezone.timedelta(363)
+        start_date_str = str(start_date.year) + '-' + str(start_date.month) + '-' + str(start_date.day)
+        end_date = timezone.now() + timezone.timedelta(363)
+        end_date_str = str(end_date.year) + '-' + str(end_date.month) + '-' + str(end_date.day)
+
+        response = self.client.get(reverse('scientific_missions_file'), {'start_date': start_date_str,
+                                                                         'end_date': end_date_str,
                                                                          'extension': '.tex'})
         cont = response.context['missions']
         self.assertEqual(len(cont), 1)

@@ -5,176 +5,39 @@
     <div class="breadcrumbs"><a href="/">{% trans 'Home' %}</a> › <a href="/reports">{% trans 'Reports' %}</a> › <span class="active">{% trans 'Academic Works' %}</span></div>
 {% endblock %}
 
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static 'css/report_list.css' %}">
+{% endblock%}
+
 {% block content %}
-
-{% if postdoc_concluded or postdoc_in_progress or phd_concluded or phd_in_progress or msc_concluded or msc_in_progress %}
-    <p>
-        <a class="btn btn-primary" href="{% url 'academic_works_file' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&extension=.tex"><i class="icon-download icon-white"></i> {% trans 'Download .tex file' %}</a>
-        <a class="btn btn-primary" href="{% url 'academic_works_file' %}?start_date={{ start_date|date:"Y-m-d" }}&end_date={{ end_date|date:"Y-m-d" }}&extension=.pdf"><i class="icon-download icon-white"></i> {% trans 'Download .pdf file' %}</a>
-    </p>
-    {% if postdoc_concluded or postdoc_in_progress %}
-        <h3><strong>{% trans 'Post-doctoral fellows' %}</strong></h3>
-        {% if postdoc_concluded %}
-            <p><strong>{% trans 'Concluded' %}</strong></p>
-            <ol>
-                {% for result in postdoc_concluded %}
-                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
-                    <ul>
-                        <li>{% trans 'Period' %}: {{ result.start_date }} to {{ result.end_date }}</li>
-                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
-                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
-                        {% if result.co_advisors %}
-                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
-                        {% endif %}
-                        <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.funding_agency %}
-                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
-                        {% endif %}
-                        {% if result.url %}
-                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
-                        {% endif %}
-                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
-                    </ul>
-                    <br>
-                {% endfor %}
-            </ol>
-        {% endif %}
-        {% if postdoc_in_progress %}
-            <p><strong>{% trans 'In progress' %}</strong></p>
-            <ol>
-                {% for result in postdoc_in_progress %}
-                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
-                    <ul>
-                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing {% if result.end_date %}(as of {{ result.end_date }}){% endif %}</li>
-                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
-                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
-                        {% if result.co_advisors %}
-                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
-                        {% endif %}
-                        <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.funding_agency %}
-                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
-                        {% endif %}
-                        {% if result.url %}
-                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
-                        {% endif %}
-                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
-                    </ul>
-                    <br>
-                {% endfor %}
-            </ol>
-        {% endif %}
+    {% if data.list %}
+        {% for work in data.list %}
+            <div class="report-item">
+                <h3><strong>{{ work.category }}</strong></h3>
+                <p><strong>{% if work.concluded %} {% trans 'Concluded' %}{% else %} {% trans 'In progress' %} {% endif %} </strong></p>
+                <ol>
+                    {% for result in work.data %}
+                        <li> <strong>{% trans 'Title of the project' %}:</strong> {{ result.title }}</li>
+                        <ul>
+                            <li> <strong>{% trans 'Period' %}:</strong>  {{ result.start_date }} to {{ result.end_date }} {% if work.concluded %} {% else %} (as of {{ result.end_date }}) {% endif %} </li>
+                            <li> <strong>{% trans 'Advisee' %}:</strong>  {{ result.advisee }}</li>
+                            <li> <strong>{% trans 'Advisor' %}:</strong>  {{ result.advisor }}</li>
+                            {% if result.co_advisors %}
+                                <li> <strong>{% trans 'Co-advisor' %}:</strong> {{ result.co_advisors }}</li>
+                            {% endif %}
+                            <li> <strong>{% trans 'Institution' %}:</strong> {{ result.advisee.institution }}</li>
+                            {% if result.funding_agency %}
+                                <li> <strong>{% trans 'Funding' %}:</strong> {{ result.funding_agency }}</li>
+                            {% endif %}
+                            {% if result.url %}
+                                <li> <strong>{% trans 'Funding information' %}:</strong>  {{ result.url }}</li>
+                            {% endif %}
+                            <li class="abstract">  <strong>{% trans 'Abstract' %}:</strong> <br /> <span>{{ result.abstract }}</span></li>
+                        </ul>
+                    {% endfor %}
+                </ol>
+            </div>
+        {% endfor %}
     {% endif %}
-
-    {% if phd_concluded or phd_in_progress %}
-        <h3><strong>{% trans 'PhD thesis' %}</strong></h3>
-        {% if phd_concluded %}
-            <p><strong>{% trans 'Concluded' %}</strong></p>
-            <ol>
-                {% for result in phd_concluded %}
-                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
-                    <ul>
-                        <li>{% trans 'Period' %}: {{ result.start_date }} to {{ result.end_date }}</li>
-                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
-                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
-                        {% if result.co_advisors %}
-                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
-                        {% endif %}
-                        <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.funding_agency %}
-                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
-                        {% endif %}
-                        {% if result.url %}
-                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
-                        {% endif %}
-                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
-                    </ul>
-                    <br>
-                {% endfor %}
-            </ol>
-        {% endif %}
-        {% if phd_in_progress %}
-            <p><strong>{% trans 'In progress' %}</strong></p>
-            <ol>
-                {% for result in phd_in_progress %}
-                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
-                    <ul>
-                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing {% if result.end_date %}(as of {{ result.end_date }}){% endif %}</li>
-                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
-                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
-                        {% if result.co_advisors %}
-                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
-                        {% endif %}
-                        <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.funding_agency %}
-                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
-                        {% endif %}
-                        {% if result.url %}
-                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
-                        {% endif %}
-                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
-                    </ul>
-                    <br>
-                {% endfor %}
-            </ol>
-        {% endif %}
-    {% endif %}
-
-    {% if msc_concluded or msc_in_progress %}
-        <h3><strong>{% trans 'MSc dissertations' %}</strong></h3>
-        {% if msc_concluded %}
-            <p><strong>{% trans 'Concluded' %}</strong></p>
-            <ol>
-                {% for result in msc_concluded %}
-                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
-                    <ul>
-                        <li>{% trans 'Period' %}: {{ result.start_date }} to {{ result.end_date }}</li>
-                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
-                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
-                        {% if result.co_advisors %}
-                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
-                        {% endif %}
-                        <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.funding_agency %}
-                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
-                        {% endif %}
-                        {% if result.url %}
-                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
-                        {% endif %}
-                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
-                    </ul>
-                    <br>
-                {% endfor %}
-            </ol>
-        {% endif %}
-        {% if msc_in_progress %}
-            <p><strong>{% trans 'In progress' %}</strong></p>
-            <ol>
-                {% for result in msc_in_progress %}
-                    <li>{% trans 'Title of the project' %}: {{ result.title }}</li>
-                    <ul>
-                        <li>{% trans 'Period' %}: {{ result.start_date }} - ongoing {% if result.end_date %}(as of {{ result.end_date }}){% endif %}</li>
-                        <li>{% trans 'Advisee' %}: {{ result.advisee }}</li>
-                        <li>{% trans 'Advisor' %}: {{ result.advisor }}</li>
-                        {% if result.co_advisors %}
-                            <li>{% trans 'Co-advisor' %}: {{ result.co_advisors }}</li>
-                        {% endif %}
-                        <li>{% trans 'Institution' %}: {{ result.advisee.institution }}</li>
-                        {% if result.funding_agency %}
-                            <li>{% trans 'Funding' %}: {{ result.funding_agency }}</li>
-                        {% endif %}
-                        {% if result.url %}
-                            <li>{% trans 'Funding information' %}: {{ result.url }}</li>
-                        {% endif %}
-                        <li>{% trans 'Abstract' %}: {{ result.abstract }}</li>
-                    </ul>
-                    <br>
-                {% endfor %}
-            </ol>
-        {% endif %}
-    {% endif %}
-{%  else %}
-    {% trans "No academic works found!" %}
-{% endif %}
 
 {% endblock %}

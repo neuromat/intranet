@@ -4,7 +4,7 @@ $(document).ready(function () {
     $("#id_class_internal_field").hide();
 
     // ### Type field ###
-    var $id_type = $('#id_type');
+    let $id_type = $('#id_type');
 
     // ### Hide or show internal class field ###
     $id_type.each(function() {
@@ -22,5 +22,7 @@ $(document).ready(function () {
            $("#id_class_internal_field").hide();
        }
     }));
+
+    $('.report-date-mask').mask("99/99/9999");
 });
 

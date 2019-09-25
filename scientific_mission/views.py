@@ -357,7 +357,7 @@ def mission_show_titles(request):
         titles = []
 
         for title in missions:
-            titles.append({'pk': title.id, 'valor': title.__unicode__()})
+            titles.append({'pk': title.id, 'valor': title.__str__()})
 
         json = simplejson.dumps(titles)
         return HttpResponse(json, content_type="application/json")

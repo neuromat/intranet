@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import datetime
 from custom_auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
-from unittest import skip
+from unittest import skip, mock
+
 
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
                             PublishedInPeriodical, Periodical
@@ -171,11 +172,11 @@ class ResearchTimelineTest(TestCase):
         # List of academic works
 
         # First academic work
-        self.postdoc_01 = create_postdoc(academic_work, 'postdoc_01', advisee, advisor, '2013-08-20', '2014-08-26',
+        self.postdoc_01 = create_postdoc(academic_work, 'postdoc_01', advisee, advisor, '2018-07-01', '2019-10-19',
                                          abstract)
 
         # Second academic work
-        self.postdoc_02 = create_postdoc(academic_work, 'postdoc_02', advisee, advisor, '2013-07-01', '2014-05-26',
+        self.postdoc_02 = create_postdoc(academic_work, 'postdoc_02', advisee, advisor, '2018-07-01', '2019-11-22',
                                          abstract)
 
         # Third academic work
@@ -266,42 +267,52 @@ class ResearchTimelineTest(TestCase):
 
     def test_current_academic_works_report(self):
         """ Report of current academic works is fine """
-        start_date = '01/07/2014'
-        end_date = '31/07/2015'
+        start_date = '01/07/2018'
+        end_date = '19/09/2019'
 
         response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
 
-        self.assertEqual(len(response.context['postdoc_concluded']), 3)
-        self.assertEqual(len(response.context['postdoc_in_progress']), 3)
+        titles = []
+        concluded_count = 0
 
-        titles_concluded = [item.title for item in response.context['postdoc_concluded']]
-        self.assertTrue(self.postdoc_01.title in titles_concluded)
-        self.assertTrue(self.postdoc_03.title in titles_concluded)
-        self.assertTrue(self.postdoc_07.title in titles_concluded)
+        for list in response.context['data']['list']:
+            if not list['concluded']:
+                concluded_count += 1
 
-        titles_in_progress = [item.title for item in response.context['postdoc_in_progress']]
-        self.assertTrue(self.postdoc_04.title in titles_in_progress)
-        self.assertTrue(self.postdoc_06.title in titles_in_progress)
-        self.assertTrue(self.postdoc_08.title in titles_in_progress)
+            for item in list['data']:
+                titles.append(item.title)
+
+        self.assertEqual(len(response.context['data']['list']), 2)
+        self.assertEqual(concluded_count, 2)
+        self.assertTrue(self.postdoc_01.title in titles)
+        self.assertTrue(self.postdoc_02.title in titles)
 
     def test_previous_academic_works_report(self):
         """ Report of previous academic works is fine """
-        start_date = '01/07/2013'
-        end_date = '01/07/2014'
+        start_date = '01/01/2013'
+        end_date = '01/01/2019'
 
         response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
 
-        self.assertEqual(len(response.context['postdoc_concluded']), 2)
-        self.assertEqual(len(response.context['postdoc_in_progress']), 3)
+        titles = []
+        concluded_count = 0
 
-        titles_concluded = [item.title for item in response.context['postdoc_concluded']]
-        self.assertTrue(self.postdoc_02.title in titles_concluded)
-        self.assertTrue(self.postdoc_07.title in titles_concluded)
+        for list in response.context['data']['list']:
+            if not list['concluded']:
+                concluded_count += 1
 
-        titles_in_progress = [item.title for item in response.context['postdoc_in_progress']]
-        self.assertTrue(self.postdoc_01.title in titles_in_progress)
-        self.assertTrue(self.postdoc_06.title in titles_in_progress)
-        self.assertTrue(self.postdoc_08.title in titles_in_progress)
+            for item in list['data']:
+                titles.append(item.title)
+
+        self.assertEqual(len(response.context['data']['list']), 8)
+        self.assertEqual(concluded_count, 2)
+        self.assertTrue(self.postdoc_01.title in titles)
+        self.assertTrue(self.postdoc_02.title in titles)
+        self.assertTrue(self.postdoc_03.title in titles)
+        self.assertTrue(self.postdoc_04.title in titles)
+        self.assertTrue(self.postdoc_05.title in titles)
+        self.assertTrue(self.postdoc_06.title in titles)
+        self.assertTrue(self.postdoc_08.title in titles)
 
     def test_current_articles_report(self):
 
@@ -424,69 +435,71 @@ class ResearchTimelineTest(TestCase):
         self.assertTrue(self.article_07.title in published_titles)
 
 
-@skip("This test should be update!")
-class ScholarTest(TestCase):
-    """
-    Methods that get data from google scholar
-    """
-    papers_list = []
-    specific_paper_title = ''
-    specific_paper_date = ''
-    wrong_paper_title = ''
-    wrong_paper_date = ''
-    valid_scholar_list = []
-    valid_scholar = False
-
-    def setUp(self):
-        self.papers_list = [
-            {'Hydrodynamic limit for interacting neurons': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&'
-                                                           'amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_'
-                                                           'view=OaY57UIAAAAJ:u-x6o8ySG0sC'},
-            {'The solution of the complete nontrivial cycle intersection problem for permutations':
-             '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;'
-             'citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'},
-            {'Infinite systems of interacting chains with memory of variable length\xe2\x80\x94a stochastic model '
-             'for biological neural nets': '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UI'
-                                           'AAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
-        self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
-        self.specific_paper_date = datetime.date(2015, 2, 1)
-        self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
-        self.wrong_paper_title = 'Hydrodynamics limits for interactings neuron'
-        self.wrong_paper_date = datetime.date(2010, 1, 15)
-
-    def test_get_papers(self):
-        """
-        Are we taking the papers successfully?
-        Well, if we find our little list in the list from Scholar, the function is working fine
-        i.e. Google hasn't changed the names of the classes from Scholar.
-        """
-        ret = False
-        scholar_list = scholar()
-        scholar_titles = []
-
-        for paper in scholar_list:
-            scholar_titles.append(paper.keys()[0])
-
-        for paper in self.papers_list:
-            if paper.keys()[0] in scholar_titles:
-                ret = True
-            else:
-                ret = False
-
-        self.valid_scholar_list.extend(scholar_list)
-        self.assertTrue(ret)
-
-    def test_get_paper_info(self):
-        """
-        Are we getting the paper date and url successfully?
-        Obs: this test depends on test_get_papers
-        """
-        scholar_list = scholar()
-        result = scholar_info(scholar_list, self.specific_paper_title)
-        self.assertEqual(result[0], self.specific_paper_date)
-        self.assertEqual(result[1], self.specific_paper_link)
-        self.assertNotEqual(result[0], self.wrong_paper_date)
-        self.assertNotEqual(result[1], self.wrong_paper_date)
+# @skip("This test should be update!")
+# class ScholarTest(TestCase):
+#     """
+#     Methods that get data from google scholar
+#     """
+#     papers_list = []
+#     specific_paper_title = ''
+#     specific_paper_date = ''
+#     wrong_paper_title = ''
+#     wrong_paper_date = ''
+#     valid_scholar_list = []
+#     valid_scholar = False
+#
+#     def setUp(self):
+#         self.papers_list = [
+#             {'Hydrodynamic limit for interacting neurons':
+#                  '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&'
+#                  'amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_'
+#                  'view=OaY57UIAAAAJ:u-x6o8ySG0sC'},
+#             {'The solution of the complete nontrivial cycle intersection problem for permutations':
+#              '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;'
+#              'citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'},
+#             {'Infinite systems of interacting chains with memory of variable length\xe2\x80\x94a stochastic model '
+#              'for biological neural nets':
+#                  '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UI'
+#                  'AAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
+#         self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
+#         self.specific_paper_date = datetime.date(2015, 2, 1)
+#         self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
+#         self.wrong_paper_title = 'Hydrodynamics limits for interactings neuron'
+#         self.wrong_paper_date = datetime.date(2010, 1, 15)
+#
+#     def test_get_papers(self):
+#         """
+#         Are we taking the papers successfully?
+#         Well, if we find our little list in the list from Scholar, the function is working fine
+#         i.e. Google hasn't changed the names of the classes from Scholar.
+#         """
+#         ret = False
+#         scholar_list = scholar()
+#         scholar_titles = []
+#
+#         for paper in scholar_list:
+#             scholar_titles.append(paper.keys()[0])
+#
+#         for paper in self.papers_list:
+#             if paper.keys()[0] in scholar_titles:
+#                 ret = True
+#             else:
+#                 ret = False
+#
+#         self.valid_scholar_list.extend(scholar_list)
+#         self.assertTrue(ret)
+#
+#     def test_get_paper_info(self):
+#         """
+#         Are we getting the paper date and url successfully?
+#         Obs: this test depends on test_get_papers
+#         """
+#         scholar_list = scholar()
+#         result = scholar_info(scholar_list, self.specific_paper_title)
+#         self.assertEqual(result[0], self.specific_paper_date)
+#         self.assertEqual(result[1], self.specific_paper_link)
+#         self.assertNotEqual(result[0], self.wrong_paper_date)
+#         self.assertNotEqual(result[1], self.wrong_paper_date)
 
 
 class DateTest(TestCase):
@@ -556,6 +569,8 @@ class ImportPaperTest(TestCase):
         request = req.post(reverse('import_papers'), {'file': TEST_FILE})
         request.user = self.user
         request.session = {}
+        request.resolver_match = mock.Mock()
+        request.resolver_match.url_name = "import_papers"
         response = import_papers(request)
         self.assertEqual(response.status_code, 200)
 
@@ -684,10 +699,11 @@ class CacheTest(TestCase):
         session.save()
 
     def test_major_cache(self):
-
         request = self.factory.post(reverse('import_papers'), {'file': TEST_FILE})
         request.user = self.user
         request.session = {}
+        request.resolver_match = mock.Mock()
+        request.resolver_match.url_name = "import_papers"
 
         response = import_papers(request)
         self.assertEqual(response.status_code, 200)
@@ -758,7 +774,7 @@ class CacheTest(TestCase):
                                      'paper_team_0': [u's'],
                                      'paper_title_0': [u'Combining multivariate Markov chains'],
                                      'paper_author_0': [u'García, JE'],
-                                     'paper_event_0': [u'1'],
+                                     'paper_event_0': [str(event.id)],
                                      'paper_start_page_0': [u'60003'],
                                      'paper_end_page_0': [u'60004']})
         self.assertEqual(response.status_code, 200)

@@ -22,7 +22,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='internal',
             name='media_outlet',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dissemination.InternalMediaOutlet', verbose_name='Media outlet'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='dissemination.InternalMediaOutlet',
+                verbose_name='Media outlet'),
         ),
         migrations.AddField(
             model_name='external',
@@ -32,6 +35,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='external',
             name='media_outlet',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dissemination.ExternalMediaOutlet', verbose_name='Media outlet'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='dissemination.ExternalMediaOutlet',
+                verbose_name='Media outlet'),
         ),
     ]
