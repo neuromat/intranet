@@ -121,7 +121,7 @@ def dissemination_file(request):
         disseminations = internal_filter(internal_type, start_date, end_date)
         internal_media = InternalMediaOutlet.objects.get(pk=internal_type)
         media = internal_media.name
-        context = {'disseminations': disseminations,'type': media_type, 'media': media, 'media_name': media,
+        context = {'disseminations': disseminations, 'type': media_type, 'media': media, 'media_name': media,
                    'extension': extension}
 
     else:

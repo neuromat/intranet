@@ -4,6 +4,7 @@ from html.parser import HTMLParser
 import re
 import requests
 import time
+import ssl
 
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
@@ -228,7 +229,8 @@ def search_academic_works(start_date, end_date):
         .exclude(id__in=msc_concluded_ids)
 
     array_list = []
-    array_list.extend([postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress])
+    array_list.extend(
+        [postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress])
 
     return postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress
 
@@ -267,7 +269,8 @@ def academic_works(request):
                 'end_date': end_date,
             }
 
-            academic_works_list = [postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress]
+            academic_works_list = [
+                postdoc_concluded, postdoc_in_progress, phd_concluded, phd_in_progress, msc_concluded, msc_in_progress]
 
             query_list = []
             for query in academic_works_list:
@@ -424,7 +427,7 @@ def scholar_info(scholar_list, paper_title):
     else:
         return '', ''
 
-import ssl
+
 def arxiv(arxiv_url):
     context = ssl._create_unverified_context()
     html = urllib2.urlopen(arxiv_url, context=context).read()

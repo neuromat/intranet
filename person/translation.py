@@ -5,4 +5,5 @@ from .models import Role
 class RoleTranslationOptions(TranslationOptions):
     fields = ('name',)
 
+
 translator.register(Role, RoleTranslationOptions)

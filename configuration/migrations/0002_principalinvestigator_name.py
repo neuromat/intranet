@@ -17,6 +17,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='principalinvestigator',
             name='name',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='person.Person', verbose_name='Name'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='person.Person',
+                verbose_name='Name'),
         ),
     ]

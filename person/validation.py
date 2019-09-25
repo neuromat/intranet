@@ -2,9 +2,12 @@
 # fonte: http://www.python.org.br/wiki/VerificadorDeCPF
 
 import re
+from django.utils.translation import ugettext_lazy as _
+
 
 # traduz 123.456.789-10 para 12345678910
-_translate = lambda cpf: ''.join(re.findall("\d", cpf))
+def _translate(cpf):
+    return ''.join(re.findall("\d", cpf))
 
 
 def _exceptions(cpf):
@@ -59,7 +62,8 @@ class CPF(object):
         if isinstance(cpf, str):
             if not cpf.isdigit():
                 cpf = self._translate(cpf)
-
+        else:
+            raise TypeError(_('CPF values must be passed as strings'))
         self.cpf = [int(x) for x in cpf]
 
     def __getitem__(self, index):
@@ -71,9 +75,7 @@ class CPF(object):
 
     def __repr__(self):
         """Retorna uma representação 'real', ou seja:
-
-        eval(repr(cpf)) == cpf
-        
+                eval(repr(cpf)) == cpf
         """
 
         return "CPF('%s')" % ''.join(str(x) for x in self.cpf)
@@ -93,9 +95,9 @@ class CPF(object):
         """
 
         d = iter("..-")
-        s = map(str, self.cpf)
-        for i in xrange(3, 12, 4):
-            s.insert(i, d.next())
+        s = list(map(str, self.cpf))
+        for i in range(3, 12, 4):
+            s.insert(i, d.__next__())
         r = ''.join(s)
         return r
 
