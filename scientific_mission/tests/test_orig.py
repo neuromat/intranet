@@ -1,16 +1,16 @@
 import datetime
 from django.urls import reverse
 from django.test import TestCase
-from cities_light.models import City, Country
-from scientific_mission.models import ScientificMission, Route
-from person.models import Person, Role
-from research.tests.test_orig import system_authentication
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-from configuration.models import PrincipalInvestigator
-from scientific_mission.forms import AnnexSixForm, AnnexSevenForm, AnnexNineForm
 
+from cities_light.models import City, Country
+from scientific_mission.models import ScientificMission, Route
+from person.models import Person
+from configuration.models import PrincipalInvestigator
+
+from research.tests.test_orig import system_authentication
 
 
 # Create a scientific mission for testing
