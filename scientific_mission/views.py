@@ -23,7 +23,7 @@ from scientific_mission.forms import AnnexSixForm, AnnexSevenForm, AnnexNineForm
 class CityAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return City.objects.none()
 
         qs = City.objects.all()

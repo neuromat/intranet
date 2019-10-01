@@ -4,13 +4,18 @@ from django.test import TestCase
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
+from django.utils.encoding import force_text
+from django.forms.models import inlineformset_factory
 
-from cities_light.models import City, Country
+from cities_light.models import City, Region, Country
 from scientific_mission.models import ScientificMission, Route
 from person.models import Person
 from configuration.models import PrincipalInvestigator
 
+from scientific_mission.admin import InlineValidationDate
+
 from research.tests.test_orig import system_authentication
+from scientific_mission.views import get_missions
 
 
 # Create a scientific mission for testing
@@ -122,6 +127,75 @@ class ScientificMissionsTest(TestCase):
         cont = response.context['missions']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
+
+    def test_city_auto_complete_passing_q_argument(self):
+        country = Country.objects.create(name='Brazil', name_ascii='Brazil', slug='brazil')
+        region = Region.objects.create(name='São Paulo', name_ascii='Sao Paulo', slug='sao-paulo', country=country)
+
+        city = City.objects.create(
+            region=region,
+            country=country,
+            name='Guarulhos',
+            name_ascii='Guarulhos',
+            slug='guarulhos')
+
+        response = self.client.get('/scientific_mission/city_autocomplete/?q=Guarulhos')
+        self.assertJSONEqual(
+            force_text(response.content),
+            '{"results": [{"selected_text": "Guarulhos, São Paulo, Brazil", "id": "' +
+            str(city.id) +
+            '", "text": "Guarulhos, São Paulo, Brazil"}], "pagination": {"more": false}}')
+
+    def test_city_auto_complete_not_passing_q_argument(self):
+        country = Country.objects.create(name='Brazil', name_ascii='Brazil', slug='brazil')
+        region = Region.objects.create(name='São Paulo', name_ascii='Sao Paulo', slug='sao-paulo', country=country)
+
+        city1 = City.objects.first()
+
+        city2 = City.objects.create(
+            region=region,
+            country=country,
+            name='Guarulhos',
+            name_ascii='Guarulhos',
+            slug='guarulhos')
+
+        response = self.client.get('/scientific_mission/city_autocomplete/?q=')
+        self.assertJSONEqual(
+            force_text(response.content),
+            '{"results": [' +
+            '{"id": "' +
+            str(city1.id) +
+            '", "selected_text": "' +
+            city1.name + ', ' + (city1.region.name + ', ' if city1.region else "") + city1.country.name +
+            '", "text": ", "},' +
+            '{"selected_text": "Guarulhos, São Paulo, Brazil", "id": "' +
+            str(city2.id) +
+            '", "text": "Guarulhos, São Paulo, Brazil"}], "pagination": {"more": false}}')
+
+    def test_city_auto_complete_when_not_logged_returns_none_cities(self):
+        country = Country.objects.create(name='Brazil', name_ascii='Brazil', slug='brazil')
+        region = Region.objects.create(name='São Paulo', name_ascii='Sao Paulo', slug='sao-paulo', country=country)
+
+        city = City.objects.create(
+            region=region,
+            country=country,
+            name='Guarulhos',
+            name_ascii='Guarulhos',
+            slug='guarulhos')
+
+        self.client.logout()
+
+        response = self.client.get('/scientific_mission/city_autocomplete/?q=Guarulhos')
+        self.assertJSONEqual(
+            force_text(response.content),
+            '{"results": [], "pagination": {"more": false}}')
+
+        # Result if none wasn't being returned
+        self.assertJSONNotEqual(
+            force_text(response.content),
+            '{"results": [{"selected_text": "Guarulhos, São Paulo, Brazil", "id": "' +
+            str(city.id) +
+            '", "text": "Guarulhos, São Paulo, Brazil"}], "pagination": {"more": false}}')
 
     def test_anexo_5_non_post_request_renders_anexo5_html_template(self):
         people = Person.objects.all()
@@ -433,3 +507,85 @@ class ScientificMissionsTest(TestCase):
     def test_mission_show_titles(self):
         response = self.client.get(reverse('anexo_missions'), {'person': Person.objects.first().id})
         self.assertContains(response, Person.objects.first().full_name + " - R$ 666.00")
+
+    def test_get_missions(self):
+        person = Person.objects.first()
+        mission = ScientificMission.objects.create(person=person, amount_paid=13)
+        country = Country.objects.create(name='Brazil', name_ascii='Brazil', slug='brazil')
+        city = City.objects.create(country=country, name='Guarulhos', name_ascii='Guarulhos', slug='guarulhos')
+
+        date_departure1 = timezone.now()
+        date_arrival1 = timezone.now() + timezone.timedelta(3)
+
+        route = Route.objects.create(
+            scientific_mission=mission,
+            origin_city=city,
+            destination_city=city,
+            departure=(date_departure1 + timezone.timedelta(1)).date(),
+            arrival=(date_arrival1 + timezone.timedelta(2)).date(),
+            order=0
+        )
+
+        missions = get_missions(date_departure1.date(), date_arrival1.date())
+        self.assertEqual(missions[0]['mission'], mission)
+
+    def test_missions_report_with_get_request(self):
+        response = self.client.get(reverse('missions_report'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_missions_report_with_get_request_uses_scientific_missions_html_template(self):
+        response = self.client.get(reverse('missions_report'))
+        self.assertTemplateUsed(response, 'report/scientific_mission/scientific_missions.html')
+
+    def test_missions_report_post_request_with_invalid_form_raises_error_message(self):
+        response = self.client.post(reverse('missions_report'), {'start_date': '', 'end_date': ''})
+        for message in response.context['messages']:
+            self.assertEqual(message.message, mark_safe(_('You entered a wrong date format or the end' 
+                                                          'date is not greater than or equal to the start date.')))
+
+    def test_missions_report_post_request_with_end_date_sooner_than_start_date_raises_error_message(self):
+        date_departure1 = timezone.now() - timezone.timedelta(367)
+        date_arrival1 = timezone.now() + timezone.timedelta(1)
+
+        response = self.client.post(
+            reverse('missions_report'),
+            {'start_date': date_departure1.date(), 'end_date': date_arrival1.date()})
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You entered a wrong date format or the end '
+                                                'date is not greater than or equal to the start date.'))
+
+    def test_missions_report_post_request_with_appropriate_dates_renders_scientific_missions_report_html(self):
+        date_departure1 = timezone.now() - timezone.timedelta(367)
+        date_arrival1 = timezone.now() + timezone.timedelta(1)
+
+        response = self.client.post(
+            reverse('missions_report'),
+            {'start_date': date_departure1.date().strftime("%d/%m/%Y"),
+             'end_date': date_arrival1.date().strftime("%d/%m/%Y")})
+
+        self.assertTemplateUsed(response, 'report/scientific_mission/scientific_missions_report.html')
+
+    def test_missions_file_text_uses_scientific_missions_tex_template_when_passing_tex_as_extension(self):
+        date_departure1 = timezone.now() - timezone.timedelta(367)
+        date_arrival1 = timezone.now() + timezone.timedelta(1)
+
+        response = self.client.get(
+            reverse('scientific_missions_file'),
+            {'start_date': date_departure1.date().strftime("%Y-%m-%d"),
+             'end_date': date_arrival1.date().strftime("%Y-%m-%d"),
+             'extension': '.tex'})
+
+        self.assertTemplateUsed(response, 'report/scientific_mission/tex/scientific_missions.tex')
+
+    def test_missions_file_text_renders_pdf_when_not_passing_tex_as_extension(self):
+        date_departure1 = timezone.now() - timezone.timedelta(367)
+        date_arrival1 = timezone.now() + timezone.timedelta(1)
+
+        response = self.client.get(
+            reverse('scientific_missions_file'),
+            {'start_date': date_departure1.date().strftime("%Y-%m-%d"),
+             'end_date': date_arrival1.date().strftime("%Y-%m-%d"),
+             'extension': '.doc'})
+
+        self.assertTemplateUsed(response, 'report/scientific_mission/pdf/scientific_missions.html')
+        self.assertTrue('b\'%PDF' in str(response.content))
