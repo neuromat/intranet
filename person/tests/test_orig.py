@@ -201,6 +201,13 @@ class CitationsTest(TestCase):
         citation = CitationName.objects.filter(person_id=self.person2_id, default_name=True)
         self.assertEqual('da Silva, A', citation[0].name)
 
+    def test_generate_citation_names_without_prepositions_in_them(self):
+        new_person = Person.objects.create(full_name="Fulano Cicrano Beltrano")
+        generate_citation_names(new_person)
+
+        citation = CitationName.objects.filter(person_id=new_person.id, default_name=True)
+        self.assertEqual('Beltrano, FC', citation[0].name)
+
     def test_citation_names(self):
         response = self.client.get(reverse('citation_names'), follow=True)
         messages = list(response.context['messages'])

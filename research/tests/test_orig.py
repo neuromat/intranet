@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-import datetime
 from custom_auth.models import User
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
 from django.utils.translation import ugettext_lazy as _
-from unittest import skip, mock
+from unittest import mock
 from django.utils import timezone
 
 
@@ -13,7 +12,7 @@ from helpers.views.date import *
 
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
                             PublishedInPeriodical, Periodical
-from research.views import scholar, scholar_info, now_plus_five_years, arxiv, import_papers
+from research.views import scholar, now_plus_five_years, arxiv, import_papers
 
 
 USERNAME = 'myuser'
@@ -279,11 +278,11 @@ class ResearchTimelineTest(TestCase):
         titles = []
         concluded_count = 0
 
-        for list in response.context['data']['list']:
-            if not list['concluded']:
+        for lista in response.context['data']['list']:
+            if not lista['concluded']:
                 concluded_count += 1
 
-            for item in list['data']:
+            for item in lista['data']:
                 titles.append(item.title)
 
         self.assertEqual(len(response.context['data']['list']), 2)
@@ -301,11 +300,11 @@ class ResearchTimelineTest(TestCase):
         titles = []
         concluded_count = 0
 
-        for list in response.context['data']['list']:
-            if not list['concluded']:
+        for lista in response.context['data']['list']:
+            if not lista['concluded']:
                 concluded_count += 1
 
-            for item in list['data']:
+            for item in lista['data']:
                 titles.append(item.title)
 
         self.assertEqual(len(response.context['data']['list']), 8)
@@ -383,7 +382,7 @@ class ResearchTimelineTest(TestCase):
     def test_articles_report_get_request(self):
 
         response = self.client.get(reverse('articles'))
-        self.assertTemplateUsed('report/research/articles.html')
+        self.assertTemplateUsed(response, 'report/research/articles.html')
 
     def test_articles_report_with_end_date_sooner_than_start_date_raises_error_message(self):
         start_date = '01/07/2014'
@@ -399,7 +398,7 @@ class ResearchTimelineTest(TestCase):
         end_date = '31/07/2014'
 
         response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
-        self.assertTemplateUsed(response,'report/research/articles_report.html')
+        self.assertTemplateUsed(response, 'report/research/articles_report.html')
 
     def test_articles_report_with_empty_start_date_returns_1970_january_first_as_initial_date(self):
         start_date = ''
@@ -608,17 +607,19 @@ class ScholarTest(TestCase):
 
     def setUp(self):
         self.papers_list = [
-            {'Hydrodynamic limit for interacting neurons':
-                 '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&'
-                 'amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_'
-                 'view=OaY57UIAAAAJ:u-x6o8ySG0sC'},
-            {'The solution of the complete nontrivial cycle intersection problem for permutations':
-             '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;'
-             'citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'},
-            {'Infinite systems of interacting chains with memory of variable length—a stochastic model '
-             'for biological neural nets':
-                 '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UI'
-                 'AAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
+            {
+                'Hydrodynamic limit for interacting neurons':
+                    '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100'
+                    '&amp;citation_forview=OaY57UIAAAAJ:u-x6o8ySG0sC'},
+            {
+                'The solution of the complete nontrivial cycle intersection problem for permutations':
+                    '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100'
+                    '&amp;citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'},
+            {
+                'Infinite systems of interacting chains with memory of variable length—a stochastic model for '
+                'biological neural nets':
+                    '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize'
+                    '=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
         self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
         self.specific_paper_date = datetime.date(2015, 2, 1)
         self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'

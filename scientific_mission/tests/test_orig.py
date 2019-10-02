@@ -517,7 +517,7 @@ class ScientificMissionsTest(TestCase):
         date_departure1 = timezone.now()
         date_arrival1 = timezone.now() + timezone.timedelta(3)
 
-        route = Route.objects.create(
+        Route.objects.create(
             scientific_mission=mission,
             origin_city=city,
             destination_city=city,
@@ -540,7 +540,7 @@ class ScientificMissionsTest(TestCase):
     def test_missions_report_post_request_with_invalid_form_raises_error_message(self):
         response = self.client.post(reverse('missions_report'), {'start_date': '', 'end_date': ''})
         for message in response.context['messages']:
-            self.assertEqual(message.message, mark_safe(_('You entered a wrong date format or the end' 
+            self.assertEqual(message.message, mark_safe(_('You entered a wrong date format or the end '
                                                           'date is not greater than or equal to the start date.')))
 
     def test_missions_report_post_request_with_end_date_sooner_than_start_date_raises_error_message(self):
