@@ -93,23 +93,15 @@ def generate_citation_names(person):
     # Imagine a person called João Carlos da Silva.
     # Here the citation would be "Silva, JC"
     if citation_default:
-        citation_name_01 = CitationName(person_id=person_id, name=citation_01)
-        if CitationName.objects.filter(person_id=person_id, name=citation_name_01).exists() is False:
-            citation_name_01.save()
+        CitationName.objects.get_or_create(person_id=person_id, name=citation_01)
     else:
-        citation_name_01 = CitationName(person_id=person_id, name=citation_01, default_name=True)
-        if CitationName.objects.filter(person_id=person_id, name=citation_name_01).exists() is False:
-            citation_name_01.save()
+        CitationName.objects.get_or_create(person_id=person_id, name=citation_01, default_name=True)
 
     # Here the citation would be "Silva, João Carlos"
-    citation_name_02 = CitationName(person_id=person_id, name=citation_02)
-    if CitationName.objects.filter(person_id=person_id, name=citation_name_02).exists() is False:
-        citation_name_02.save()
+    CitationName.objects.get_or_create(person_id=person_id, name=citation_02)
 
     # Here the citation would be "Silva, João C"
-    citation_name_03 = CitationName(person_id=person_id, name=citation_03)
-    if CitationName.objects.filter(person_id=person_id, name=citation_name_03).exists() is False:
-        citation_name_03.save()
+    CitationName.objects.get_or_create(person_id=person_id, name=citation_03)
 
     # Here the last name will be "da Silva"
     if split_name[-2] in prep:
@@ -120,19 +112,13 @@ def generate_citation_names(person):
         prep_03 = first_name_and_first_letter(split_name, True)
 
         # Here the citation would be "da Silva, JC"
-        citation_name_prep = CitationName(person_id=person_id, name=prep_01)
-        if CitationName.objects.filter(person_id=person_id, name=citation_name_prep).exists() is False:
-            citation_name_prep.save()
+        CitationName.objects.get_or_create(person_id=person_id, name=prep_01)
 
         # Here the citation would be "da Silva, João Carlos"
-        citation_name_prep_02 = CitationName(person_id=person_id, name=prep_02)
-        if CitationName.objects.filter(person_id=person_id, name=citation_name_prep_02).exists() is False:
-            citation_name_prep_02.save()
+        CitationName.objects.get_or_create(person_id=person_id, name=prep_02)
 
         # Here the citation would be "da Silva, João C"
-        citation_name_prep_03 = CitationName(person_id=person_id, name=prep_03)
-        if CitationName.objects.filter(person_id=person_id, name=citation_name_prep_03).exists() is False:
-            citation_name_prep_03.save()
+        CitationName.objects.get_or_create(person_id=person_id, name=prep_03)
 
 
 @login_required

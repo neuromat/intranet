@@ -246,3 +246,7 @@ class CPFValidation(TestCase):
         with self.assertRaises(ValidationError) as cm:
             validate_cpf(value).full_clean()
         self.assertEqual(ValidationError('%s is not a valid CPF' % value).message, cm.exception.message)
+
+    def test_validation_of_cpf_success_with_valid_cpf(self):
+        value = '40796346097'
+        self.assertIsNone(validate_cpf(value))

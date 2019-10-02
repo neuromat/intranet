@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 from django.urls import reverse
 from django.test import TestCase, RequestFactory
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.admin.sites import AdminSite
+
 from person.models import Person, CitationName, Role
 from person.views import name_with_first_letters, names_without_last_name, first_name_and_first_letter, \
     generate_citation_names
 from person.validation import CPF
+from person.forms import PersonForm
+from person.admin import PersonAdmin
+
 from custom_auth.models import User
-from django.utils.translation import ugettext_lazy as _
 
 
 prep = ['e', 'da', 'do', 'de', 'dos', 'E', 'Da', 'Do', 'De', 'Dos']
@@ -218,3 +223,65 @@ class CitationsTest(TestCase):
         self.assertContains(response, self.person2.full_name)
         self.assertContains(response, self.person1.role)
         self.assertContains(response, self.person2.role)
+
+
+class PersonFormTest(TestCase):
+    def test_init(self):
+        person_form = PersonForm()
+        self.assertEqual(person_form.fields['zipcode'].widget.attrs['onBlur'], 'pesquisacep(this.value);')
+
+    def test_person_admin_returns_empty_list_when_user_is_superuser_and_not_nira_admin(self):
+        logged, self.user, self.factory = system_authentication(self)
+        person_admin = PersonAdmin(Person, AdminSite())
+
+        qs = person_admin.get_queryset(self)
+        self.assertEqual(list(qs), [])
+
+    def test_person_admin_returns_empty_list_when_user_is_not_superuser_but_is_nira_admin(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.is_nira_admin = True
+        self.user.save()
+
+        person_admin = PersonAdmin(Person, AdminSite())
+
+        qs = person_admin.get_queryset(self)
+        self.assertEqual(list(qs), [])
+
+    def test_person_admin_returns_empty_list_when_user_is_not_superuser_and_is_not_nira_admin(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.save()
+
+        person_admin = PersonAdmin(Person, AdminSite())
+
+        qs = person_admin.get_queryset(self)
+        self.assertEqual(list(qs), [])
+
+    def test_person_admin_returns_get_readonly_fields_when_user_is_superuser_and_not_nira_admin(self):
+        logged, self.user, self.factory = system_authentication(self)
+        person_admin = PersonAdmin(Person, AdminSite())
+
+        qs = person_admin.get_readonly_fields(self)
+        self.assertEqual(list(qs), [])
+
+    def test_person_admin_returns_get_readonly_fields_when_user_is_not_superuser_but_is_nira_admin(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.is_nira_admin = True
+        self.user.save()
+
+        person_admin = PersonAdmin(Person, AdminSite())
+
+        qs = person_admin.get_readonly_fields(self)
+        self.assertEqual(list(qs), [])
+
+    def test_person_admin_returns_get_readonly_fields_when_user_is_not_superuser_and_is_not_nira_admin(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.save()
+
+        person_admin = PersonAdmin(Person, AdminSite())
+
+        qs = person_admin.get_readonly_fields(self)
+        self.assertEqual(list(qs), ['role', 'institution'])
