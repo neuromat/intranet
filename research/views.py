@@ -282,7 +282,7 @@ def academic_works(request):
                             query_list.append({
                                 'category': str(obj.type),
                                 'data': query,
-                                'concluded': obj.end_date < res['end_date']
+                                'concluded': obj.end_date < res['end_date'] if obj.end_date else False
                             })
             res.update({'list': query_list})
             context = {'data': res}
@@ -336,21 +336,20 @@ def scholar():
         link = "https://scholar.google.com.br/citations?user=OaY57UIAAAAJ&hl=pt-BR&cstart=%d&pagesize=100" % i
         html_scholar = urllib2.urlopen(link).read()
 
-        if "Nenhum artigo neste perfil." not in html_scholar:
+        if b"Nenhum artigo neste perfil." not in html_scholar:
             soup = BeautifulSoup(html_scholar, "html5lib")
 
-            for line in soup.find_all('a'):
+            for line in soup.find_all('a', {"class": "gsc_a_at"}):
                 line = str(line)
-                if 'class="gsc_a_at"' in line:
-                    try:
-                        link = re.search('href="(.+?)">', line).group(1)
-                        title = re.search('">(.+?)</a>', line).group(1)
-                    except AttributeError:
-                        link = ''
-                        title = ''
-                    if link != '' and title != '':
-                        paper = {title: link}
-                        scholar_list.append(paper)
+                try:
+                    link = re.search('href="(.+?)">', line).group(1)
+                    title = re.search('">(.+?)</a>', line).group(1)
+                except AttributeError:
+                    link = ''
+                    title = ''
+                if link != '' and title != '':
+                    paper = {title: link}
+                    scholar_list.append(paper)
 
         else:
             return scholar_list
@@ -381,7 +380,7 @@ def scholar_info(scholar_list, paper_title):
     """
 
     paper_url = ''
-    if isinstance(paper_title, unicode):
+    if not isinstance(paper_title, str):
         paper_title = paper_title.encode('UTF-8')
 
     for each_dict in scholar_list:
@@ -389,7 +388,7 @@ def scholar_info(scholar_list, paper_title):
             if paper_title in each_key:
                 paper_url = each_dict[each_key]
 
-    html_parser = HTMLParser.HTMLParser()
+    html_parser = HTMLParser()
     citation_link = html_parser.unescape(paper_url)
     scholar_available = scholar_status(SCHOLAR+citation_link)
 

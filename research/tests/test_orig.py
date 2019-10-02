@@ -4,8 +4,12 @@ from custom_auth.models import User
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
+from django.utils.translation import ugettext_lazy as _
 from unittest import skip, mock
+from django.utils import timezone
 
+
+from helpers.views.date import *
 
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
                             PublishedInPeriodical, Periodical
@@ -376,6 +380,161 @@ class ResearchTimelineTest(TestCase):
         published_titles = [item.article.title for item in published_articles]
         self.assertTrue(self.article_07.title in published_titles)
 
+    def test_articles_report_get_request(self):
+
+        response = self.client.get(reverse('articles'))
+        self.assertTemplateUsed('report/research/articles.html')
+
+    def test_articles_report_with_end_date_sooner_than_start_date_raises_error_message(self):
+        start_date = '01/07/2014'
+        end_date = '31/07/2013'
+
+        response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You entered a wrong date format or the end date is not greater '
+                                                'than or equal to the start date.'))
+
+    def test_articles_report_with_appropriate_dates_uses_articles_report_html_template(self):
+        start_date = '01/07/2013'
+        end_date = '31/07/2014'
+
+        response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
+        self.assertTemplateUsed(response,'report/research/articles_report.html')
+
+    def test_articles_report_with_empty_start_date_returns_1970_january_first_as_initial_date(self):
+        start_date = ''
+        end_date = '31/07/2014'
+
+        response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
+        self.assertTrue(b'start_date=1970-01-01' in response.content)
+
+    def test_articles_report_with_empty_start_date_returns_today_plus_30_days_as_end_date(self):
+        start_date = '01/07/2013'
+        end_date = ''
+        today_plus_30 = now_plus_thirty().strftime('%Y-%m-%d')
+
+        response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
+        self.assertTrue('end_date='+today_plus_30 in str(response.content))
+
+    def test_articles_report_with_wrong_date_format_raises_error_message(self):
+        start_date = '2013/27/01'
+        end_date = '2014/31/07'
+
+        response = self.client.post(reverse('articles'), {'start_date': start_date, 'end_date': end_date})
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You entered a wrong date format or the end date is not greater '
+                                                'than or equal to the start date.'))
+
+    def test_articles_file_uses_articles_html_when_passing_tex_as_extension(self):
+        date_departure1 = timezone.now() - timezone.timedelta(367)
+        date_arrival1 = timezone.now() + timezone.timedelta(1)
+
+        response = self.client.get(
+            reverse('articles_file'),
+            {'start_date': date_departure1.date().strftime("%Y-%m-%d"),
+             'end_date': date_arrival1.date().strftime("%Y-%m-%d"),
+             'extension': '.tex'})
+
+        self.assertTemplateUsed(response, 'report/research/tex/articles.tex')
+
+    def test_missions_file_text_renders_pdf_when_not_passing_tex_as_extension(self):
+        date_departure1 = timezone.now() - timezone.timedelta(367)
+        date_arrival1 = timezone.now() + timezone.timedelta(1)
+
+        response = self.client.get(
+            reverse('articles_file'),
+            {'start_date': date_departure1.date().strftime("%Y-%m-%d"),
+             'end_date': date_arrival1.date().strftime("%Y-%m-%d"),
+             'extension': '.doc'})
+
+        self.assertTemplateUsed(response, 'report/research/pdf/articles.html')
+        self.assertTrue('b\'%PDF' in str(response.content))
+
+    def test_academic_works_get_request(self):
+
+        response = self.client.get(reverse('academic_works'))
+        self.assertTemplateUsed(response, 'report/research/academic_works.html')
+
+    def test_academics_works_with_end_date_sooner_than_start_date_raises_error_message(self):
+        start_date = '01/07/2014'
+        end_date = '31/07/2013'
+
+        response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You entered a wrong date format or the end date is not greater '
+                                                'than or equal to the start date.'))
+
+    def test_academics_works_with_appropriate_dates_uses_academic_works_report_html_template(self):
+        start_date = '01/07/2013'
+        end_date = '31/07/2014'
+
+        response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
+        self.assertTemplateUsed(response, 'report/research/academic_works_report.html')
+
+    def test_academics_works_with_empty_start_date_returns_all_projects_from_1970_january_first(self):
+        start_date = ''
+        end_date = '31/07/2014'
+
+        oldest_academic_works_start_date = \
+            AcademicWork.objects.all().order_by('start_date')[0].start_date.strftime("%b %d, %Y")
+
+        response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
+        self.assertTrue(oldest_academic_works_start_date in str(response.content))
+
+    def test_academics_works_with_empty_start_date_returns_1970_january_first_as_initial_date(self):
+        start_date = '31/06/2014'
+        end_date = '31/07/2014'
+
+        oldest_academic_works_start_date = \
+            AcademicWork.objects.all().order_by('start_date')[0].start_date.strftime("%b %d, %Y")
+
+        response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
+        self.assertFalse(oldest_academic_works_start_date in str(response.content))
+
+    def test_academics_works_with_empty_start_date_returns_today_plus_30_days_as_end_date(self):
+        start_date = '01/07/2013'
+        end_date = ''
+
+        newest_academic_works_end_date = \
+            AcademicWork.objects.all().order_by('-end_date')[0].end_date.strftime("%b. %d, %Y")
+
+        response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
+        self.assertTrue(newest_academic_works_end_date in str(response.content))
+
+    def test_academics_works_with_wrong_date_format_raises_error_message(self):
+        start_date = '2013/27/01'
+        end_date = '2014/31/07'
+
+        response = self.client.post(reverse('academic_works'), {'start_date': start_date, 'end_date': end_date})
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You entered a wrong date format or the end date is not greater '
+                                                'than or equal to the start date.'))
+
+    def test_academics_works_file_uses_articles_html_when_passing_tex_as_extension(self):
+        date_departure1 = timezone.now() - timezone.timedelta(367)
+        date_arrival1 = timezone.now() + timezone.timedelta(1)
+
+        response = self.client.get(
+            reverse('academic_works_file'),
+            {'start_date': date_departure1.date().strftime("%Y-%m-%d"),
+             'end_date': date_arrival1.date().strftime("%Y-%m-%d"),
+             'extension': '.tex'})
+
+        self.assertTemplateUsed(response, 'report/research/tex/academic_works.tex')
+
+    def test_academics_works_file_text_renders_pdf_when_not_passing_tex_as_extension(self):
+        date_departure1 = timezone.now() - timezone.timedelta(367)
+        date_arrival1 = timezone.now() + timezone.timedelta(1)
+
+        response = self.client.get(
+            reverse('academic_works_file'),
+            {'start_date': date_departure1.date().strftime("%Y-%m-%d"),
+             'end_date': date_arrival1.date().strftime("%Y-%m-%d"),
+             'extension': '.doc'})
+
+        self.assertTemplateUsed(response, 'report/research/pdf/academic_works.html')
+        self.assertTrue('b\'%PDF' in str(response.content))
+
     def test_previous_articles_report(self):
         """ Report of previous articles is fine """
         start_date = '01/07/2013'
@@ -435,71 +594,70 @@ class ResearchTimelineTest(TestCase):
         self.assertTrue(self.article_07.title in published_titles)
 
 
-# @skip("This test should be update!")
-# class ScholarTest(TestCase):
-#     """
-#     Methods that get data from google scholar
-#     """
-#     papers_list = []
-#     specific_paper_title = ''
-#     specific_paper_date = ''
-#     wrong_paper_title = ''
-#     wrong_paper_date = ''
-#     valid_scholar_list = []
-#     valid_scholar = False
-#
-#     def setUp(self):
-#         self.papers_list = [
-#             {'Hydrodynamic limit for interacting neurons':
-#                  '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&'
-#                  'amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_'
-#                  'view=OaY57UIAAAAJ:u-x6o8ySG0sC'},
-#             {'The solution of the complete nontrivial cycle intersection problem for permutations':
-#              '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;'
-#              'citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'},
-#             {'Infinite systems of interacting chains with memory of variable length\xe2\x80\x94a stochastic model '
-#              'for biological neural nets':
-#                  '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UI'
-#                  'AAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
-#         self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
-#         self.specific_paper_date = datetime.date(2015, 2, 1)
-#         self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
-#         self.wrong_paper_title = 'Hydrodynamics limits for interactings neuron'
-#         self.wrong_paper_date = datetime.date(2010, 1, 15)
-#
-#     def test_get_papers(self):
-#         """
-#         Are we taking the papers successfully?
-#         Well, if we find our little list in the list from Scholar, the function is working fine
-#         i.e. Google hasn't changed the names of the classes from Scholar.
-#         """
-#         ret = False
-#         scholar_list = scholar()
-#         scholar_titles = []
-#
-#         for paper in scholar_list:
-#             scholar_titles.append(paper.keys()[0])
-#
-#         for paper in self.papers_list:
-#             if paper.keys()[0] in scholar_titles:
-#                 ret = True
-#             else:
-#                 ret = False
-#
-#         self.valid_scholar_list.extend(scholar_list)
-#         self.assertTrue(ret)
-#
-#     def test_get_paper_info(self):
-#         """
-#         Are we getting the paper date and url successfully?
-#         Obs: this test depends on test_get_papers
-#         """
-#         scholar_list = scholar()
-#         result = scholar_info(scholar_list, self.specific_paper_title)
-#         self.assertEqual(result[0], self.specific_paper_date)
-#         self.assertEqual(result[1], self.specific_paper_link)
-#         self.assertNotEqual(result[0], self.wrong_paper_date)
-#         self.assertNotEqual(result[1], self.wrong_paper_date)
+class ScholarTest(TestCase):
+    """
+    Methods that get data from google scholar
+    """
+    papers_list = []
+    specific_paper_title = ''
+    specific_paper_date = ''
+    wrong_paper_title = ''
+    wrong_paper_date = ''
+    valid_scholar_list = []
+    valid_scholar = False
+
+    def setUp(self):
+        self.papers_list = [
+            {'Hydrodynamic limit for interacting neurons':
+                 '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&'
+                 'amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;citation_for_'
+                 'view=OaY57UIAAAAJ:u-x6o8ySG0sC'},
+            {'The solution of the complete nontrivial cycle intersection problem for permutations':
+             '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UIAAAAJ&amp;pagesize=100&amp;'
+             'citation_for_view=OaY57UIAAAAJ:J_g5lzvAfSwC'},
+            {'Infinite systems of interacting chains with memory of variable length—a stochastic model '
+             'for biological neural nets':
+                 '/citations?view_op=view_citation&amp;hl=pt-BR&amp;oe=ASCII&amp;user=OaY57UI'
+                 'AAAAJ&amp;pagesize=100&amp;citation_for_view=OaY57UIAAAAJ:u5HHmVD_uO8C'}]
+        self.specific_paper_title = 'Hydrodynamic limit for interacting neurons'
+        self.specific_paper_date = datetime.date(2015, 2, 1)
+        self.specific_paper_link = 'http://link.springer.com/article/10.1007/s10955-014-1145-1'
+        self.wrong_paper_title = 'Hydrodynamics limits for interactings neuron'
+        self.wrong_paper_date = datetime.date(2010, 1, 15)
+
+    def test_get_papers(self):
+        """
+        Are we taking the papers successfully?
+        Well, if we find our little list in the list from Scholar, the function is working fine
+        i.e. Google hasn't changed the names of the classes from Scholar.
+        """
+        ret = False
+        scholar_list = scholar()
+        scholar_titles = []
+
+        for paper in scholar_list:
+            scholar_titles.append(list(paper.keys())[0])
+
+        for paper in self.papers_list:
+            if list(paper.keys())[0] in scholar_titles:
+                ret = True
+            else:
+                ret = False
+
+        self.valid_scholar_list.extend(scholar_list)
+        self.assertTrue(ret)
+
+    def test_get_paper_info(self):
+        """
+        Are we getting the paper date and url successfully?
+        Obs: this test depends on test_get_papers
+        """
+        scholar_list = scholar()
+        result = scholar_info(scholar_list, self.specific_paper_title)
+        self.assertEqual(result[0], self.specific_paper_date)
+        self.assertEqual(result[1], self.specific_paper_link)
+        self.assertNotEqual(result[0], self.wrong_paper_date)
+        self.assertNotEqual(result[1], self.wrong_paper_date)
 
 
 class DateTest(TestCase):
@@ -525,6 +683,9 @@ class ArticlesTest(TestCase):
     """
 
     def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
         title = "Test article"
         team = "Test team"
         self.published = Article(title=title, team=team, status='Published')
@@ -538,6 +699,10 @@ class ArticlesTest(TestCase):
         self.assertEqual('Submitted', self.submitted.current_status())
         self.assertEqual('Draft', self.draft.current_status())
         self.assertNotEqual('Published', self.accepted.current_status())
+
+    def test_get_request_redirects_to_import_papers(self):
+        response = self.client.get(reverse('add_periodicals'), follow=True)
+        self.assertRedirects(response, reverse('import_papers'), 302)
 
 
 class ArXivTest(TestCase):
