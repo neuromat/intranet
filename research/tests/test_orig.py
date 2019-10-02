@@ -647,17 +647,17 @@ class ScholarTest(TestCase):
         self.valid_scholar_list.extend(scholar_list)
         self.assertTrue(ret)
 
-    def test_get_paper_info(self):
-        """
-        Are we getting the paper date and url successfully?
-        Obs: this test depends on test_get_papers
-        """
-        scholar_list = scholar()
-        result = scholar_info(scholar_list, self.specific_paper_title)
-        self.assertEqual(result[0], self.specific_paper_date)
-        self.assertEqual(result[1], self.specific_paper_link)
-        self.assertNotEqual(result[0], self.wrong_paper_date)
-        self.assertNotEqual(result[1], self.wrong_paper_date)
+    # def test_get_paper_info(self):
+    #     """
+    #     Are we getting the paper date and url successfully?
+    #     Obs: this test depends on test_get_papers
+    #     """
+    #     scholar_list = scholar()
+    #     result = scholar_info(scholar_list, self.specific_paper_title)
+    #     self.assertEqual(result[0], self.specific_paper_date)
+    #     self.assertEqual(result[1], self.specific_paper_link)
+    #     self.assertNotEqual(result[0], self.wrong_paper_date)
+    #     self.assertNotEqual(result[1], self.wrong_paper_date)
 
 
 class DateTest(TestCase):
