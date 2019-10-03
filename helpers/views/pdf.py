@@ -36,9 +36,9 @@ def render(template_src, context_dict, css_source=None):
     template = get_template(template_src)
     html = template.render(context_dict)
     result = BytesIO()
-
+    txt_obj = StringIO(html)
     if css_source:
-        txt_obj = StringIO(html)
+
         pdf = pisa.pisaDocument(txt_obj,
                                 dest=result,
                                 encoding='UTF-8',

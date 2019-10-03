@@ -54,7 +54,7 @@ class InstitutionType(models.Model):
         ordering = ('name', )
 
 
-class Institution(models.Model):
+class   Institution(models.Model):
     """
     An instance of this class represents an institution.
 

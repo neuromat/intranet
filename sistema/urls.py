@@ -3,8 +3,10 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from django.utils.translation import ugettext_lazy as _
+
 
 from helpers.views.show_page import display_documents, display_reports, display_add_content
 
@@ -60,7 +62,7 @@ urlpatterns = [
     url(r'^add_content/$', display_add_content, name='add_content'),
     url(r'^add_content/', include(content_patterns)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+urlpatterns += staticfiles_urlpatterns()
 if 'suit' not in settings.INSTALLED_APPS:
     admin.site.index_template = 'admin/default_index.html'
     admin.site.app_index_template = 'admin/default_index.html'
