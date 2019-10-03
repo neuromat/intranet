@@ -16,6 +16,8 @@ def validate_cpf(value):
     validation = CPF(value)
     if not validation.isValid():
         raise ValidationError(_('%s is not a valid CPF') % value)
+    else:
+        pass
 
 
 class Role(models.Model):
@@ -89,7 +91,7 @@ class   Institution(models.Model):
                     return u'%s - %s/%s' % (self.name, self.belongs_to.acronym, self.belongs_to.belongs_to.name)
                 elif not self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
                     return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.acronym)
-                elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
+                else:  # elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
                     return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.name)
             else:
                 if self.belongs_to.acronym:
@@ -108,7 +110,7 @@ class   Institution(models.Model):
                     return u'%s - %s/%s' % (self.name, self.belongs_to.acronym, self.belongs_to.belongs_to.name)
                 elif not self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
                     return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.acronym)
-                elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
+                else:  # elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
                     return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.name)
             else:
                 if self.acronym and self.belongs_to.acronym:
@@ -117,7 +119,7 @@ class   Institution(models.Model):
                     return u'%s-%s' % (self.name, self.belongs_to.acronym)
                 elif self.acronym and not self.belongs_to.acronym:
                     return u'%s-%s' % (self.acronym, self.belongs_to.name)
-                elif not self.acronym and not self.belongs_to.acronym:
+                else:  # elif not self.acronym and not self.belongs_to.acronym:
                     return u'%s-%s' % (self.name, self.belongs_to.name)
         else:
             if self.acronym:
@@ -205,9 +207,8 @@ class CitationName(models.Model):
             try:
                 citations = CitationName.objects.filter(person=self.person)
                 citation_default = citations.get(default_name=True)
-                if citation_default:
-                    citation_default.default_name = False
-                    citation_default.save()
+                citation_default.default_name = False
+                citation_default.save()
             except CitationName.DoesNotExist:
                 pass
         super(CitationName, self).save(*args, **kwargs)
