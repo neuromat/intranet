@@ -1,9 +1,10 @@
 import datetime
 
+import simplejson
 from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
-
+from django.utils.translation import ugettext_lazy as _
 from activity.models import Seminar, SeminarType, TrainingProgram, Meeting
 from activity.views import training_programs_search, seminars_search
 from person.models import Person
@@ -15,8 +16,12 @@ base_date2 = datetime.date(2014, 1, 16)
 base_date3 = datetime.date(2014, 1, 17)
 
 
-def seminar(title, seminar_type, date):
-    return Seminar(title=title,  type_of_activity='s', category=seminar_type, date=date)
+def seminar(title, seminar_type, date, speaker=None):
+    if speaker:
+        seminar_obj = Seminar.objects.create(title=title, type_of_activity='s', category=seminar_type, date=date)
+        seminar_obj.speaker.add(speaker)
+        return seminar_obj
+    return Seminar.objects.create(title=title,  type_of_activity='s', category=seminar_type, date=date)
 
 
 def training_program(title, start_date):
@@ -119,11 +124,8 @@ class SeminarsTest(TestCase):
         self.date1 = base_date1
         self.date2 = base_date2
 
-        seminar1 = seminar('Seminar1', type1, self.date1)
-        seminar1.save()
-
-        seminar2 = seminar('Seminar2', type2, self.date2)
-        seminar2.save()
+        self.seminar1 = seminar('Seminar1', type1, self.date1, self.person.id)
+        self.seminar2 = seminar('Seminar2', type2, self.date2)
 
     def test_report_status_code(self):
         response = self.client.get(reverse('seminars_report'))
@@ -137,6 +139,17 @@ class SeminarsTest(TestCase):
         cont = response.context['seminars']
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
+
+    def test_report_with_wrong_date_format(self):
+
+        response = self.client.post(reverse('seminars_report'), {'start_date': '0101/2015',
+                                                                 'end_date': '0305/2017',
+                                                                 'category': '0'})
+        for message in response.context['messages']:
+            self.assertEqual(message.message,
+                             _('You entered a wrong date format or the end date is not greater than or equal to'
+                               ' the start date.'))
+
 
     def test_report_with_dates_and_specific_category(self):
         response = self.client.post(reverse('seminars_report'), {'start_date': '01/01/2015',
@@ -205,6 +218,14 @@ class SeminarsTest(TestCase):
         speaker = self.person.pk
         response = self.client.get(reverse('seminars_show_titles'), {'speaker': speaker})
         self.assertEqual(response.status_code, 200)
+
+    def test_titles_append_and_json_response(self):
+        speaker = self.seminar1.pk
+        seminar1_result = [{'pk': self.seminar1.id, 'valor': self.seminar1.__str__()}]
+
+        response = self.client.get(reverse('seminars_show_titles'), {'speaker': speaker})
+        response_json = simplejson.loads(response.content)
+        self.assertEqual(response_json, seminar1_result)
 
 
 class MeetingsTest(TestCase):
