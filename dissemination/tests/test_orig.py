@@ -66,17 +66,7 @@ class DisseminationTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_dissemination_report_with_date(self):
-
-        # With type external selected
-        response = self.client.post(reverse('dissemination_report'), {'type': 'e',
-                                                                      'start_date': '01/01/2015',
-                                                                      'end_date': '01/02/2017'})
-        cont = response.context['disseminations']
-        self.assertEqual(len(cont), 1)
-        self.assertEqual(response.status_code, 200)
-
-        # With type internal selected
+    def test_dissemination_report_with_date_and_internal_media_type(self):
         internal_types = InternalMediaOutlet.objects.all()
         internal_types = [{'value': media.id, 'display': media.name} for media in internal_types]
 
@@ -89,6 +79,15 @@ class DisseminationTest(TestCase):
             cont = response.context['disseminations']
             self.assertEqual(len(cont), 1)
             self.assertEqual(response.status_code, 200)
+
+    def test_dissemination_report_with_date_and_external_media_type(self):
+        # With type external selected
+        response = self.client.post(reverse('dissemination_report'), {'type': 'e',
+                                                                      'start_date': '01/01/2015',
+                                                                      'end_date': '01/02/2017'})
+        cont = response.context['disseminations']
+        self.assertEqual(len(cont), 1)
+        self.assertEqual(response.status_code, 200)
 
     def test_dissemination_report_with_date_in_wrong_format_and_media_type_0_raises_message_error(self):
         response = self.client.post(reverse('dissemination_report'), {'type': '0',

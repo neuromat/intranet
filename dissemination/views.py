@@ -59,7 +59,7 @@ def dissemination_report(request):
                     disseminations = internal_filter(internal_type, start_date, end_date)
                     media_name = InternalMediaOutlet.objects.get(id=internal_type).name
 
-                elif media_type == 'e':
+                else:
                     disseminations = external_filter(start_date, end_date)
                     media_name = ''
 
