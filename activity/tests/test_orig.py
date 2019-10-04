@@ -1,10 +1,14 @@
+import os
 import datetime
+import tempfile
 
 import json
 from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
+from django.core.files import File
+
 from activity.models import Seminar, SeminarType, TrainingProgram, Meeting
 from activity.views import training_programs_search, seminars_search
 from person.models import Person
@@ -21,7 +25,7 @@ def seminar(title, seminar_type, date, speaker=None):
         seminar_obj = Seminar.objects.create(title=title, type_of_activity='s', category=seminar_type, date=date)
         seminar_obj.speaker.add(speaker)
         return seminar_obj
-    return Seminar.objects.create(title=title,  type_of_activity='s', category=seminar_type, date=date)
+    return Seminar.objects.create(title=title, type_of_activity='s', category=seminar_type, date=date)
 
 
 def training_program(title, start_date):
@@ -33,7 +37,6 @@ def meeting(title, start_date, end_date, broad_audience):
 
 
 class TrainingProgramTest(TestCase):
-
     """
     The following tests are performed:
     1 - Training programs search;
@@ -97,7 +100,6 @@ class TrainingProgramTest(TestCase):
 
 
 class SeminarsTest(TestCase):
-
     """
     The following tests are performed:
     1 - Seminars search;
@@ -132,7 +134,6 @@ class SeminarsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_report_with_dates_and_all_categories(self):
-
         response = self.client.post(reverse('seminars_report'), {'start_date': '01/01/2015',
                                                                  'end_date': '03/05/2017',
                                                                  'category': '0'})
@@ -141,7 +142,6 @@ class SeminarsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_report_with_wrong_date_format(self):
-
         response = self.client.post(reverse('seminars_report'), {'start_date': '0101/2015',
                                                                  'end_date': '0305/2017',
                                                                  'category': '0'})
@@ -149,7 +149,6 @@ class SeminarsTest(TestCase):
             self.assertEqual(message.message,
                              _('You entered a wrong date format or the end date is not greater than or equal to'
                                ' the start date.'))
-
 
     def test_report_with_dates_and_specific_category(self):
         response = self.client.post(reverse('seminars_report'), {'start_date': '01/01/2015',
@@ -174,7 +173,6 @@ class SeminarsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_poster(self):
-
         # Just load the page
         response = self.client.get(reverse('seminars_poster'))
         self.assertEqual(response.status_code, 200)
@@ -191,6 +189,14 @@ class SeminarsTest(TestCase):
         #
         # response = self.client.post(reverse('seminars_poster'), {'title': seminar_id})
         # self.assertEqual(response.status_code, 200)
+
+    def test_poster_except(self):
+        # Just load the page
+
+        seminar1 = Seminar.objects.first()
+
+        response = self.client.post(reverse('seminars_poster'), {'title': seminar1.id})
+        self.assertTemplateUsed(response, 'poster/seminar_poster_pdf.html')
 
     def test_tex(self):
         response = self.client.get(reverse('seminars_file'), {'start_date': '2015-03-01',
@@ -214,7 +220,6 @@ class SeminarsTest(TestCase):
         self.assertTrue(isinstance(response, QuerySet))
 
     def test_titles(self):
-
         speaker = self.person.pk
         response = self.client.get(reverse('seminars_show_titles'), {'speaker': speaker})
         self.assertEqual(response.status_code, 200)
@@ -228,7 +233,6 @@ class SeminarsTest(TestCase):
 
 
 class MeetingsTest(TestCase):
-
     """
     The following tests are performed:
     1 - Meetings report with date for each audience;
@@ -237,7 +241,6 @@ class MeetingsTest(TestCase):
     """
 
     def setUp(self):
-
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
@@ -297,3 +300,61 @@ class MeetingsTest(TestCase):
         response = self.client.post(reverse('meetings_report'), {'start_date': '01/01/2017',
                                                                  'end_date': '03/05/2015'})
         self.assertEqual(response.status_code, 200)
+
+
+class ProjectActivitiesTest(TestCase):
+    def setUp(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.assertEqual(logged, True)
+
+        def get_test_image_file():
+            from django.core.files.images import ImageFile
+            file = tempfile.NamedTemporaryFile(suffix='.png')
+            return ImageFile(file, name=file.name)
+
+        self.person = Person(full_name="Person Full Test")
+        self.person.save()
+        self.date1 = base_date2
+        self.date2 = base_date1
+        self.date3 = base_date3
+
+        type1 = SeminarType(name="Testing 1")
+        type1.save()
+
+        type2 = SeminarType(name="Testing 2")
+        type2.save()
+
+        self.seminar1 = seminar('Seminar1', type1, self.date1, self.person.id)
+        self.seminar2 = seminar('Seminar2', type2, self.date2)
+
+        self.meeting1 = meeting('First meeting', self.date1, self.date2, False)
+        self.meeting1.save()
+
+        self.meeting2 = meeting('Second meeting', self.date1, self.date3, True)
+        self.meeting2.save()
+
+        self.training1 = training_program("Test 1", self.date1)
+        self.training1.save()
+
+        self.training2 = training_program("Test 2", self.date2)
+        self.training2.save()
+
+    def test_project_activities_certificate_render(self):
+        pass
+        # response = self.client.post(reverse('certificate'), {
+        #     'person': self.person.id,
+        #     'title': 1,
+        #     'signature': '',
+        #     'hours': 200
+        # })
+
+        # self.assertEqual(response.status_code, 404)
+
+    def test_person_for_project_activities_certificate(self):
+        pass
+
+    def test_title_for_project_activities_certificate(self):
+        pass
+
+    def test_signature_for_project_activities_certificate(self):
+        pass

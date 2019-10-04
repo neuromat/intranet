@@ -266,7 +266,8 @@ def project_activities_certificate(request):
     seminars = ProjectActivities.objects.filter(type_of_activity='s')
     meetings = ProjectActivities.objects.filter(type_of_activity='m')
     project_activities = training_programs | seminars | meetings
-    signatures = Person.objects.exclude(signature__isnull=True).exclude(signature__exact='')
+    # signatures = Person.objects.exclude(signature__isnull=True).exclude(signature__exact='')
+    signatures = people.exclude(signature='')
 
     if request.method == 'POST':
 

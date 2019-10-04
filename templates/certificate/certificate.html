@@ -31,8 +31,7 @@
 
             <div class="col-sm-12">
                 <label>{% trans "Who will sign the certificate?" %}</label>
-                <select class="form-control" name="signature" id="id_signature" multiple="multiple">
-                    <option value=""></option>
+                <select class="form-control" name="signature" id="id_signature" multiple="multiple" required="required">
                     {% for person in signatures %}
                         <option value={{ person.id }} {% if person.role.name == 'Principal Investigator' or person.role.name == 'Diretor do Projeto' %}selected{% endif %}>{{ person }}</option>
                     {% endfor %}
