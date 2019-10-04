@@ -59,7 +59,7 @@ def dissemination_report(request):
                     disseminations = internal_filter(internal_type, start_date, end_date)
                     media_name = InternalMediaOutlet.objects.get(id=internal_type).name
 
-                elif media_type == 'e':
+                else:
                     disseminations = external_filter(start_date, end_date)
                     media_name = ''
 
@@ -82,28 +82,6 @@ def dissemination_report(request):
     context = {'types': types, 'internal_types': internal_types}
 
     return render(request, 'report/dissemination/dissemination.html', context)
-
-
-@login_required
-def dissemination_tex(request):
-
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-    media_type = request.GET.get('type')
-    internal_type = request.GET.get('internal_type')
-    filename = request.GET.get('filename')
-
-    if media_type == 'i':
-        disseminations = internal_filter(internal_type, start_date, end_date)
-        internal_media = InternalMediaOutlet.objects.get(pk=internal_type)
-        media = internal_media.name
-        context = {'disseminations': disseminations, 'type': media_type, 'media': media}
-
-    else:
-        disseminations = external_filter(start_date, end_date)
-        context = {'disseminations': disseminations, 'type': media_type}
-
-    return escape_and_generate_latex('report/dissemination/tex/disseminations.tex', context, filename, table=True)
 
 
 @login_required

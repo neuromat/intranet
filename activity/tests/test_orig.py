@@ -2,7 +2,7 @@ import os
 import datetime
 import tempfile
 
-import simplejson
+import json
 from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
@@ -225,12 +225,11 @@ class SeminarsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_titles_append_and_json_response(self):
-        speaker = self.seminar1.pk
-        seminar1_result = [{'pk': self.seminar1.id, 'valor': self.seminar1.__str__()}]
+        speaker = self.person.pk
+        seminar1_result = json.dumps([{'pk': self.seminar1.id, 'valor': self.seminar1.__str__()}])
 
         response = self.client.get(reverse('seminars_show_titles'), {'speaker': speaker})
-        response_json = simplejson.loads(response.content)
-        self.assertEqual(response_json, seminar1_result)
+        self.assertEqual(response.content.decode("utf-8"), seminar1_result)
 
 
 class MeetingsTest(TestCase):

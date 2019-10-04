@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from dissemination.models import InternalMediaOutlet, Internal, ExternalMediaOutlet, External
-from research.tests.test_orig import system_authentication
 from django.urls import reverse
 from django.test import TestCase
+from django.utils.translation import ugettext_lazy as _
+
+from dissemination.models import InternalMediaOutlet, Internal, ExternalMediaOutlet, External
+from research.tests.test_orig import system_authentication
 
 
 class DisseminationTest(TestCase):
@@ -64,17 +66,7 @@ class DisseminationTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_dissemination_report_with_date(self):
-
-        # With type external selected
-        response = self.client.post(reverse('dissemination_report'), {'type': 'e',
-                                                                      'start_date': '01/01/2015',
-                                                                      'end_date': '01/02/2017'})
-        cont = response.context['disseminations']
-        self.assertEqual(len(cont), 1)
-        self.assertEqual(response.status_code, 200)
-
-        # With type internal selected
+    def test_dissemination_report_with_date_and_internal_media_type(self):
         internal_types = InternalMediaOutlet.objects.all()
         internal_types = [{'value': media.id, 'display': media.name} for media in internal_types]
 
@@ -88,6 +80,30 @@ class DisseminationTest(TestCase):
             self.assertEqual(len(cont), 1)
             self.assertEqual(response.status_code, 200)
 
+    def test_dissemination_report_with_date_and_external_media_type(self):
+        # With type external selected
+        response = self.client.post(reverse('dissemination_report'), {'type': 'e',
+                                                                      'start_date': '01/01/2015',
+                                                                      'end_date': '01/02/2017'})
+        cont = response.context['disseminations']
+        self.assertEqual(len(cont), 1)
+        self.assertEqual(response.status_code, 200)
+
+    def test_dissemination_report_with_date_in_wrong_format_and_media_type_0_raises_message_error(self):
+        response = self.client.post(reverse('dissemination_report'), {'type': '0',
+                                                                      'start_date': '2015/01/01',
+                                                                      'end_date': '2017/01/02'})
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You should choose a type.'))
+
+    def test_dissemination_report_with_date_in_wrong_format_and_media_type_different_from_0_raises_message_error(self):
+        response = self.client.post(reverse('dissemination_report'), {'type': 'e',
+                                                                      'start_date': '2015/01/01',
+                                                                      'end_date': '2017/01/02'})
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You entered a wrong date format or the end date is not greater '
+                                                'than or equal to the start date.'))
+
     def test_without_type(self):
         response = self.client.get(reverse('dissemination_report'))
         self.assertEqual(response.status_code, 200)
@@ -98,3 +114,75 @@ class DisseminationTest(TestCase):
                                                                       'start_date': '01/01/2019',
                                                                       'end_date': '01/02/2017'})
         self.assertEqual(response.status_code, 200)
+
+    def test_dissemination_file_external_media_type_and_tex_extension_generates_latex(self):
+        start_date = '2015-01-01'
+        end_date = '2017-01-01'
+        filename = 'filename'
+        extension = '.tex'
+
+        response = self.client.get(reverse('dissemination_file'), {'type': 'e',
+                                                                   'start_date': start_date,
+                                                                   'end_date': end_date,
+                                                                   'filename': filename,
+                                                                   'extension': extension})
+        cont = response.context['disseminations']
+        self.assertEqual(len(cont), 1)
+        self.assertTemplateUsed(response, 'report/dissemination/tex/disseminations.tex')
+
+    def test_dissemination_file_internal_media_type_and_tex_extension_generates_latex(self):
+        start_date = '2015-01-01'
+        end_date = '2017-01-01'
+        filename = 'filename'
+        extension = '.tex'
+
+        internal_types = InternalMediaOutlet.objects.all()
+        internal_types = [{'value': media.id, 'display': media.name} for media in internal_types]
+
+        for media in internal_types:
+            value = media['value']
+            response = self.client.get(reverse('dissemination_file'), {'type': 'i',
+                                                                       'start_date': start_date,
+                                                                       'end_date': end_date,
+                                                                       'filename': filename,
+                                                                       'extension': extension,
+                                                                       'internal_type': value})
+            cont = response.context['disseminations']
+            self.assertEqual(len(cont), 1)
+            self.assertTemplateUsed(response, 'report/dissemination/tex/disseminations.tex')
+
+    def test_dissemination_file_external_media_type_and_pdf_extension_generates_latex(self):
+        start_date = '2015-01-01'
+        end_date = '2017-01-01'
+        filename = 'filename'
+        extension = '.pdf'
+
+        response = self.client.get(reverse('dissemination_file'), {'type': 'e',
+                                                                   'start_date': start_date,
+                                                                   'end_date': end_date,
+                                                                   'filename': filename,
+                                                                   'extension': extension})
+        cont = response.context['disseminations']
+        self.assertEqual(len(cont), 1)
+        self.assertTemplateUsed(response, 'report/dissemination/pdf/dissemination.html')
+
+    def test_dissemination_file_internal_media_type_and_pdf_extension_generates_latex(self):
+        start_date = '2015-01-01'
+        end_date = '2017-01-01'
+        filename = 'filename'
+        extension = '.pdf'
+
+        internal_types = InternalMediaOutlet.objects.all()
+        internal_types = [{'value': media.id, 'display': media.name} for media in internal_types]
+
+        for media in internal_types:
+            value = media['value']
+            response = self.client.get(reverse('dissemination_file'), {'type': 'i',
+                                                                       'start_date': start_date,
+                                                                       'end_date': end_date,
+                                                                       'filename': filename,
+                                                                       'extension': extension,
+                                                                       'internal_type': value})
+            cont = response.context['disseminations']
+            self.assertEqual(len(cont), 1)
+            self.assertTemplateUsed(response, 'report/dissemination/pdf/dissemination.html')
