@@ -85,28 +85,6 @@ def dissemination_report(request):
 
 
 @login_required
-def dissemination_tex(request):
-
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-    media_type = request.GET.get('type')
-    internal_type = request.GET.get('internal_type')
-    filename = request.GET.get('filename')
-
-    if media_type == 'i':
-        disseminations = internal_filter(internal_type, start_date, end_date)
-        internal_media = InternalMediaOutlet.objects.get(pk=internal_type)
-        media = internal_media.name
-        context = {'disseminations': disseminations, 'type': media_type, 'media': media}
-
-    else:
-        disseminations = external_filter(start_date, end_date)
-        context = {'disseminations': disseminations, 'type': media_type}
-
-    return escape_and_generate_latex('report/dissemination/tex/disseminations.tex', context, filename, table=True)
-
-
-@login_required
 def dissemination_file(request):
 
     start_date = request.GET.get('start_date')
