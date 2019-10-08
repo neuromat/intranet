@@ -10,6 +10,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
+from django.views.decorators.http import require_http_methods
 from .forms import annex_seven_choices as choices
 from helpers.forms.date_range import DateRangeForm
 from helpers.views.date import *
@@ -95,17 +96,15 @@ def anexo5(request):
             start_date = None
             end_date = None
 
-            if mission:
-                routes = Route.objects.filter(scientific_mission=mission).order_by('order')
+            routes = Route.objects.filter(scientific_mission=mission).order_by('order')
 
-                if routes:
-
-                    start_date = routes.first()
-                    end_date = routes.last()
-                else:
-                    messages.error(request, _("You should've set routes for this mission."))
-                    context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
-                    return render(request, 'anexo/anexo5.html', context)
+            if routes:
+                start_date = routes.first()
+                end_date = routes.last()
+            else:
+                messages.error(request, _("You should've set routes for this mission."))
+                context = {'people': people, 'missions': missions, 'default_date': date, 'process': process}
+                return render(request, 'anexo/anexo5.html', context)
 
             amount, cents = money_to_strings(mission.amount_paid)
 
@@ -348,19 +347,19 @@ def anexo9(request):
 
 
 @login_required
+@require_http_methods(["GET"])
 def mission_show_titles(request):
-    if request.method == 'GET':
-        person_id = request.GET.get('person')
-        person = get_object_or_404(Person, id=person_id)
+    person_id = request.GET.get('person')
+    person = get_object_or_404(Person, id=person_id)
 
-        missions = ScientificMission.objects.filter(person=person)
-        titles = []
+    missions = ScientificMission.objects.filter(person=person)
+    titles = []
 
-        for title in missions:
-            titles.append({'pk': title.id, 'valor': title.__str__()})
+    for title in missions:
+        titles.append({'pk': title.id, 'valor': title.__str__()})
 
-        json = simplejson.dumps(titles)
-        return HttpResponse(json, content_type="application/json")
+    json = simplejson.dumps(titles)
+    return HttpResponse(json, content_type="application/json")
 
 
 def get_missions(start_date, end_date):

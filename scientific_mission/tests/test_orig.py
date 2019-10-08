@@ -10,7 +10,7 @@ from django.forms.models import inlineformset_factory
 from cities_light.models import City, Region, Country
 from scientific_mission.models import ScientificMission, Route
 from person.models import Person
-from configuration.models import PrincipalInvestigator
+from configuration.models import PrincipalInvestigator, ProcessNumber
 
 from scientific_mission.admin import InlineValidationDate
 
@@ -225,6 +225,15 @@ class ScientificMissionsTest(TestCase):
                 mark_safe(_('You should have configured your process number on configurations. '
                             ' Click <a href="../../configuration">here</a> to configure it.')))
 
+    def test_anexo_5_doesnt_returns_message_when_process_number_exists_and_it_is_not_is_all_zeros(self):
+        ProcessNumber.objects.create(process_number='1111/11111-1')
+        people = Person.objects.all()
+        missions = ScientificMission.objects.all()
+        date = datetime.datetime.now()
+
+        response = self.client.get(reverse('anexo5'), {'people': people, 'missions': missions, 'default_date': date})
+        self.assertTemplateUsed(response, 'anexo/anexo5.html')
+
     def test_anexo_5_post_request_without_principal_investigator_renders_todays_date_on_the_template(self):
         mission = ScientificMission.objects.first()
         title = mission.id
@@ -247,7 +256,22 @@ class ScientificMissionsTest(TestCase):
                                                         'title': title})
         self.assertContains(response, date.strftime("%d/%m/%Y"))
 
-    def test_anexo_5_post_request_without_process_number_renders_pdf(self):
+    def test_anexo_5_post_request_without_process_number_in_db_renders_pdf(self):
+        person = Person.objects.first()
+        PrincipalInvestigator.objects.create(name=person)
+        mission = ScientificMission.objects.first()
+        title = mission.id
+        date = datetime.datetime.now()
+
+        response = self.client.post(reverse('anexo5'), {'issue_date': date.strftime("%d/%m/%Y"),
+                                                        'process': '',
+                                                        'title': title})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('b\'%PDF' in str(response.content))
+
+    def test_anexo_5_post_request_with_process_number_in_db_renders_pdf(self):
+        ProcessNumber.objects.create(process_number='1111/11111-1')
+
         person = Person.objects.first()
         PrincipalInvestigator.objects.create(name=person)
         mission = ScientificMission.objects.first()
@@ -339,6 +363,17 @@ class ScientificMissionsTest(TestCase):
         response = self.client.get(reverse('anexo6'))
         self.assertEqual(response.status_code, 200)
 
+    def test_anexo_6_post_request_with_process_number_in_db_renders_pdf(self):
+        ProcessNumber.objects.create(process_number='1111/11111-1')
+        PrincipalInvestigator.objects.create(name=Person.objects.first())
+
+        response = self.client.post(reverse('anexo6'), {'value': 10,
+                                                        'start_date': datetime.date(2019, 1, 1),
+                                                        'end_date': datetime.date(2019, 1, 2),
+                                                        'process': '0000/00000-0'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('b\'%PDF' in str(response.content))
+
     def test_anexo_6_post_request_without_principal_investigator_raises_error_message(self):
         response = self.client.post(reverse('anexo6'))
         for message in response.context['messages']:
@@ -391,6 +426,19 @@ class ScientificMissionsTest(TestCase):
     def test_anexo_7_get_request(self):
         response = self.client.get(reverse('anexo7'))
         self.assertEqual(response.status_code, 200)
+
+    def test_anexo_7_post_request_with_process_number_in_db_renders_pdf(self):
+        ProcessNumber.objects.create(process_number='1111/11111-1')
+        PrincipalInvestigator.objects.create(name=Person.objects.first())
+
+        response = self.client.post(reverse('anexo7'), {'process': 123,
+                                                        'choice': 1,
+                                                        'stretch': 'Test',
+                                                        'person': Person.objects.first().id,
+                                                        'value': 10,
+                                                        'reimbursement': 0})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('b\'%PDF' in str(response.content))
 
     def test_anexo_7_post_request_with_invalid_form_raises_error_message(self):
         response = self.client.post(reverse('anexo7'))
@@ -454,6 +502,17 @@ class ScientificMissionsTest(TestCase):
         response = self.client.get(reverse('anexo9'))
         self.assertEqual(response.status_code, 200)
 
+    def test_anexo_9_post_request_with_process_number_in_db_renders_pdf(self):
+        ProcessNumber.objects.create(process_number='1111/11111-1')
+        PrincipalInvestigator.objects.create(name=Person.objects.first())
+
+        response = self.client.post(reverse('anexo9'), {'process': '',
+                                                        'job': 'Test',
+                                                        'person': Person.objects.first().id,
+                                                        'value': 10})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('b\'%PDF' in str(response.content))
+
     def test_anexo_9_post_request_with_invalid_form_raises_error_message(self):
         response = self.client.post(reverse('anexo9'))
         for message in response.context['messages']:
@@ -508,6 +567,10 @@ class ScientificMissionsTest(TestCase):
         response = self.client.get(reverse('anexo_missions'), {'person': Person.objects.first().id})
         self.assertContains(response, Person.objects.first().full_name + " - R$ 666.00")
 
+    def test_mission_show_titles_post_request(self):
+        response = self.client.post(reverse('anexo_missions'), {'person': Person.objects.first().id})
+        self.assertEqual(response.status_code, 405)
+
     def test_get_missions(self):
         person = Person.objects.first()
         mission = ScientificMission.objects.create(person=person, amount_paid=13)
@@ -528,6 +591,20 @@ class ScientificMissionsTest(TestCase):
 
         missions = get_missions(date_departure1.date(), date_arrival1.date())
         self.assertEqual(missions[0]['mission'], mission)
+
+    def test_get_missions_without_routes(self):
+        for route in Route.objects.all():
+            route.delete()
+        person = Person.objects.first()
+        mission = ScientificMission.objects.create(person=person, amount_paid=13)
+        country = Country.objects.create(name='Brazil', name_ascii='Brazil', slug='brazil')
+        city = City.objects.create(country=country, name='Guarulhos', name_ascii='Guarulhos', slug='guarulhos')
+
+        date_departure1 = timezone.now()
+        date_arrival1 = timezone.now() + timezone.timedelta(3)
+
+        missions = get_missions(date_departure1.date(), date_arrival1.date())
+        self.assertEqual(len(missions), 0)
 
     def test_missions_report_with_get_request(self):
         response = self.client.get(reverse('missions_report'))
