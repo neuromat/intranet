@@ -1,8 +1,7 @@
 from django.test import TestCase
-from django.shortcuts import get_object_or_404
 
 from scientific_mission.forms import ProcessField, AnnexSevenForm
-from configuration.models import PrincipalInvestigator, Person
+from configuration.models import Person
 
 
 class ProcessFieldFormTest(TestCase):

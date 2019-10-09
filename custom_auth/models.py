@@ -47,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(_('Username'), max_length=30, unique=True,
                                 help_text=_('Required. 30 characters or fewer. '
                                             'Letters, numbers and @/./+/-/_ characters'),
-                                validators=[validators.RegexValidator(re.compile('^[\w.@+-]+$'),
+                                validators=[validators.RegexValidator(re.compile(r'^[\w.@+-]+$'),
                                                                       _('Enter a valid username.'), _('invalid'))])
     email = models.EmailField(_('Email'), blank=True, null=True)
     is_staff = models.BooleanField(_('Staff status'), default=False,

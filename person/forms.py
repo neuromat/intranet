@@ -1,8 +1,8 @@
-from dal import autocomplete
-from cities_light.models import City
-from .models import Institution, Person
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from person.models import Institution, Person
+from cities_light.models import City
+from dal import autocomplete
 
 
 class PersonForm(forms.ModelForm):

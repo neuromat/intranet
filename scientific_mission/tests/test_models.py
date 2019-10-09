@@ -1,9 +1,9 @@
+import datetime
 from django.test import TestCase
 
 from scientific_mission.models import Type, ScientificMission, Route
 from person.models import Person
-from cities_light.models import City, Country, Region
-import datetime
+from cities_light.models import City, Country
 
 
 class TypeTest(TestCase):

@@ -1,7 +1,7 @@
 from django import forms
-from .models import Article, Book, AcademicWork
 from django.forms import TextInput, CheckboxSelectMultiple
 from django.utils.translation import ugettext_lazy as _
+from research.models import Article, Book, AcademicWork
 
 # Papers status
 DRAFT = 'd'

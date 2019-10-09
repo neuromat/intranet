@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.utils.translation import ugettext_lazy as _
 
 from activity.models import ProjectActivities, SeminarType
 from person.models import Institution, InstitutionType

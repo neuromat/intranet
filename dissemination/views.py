@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 
-from helpers.views.date import *
+from helpers.views.date import now_plus_thirty
 from helpers.views.latex import escape_and_generate_latex
 from helpers.views.pdf import render as render_to_pdf
 from dissemination.models import Dissemination, Internal, InternalMediaOutlet, TYPE_OF_MEDIA

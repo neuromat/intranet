@@ -1,5 +1,5 @@
-from scientific_mission import views
 from django.conf.urls import url
+from scientific_mission import views
 
 
 urlpatterns = [

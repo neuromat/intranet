@@ -1,5 +1,5 @@
-from dissemination import views
 from django.conf.urls import url
+from dissemination import views
 
 
 urlpatterns = [
