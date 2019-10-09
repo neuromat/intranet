@@ -370,7 +370,7 @@ class ScientificMissionsTest(TestCase):
         response = self.client.post(reverse('anexo6'), {'value': 10,
                                                         'start_date': datetime.date(2019, 1, 1),
                                                         'end_date': datetime.date(2019, 1, 2),
-                                                        'process': '0000/00000-0'})
+                                                        'process': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTrue('b\'%PDF' in str(response.content))
 
@@ -431,7 +431,7 @@ class ScientificMissionsTest(TestCase):
         ProcessNumber.objects.create(process_number='1111/11111-1')
         PrincipalInvestigator.objects.create(name=Person.objects.first())
 
-        response = self.client.post(reverse('anexo7'), {'process': 123,
+        response = self.client.post(reverse('anexo7'), {'process': '',
                                                         'choice': 1,
                                                         'stretch': 'Test',
                                                         'person': Person.objects.first().id,
