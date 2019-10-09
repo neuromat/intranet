@@ -53,7 +53,7 @@ class ResearchResult(models.Model):
         return u'%s' % self.title
 
     def authors(self):
-        if self.ris_file_authors != '':
+        if self.ris_file_authors and self.ris_file_authors != '':
             return self.ris_file_authors
         else:
             return '; '.join([str(name) for name in CitationName.objects.filter(
