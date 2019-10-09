@@ -118,7 +118,7 @@ class BookModelTests(TestCase):
 class PeriodicalModelTests(TestCase):
     def setUp(self):
         self.name = 'Periodical'
-        self.periodical = Periodical.objects.create(name=name)
+        self.periodical = Periodical.objects.create(name=self.name)
 
     def test_periodical_string_representation(self):
         self.assertEqual(self.periodical.__str__(), self.name)
