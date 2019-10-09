@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
-from custom_auth.models import User
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
 from django.utils.translation import ugettext_lazy as _
-from unittest import mock
 from django.utils import timezone
-
+from django.contrib.admin.sites import AdminSite
+from unittest import mock
 
 from helpers.views.date import *
 
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
                             PublishedInPeriodical, Periodical
 from research.views import scholar, now_plus_five_years, arxiv, import_papers
+from research.admin import ArticleAdmin, AcademicWorkAdmin
+
+from custom_auth.models import User
 
 
 USERNAME = 'myuser'
@@ -961,3 +963,160 @@ class CacheTest(TestCase):
                                      'paper_end_page_0': [u'459'],
                                      'paper_date_0': [u'2015-01-06']})
         self.assertEqual(response.status_code, 200)
+
+
+class SuperResearchResultTest(TestCase):
+    def test_super_research_result_returns_empty_list_when_user_is_superuser_and_not_nira_admin(self):
+        logged, self.user, self.factory = system_authentication(self)
+        article_admin = ArticleAdmin(Article, AdminSite())
+
+        qs = article_admin.get_queryset(self)
+        self.assertEqual(list(qs), [])
+
+    def test_super_research_result_returns_empty_list_when_user_is_nira_admin_and_not_superuser(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_nira_admin = True
+        self.user.is_superuser = False
+        self.user.save()
+        article_admin = ArticleAdmin(Article, AdminSite())
+
+        qs = article_admin.get_queryset(self)
+        self.assertEqual(list(qs), [])
+
+    def test_super_research_result_returns_empty_list_when_user_is_not_nira_admin_and_is_not_superuser(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.save()
+        article_admin = ArticleAdmin(Article, AdminSite())
+
+        qs = article_admin.get_queryset(self)
+        self.assertEqual(list(qs), [])
+
+    def test_get_fieldsets_doesnt_return_ris_file_authors_or_hide_if_user_dont_have_special_permissions(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.save()
+        article_admin = ArticleAdmin(Article, AdminSite())
+
+        qs = article_admin.get_fieldsets(self)
+        self.assertEqual(
+            list(qs[0][1]['fields']),
+            ['team', 'title', 'status', 'type', 'periodical', 'event', 'url', 'note'])
+
+    def test_get_fieldsets_returns_ris_file_authors_and_hide_if_user_is_superuser(self):
+        logged, self.user, self.factory = system_authentication(self)
+        article_admin = ArticleAdmin(Article, AdminSite())
+
+        qs = article_admin.get_fieldsets(self)
+        self.assertEqual(
+            list(qs[0][1]['fields']),
+            ['team', 'title', 'status', 'type', 'periodical', 'event', 'url', 'note', 'ris_file_authors', 'hide'])
+
+    def test_get_fieldsets_returns_ris_file_authors_and_hide_if_user_is_nira_admin(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.is_nira_admin = True
+        self.user.save()
+        article_admin = ArticleAdmin(Article, AdminSite())
+
+        qs = article_admin.get_fieldsets(self)
+        self.assertEqual(
+            list(qs[0][1]['fields']),
+            ['team', 'title', 'status', 'type', 'periodical', 'event', 'url', 'note', 'ris_file_authors', 'hide'])
+
+    def test_get_fieldsets_returns_ris_file_authors_and_hide_if_user_is_nira_admin_and_superuser(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_nira_admin = True
+        self.user.save()
+        article_admin = ArticleAdmin(Article, AdminSite())
+
+        qs = article_admin.get_fieldsets(self)
+        self.assertEqual(
+            list(qs[0][1]['fields']),
+            ['team', 'title', 'status', 'type', 'periodical', 'event', 'url', 'note', 'ris_file_authors', 'hide'])
+
+
+class AcademicWorkAdminTest(TestCase):
+    def setUp(self):
+        self.academic_work_type = TypeAcademicWork.objects.create(name='Post-doctoral')
+
+        self.advisee = Person.objects.create(full_name='John Smith')
+
+        self.advisor = Person.objects.create(full_name='Emma Miller')
+
+        self.co_advisor = Person.objects.create(full_name='Emma Smith')
+
+        self.abstract = 'Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis.'
+
+        self.team = "s"
+
+        place_of_publication = Periodical.objects.create(name="Scientific America")
+        place_of_publication.save()
+
+        # First academic work
+        self.postdoc_01 = create_postdoc(self.academic_work_type, 'postdoc_01', self.advisee, self.advisor,
+                                         '2018-07-01', '2019-10-19', self.abstract)
+
+        self.postdoc_01.co_advisor.add(self.co_advisor)
+
+    def test_return_all_academic_works_if_user_requesting_is_superuser(self):
+        logged, self.user, self.factory = system_authentication(self)
+        academic_work_admin = AcademicWorkAdmin(AcademicWork, AdminSite())
+
+        qs = academic_work_admin.get_queryset(self)
+        self.assertEqual(qs[0].title, 'postdoc_01')
+
+    def test_return_all_academic_works_if_user_requesting_is_nira_admin(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.is_nira_admin = True
+        self.user.save()
+        academic_work_admin = AcademicWorkAdmin(AcademicWork, AdminSite())
+
+        qs = academic_work_admin.get_queryset(self)
+        self.assertEqual(qs[0].title, 'postdoc_01')
+
+    def test_return_none_academic_works_if_user_requesting_is_neither_nira_admin_or_superuser(self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.save()
+        academic_work_admin = AcademicWorkAdmin(AcademicWork, AdminSite())
+
+        qs = academic_work_admin.get_queryset(self)
+        self.assertEqual(list(qs), [])
+
+    def test_returns_academic_work_of_the_user_requesting_is_advisee_and_not_superuser_or_nira_admin(
+            self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.user_profile_id = self.advisee.id
+        self.user.save()
+
+        academic_work_admin = AcademicWorkAdmin(AcademicWork, AdminSite())
+
+        qs = academic_work_admin.get_queryset(self)
+        self.assertEqual(qs[0].title, 'postdoc_01')
+
+    def test_returns_academic_work_of_the_user_requesting_is_advisor_and_not_superuser_or_nira_admin(
+            self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.user_profile_id = self.advisor.id
+        self.user.save()
+
+        academic_work_admin = AcademicWorkAdmin(AcademicWork, AdminSite())
+
+        qs = academic_work_admin.get_queryset(self)
+        self.assertEqual(qs[0].title, 'postdoc_01')
+
+    def test_returns_academic_work_of_the_user_requesting_is_co_advisor_and_not_superuser_or_nira_admin(
+            self):
+        logged, self.user, self.factory = system_authentication(self)
+        self.user.is_superuser = False
+        self.user.user_profile_id = self.co_advisor.id
+        self.user.save()
+
+        academic_work_admin = AcademicWorkAdmin(AcademicWork, AdminSite())
+
+        qs = academic_work_admin.get_queryset(self)
+        self.assertEqual(qs[0].title, 'postdoc_01')
