@@ -1,7 +1,7 @@
 import os
 from io import StringIO, BytesIO
 
-from cgi import escape
+from html import escape
 from xhtml2pdf import pisa
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -43,7 +43,8 @@ def render(template_src, context_dict, css_source=None):
                                 dest=result,
                                 encoding='UTF-8',
                                 link_callback=fetch_resources,
-                                default_css=open(os.path.join(settings.BASE_DIR, 'static', 'css', css_source)).read())
+                                default_css=open(os.path.join(settings.BASE_DIR, 'static', 'css', css_source)).read()
+                                )
     else:
         pdf = pisa.pisaDocument(txt_obj,
                                 dest=result,
