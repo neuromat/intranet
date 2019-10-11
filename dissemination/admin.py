@@ -1,6 +1,6 @@
 from django.contrib import admin
-from dissemination.models import *
-from dissemination.forms import *
+from dissemination.models import Topic, InternalMediaOutlet, Internal, ExternalMediaOutlet, External
+from dissemination.forms import DisseminationForm
 
 admin.site.register(Topic)
 admin.site.register(InternalMediaOutlet)
@@ -18,6 +18,7 @@ class InternalAdmin(admin.ModelAdmin):
     list_display_links = ('title', )
     form = DisseminationForm
 
+
 admin.site.register(Internal, InternalAdmin)
 
 
@@ -31,5 +32,6 @@ class ExternalAdmin(admin.ModelAdmin):
     list_display = ('title', 'authors', 'media_outlet', 'topics', 'date')
     list_display_links = ('title', )
     form = DisseminationForm
+
 
 admin.site.register(External, ExternalAdmin)
