@@ -67,7 +67,7 @@ class ProjectActivities(models.Model):
     type_of_activity = models.CharField(_('Type of activity'), max_length=1, choices=TYPE_OF_ACTIVITY, blank=True)
 
     def __str__(self):
-        return u'%s - %s' % (self.type_of_activity, self.title)
+        return u'%s - %s' % (self.get_type_of_activity_display(), self.title)
 
     class Meta:
         ordering = ('type_of_activity', 'title')
