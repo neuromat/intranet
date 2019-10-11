@@ -6,10 +6,9 @@ from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
-
 from activity.models import Seminar, SeminarType, TrainingProgram, Meeting
 from activity.views import training_programs_search, seminars_search
-from person.models import Person
+from person.models import Person, Institution
 from research.tests.test_orig import system_authentication
 
 # DRY with dates
@@ -305,7 +304,7 @@ class ProjectActivitiesTest(TestCase):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-        self.person = Person(full_name="Person Full Test")
+        self.person = Person(full_name="Person Full Test", signature='signatures/sign.jpeg')
         self.person.save()
         self.date1 = base_date2
         self.date2 = base_date1
@@ -317,37 +316,76 @@ class ProjectActivitiesTest(TestCase):
         type2 = SeminarType(name="Testing 2")
         type2.save()
 
+        self.institution = Institution(name='USP')
+
         self.seminar1 = seminar('Seminar1', type1, self.date1, self.person.id)
-        self.seminar2 = seminar('Seminar2', type2, self.date2)
+        self.seminarX = Seminar(title='SeminarX', date=self.date2, belongs_to=self.institution.id)
 
         self.meeting1 = meeting('First meeting', self.date1, self.date2, False)
         self.meeting1.save()
 
-        self.meeting2 = meeting('Second meeting', self.date1, self.date3, True)
-        self.meeting2.save()
-
         self.training1 = training_program("Test 1", self.date1)
         self.training1.save()
 
-        self.training2 = training_program("Test 2", self.date2)
-        self.training2.save()
 
-    def test_project_activities_certificate_render(self):
-        pass
-        # response = self.client.post(reverse('certificate'), {
-        #     'person': self.person.id,
-        #     'title': 1,
-        #     'signature': '',
-        #     'hours': 200
-        # })
+    def test_project_activities_certificate_without_person_render(self):
+        response = self.client.post(reverse('certificate'), {
+            'person': '',
+            'title': '',
+            'signature': '',
+            'hours': '22'
+        })
 
-        # self.assertEqual(response.status_code, 404)
+        for message in response.context['messages']:
+            self.assertEqual(message.message,
+                             _('You have to choose a person!'))
 
-    def test_person_for_project_activities_certificate(self):
-        pass
+        self.assertTemplateUsed(response, 'certificate/certificate.html')
 
-    def test_title_for_project_activities_certificate(self):
-        pass
+    def test_project_activities_certificate_without_title_render(self):
+        response = self.client.post(reverse('certificate'), {
+            'person': self.person.id,
+            'title': '',
+            'signature': '',
+            'hours': '22'
+        })
 
-    def test_signature_for_project_activities_certificate(self):
-        pass
+        for message in response.context['messages']:
+            self.assertEqual(message.message,
+                             _('You have to choose a project activity!'))
+
+        self.assertTemplateUsed(response, 'certificate/certificate.html')
+
+    def test_project_activities_certificate_without_signature_render(self):
+        response = self.client.post(reverse('certificate'), {
+            'person': self.person.id,
+            'title': 1,
+            'signature': '',
+            'hours': '22'
+        })
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message,
+                             _('You have to choose who will sign the certificate!'))
+
+        self.assertTemplateUsed(response, 'certificate/certificate.html')
+
+
+    def test_signature_for_project_activities_seminar_certificate(self):
+        response = self.client.post(reverse('certificate'), {
+            'person': self.person.id,
+            'title': self.seminar1.id,
+            'signature': self.person.signature,
+            'hours': '222'
+        })
+        self.assertEqual(response.status_code, 200)
+
+    def test_signature_for_project_activities_meeting_certificate(self):
+        response = self.client.post(reverse('certificate'), {
+            'person': self.person.id,
+            'title': self.meeting1.id,
+            'signature': self.person.signature,
+            'hours': '222'
+        })
+        self.assertEqual(response.status_code, 200)
+
