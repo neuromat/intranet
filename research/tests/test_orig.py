@@ -10,7 +10,7 @@ from unittest import mock
 from helpers.views.date import *
 
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
-                            PublishedInPeriodical, Periodical
+                            PublishedInPeriodical, Periodical, Author, ResearchResult
 from research.views import scholar, now_plus_five_years, arxiv, import_papers
 from research.admin import ArticleAdmin, AcademicWorkAdmin
 
@@ -839,6 +839,57 @@ class UpdatePapersTest(TestCase):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
+    def test_get_request_returns_import_papers_and_renders_report_research_import_html(self):
+        response = self.client.get(reverse('update_papers'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/import.html')
+
+    def test_post_request_with_empty_action_returns_import_papers_and_renders_report_research_import_html(self):
+        response = self.client.post(reverse('update_papers'), {'action': ''}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/import.html')
+
+    def test_post_request_with_finish_action_deletes_session_keys_and_returns_import_papers(self):
+        session = self.client.session
+        session['Test_key'] = 'Test_key_value'
+        session.save()
+
+        self.assertEqual(self.client.session.keys(),
+                         {'_auth_user_id', '_auth_user_hash', '_auth_user_backend', 'Test_key'})
+
+        response = self.client.post(reverse('update_papers'), {'action': 'finish'}, follow=True)
+
+        self.assertEqual(self.client.session.keys(),
+                         {'_auth_user_id', '_auth_user_hash', '_auth_user_backend'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/import.html')
+
+    def test_post_request_with_back_action_renders_report_research_add_event_papers_html(self):
+        session = self.client.session
+        session['event_papers'] = ['Test_event_papers']
+        session.save()
+
+        response = self.client.post(reverse('update_papers'), {'action': 'back'}, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/add_event_papers.html')
+
+    def test_post_request_with_back_action_and_event_papers_renders_report_research_add_event_papers_html(self):
+        person = Person.objects.create(full_name='Test person')
+        paper_title = 'Test paper title'
+        paper_author = 'Test paper author'
+        paper = {'nira_author_list': [person], 'paper_title': paper_title, 'paper_author': paper_author}
+
+        session = self.client.session
+        session['event_papers'] = paper
+        session.save()
+
+        response = self.client.post(reverse('update_papers'), {'action': 'back'}, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/add_event_papers.html')
+
     def test_update_papers(self):
 
         session = self.client.session
@@ -855,6 +906,102 @@ class UpdatePapersTest(TestCase):
 
         response = self.client.post(reverse('update_papers'), {'action': 'none'})
         self.assertEqual(response.status_code, 302)
+
+
+class UpdatePapersWithUpdateActionTest(TestCase):
+    def setUp(self):
+        self.title = 'Identifying interacting pairs of sites'
+        Article.objects.create(team='s', title=self.title, research_result_type='a')
+
+        self.paper, created = Periodical.objects.get_or_create(name='Brazilian Journal of Probab and Statistics')
+        paper_id = self.paper.id
+
+        researcher1 = Person.objects.create(full_name='Galves, A')
+        researcher2 = Person.objects.create(full_name='Orlandi, E')
+        researcher3 = Person.objects.create(full_name='Takahashi, DY')
+
+        self.authors = [researcher1, researcher2, researcher3]
+
+        self.data = {'action': 'update',
+                     'paper_id': str(paper_id),
+                     'paper_team_' + str(paper_id): ['s'],
+                     'paper_title_' + str(paper_id): [self.title],
+                     'paper_author_' + str(paper_id): self.authors,
+                     'paper_periodical_' + str(paper_id): paper_id,
+                     'paper_volume_' + str(paper_id): ['29'],
+                     'paper_issue_' + str(paper_id): ['2'],
+                     'paper_start_page_' + str(paper_id): ['443'],
+                     'paper_end_page_' + str(paper_id): ['459'],
+                     'paper_date_' + str(paper_id): ['2015-01-06']}
+
+    def add_variable_to_session(self, authors):
+        session = self.client.session
+        session['periodical_update_papers'] = [{'paper_scholar_id': self.paper.id, 'nira_author_list': authors}]
+        session.save()
+
+    def test_update_request_with_no_periodical_raises_error_message(self):
+        self.add_variable_to_session(self.authors)
+        self.data['paper_periodical_%s' % str(self.paper.id)] = 'none'
+        response = self.client.post(reverse('update_papers'), self.data)
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You should select a journal for the paper "%s".') % self.title)
+
+    def test_update_request_with_wrong_date_format_raises_error_message(self):
+        self.add_variable_to_session(self.authors)
+        self.data['paper_date_%s' % str(self.paper.id)] = ['06-01-2015']
+        response = self.client.post(reverse('update_papers'), self.data)
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('The date field is empty or has an incorrect format for the '
+                                                'paper "%s". It should be YYYY-MM-DD.') % self.title)
+
+    def test_update_request_with_wrong_date_format_and_no_periodical_raises_error_message(self):
+        self.add_variable_to_session(self.authors)
+        self.data['paper_periodical_%s' % str(self.paper.id)] = 'none'
+        self.data['paper_date_%s' % str(self.paper.id)] = ['06-01-2015']
+        response = self.client.post(reverse('update_papers'), self.data)
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('The paper "%s" has no journal and the date field is empty or '
+                                                'has an incorrect format') % self.title)
+
+    def test_update_request_without_paper_id_raises_error_message(self):
+        self.add_variable_to_session(self.authors)
+        del self.data['paper_id']
+        response = self.client.post(reverse('update_papers'), self.data)
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You have selected no item. Nothing to be done!'))
+
+    def test_update_request_without_nira_author_renders_periodical_update_papers_html(self):
+        self.add_variable_to_session(self.authors)
+        session = self.client.session
+        session['periodical_update_papers'] = [{'paper_scholar_id': self.paper.id}]
+        session.save()
+
+        response = self.client.post(reverse('update_papers'), self.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/periodical_update_papers.html')
+
+    def test_update_request_to_update_paper_authors(self):
+        self.add_variable_to_session(self.authors)
+        person = Person.objects.create(full_name='Antonio Galves')
+        research_result = ResearchResult.objects.first()
+        Author.objects.create(author=person, order=1, research_result=research_result)
+        research_result.person.add(person)
+        research_result.save()
+
+        response = self.client.post(reverse('update_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/periodical_update_papers.html')
+
+    def test_update_request_to_update_paper_authors_with_no_authors(self):
+        self.add_variable_to_session(self.authors)
+        response = self.client.post(reverse('update_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/periodical_update_papers.html')
 
 
 class CacheTest(TestCase):

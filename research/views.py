@@ -1178,7 +1178,7 @@ def update_papers(request):
                         elif date_error:
                             messages.warning(request, _('The date field is empty or has an incorrect format for the '
                                                         'paper "%s". It should be YYYY-MM-DD.') % paper_title)
-                        elif periodical_error:
+                        else:  # elif periodical_error
                             messages.warning(request, _('You should select a journal for the paper "%s".')
                                              % paper_title)
 
