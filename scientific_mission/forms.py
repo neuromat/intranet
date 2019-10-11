@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-from cities_light.models import City
-from configuration.models import ProcessNumber, PrincipalInvestigator
-from dal import autocomplete
-from .models import ScientificMission, Route
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from person.models import Person
 
+from dal import autocomplete
 from helpers.forms.date_range import DateInput
+
+from person.models import Person
+from configuration.models import ProcessNumber, PrincipalInvestigator
+from scientific_mission.models import ScientificMission, Route
+
 
 annex_seven_choices = ((0, '----------------'),
                        (1, 'transporte aéreo'),

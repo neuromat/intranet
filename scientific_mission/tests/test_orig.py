@@ -5,16 +5,14 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.utils.encoding import force_text
-from django.forms.models import inlineformset_factory
 
 from cities_light.models import City, Region, Country
-from scientific_mission.models import ScientificMission, Route
 from person.models import Person
 from configuration.models import PrincipalInvestigator, ProcessNumber
-
-from scientific_mission.admin import InlineValidationDate
+from scientific_mission.models import ScientificMission, Route
 
 from research.tests.test_orig import system_authentication
+
 from scientific_mission.views import get_missions
 
 
@@ -596,9 +594,9 @@ class ScientificMissionsTest(TestCase):
         for route in Route.objects.all():
             route.delete()
         person = Person.objects.first()
-        mission = ScientificMission.objects.create(person=person, amount_paid=13)
+        ScientificMission.objects.create(person=person, amount_paid=13)
         country = Country.objects.create(name='Brazil', name_ascii='Brazil', slug='brazil')
-        city = City.objects.create(country=country, name='Guarulhos', name_ascii='Guarulhos', slug='guarulhos')
+        City.objects.create(country=country, name='Guarulhos', name_ascii='Guarulhos', slug='guarulhos')
 
         date_departure1 = timezone.now()
         date_arrival1 = timezone.now() + timezone.timedelta(3)

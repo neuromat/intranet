@@ -1,9 +1,3 @@
-import json as simplejson
-from helpers.views.pdf import render as render_to_pdf
-from helpers.views.principal_investigator import principal_investigator_name
-from cities_light.models import City
-from configuration.models import ProcessNumber
-from dal import autocomplete
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
@@ -11,14 +5,25 @@ from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_http_methods
-from .forms import annex_seven_choices as choices
+
+import json as simplejson
+
+from dal import autocomplete
+from cities_light.models import City
+
+from helpers.views.pdf import render as render_to_pdf
+from helpers.views.principal_investigator import principal_investigator_name
 from helpers.forms.date_range import DateRangeForm
-from helpers.views.date import *
+from helpers.views.date import now_plus_thirty
 from helpers.views.latex import generate_latex
 from helpers.views.extenso import dExtenso
+
+from configuration.models import ProcessNumber
 from person.models import Person
+
 from scientific_mission.models import ScientificMission, Route
 from scientific_mission.forms import AnnexSixForm, AnnexSevenForm, AnnexNineForm
+from scientific_mission.forms import annex_seven_choices as choices
 
 
 class CityAutocomplete(autocomplete.Select2QuerySetView):

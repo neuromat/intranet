@@ -1,9 +1,10 @@
-from .forms import *
-from .models import *
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
+
+from scientific_mission.forms import RouteForm, ScientificMissionForm
+from scientific_mission.models import Type, ScientificMission, Route
 
 
 admin.site.register(Type)
@@ -47,4 +48,6 @@ class ScientificMissionAdmin(admin.ModelAdmin):
     search_fields = ['person__full_name', 'mission__mission', 'project_activity__title']
     inlines = (RouteInline,)
     form = ScientificMissionForm
+
+
 admin.site.register(ScientificMission, ScientificMissionAdmin)
