@@ -7,20 +7,20 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 
-from activity.models import ProjectActivities, Seminar, SeminarType, TrainingProgram
+from activity.models import ProjectActivities, Seminar, SeminarType
 from person.models import Person
 
 from helpers.forms.date_range import DateRangeForm
-from helpers.views.date import *
+from helpers.views.date import now_plus_thirty
 from helpers.views.latex import generate_latex
 from helpers.views.pdf import render as render_to_pdf
 
 
 def training_programs_search(start_date, end_date):
-    return ProjectActivities.objects.filter(type_of_activity='t',
-                                            trainingprogram__start_date__gt=start_date,
-                                            trainingprogram__start_date__lt=end_date).order_by(
-            'trainingprogram__start_date')
+    return ProjectActivities.objects.filter(
+        type_of_activity='t',
+        trainingprogram__start_date__gt=start_date,
+        trainingprogram__start_date__lt=end_date).order_by('trainingprogram__start_date')
 
 
 def seminars_search(start_date, end_date, category):

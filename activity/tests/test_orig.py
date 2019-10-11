@@ -1,4 +1,3 @@
-import os
 import datetime
 import tempfile
 
@@ -7,7 +6,6 @@ from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
-from django.core.files import File
 
 from activity.models import Seminar, SeminarType, TrainingProgram, Meeting
 from activity.views import training_programs_search, seminars_search
@@ -306,11 +304,6 @@ class ProjectActivitiesTest(TestCase):
     def setUp(self):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
-
-        def get_test_image_file():
-            from django.core.files.images import ImageFile
-            file = tempfile.NamedTemporaryFile(suffix='.png')
-            return ImageFile(file, name=file.name)
 
         self.person = Person(full_name="Person Full Test")
         self.person.save()

@@ -1,7 +1,8 @@
-from activity.models import *
-from activity.forms import *
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+
+from activity.models import Meeting, SeminarType, Seminar, TrainingProgram, News
+from activity.forms import TrainingProgramForm, NewsForm
 
 admin.site.register(SeminarType)
 
@@ -25,13 +26,14 @@ class MeetingAdmin(admin.ModelAdmin):
     list_display = ('title', 'broad_audience', 'cepid_event', 'local', 'start_date', 'end_date')
     list_display_links = ('title', )
 
+
 admin.site.register(Meeting, MeetingAdmin)
 
 
 class TrainingProgramAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ['belongs_to',  'speaker', 'title', 'local', 'description', 'number_of_participants',
+            'fields': ['belongs_to', 'speaker', 'title', 'local', 'description', 'number_of_participants',
                        'start_date', 'end_date', 'duration', 'other_duration']
         }),
     )
@@ -48,6 +50,7 @@ class TrainingProgramAdmin(admin.ModelAdmin):
         if request.user.is_nira_admin or request.user.is_superuser:
             return qs
         return qs.filter(speaker=request.user.projectmember)
+
 
 admin.site.register(TrainingProgram, TrainingProgramAdmin)
 
@@ -66,5 +69,6 @@ class SeminarAdmin(admin.ModelAdmin):
 
     class Media:
         js = ('/static/js/seminar.js',)
+
 
 admin.site.register(Seminar, SeminarAdmin)

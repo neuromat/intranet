@@ -1,9 +1,10 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
-from person.models import Person, Institution
 from django.utils.html import format_html
-from configuration.models import CepidName
+from django.utils.translation import ugettext_lazy as _
+
 from solo.models import SingletonModel
+
+from person.models import Person, Institution
 
 # Defining the duration of a Training Program
 ONE_HOUR = '1h'
@@ -66,7 +67,7 @@ class ProjectActivities(models.Model):
     type_of_activity = models.CharField(_('Type of activity'), max_length=1, choices=TYPE_OF_ACTIVITY, blank=True)
 
     def __str__(self):
-        return u'%s - %s' % (self.get_type_of_activity_display(), self.title)
+        return u'%s - %s' % (self.type_of_activity, self.title)
 
     class Meta:
         ordering = ('type_of_activity', 'title')
@@ -96,9 +97,6 @@ class Meeting(ProjectActivities):
 
     'class Meta'		Sets the description model (singular and plural) and define ordering of data by start_date.
     """
-    # import CEPID name
-    # cepid = CepidName.get_solo()
-    # cepid_name = cepid.cepid_name
 
     # fields
     broad_audience = models.BooleanField(_('Broad audience?'), default=False)
