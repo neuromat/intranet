@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # traduz 123.456.789-10 para 12345678910
 def _translate(cpf):
-    return ''.join(re.findall("\d", cpf))
+    return ''.join(re.findall(r"\d", cpf))
 
 
 def _exceptions(cpf):
@@ -18,9 +18,9 @@ def _exceptions(cpf):
         return True
     else:
         s = ''.join(str(x) for x in cpf)
-        if s == '00000000000' or s == '11111111111' or s == '22222222222' or s == '33333333333' or s == '44444444444' \
-                or s == '55555555555' or s == '66666666666' or s == '77777777777' or s == '88888888888' \
-                or s == '99999999999':
+        cpf_exceptions = ['00000000000', '11111111111', '22222222222', '33333333333', '44444444444', '55555555555',
+                          '66666666666', '77777777777', '88888888888', '99999999999']
+        if s in cpf_exceptions:
             return True
     return False
 

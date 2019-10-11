@@ -2,8 +2,8 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from modeltranslation.admin import TranslationAdmin
 
-from .forms import *
-from .models import *
+from person.forms import PersonForm, InstitutionForm
+from person.models import Role, InstitutionType, Institution, Person, CitationName
 
 
 admin.site.register(InstitutionType)
@@ -11,6 +11,7 @@ admin.site.register(InstitutionType)
 
 class RoleAdmin(TranslationAdmin):
     pass
+
 
 admin.site.register(Role, RoleAdmin)
 
@@ -48,6 +49,7 @@ class PersonAdmin(admin.ModelAdmin):
 
     form = PersonForm
 
+
 admin.site.register(Person, PersonAdmin)
 
 
@@ -59,6 +61,7 @@ class InstitutionAdmin(admin.ModelAdmin):
 
     form = InstitutionForm
 
+
 admin.site.register(Institution, InstitutionAdmin)
 
 
@@ -66,5 +69,6 @@ class CitationNameAdmin(admin.ModelAdmin):
     fields = ['person', 'name', 'default_name']
     list_display = ('person', 'name', 'default_name')
     list_display_links = ('name',)
+
 
 admin.site.register(CitationName, CitationNameAdmin)

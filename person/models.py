@@ -1,9 +1,11 @@
 from __future__ import unicode_literals
-from cities_light.models import City
-from person.validation import CPF
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+from cities_light.models import City
+
+from person.validation import CPF
 
 
 DEFAULT_CHOICES = ((True, 'Yes'), (False, 'No'))

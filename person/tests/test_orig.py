@@ -213,7 +213,7 @@ class CitationsTest(TestCase):
         messages = list(response.context['messages'])
 
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(str(messages[0]), "Successfully updated citation names.")
+        self.assertEqual(str(messages[0]), "Successfully updated citation names.")
         self.assertRedirects(response, reverse("admin:index"))
 
     def test_researchers(self):
