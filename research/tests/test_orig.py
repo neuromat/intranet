@@ -985,6 +985,17 @@ class UpdatePapersWithUpdateActionTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'report/research/periodical_update_papers.html')
 
+    def test_update_request_without_nira_author_renders_periodical_update_papers_html2(self):
+        self.add_variable_to_session(self.authors)
+        session = self.client.session
+        session['periodical_update_papers'] = [{'paper_scholar_id': self.paper.id+1}]
+        session.save()
+
+        response = self.client.post(reverse('update_papers'), self.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/periodical_update_papers.html')
+
     def test_update_request_to_update_paper_authors(self):
         self.add_variable_to_session(self.authors)
         person = Person.objects.create(full_name='Antonio Galves')
@@ -1002,6 +1013,30 @@ class UpdatePapersWithUpdateActionTest(TestCase):
         response = self.client.post(reverse('update_papers'), self.data)
 
         self.assertTemplateUsed(response, 'report/research/periodical_update_papers.html')
+
+    def test_update_request_with_start_and_end_page_creates_published_in_periodical_with_start_and_end_page(self):
+        self.add_variable_to_session(self.authors)
+
+        self.assertEqual(PublishedInPeriodical.objects.count(), 0)
+        self.client.post(reverse('update_papers'), self.data)
+
+        published_in_periodical = PublishedInPeriodical.objects.last()
+        self.assertEqual(PublishedInPeriodical.objects.count(), 1)
+        self.assertEqual(published_in_periodical.start_page, 443)
+        self.assertEqual(published_in_periodical.end_page, 459)
+
+    def test_update_request_without_start_and_end_page_creates_published_in_periodical_without_start_and_end_page(self):
+        self.add_variable_to_session(self.authors)
+
+        self.assertEqual(PublishedInPeriodical.objects.count(), 0)
+        self.data['paper_start_page_' + str(self.paper.id)] = ''
+        self.data['paper_end_page_' + str(self.paper.id)] = ''
+        self.client.post(reverse('update_papers'), self.data)
+
+        published_in_periodical = PublishedInPeriodical.objects.last()
+        self.assertEqual(PublishedInPeriodical.objects.count(), 1)
+        self.assertIsNone(published_in_periodical.start_page)
+        self.assertIsNone(published_in_periodical.end_page)
 
 
 class CacheTest(TestCase):
