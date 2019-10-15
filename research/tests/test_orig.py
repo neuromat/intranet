@@ -10,7 +10,7 @@ from unittest import mock
 from helpers.views.date import *
 
 from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
-                            PublishedInPeriodical, Periodical, Author, ResearchResult
+                            PublishedInPeriodical, Periodical, Author, ResearchResult, Published
 from research.views import scholar, now_plus_five_years, arxiv, import_papers
 from research.admin import ArticleAdmin, AcademicWorkAdmin
 
@@ -815,10 +815,33 @@ class ArxivPapersTest(TestCase):
 class EventPapersTest(TestCase):
 
     def setUp(self):
-        logged, self.user, self.factory = system_authentication(self)
-        self.assertEqual(logged, True)
+        self.title = 'Identifying interacting pairs of sites'
+        Article.objects.create(team='s', title=self.title, research_result_type='a')
 
-    def test_event_papers(self):
+        self.paper, created = Event.objects.get_or_create(
+            name='Event test',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timezone.timedelta(1),
+            local='São Paulo')
+
+        paper_id = self.paper.id
+
+        researcher1 = Person.objects.create(full_name='Galves, A')
+        researcher2 = Person.objects.create(full_name='Orlandi, E')
+        researcher3 = Person.objects.create(full_name='Takahashi, DY')
+
+        self.authors = [researcher1, researcher2, researcher3]
+
+        self.data = {'paper_id': str(paper_id),
+                     'paper_team_' + str(paper_id): ['s'],
+                     'paper_title_' + str(paper_id): [self.title],
+                     'paper_author_' + str(paper_id): self.authors,
+                     'paper_event_' + str(paper_id): paper_id,
+                     'paper_start_page_' + str(paper_id): ['443'],
+                     'paper_end_page_' + str(paper_id): ['459'],
+                     'paper_date_' + str(paper_id): ['2015-01-06']}
+
+    def test_event_papers2(self):
 
         session = self.client.session
         session['event_papers'] = []
@@ -831,6 +854,109 @@ class EventPapersTest(TestCase):
 
         response = self.client.post(reverse('event_papers'), {'action': 'back'})
         self.assertEqual(response.status_code, 200)
+
+    def test_event_papers_get_request_redirects_to_import_papers(self):
+        response = self.client.get(reverse('event_papers'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_event_papers_invalid_post_request_redirects_to_import_papers(self):
+        response = self.client.post(reverse('event_papers'), {'action': 'addnextback'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_event_papers_post_request_with_next_action_renders_periodical_update_papers_html(self):
+        session = self.client.session
+        session['periodical_update_papers'] = []
+        session.save()
+
+        response = self.client.post(reverse('event_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_update_papers.html')
+
+    def test_event_papers_post_request_with_back_action_renders_arxiv_papers_html(self):
+        session = self.client.session
+        session['arxiv_papers'] = []
+        session.save()
+
+        response = self.client.post(reverse('event_papers'), {'action': 'back'})
+        self.assertTemplateUsed(response, 'report/research/arxiv_papers.html')
+
+    def test_event_papers_post_request_with_add_action_and_without_selected_papers_raises_warning_message(self):
+        session = self.client.session
+        session['event_papers'] = []
+        session.save()
+
+        response = self.client.post(reverse('event_papers'), {'action': 'add'})
+        self.assertTemplateUsed(response, 'report/research/add_event_papers.html')
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You have selected no item. Nothing to be done!'))
+
+    def test_event_papers_without_nira_author_list_returns_0_authors(self):
+        session = self.client.session
+        session['event_papers'] = [{'paper_scholar_id': self.paper.id}]
+        session.save()
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('event_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/add_event_papers.html')
+        self.assertEqual(Author.objects.count(), 0)
+
+    def test_event_papers_with_nira_author_list_returns_1_author(self):
+        session = self.client.session
+        session['event_papers'] = [{'paper_scholar_id': self.paper.id, 'nira_author_list': self.authors}]
+        session.save()
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('event_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/add_event_papers.html')
+        self.assertEqual(Author.objects.count(), 3)
+
+    def test_event_papers_without_paper_scholar_id_returns_0_authors(self):
+        session = self.client.session
+        session['event_papers'] = [{'paper_scholar_id': self.paper.id-1, 'nira_author_list': self.authors}]
+        session.save()
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('event_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/add_event_papers.html')
+        self.assertEqual(Author.objects.count(), 0)
+
+    def test_event_papers_with_start_page_and_end_page_create_published_with_them(self):
+        session = self.client.session
+        session['event_papers'] = [{'paper_scholar_id': self.paper.id, 'nira_author_list': self.authors}]
+        session.save()
+
+        self.assertEqual(Published.objects.count(), 0)
+
+        self.data['action'] = 'add'
+        self.client.post(reverse('event_papers'), self.data)
+
+        published = Published.objects.last()
+        self.assertEqual(Published.objects.count(), 1)
+        self.assertEqual(published.start_page, int(self.data['paper_start_page_' + str(self.paper.id)][0]))
+        self.assertEqual(published.end_page, int(self.data['paper_end_page_' + str(self.paper.id)][0]))
+        self.assertEqual(published.article.title, self.title)
+
+    def test_event_papers_without_start_page_and_end_page_dont_create_published_with_them(self):
+        session = self.client.session
+        session['event_papers'] = [{'paper_scholar_id': self.paper.id, 'nira_author_list': self.authors}]
+        session.save()
+
+        self.assertEqual(Published.objects.count(), 0)
+        self.data['paper_start_page_' + str(self.paper.id)] = ''
+        self.data['paper_end_page_' + str(self.paper.id)] = ''
+
+        self.data['action'] = 'add'
+        self.client.post(reverse('event_papers'), self.data)
+
+        published = Published.objects.last()
+        self.assertEqual(Published.objects.count(), 1)
+        self.assertIsNone(published.start_page)
+        self.assertIsNone(published.end_page)
+        self.assertEqual(published.article.title, self.title)
 
 
 class UpdatePapersTest(TestCase):
