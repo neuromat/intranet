@@ -38,7 +38,8 @@ class CustomUserAdminTest(TestCase):
         custom_user_admin = CustomUserAdmin(User, AdminSite())
 
         qs = custom_user_admin.get_queryset(self)
-        self.assertEqual(list(qs), [self.user1, self.user])
+        self.assertIn(self.user1, qs)
+        self.assertIn(self.user, qs)
 
     def test_get_fieldsets_when_superuser(self):
         logged, self.user, self.factory = system_authentication(self)

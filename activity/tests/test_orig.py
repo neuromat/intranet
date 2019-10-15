@@ -1,11 +1,15 @@
 import datetime
-import tempfile
-
 import json
+import os
+import shutil
+
 from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.conf import settings
+
 from activity.models import Seminar, SeminarType, TrainingProgram, Meeting
 from activity.views import training_programs_search, seminars_search
 from person.models import Person, Institution
@@ -327,7 +331,6 @@ class ProjectActivitiesTest(TestCase):
         self.training1 = training_program("Test 1", self.date1)
         self.training1.save()
 
-
     def test_project_activities_certificate_without_person_render(self):
         response = self.client.post(reverse('certificate'), {
             'person': '',
@@ -370,8 +373,11 @@ class ProjectActivitiesTest(TestCase):
 
         self.assertTemplateUsed(response, 'certificate/certificate.html')
 
-
     def test_signature_for_project_activities_seminar_certificate(self):
+        signature = SimpleUploadedFile("signatures/sign.jpeg", b"these are the file contents!")
+        self.person.signature = signature
+        self.person.save()
+
         response = self.client.post(reverse('certificate'), {
             'person': self.person.id,
             'title': self.seminar1.id,
@@ -380,7 +386,15 @@ class ProjectActivitiesTest(TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
+        # Remove files used in test and created directories
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=False, onerror=None)
+
     def test_signature_for_project_activities_meeting_certificate(self):
+        signature = SimpleUploadedFile("signatures/sign.jpeg", b"these are the file contents!")
+        self.person.signature = signature
+        self.person.save()
+
         response = self.client.post(reverse('certificate'), {
             'person': self.person.id,
             'title': self.meeting1.id,
@@ -389,3 +403,6 @@ class ProjectActivitiesTest(TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
+        # Remove files used in test and created directories
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=False, onerror=None)
