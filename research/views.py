@@ -867,7 +867,7 @@ def periodical_published_papers(request):
                         date_error = True
 
                     # Periodical validation
-                    if paper_periodical == u'none':
+                    if paper_periodical == 'none':
                         periodical_error = True
 
                     if not date_error and not periodical_error:
@@ -898,16 +898,14 @@ def periodical_published_papers(request):
                         periodical_published_papers = [x for x in periodical_published_papers if
                                                        not (int(paper_scholar_id) == x.get('paper_scholar_id'))]
 
-                    else:
-                        if date_error and periodical_error:
-                            messages.warning(request, _('The paper "%s" has no journal and the date field is empty or '
-                                                        'has an incorrect format') % paper_title)
-                        elif date_error:
-                            messages.warning(request, _('The date field is empty or has an incorrect format for the '
-                                                        'paper "%s". It should be YYYY-MM-DD.') % paper_title)
-                        elif periodical_error:
-                            messages.warning(request, _('You should select a journal for the paper "%s".')
-                                             % paper_title)
+                    elif date_error and periodical_error:
+                        messages.warning(request, _('The paper "%s" has no journal and the date field is empty or '
+                                                    'has an incorrect format') % paper_title)
+                    elif date_error:
+                        messages.warning(request, _('The date field is empty or has an incorrect format for the '
+                                                    'paper "%s". It should be YYYY-MM-DD.') % paper_title)
+                    else:  # elif periodical_error:
+                        messages.warning(request, _('You should select a journal for the paper "%s".') % paper_title)
 
                 request.session['periodical_published_papers'] = periodical_published_papers
                 context = {'periodical_published_papers': periodical_published_papers, 'periodicals': periodicals}

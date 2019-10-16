@@ -777,7 +777,6 @@ class AddPapersTest(TestCase):
 
 
 class PeriodicalPublishedTest(TestCase):
-
     def setUp(self):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
@@ -785,10 +784,169 @@ class PeriodicalPublishedTest(TestCase):
         session = testing_session(self)
         session.save()
 
-    def test_periodical_published_papers(self):
+        self.title = 'Identifying interacting pairs of sites'
+        Article.objects.create(team='s', title=self.title, research_result_type='a')
+
+        self.paper, created = Periodical.objects.get_or_create(name=self.title)
+
+        paper_id = self.paper.id
+
+        researcher1 = Person.objects.create(full_name='Galves, A')
+        researcher2 = Person.objects.create(full_name='Orlandi, E')
+        researcher3 = Person.objects.create(full_name='Takahashi, DY')
+
+        self.authors = [researcher1, researcher2, researcher3]
+
+        self.data = {'paper_id': str(paper_id),
+                     'paper_team_' + str(paper_id): ['s'],
+                     'paper_title_' + str(paper_id): [self.title],
+                     'paper_author_' + str(paper_id): self.authors,
+                     'paper_periodical_' + str(paper_id): paper_id,
+                     'paper_volume_' + str(paper_id): paper_id,
+                     'paper_issue_' + str(paper_id): paper_id,
+                     'paper_start_page_' + str(paper_id): ['443'],
+                     'paper_end_page_' + str(paper_id): ['459'],
+                     'paper_date_' + str(paper_id): ['2015-01-06']}
+
+    def test_get_request_periodical_published_papers(self):
+        response = self.client.get(reverse('periodical_published_papers'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_periodical_published_papers_invalid_post_request_redirects_to_import_papers(self):
+        response = self.client.post(reverse('periodical_published_papers'), {'action': 'addnextback'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_periodical_published_papers_post_request_with_back_action_renders_events_to_import_html(self):
+        session = self.client.session
+        session['events'] = []
+        session.save()
+
+        response = self.client.post(reverse('periodical_published_papers'), {'action': 'back'})
+        self.assertTemplateUsed(response, 'report/research/events_to_import.html')
+
+    def test_periodical_published_papers_post_request_with_next_action_renders_arxiv_papers_html(self):
+        session = self.client.session
+        session['arxiv_papers'] = []
+        session.save()
 
         response = self.client.post(reverse('periodical_published_papers'), {'action': 'next'})
-        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/arxiv_papers.html')
+
+    def test_periodical_published_papers_with_add_action_and_without_selected_papers_raises_warning_message(self):
+        session = self.client.session
+        session['periodical_published_papers'] = []
+        session.save()
+
+        response = self.client.post(reverse('periodical_published_papers'), {'action': 'add'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You have selected no item. Nothing to be done!'))
+
+    def test_periodical_published_papers_without_nira_author_list_returns_0_authors(self):
+        session = self.client.session
+        session['periodical_published_papers'] = [{'paper_scholar_id': self.paper.id, 'url': 'http://www.google.com'}]
+        session.save()
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('periodical_published_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+        self.assertEqual(Author.objects.count(), 0)
+
+    def test_periodical_published_papers_with_nira_author_list_returns_3_authors(self):
+        session = self.client.session
+        session['periodical_published_papers'] = [{
+            'paper_scholar_id': self.paper.id,
+            'nira_author_list': self.authors,
+            'url': 'http://www.google.com'}]
+        session.save()
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('periodical_published_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+        self.assertEqual(Author.objects.count(), 3)
+
+    def test_periodical_published_papers_without_paper_scholar_id_returns_0_authors(self):
+        session = self.client.session
+        session['periodical_published_papers'] = [{
+            'paper_scholar_id': self.paper.id-1,
+            'nira_author_list': self.authors,
+            'url': 'http://www.google.com'}]
+        session.save()
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('periodical_published_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+        self.assertEqual(Author.objects.count(), 0)
+
+    def test_periodical_published_papers_with_wrong_date_format_raises_warning_message(self):
+        session = self.client.session
+        session['periodical_published_papers'] = [{
+            'paper_scholar_id': self.paper.id,
+            'nira_author_list': self.authors,
+            'url': 'http://www.google.com'}]
+        session.save()
+
+        self.data['paper_date_' + str(self.paper.id)] = ['06-01-2015']
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('periodical_published_papers'), self.data)
+
+        for message in response.context['messages']:
+            self.assertEqual(
+                message.message,
+                _('The date field is empty or has an incorrect format for the paper "%s". '
+                  'It should be YYYY-MM-DD.') % self.title)
+
+    def test_periodical_published_papers_with_none_as_paper_periodical_raises_warning_message(self):
+        session = self.client.session
+        session['periodical_published_papers'] = [{
+            'paper_scholar_id': self.paper.id,
+            'nira_author_list': self.authors,
+            'url': 'http://www.google.com'}]
+        session.save()
+
+        self.data['paper_periodical_' + str(self.paper.id)] = 'none'
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('periodical_published_papers'), self.data)
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You should select a journal for the paper "%s".') % self.title)
+
+    def test_periodical_published_papers_with_no_paper_periodical_and_wrong_date_format_raises_warning_message(self):
+        session = self.client.session
+        session['periodical_published_papers'] = [{
+            'paper_scholar_id': self.paper.id,
+            'nira_author_list': self.authors,
+            'url': 'http://www.google.com'}]
+        session.save()
+
+        self.data['paper_periodical_' + str(self.paper.id)] = 'none'
+        self.data['paper_date_' + str(self.paper.id)] = ['06-01-2015']
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('periodical_published_papers'), self.data)
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('The paper "%s" has no journal and the date field is empty or has an '
+                                                'incorrect format') % self.title)
+
+    def test_periodical_published_papers_without_start_and_end_page_creates_published_in_periodical_without_them(self):
+        self.assertEqual(PublishedInPeriodical.objects.count(), 0)
+        self.data['paper_start_page_' + str(self.paper.id)] = ''
+        self.data['paper_end_page_' + str(self.paper.id)] = ''
+        self.data['action'] = 'add'
+        self.client.post(reverse('periodical_published_papers'), self.data)
+
+        published_in_periodical = PublishedInPeriodical.objects.last()
+        self.assertEqual(PublishedInPeriodical.objects.count(), 1)
+        self.assertIsNone(published_in_periodical.start_page)
+        self.assertIsNone(published_in_periodical.end_page)
 
 
 class ArxivPapersTest(TestCase):
@@ -800,6 +958,30 @@ class ArxivPapersTest(TestCase):
         session = testing_session(self)
         session.save()
 
+        self.title = 'Identifying interacting pairs of sites'
+        Article.objects.create(team='s', title=self.title, research_result_type='a')
+
+        self.paper, created = Event.objects.get_or_create(
+            name='Event test',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timezone.timedelta(1),
+            local='São Paulo')
+
+        paper_id = self.paper.id
+
+        researcher1 = Person.objects.create(full_name='Galves, A')
+        researcher2 = Person.objects.create(full_name='Orlandi, E')
+        researcher3 = Person.objects.create(full_name='Takahashi, DY')
+
+        self.authors = [researcher1, researcher2, researcher3]
+
+        self.data = {'paper_id': str(paper_id),
+                     'paper_team_' + str(paper_id): ['s'],
+                     'paper_title_' + str(paper_id): [self.title],
+                     'paper_author_' + str(paper_id): self.authors,
+                     'paper_arxiv_' + str(paper_id): paper_id,
+                     'paper_date_' + str(paper_id): ['2015-01-06']}
+
     def test_arxiv_papers(self):
 
         response = self.client.post(reverse('arxiv_papers'), {'action': 'add'})
@@ -810,6 +992,91 @@ class ArxivPapersTest(TestCase):
 
         response = self.client.post(reverse('arxiv_papers'), {'action': 'back'})
         self.assertEqual(response.status_code, 200)
+
+    def test_get_request_arxiv_papers(self):
+        response = self.client.get(reverse('arxiv_papers'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_arxiv_papers_invalid_post_request_redirects_to_import_papers(self):
+        response = self.client.post(reverse('arxiv_papers'), {'action': 'addnextback'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_arxiv_papers_post_request_with_back_action_renders_periodical_update_papers_html(self):
+        session = self.client.session
+        session['periodical_published_papers'] = []
+        session.save()
+
+        response = self.client.post(reverse('arxiv_papers'), {'action': 'back'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_arxiv_papers_post_request_with_next_action_renders_add_event_papers_html(self):
+        session = self.client.session
+        session['arxiv_papers'] = []
+        session.save()
+
+        response = self.client.post(reverse('arxiv_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/add_event_papers.html')
+
+    def test_arxiv_papers_post_request_with_add_action_and_without_selected_papers_raises_warning_message(self):
+        session = self.client.session
+        session['arxiv_papers'] = []
+        session.save()
+
+        response = self.client.post(reverse('arxiv_papers'), {'action': 'add'})
+        self.assertTemplateUsed(response, 'report/research/arxiv_papers.html')
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You have selected no item. Nothing to be done!'))
+
+    def test_arxiv_papers_without_nira_author_list_returns_0_authors(self):
+        session = self.client.session
+        session['arxiv_papers'] = [{'paper_arxiv_id': self.paper.id}]
+        session.save()
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('arxiv_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/arxiv_papers.html')
+        self.assertEqual(Author.objects.count(), 0)
+
+    def test_arxiv_papers_with_nira_author_list_returns_3_authors(self):
+        session = self.client.session
+        session['arxiv_papers'] = [{'paper_arxiv_id': self.paper.id, 'nira_author_list': self.authors}]
+        session.save()
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('arxiv_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/arxiv_papers.html')
+        self.assertEqual(Author.objects.count(), 3)
+
+    def test_arxiv_papers_without_paper_scholar_id_returns_0_authors(self):
+        session = self.client.session
+        session['arxiv_papers'] = [{'paper_arxiv_id': self.paper.id-1, 'nira_author_list': self.authors}]
+        session.save()
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('arxiv_papers'), self.data)
+
+        self.assertTemplateUsed(response, 'report/research/arxiv_papers.html')
+        self.assertEqual(Author.objects.count(), 0)
+
+    def test_arxiv_papers_with_wrong_date_format_raises_warning_message(self):
+        session = self.client.session
+        session['arxiv_papers'] = [{'paper_arxiv_id': self.paper.id, 'nira_author_list': self.authors}]
+        session.save()
+
+        self.data['paper_date_' + str(self.paper.id)] = ['06-01-2015']
+
+        self.data['action'] = 'add'
+        response = self.client.post(reverse('arxiv_papers'), self.data)
+
+        for message in response.context['messages']:
+            self.assertEqual(
+                message.message,
+                _('The date field is empty or has an incorrect format for the paper "%s". '
+                  'It should be YYYY-MM-DD.') % self.title)
 
 
 class EventPapersTest(TestCase):
@@ -902,7 +1169,7 @@ class EventPapersTest(TestCase):
         self.assertTemplateUsed(response, 'report/research/add_event_papers.html')
         self.assertEqual(Author.objects.count(), 0)
 
-    def test_event_papers_with_nira_author_list_returns_1_author(self):
+    def test_event_papers_with_nira_author_list_returns_3_authors(self):
         session = self.client.session
         session['event_papers'] = [{'paper_scholar_id': self.paper.id, 'nira_author_list': self.authors}]
         session.save()
