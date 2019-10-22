@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, override_settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.contrib.admin.sites import AdminSite
@@ -9,9 +9,9 @@ from unittest import mock
 
 from helpers.views.date import *
 
-from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted, \
-                            PublishedInPeriodical, Periodical, Author, ResearchResult, Published
-from research.views import scholar, now_plus_five_years, arxiv, import_papers
+from research.models import AcademicWork, TypeAcademicWork, Person, Article, Draft, Event, Submitted, Accepted,\
+    PublishedInPeriodical, Periodical, Author, ResearchResult, Published, CitationName, EventRISFile, PeriodicalRISFile
+from research.views import scholar, now_plus_five_years, arxiv, import_papers, SCHOLAR, SCHOLAR_USER
 from research.admin import ArticleAdmin, AcademicWorkAdmin
 
 from custom_auth.models import User
@@ -761,19 +761,319 @@ class AddPeriodicalsTest(TestCase):
 
 
 class AddPapersTest(TestCase):
-
     def setUp(self):
-
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-        session = testing_session(self)
+        #
+        # self.title = 'Identifying interacting pairs of sites'
+        # Article.objects.create(team='s', title=self.title, research_result_type='a')
+        #
+        # self.paper, created = Periodical.objects.get_or_create(name=self.title)
+        #
+        # paper_id = self.paper.id
+        #
+        # researcher1 = Person.objects.create(full_name='Galves, A')
+        # researcher2 = Person.objects.create(full_name='Orlandi, E')
+        # researcher3 = Person.objects.create(full_name='Takahashi, DY')
+        #
+        # self.authors = [researcher1, researcher2, researcher3]
+        #
+        # self.data = {'paper_id': str(paper_id),
+        #              'paper_team_' + str(paper_id): ['s'],
+        #              'paper_title_' + str(paper_id): [self.title],
+        #              'paper_author_' + str(paper_id): self.authors,
+        #              'paper_periodical_' + str(paper_id): paper_id,
+        #              'paper_volume_' + str(paper_id): paper_id,
+        #              'paper_issue_' + str(paper_id): paper_id,
+        #              'paper_start_page_' + str(paper_id): ['443'],
+        #              'paper_end_page_' + str(paper_id): ['459'],
+        #              'paper_date_' + str(paper_id): ['2015-01-06']}
+
+    def test_get_request_add_papers(self):
+        response = self.client.get(reverse('add_papers'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_add_papers_invalid_post_request_redirects_to_import_papers(self):
+        response = self.client.post(reverse('add_papers'), {'action': 'nextback'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_add_papers_post_request_with_back_action_renders_periodicals_to_import_html(self):
+        session = self.client.session
+        session['periodicals_to_add'] = []
         session.save()
 
-    def test_add_papers(self):
-
         response = self.client.post(reverse('add_papers'), {'action': 'back'})
-        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/periodicals_to_import.html')
+
+    def test_add_papers_with_next_action_and_periodical_published_papers_renders_periodical_published_papers_html(self):
+        session = self.client.session
+        session['periodical_published_papers'] = []
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_without_periodical_published_papers_renders_periodical_published_papers_html(self):
+        session = self.client.session
+        session['papers'] = []
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_invalid_keys(self):
+        session = self.client.session
+        session['papers'] = [{'TYT1A1JOT2VLISSPEP': 'JOUR'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_ty_jour(self):
+        session = self.client.session
+        session['papers'] = [{'TY': 'JOUR'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_ty_conf(self):
+        session = self.client.session
+        session['papers'] = [{'TY': 'CONF'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_ty_neither_jour_or_conf(self):
+        session = self.client.session
+        session['papers'] = [{'TY': 'JOURCONF'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_t1_with_article_title_in_uppercase(self):
+        Article.objects.create(team='s', title='Título', research_result_type='a')
+
+        session = self.client.session
+        session['papers'] = [{'T1': 'TÍTULO'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_t1_with_article_title_normal(self):
+        Article.objects.create(team='s', title='Título', research_result_type='a')
+
+        session = self.client.session
+        session['papers'] = [{'T1': 'Título'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_t1_with_no_article_created(self):
+        session = self.client.session
+        session['papers'] = [{'T1': 'Título'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_a1_with_only_one_author(self):
+        session = self.client.session
+        session['papers'] = [{'A1': ['TAL, FULANO DE']}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_a1_with_more_than_one_author(self):
+        person = Person.objects.create(full_name='Ciclano Silva')
+        CitationName.objects.create(person=person, name='Silva, C')
+
+        session = self.client.session
+        session['papers'] = [{'A1': ['TAL, FULANO DE', 'Silva, Ciclano']}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_jo_with_arxiv(self):
+        session = self.client.session
+        session['papers'] = [{'JO': 'arXivTest'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_jo_without_arxiv_and_without_periodicals_or_periodical_ris_or_event_or_event_ris(self):
+        session = self.client.session
+        session['papers'] = [{'JO': 'Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_jo_with_event_ris(self):
+        event = Event.objects.create(
+            name='Event_Test',
+            local='São Paulo',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timezone.timedelta(1))
+
+        EventRISFile.objects.create(event=event, name='Event_Ris_Test')
+
+        session = self.client.session
+        session['papers'] = [{'JO': 'Event_Ris_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_jo_with_event(self):
+        Event.objects.create(
+            name='Event_Test',
+            local='São Paulo',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timezone.timedelta(1))
+
+        session = self.client.session
+        session['papers'] = [{'JO': 'Event_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_jo_with_periodical_ris(self):
+        periodical = Periodical.objects.create(name='Periodical_Test')
+        PeriodicalRISFile.objects.create(periodical=periodical, name='Periodical_Ris_Test')
+
+        session = self.client.session
+        session['papers'] = [{'JO': 'Periodical_Ris_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_jo_with_periodical_with_acronym(self):
+        Periodical.objects.create(name='Periodical_Test', acronym='PT')
+
+        session = self.client.session
+        session['papers'] = [{'JO': 'PT'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_jo_with_periodical_without_acronym(self):
+        Periodical.objects.create(name='Periodical_Test')
+
+        session = self.client.session
+        session['papers'] = [{'JO': 'Periodical_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    # TODO: Criar esse teste passando um arXiv válido
+    # def test_add_papers_ty_with_arxiv(self):
+    #     session = self.client.session
+    #     session['papers'] = [{'TY': 'JOUR', 'JO': 'arXiv:Periodical_Test'}]
+    #     session.save()
+    #
+    #     response = self.client.post(reverse('add_papers'), {'action': 'next'})
+    #     self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_t2_without_event_or_event_ris(self):
+        session = self.client.session
+        session['papers'] = [{'T2': 'Event_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_t2_with_event_ris(self):
+        event = Event.objects.create(
+            name='Event_Test',
+            local='São Paulo',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timezone.timedelta(1))
+
+        EventRISFile.objects.create(event=event, name='Event_Ris_Test')
+
+        session = self.client.session
+        session['papers'] = [{'T2': 'Event_Ris_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_t2_with_event(self):
+        Event.objects.create(
+            name='Event_Test',
+            local='São Paulo',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timezone.timedelta(1))
+
+        session = self.client.session
+        session['papers'] = [{'T2': 'Event_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_vl(self):
+        session = self.client.session
+        session['papers'] = [{'VL': '1'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_is(self):
+        session = self.client.session
+        session['papers'] = [{'IS': '1'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_sp_with_invalid_start_page(self):
+        session = self.client.session
+        session['papers'] = [{'SP': 'start_page'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_sp_with_valid_start_page(self):
+        session = self.client.session
+        session['papers'] = [{'SP': '1'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_ep_with_invalid_end_page(self):
+        session = self.client.session
+        session['papers'] = [{'EP': 'end_page'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_ep_with_valid_end_page(self):
+        session = self.client.session
+        session['papers'] = [{'EP': '1'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
 
 
 class PeriodicalPublishedTest(TestCase):

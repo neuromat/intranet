@@ -724,7 +724,7 @@ def add_papers(request):
                                 x = int(each_dict[each_key])
                                 if isinstance(x, int):
                                     paper_start_page = each_dict[each_key]
-                            except:
+                            except ValueError:
                                 paper_start_page = ""
 
                         # Last page of the paper in the publication
@@ -733,7 +733,7 @@ def add_papers(request):
                                 x = int(each_dict[each_key])
                                 if isinstance(x, int):
                                     paper_end_page = each_dict[each_key]
-                            except:
+                            except ValueError:
                                 paper_end_page = ""
 
                     if nira_author_list:
