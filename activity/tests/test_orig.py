@@ -345,6 +345,27 @@ class ProjectActivitiesTest(TestCase):
 
         self.assertTemplateUsed(response, 'certificate/certificate.html')
 
+    def test_project_activities_certificate_without_person_response(self):
+        signature = SimpleUploadedFile("signatures/sign.jpeg", b"these are the file contents!")
+        self.person.signature = signature
+        self.person.save()
+
+        inexistent_person_id = '3883'
+        response = self.client.post(reverse('certificate'), {
+            'person': inexistent_person_id,
+            'title': self.seminar1.id,
+            'signature': self.person.signature,
+            'hours': '22'
+        })
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message,
+                             _('No person matches the given query.'))
+
+        # Remove files used in test and created directories
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=False, onerror=None)
+
     def test_project_activities_certificate_without_title_render(self):
         response = self.client.post(reverse('certificate'), {
             'person': self.person.id,
@@ -358,6 +379,29 @@ class ProjectActivitiesTest(TestCase):
                              _('You have to choose a project activity!'))
 
         self.assertTemplateUsed(response, 'certificate/certificate.html')
+
+    def test_project_activities_certificate_without_title_response(self):
+        signature = SimpleUploadedFile("signatures/sign.jpeg", b"these are the file contents!")
+        self.person.signature = signature
+        self.person.save()
+
+        inexistent_project_activity = '423423'
+
+        response = self.client.post(reverse('certificate'), {
+            'person': self.person.id,
+            'title': inexistent_project_activity,
+            'signature': self.person.signature,
+            'hours': '22'
+        })
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message,
+                             _('No training program matches the given query.'))
+
+        # Remove files used in test and created directories
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=False, onerror=None)
+
 
     def test_project_activities_certificate_without_signature_render(self):
         response = self.client.post(reverse('certificate'), {
