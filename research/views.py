@@ -643,6 +643,8 @@ def add_papers(request):
                                 get_paper = Article.objects.get(title=paper_title)
                                 get_paper_status = get_paper.status
                                 get_paper_team = get_paper.team
+                            else:
+                                pass
 
                         # Paper authors and citation names
                         elif 'A1' in each_key:
@@ -697,6 +699,8 @@ def add_papers(request):
                                 else:
                                     periodical_id = ''
                                     event_id = ''
+                            else:
+                                pass
 
                         # Event of the paper
                         elif 'T2' in each_key:
@@ -721,18 +725,17 @@ def add_papers(request):
                         # Starting page of the paper in the publication
                         elif 'SP' in each_key:
                             try:
-                                x = int(each_dict[each_key])
-                                if isinstance(x, int):
-                                    paper_start_page = each_dict[each_key]
+                                int(each_dict[each_key])
+                                paper_start_page = each_dict[each_key]
                             except ValueError:
                                 paper_start_page = ""
 
                         # Last page of the paper in the publication
                         elif 'EP' in each_key:
                             try:
-                                x = int(each_dict[each_key])
-                                if isinstance(x, int):
-                                    paper_end_page = each_dict[each_key]
+                                int(each_dict[each_key])
+                                # Se a função acima falhar, a declaração abaixo não ocorre, de modo a não precisar de if
+                                paper_end_page = each_dict[each_key]
                             except ValueError:
                                 paper_end_page = ""
                         else:
