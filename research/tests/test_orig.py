@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.contrib.admin.sites import AdminSite
 from unittest import mock
+from unittest.mock import patch
 
 from helpers.views.date import *
 
@@ -840,6 +841,23 @@ class AddPapersTest(TestCase):
         response = self.client.post(reverse('add_papers'), {'action': 'next'})
         self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
 
+    @patch("research.views.SCHOLAR_USER", '/citations?user=oAY57UIAAAAJ&cstart=00&pagesize=1000')
+    def test_add_papers_ty_jour_with_scholar_not_available(self):
+        session = self.client.session
+        session['papers'] = [{'TY': 'JOUR'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_ty_jour_and_arXiv(self):
+        session = self.client.session
+        session['papers'] = [{'TY': 'JOUR', 'JO': 'arXiv:1303.0053'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
     def test_add_papers_ty_conf(self):
         session = self.client.session
         session['papers'] = [{'TY': 'CONF'}]
@@ -868,6 +886,27 @@ class AddPapersTest(TestCase):
 
     def test_add_papers_t1_with_article_title_normal(self):
         Article.objects.create(team='s', title='Título', research_result_type='a')
+
+        session = self.client.session
+        session['papers'] = [{'T1': 'Título'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    @patch("research.views.SCHOLAR_USER", '/citations?user=oAY57UIAAAAJ&cstart=00&pagesize=1000')
+    def test_add_papers_t1_with_article_title_normal_but_scholar_not_available(self):
+        Article.objects.create(team='s', title='Título', research_result_type='a')
+
+        session = self.client.session
+        session['papers'] = [{'T1': 'Título'}]
+        session.save()
+
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    def test_add_papers_t1_with_p_status(self):
+        Article.objects.create(team='s', title='Título', research_result_type='a', status='p')
 
         session = self.client.session
         session['papers'] = [{'T1': 'Título'}]
@@ -1072,6 +1111,14 @@ class AddPapersTest(TestCase):
         session['papers'] = [{'EP': '1'}]
         session.save()
 
+        response = self.client.post(reverse('add_papers'), {'action': 'next'})
+        self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
+
+    @patch("research.views.SCHOLAR_USER", '/citations?user=oAY57UIAAAAJ&cstart=00&pagesize=1000')
+    def test_scholar_not_available(self):
+        session = self.client.session
+        session['papers'] = []
+        session.save()
         response = self.client.post(reverse('add_papers'), {'action': 'next'})
         self.assertTemplateUsed(response, 'report/research/periodical_published_papers.html')
 

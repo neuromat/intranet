@@ -735,6 +735,8 @@ def add_papers(request):
                                     paper_end_page = each_dict[each_key]
                             except ValueError:
                                 paper_end_page = ""
+                        else:
+                            pass
 
                     if nira_author_list:
                         paper = {'nira_author_list': nira_author_list, 'paper_title': paper_title,
