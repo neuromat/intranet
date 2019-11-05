@@ -754,11 +754,100 @@ class AddPeriodicalsTest(TestCase):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-    def test_add_periodicals(self):
-
-        # Redirect status
-        response = self.client.post(reverse('add_periodicals'), {'action': 'back'})
+    def test_get_request_add_periodicals(self):
+        response = self.client.get(reverse('add_periodicals'))
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_add_periodicals_invalid_post_request_redirects_to_import_papers(self):
+        response = self.client.post(reverse('add_periodicals'), {'action': 'addnextback'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('import_papers'))
+
+    def test_post_request_with_back_action_deletes_session_keys_and_returns_import_papers(self):
+        session = self.client.session
+        session['Test_key'] = 'Test_key_value'
+        session.save()
+
+        self.assertEqual(self.client.session.keys(),
+                         {'_auth_user_id', '_auth_user_hash', '_auth_user_backend', 'Test_key'})
+
+        response = self.client.post(reverse('add_periodicals'), {'action': 'back'}, follow=True)
+
+        self.assertEqual(self.client.session.keys(),
+                         {'_auth_user_id', '_auth_user_hash', '_auth_user_backend'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'report/research/import.html')
+
+    def test_add_periodicals_with_event_created(self):
+        Event.objects.create(
+            name='Event_Test',
+            local='São Paulo',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timezone.timedelta(1))
+
+        session = self.client.session
+        session['papers'] = [{'TY': 'CONF', 'JO': 'Event_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_periodicals_with_event_ris_created(self):
+        event = Event.objects.create(
+            name='Event_Test',
+            local='São Paulo',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timezone.timedelta(1))
+        EventRISFile.objects.create(name='Event_RIS_Test', event=event)
+
+        session = self.client.session
+        session['papers'] = [{'TY': 'CONF', 'JO': 'Event_RIS_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_periodicals_without_event_or_event_ris_created(self):
+        session = self.client.session
+        session['papers'] = [{'TY': 'CONF', 'JO': 'Event_Test'}]
+        session.save()
+
+        response = self.client.post(reverse('add_periodicals'), {'action': 'next'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed('report/research/events_to_import.html')
+
+    def test_add_periodicals_with_add_action(self):
+        session = self.client.session
+        session['periodicals_to_add'] = []
+        session.save()
+
+        response = self.client.post(reverse('add_periodicals'), {'action': 'add'})
+        self.assertTemplateUsed(response, 'report/research/periodicals_to_import.html')
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('You have selected no item. Nothing to be done!'))
+
+    def test_add_periodicals_add_one_periodical(self):
+        session = self.client.session
+        session['periodicals_to_add'] = ['Periodical']
+        session.save()
+
+        response = self.client.post(reverse('add_periodicals'), {'action': 'add', 'periodicals_to_add': ['Periodical']})
+        self.assertTemplateUsed(response, 'report/research/periodicals_to_import.html')
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('Successfully added one Periodical.'))
+
+    def test_add_periodicals_add_two_periodicals(self):
+        session = self.client.session
+        session['periodicals_to_add'] = ['Periodical1', 'Periodical2']
+        session.save()
+
+        response = self.client.post(reverse('add_periodicals'),
+                                    {'action': 'add', 'periodicals_to_add': ['Periodical1', 'Periodical2']})
+        self.assertTemplateUsed(response, 'report/research/periodicals_to_import.html')
+        for message in response.context['messages']:
+            self.assertEqual(message.message, _('Successfully added %d Periodicals.') % 2)
 
 
 class AddPapersTest(TestCase):

@@ -561,12 +561,13 @@ def add_periodicals(request):
 
         # Back to the initial page
         elif request.POST['action'] == "back":
+            keys_to_be_deleted = []
             for key in request.session.keys():
                 if key != '_auth_user_hash' and key != '_auth_user_id' and key != '_auth_user_backend':
-                    del request.session[key]
-
+                    keys_to_be_deleted.append(key)
+            for key_tbd in keys_to_be_deleted:
+                del request.session[key_tbd]
             return redirect('import_papers')
-
     return redirect('import_papers')
 
 
