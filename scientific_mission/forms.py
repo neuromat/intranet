@@ -16,6 +16,11 @@ annex_seven_choices = ((0, '----------------'),
                        (3, 'seguro saúde'))
 
 
+def get_process_number():
+    process = ProcessNumber.get_solo()
+    return process.process_number
+
+
 class ProcessField(forms.CharField):
 
     def to_python(self, value):
@@ -60,12 +65,10 @@ class ScientificMissionForm(forms.ModelForm):
 
 class AnnexSixForm(forms.Form):
 
-    process = ProcessNumber.get_solo()
-
     value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
     start_date = forms.DateField(label=_('Start date'), widget=DateInput, required=False)
     end_date = forms.DateField(label=_('End date'), widget=DateInput, required=False)
-    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
+    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': get_process_number}))
 
     class Media:
         css = {
@@ -96,8 +99,6 @@ class AnnexSevenForm(forms.Form):
             ('1', 'FAPESP'),
         )
 
-    process = ProcessNumber.get_solo()
-
     choice = forms.ChoiceField(label=_('Provider'), choices=CHOICES, required=True)
 
     start_date = forms.DateField(label=_('Start date'), widget=DateInput, required=False)
@@ -109,15 +110,13 @@ class AnnexSevenForm(forms.Form):
     person = forms.ModelChoiceField(label=_('Person'), queryset=Person.objects.all(),
                                     empty_label="----------", required=True)
     value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
-    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
+    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': get_process_number}))
 
 
 class AnnexNineForm(forms.Form):
-    process = ProcessNumber.get_solo()
-
     job = forms.CharField(label=_('Job'), required=True)
     person = forms.ModelChoiceField(label=_('Service provider'), queryset=Person.objects.all(),
                                     empty_label="----------", required=True)
     note = forms.BooleanField(label=_('Note'), initial=True, required=False)
     value = forms.DecimalField(label=_('Value'), max_digits=10, decimal_places=2, required=True)
-    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': process.process_number}))
+    process = ProcessField(label=_('Process'), widget=forms.TextInput(attrs={'placeholder': get_process_number}))
