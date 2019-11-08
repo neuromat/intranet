@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.db.models import ProtectedError
 
 from person.models import Person, Institution, Role, InstitutionType, CitationName, validate_cpf
 from custom_auth.models import User
+from cities_light.models import City, Region, Country
 
 
 class CitationModelTest(TestCase):
@@ -250,3 +252,102 @@ class CPFValidation(TestCase):
     def test_validation_of_cpf_success_with_valid_cpf(self):
         value = '40796346097'
         self.assertIsNone(validate_cpf(value))
+
+
+class PersonAppIntegration(TestCase):
+    def test_do_not_delete_institution_type_instance_if_there_is_institution_associated(self):
+        self.assertEqual(InstitutionType.objects.count(), 0)
+        self.assertEqual(Institution.objects.count(), 0)
+
+        institution_type = InstitutionType.objects.create(name='InstitutionType_Test')
+        institution = Institution.objects.create(name='Institution_Test', type=institution_type)
+
+        with self.assertRaises(ProtectedError) as e:
+            institution_type.delete()
+
+        self.assertEqual(InstitutionType.objects.last(), institution_type)
+        self.assertEqual(Institution.objects.last(), institution)
+
+    def test_do_not_delete_institution_instance_if_there_is_a_child_institution_associated(self):
+        self.assertEqual(InstitutionType.objects.count(), 0)
+        self.assertEqual(Institution.objects.count(), 0)
+
+        institution_type = InstitutionType.objects.create(name='InstitutionType_Test')
+        institution_parent = Institution.objects.create(name='Institution_Parent_Test', type=institution_type)
+        institution_child = Institution.objects.create(
+            name='Institution_Child_Test',
+            type=institution_type,
+            belongs_to=institution_parent)
+
+        with self.assertRaises(ProtectedError) as e:
+            institution_parent.delete()
+
+        self.assertEqual(InstitutionType.objects.last(), institution_type)
+        self.assertEqual(Institution.objects.last(), institution_parent)
+        self.assertEqual(Institution.objects.first(), institution_child)
+
+    def test_do_not_delete_institution_instance_if_there_is_a_person_associated(self):
+        self.assertEqual(InstitutionType.objects.count(), 0)
+        self.assertEqual(Institution.objects.count(), 0)
+        self.assertEqual(Person.objects.count(), 0)
+
+        institution_type = InstitutionType.objects.create(name='InstitutionType_Test')
+        institution = Institution.objects.create(name='Institution_Parent_Test', type=institution_type)
+        person = Person.objects.create(full_name='Person_Test', institution=institution)
+
+        with self.assertRaises(ProtectedError) as e:
+            institution.delete()
+
+        self.assertEqual(InstitutionType.objects.last(), institution_type)
+        self.assertEqual(Institution.objects.last(), institution)
+        self.assertEqual(Person.objects.last(), person)
+
+    def test_do_not_delete_city_instance_if_there_is_institution_associated(self):
+        self.assertEqual(Country.objects.count(), 0)
+        self.assertEqual(City.objects.count(), 0)
+        self.assertEqual(InstitutionType.objects.count(), 0)
+        self.assertEqual(Institution.objects.count(), 0)
+
+        country = Country.objects.create(name='Brazil')
+        city = City.objects.create(name='São Paulo', country=country)
+
+        institution_type = InstitutionType.objects.create(name='InstitutionType_Test')
+        institution = Institution.objects.create(name='Institution_Parent_Test', type=institution_type, city=city)
+
+        with self.assertRaises(ProtectedError) as e:
+            city.delete()
+
+        self.assertEqual(Country.objects.last(), country)
+        self.assertEqual(City.objects.last(), city)
+        self.assertEqual(InstitutionType.objects.last(), institution_type)
+        self.assertEqual(Institution.objects.last(), institution)
+
+    def test_do_not_delete_role_instance_if_there_is_person_associated(self):
+        self.assertEqual(Role.objects.count(), 0)
+        self.assertEqual(Person.objects.count(), 0)
+
+        role = Role.objects.create(name='Role_Test')
+        person = Person.objects.create(full_name='Person', role=role)
+
+        with self.assertRaises(ProtectedError) as e:
+            role.delete()
+
+        self.assertEqual(Role.objects.last(), role)
+        self.assertEqual(Person.objects.last(), person)
+
+    def test_delete_person_instance_associated_with_citation_names_delete_them(self):
+        self.assertEqual(Person.objects.count(), 0)
+        self.assertEqual(CitationName.objects.count(), 0)
+
+        person = Person.objects.create(full_name='Person')
+        citation_name_1 = CitationName.objects.create(name='C.I.T.A.T.I.O.N, Person', person=person, default_name=True)
+        citation_name_2 = CitationName.objects.create(name='C.I.T.A.T.I.O.N, P.', person=person, default_name=False)
+
+        self.assertEqual(Person.objects.last(), person)
+        self.assertEqual(CitationName.objects.all()[0], citation_name_1)
+        self.assertEqual(CitationName.objects.all()[1], citation_name_2)
+
+        person.delete()
+
+        self.assertEqual(Person.objects.count(), 0)
+        self.assertEqual(CitationName.objects.count(), 0)

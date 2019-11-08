@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import ProtectedError
 
 from research.models import ResearchResult, Author, Book, Periodical, PeriodicalRISFile, Event, EventRISFile, \
     AcademicWork, TypeAcademicWork, Article
@@ -235,3 +236,29 @@ class ArticleModelTests(TestCase):
     def test_type_of_article_function_returns_not_defined_if_neither_p_or_e_is_passed_to_it(self):
         self.article.type = 's'
         self.assertEqual(self.article.type_of_article(), _('Not defined'))
+
+
+class ResearchAppIntegrationTest(TestCase):
+    def test_do_not_delete_person_instance_if_there_is_author_associated(self):
+        self.assertEqual(Person.objects.count(), 0)
+        self.assertEqual(Author.objects.count(), 0)
+        self.assertEqual(ResearchResult.objects.count(), 0)
+
+        person = Person.objects.create(full_name='Person_Test')
+
+        research_result = ResearchResult.objects.create(
+            team='s',
+            title='Research_Result',
+            research_result_type='a')
+
+        author = Author.objects.create(author=person, research_result=research_result, order=1)
+
+        research_result.person.add(person)
+        research_result.save()
+
+        with self.assertRaises(ProtectedError) as e:
+            person.delete()
+
+        self.assertEqual(Person.objects.last(), person)
+        self.assertEqual(Author.objects.last(), author)
+        self.assertEqual(ResearchResult.objects.last(), research_result)

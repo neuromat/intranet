@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from custom_auth.models import UserManager, User
+from person.models import Person
 
 
 class CustomAuthTest(TestCase):
@@ -40,3 +41,20 @@ class CustomAuthTest(TestCase):
         username = 'Test'
         manager = User.objects.create_user(username=username)
         self.assertEqual(manager.get_short_name(), username)
+
+
+class CustomAuthIntegrationTest(TestCase):
+    def test_delete_person_instance_that_have_a_user_deletes_the_user_too(self):
+        self.assertEqual(Person.objects.count(), 0)
+        self.assertEqual(User.objects.count(), 0)
+
+        person = Person.objects.create(full_name='Speaker_Test')
+        user = User.objects.create(user_profile=person)
+
+        self.assertEqual(Person.objects.last(), person)
+        self.assertEqual(User.objects.last(), user)
+
+        person.delete()
+
+        self.assertEqual(Person.objects.count(), 0)
+        self.assertEqual(User.objects.count(), 0)
