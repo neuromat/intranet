@@ -62,7 +62,7 @@ class ResearchResult(models.Model):
 
 
 class Author(models.Model):
-    author = models.ForeignKey(Person, on_delete=models.CASCADE)
+    author = models.ForeignKey(Person, on_delete=models.PROTECT)
     research_result = models.ForeignKey(ResearchResult, on_delete=models.CASCADE)
     order = models.IntegerField(_('Order of author'))
 
@@ -79,7 +79,7 @@ class Book(ResearchResult):
 
     """
     type = models.CharField(_('Type'), max_length=1, choices=TYPE_BOOK_OR_CHAPTER)
-    publisher = models.ForeignKey(Institution, verbose_name=_('Publisher'), on_delete=models.CASCADE)
+    publisher = models.ForeignKey(Institution, verbose_name=_('Publisher'), on_delete=models.PROTECT)
     isbn = models.CharField(_('ISBN'), max_length=30, blank=True, null=True)
     volume = models.CharField(_('Volume/Number'), max_length=255, blank=True, null=True)
     serie = models.CharField(_('Serie'), max_length=255, blank=True, null=True)
@@ -151,7 +151,7 @@ class Event(models.Model):
         verbose_name=_('Publisher'),
         blank=True,
         null=True,
-        on_delete=models.CASCADE)
+        on_delete=models.PROTECT)
     volume = models.CharField(_('Volume'), max_length=255, blank=True, null=True)
     number = models.CharField(_('Number'), max_length=255, blank=True, null=True)
     start_date = models.DateField(_('Start date of the event'))
@@ -191,10 +191,10 @@ class Article(ResearchResult):
 
     """
     periodical = models.ForeignKey(Periodical, verbose_name=_('Periodical'), blank=True, null=True,
-                                   on_delete=models.CASCADE)
+                                   on_delete=models.PROTECT)
     event = models.ForeignKey(Event, verbose_name=_('Event'), blank=True, null=True,
                               help_text='Name of the conference, congress, meeting or symposium',
-                              on_delete=models.CASCADE)
+                              on_delete=models.PROTECT)
     type = models.CharField(_('Where?'), max_length=1, blank=True, null=True, choices=ARTICLE_TYPE)
     status = models.CharField(_('Status'), max_length=50)
     hide = models.BooleanField(_('Hide this paper in the report'), default=False)
@@ -301,14 +301,14 @@ class AcademicWork(models.Model):
     An instance of this class is an academic work.
 
     """
-    type = models.ForeignKey(TypeAcademicWork, verbose_name=_('Type'), on_delete=models.CASCADE)
+    type = models.ForeignKey(TypeAcademicWork, verbose_name=_('Type'), on_delete=models.PROTECT)
     title = models.CharField(_('Title'), max_length=255)
-    advisee = models.ForeignKey(Person, verbose_name=_('Advisee'), on_delete=models.CASCADE)
+    advisee = models.ForeignKey(Person, verbose_name=_('Advisee'), on_delete=models.PROTECT)
     advisor = models.ForeignKey(
         Person,
         verbose_name=_('Advisor'),
         related_name='advisor_academic_work',
-        on_delete=models.CASCADE)
+        on_delete=models.PROTECT)
     co_advisor = models.ManyToManyField(Person, verbose_name=_('Co-Advisor'), related_name='co_advisor_academic_work',
                                         blank=True)
     funding = models.BooleanField(_('Financially supported?'), choices=FUNDING_CHOICES, max_length=3)

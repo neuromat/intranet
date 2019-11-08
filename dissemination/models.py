@@ -77,7 +77,7 @@ class Internal(Dissemination):
     'class Meta'		Sets the description model (singular and plural).
     'authors'           Get the authors of the publication.
     """
-    media_outlet = models.ForeignKey(InternalMediaOutlet, verbose_name=_('Media outlet'), on_delete=models.CASCADE)
+    media_outlet = models.ForeignKey(InternalMediaOutlet, verbose_name=_('Media outlet'), on_delete=models.PROTECT)
     author = models.ManyToManyField(Person, verbose_name=_('Author'), blank=True)
 
     class Meta:
@@ -118,7 +118,7 @@ class External(Dissemination):
     'class Meta'		Sets the description model (singular and plural).
     'authors'           Get the authors of the publication.
     """
-    media_outlet = models.ForeignKey(ExternalMediaOutlet, verbose_name=_('Media outlet'), on_delete=models.CASCADE)
+    media_outlet = models.ForeignKey(ExternalMediaOutlet, verbose_name=_('Media outlet'), on_delete=models.PROTECT)
     author = models.ManyToManyField(Person, verbose_name=_('Author'), blank=True)
 
     class Meta:

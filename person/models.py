@@ -70,19 +70,19 @@ class Institution(models.Model):
     """
     name = models.CharField(_('Name'), max_length=255)
     acronym = models.CharField(_('Acronym'), max_length=50, blank=True, null=True)
-    type = models.ForeignKey(InstitutionType, verbose_name=_('Type'), on_delete=models.CASCADE)
+    type = models.ForeignKey(InstitutionType, verbose_name=_('Type'), on_delete=models.PROTECT)
     belongs_to = models.ForeignKey(
         'self',
         verbose_name=_('Belongs to'),
         blank=True,
         null=True,
-        on_delete=models.CASCADE)
+        on_delete=models.PROTECT)
     zipcode = models.CharField(_('Zip Code'), max_length=9, blank=True)
     street = models.CharField(_('Address'), max_length=255, blank=True)
     street_complement = models.CharField(_('Complement'), max_length=255, blank=True)
     number = models.CharField(_('Number'), max_length=10, blank=True)
     district = models.CharField(_('District'), max_length=255, blank=True)
-    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True, on_delete=models.PROTECT)
 
     def __str__(self):
         if self.belongs_to:
@@ -145,13 +145,13 @@ class Person(models.Model):
                         at the login page. This function looks for an email field in the User class.
     'class Meta'		Sets the description (singular and plural) model and the ordering of data by user.
     """
-    role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, verbose_name=_('Role'), blank=True, null=True, on_delete=models.PROTECT)
     institution = models.ForeignKey(
         Institution,
         verbose_name=_('Institution'),
         blank=True,
         null=True,
-        on_delete=models.CASCADE)
+        on_delete=models.PROTECT)
     full_name = models.CharField(_('Full name'), unique=True, max_length=255)
     email = models.EmailField(_('Email'), blank=True, null=True)
     rg = models.CharField(_('RG'), max_length=12, blank=True, null=True)
