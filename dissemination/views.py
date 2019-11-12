@@ -104,11 +104,10 @@ def dissemination_file(request):
                    'extension': extension}
 
     else:
-
         disseminations = external_filter(start_date, end_date)
         context = {'disseminations': disseminations, 'type': media_type, 'extension': extension}
 
     if extension == ".tex":
         return escape_and_generate_latex('report/dissemination/tex/disseminations.tex', context, filename, table=True)
-    else:
-        return render_to_pdf('report/dissemination/pdf/dissemination.html', context, 'reports.css')
+
+    return render_to_pdf('report/dissemination/pdf/dissemination.html', context, 'reports.css')

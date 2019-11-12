@@ -53,7 +53,7 @@ class DisseminationIntegrationModelTests(TestCase):
         internal.topic.add(topic)
         internal.save()
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             internal_media_outlet.delete()
 
         self.assertEqual(InternalMediaOutlet.objects.last(), internal_media_outlet)
@@ -79,7 +79,7 @@ class DisseminationIntegrationModelTests(TestCase):
         external.topic.add(topic)
         external.save()
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             external_media_outlet.delete()
 
         self.assertEqual(ExternalMediaOutlet.objects.last(), external_media_outlet)
