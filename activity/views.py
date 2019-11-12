@@ -29,10 +29,11 @@ def seminars_search(start_date, end_date, category):
         return ProjectActivities.objects.filter(type_of_activity='s',
                                                 seminar__date__gt=start_date,
                                                 seminar__date__lt=end_date).order_by('-seminar__date')
-    else:
-        return ProjectActivities.objects.filter(type_of_activity='s', seminar__category=category,
-                                                seminar__date__gt=start_date,
-                                                seminar__date__lt=end_date).order_by('-seminar__date')
+
+    return ProjectActivities.objects.filter(type_of_activity='s',
+                                            seminar__category=category,
+                                            seminar__date__gt=start_date,
+                                            seminar__date__lt=end_date).order_by('-seminar__date')
 
 
 @login_required
@@ -99,20 +100,12 @@ def seminars_poster(request):
             context = {'speakers': speakers, 'seminars': seminars}
             return render(request, 'poster/seminar.html', context)
 
-        else:
+        try:
+            seminar = Seminar.objects.get(id=title_id)
+        except Seminar.DoesNotExist:
+            raise Http404(_('No seminar matches the given query.'))
 
-            try:
-                seminar = Seminar.objects.get(id=title_id)
-            except Seminar.DoesNotExist:
-                raise Http404(_('No seminar matches the given query.'))
-
-            return render_to_pdf(
-                'poster/seminar_poster_pdf.html',
-                {
-                    'pagesize': 'A4',
-                    'seminar': seminar,
-                }
-            )
+        return render_to_pdf('poster/seminar_poster_pdf.html', {'pagesize': 'A4', 'seminar': seminar})
 
     context = {'speakers': speakers, 'seminars': seminars}
     return render(request, 'poster/seminar.html', context)
@@ -131,8 +124,8 @@ def seminars_file(request):
 
     if extension == ".tex":
         return generate_latex('report/activity/tex/seminars.tex', context, 'seminars')
-    else:
-        return render_to_pdf('report/activity/pdf/seminars.html', context, 'reports.css')
+
+    return render_to_pdf('report/activity/pdf/seminars.html', context, 'reports.css')
 
 
 @login_required
@@ -201,8 +194,8 @@ def training_programs_file(request):
 
     if extension == '.tex':
         return generate_latex('report/activity/tex/training_programs.tex', context, 'training_programs')
-    else:
-        return render_to_pdf('report/activity/pdf/training_programs.html', context, 'reports.css')
+
+    return render_to_pdf('report/activity/pdf/training_programs.html', context, 'reports.css')
 
 
 @login_required
@@ -327,17 +320,15 @@ def project_activities_certificate(request):
                             'hours': hours
                         })
 
-                else:
-
-                    return render_to_pdf(
-                        'certificate/pdf/seminar.html',
-                        {
-                            'pagesize': 'A4',
-                            'person': person,
-                            'seminar': seminar,
-                            'signature': persons,
-                            'hours': hours
-                        })
+                return render_to_pdf(
+                    'certificate/pdf/seminar.html',
+                    {
+                        'pagesize': 'A4',
+                        'person': person,
+                        'seminar': seminar,
+                        'signature': persons,
+                        'hours': hours
+                    })
 
             if chosen_activity.type_of_activity == 'm':
 

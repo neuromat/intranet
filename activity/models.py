@@ -2,8 +2,6 @@ from django.db import models
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
-from solo.models import SingletonModel
-
 from person.models import Person, Institution
 
 # Defining the duration of a Training Program

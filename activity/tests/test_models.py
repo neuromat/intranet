@@ -53,7 +53,7 @@ class ActivityIntegrationTest(TestCase):
 
         project_activity = ProjectActivities.objects.create(title='Title', local=institution, type_of_activity='t')
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             institution.delete()
 
         self.assertEqual(InstitutionType.objects.last(), institution_type)
@@ -97,7 +97,7 @@ class ActivityIntegrationTest(TestCase):
         training_program.speaker.add(speaker)
         training_program.save()
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             meeting.delete()
 
         self.assertEqual(Person.objects.last(), speaker)
@@ -130,7 +130,7 @@ class ActivityIntegrationTest(TestCase):
         seminar.speaker.add(speaker)
         seminar.save()
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             meeting.delete()
 
         self.assertEqual(Person.objects.last(), speaker)
@@ -156,7 +156,7 @@ class ActivityIntegrationTest(TestCase):
         seminar.speaker.add(speaker)
         seminar.save()
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             seminar_type.delete()
 
         self.assertEqual(Person.objects.last(), speaker)
