@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models import ProtectedError
 
 from research.models import ResearchResult, Author, Book, Periodical, PeriodicalRISFile, Event, EventRISFile, \
-    AcademicWork, TypeAcademicWork, Article
+    AcademicWork, TypeAcademicWork, Article, Draft, Submitted, Accepted, Published
 from person.models import Person, CitationName, Institution, InstitutionType
 
 
@@ -262,3 +262,308 @@ class ResearchAppIntegrationTest(TestCase):
         self.assertEqual(Person.objects.last(), person)
         self.assertEqual(Author.objects.last(), author)
         self.assertEqual(ResearchResult.objects.last(), research_result)
+
+    def test_do_not_delete_institution_instance_if_there_is_book_associated(self):
+        self.assertEqual(InstitutionType.objects.count(), 0)
+        self.assertEqual(Institution.objects.count(), 0)
+        self.assertEqual(Book.objects.count(), 0)
+
+        institution_type = InstitutionType.objects.create(name='Institution_Type_Test')
+        institution = Institution.objects.create(name='Institution_Test', type=institution_type)
+
+        book = Book.objects.create(
+            team='s',
+            title='Book',
+            research_result_type='b',
+            date=timezone.now(),
+            publisher=institution,
+            type='b'
+        )
+
+        with self.assertRaises(ProtectedError) as e:
+            institution.delete()
+
+        self.assertEqual(InstitutionType.objects.last(), institution_type)
+        self.assertEqual(Institution.objects.last(), institution)
+        self.assertEqual(Book.objects.last(), book)
+        self.assertEqual(Book.objects.last().publisher, institution)
+
+    def test_do_not_delete_institution_instance_if_there_is_event_associated(self):
+        self.assertEqual(InstitutionType.objects.count(), 0)
+        self.assertEqual(Institution.objects.count(), 0)
+        self.assertEqual(Event.objects.count(), 0)
+
+        institution_type = InstitutionType.objects.create(name='Institution_Type_Test')
+        institution = Institution.objects.create(name='Institution_Test', type=institution_type)
+
+        event = Event.objects.create(
+            name='Event_Test',
+            publisher=institution,
+            start_date=timezone.now(),
+            end_date=timezone.now(),
+            local='Algum Lugar, Planeta Terra'
+        )
+
+        with self.assertRaises(ProtectedError) as e:
+            institution.delete()
+
+        self.assertEqual(InstitutionType.objects.last(), institution_type)
+        self.assertEqual(Institution.objects.last(), institution)
+        self.assertEqual(Event.objects.last(), event)
+        self.assertEqual(Event.objects.last().publisher, institution)
+
+    def test_do_not_delete_periodical_if_there_is_article_associated(self):
+        self.assertEqual(Periodical.objects.count(), 0)
+        self.assertEqual(Article.objects.count(), 0)
+
+        periodical = Periodical.objects.create(name='Periodical_Test')
+
+        article = Article.objects.create(
+            team='s',
+            title='Article_Test',
+            research_result_type='a',
+            periodical=periodical,
+            status='Status_Test'
+        )
+
+        with self.assertRaises(ProtectedError) as e:
+            periodical.delete()
+
+        self.assertEqual(Periodical.objects.last(), periodical)
+        self.assertEqual(Article.objects.last(), article)
+        self.assertEqual(Article.objects.last().periodical, periodical)
+
+    def test_do_not_delete_event_if_there_is_article_associated(self):
+        self.assertEqual(InstitutionType.objects.count(), 0)
+        self.assertEqual(Institution.objects.count(), 0)
+        self.assertEqual(Event.objects.count(), 0)
+        self.assertEqual(Article.objects.count(), 0)
+
+        institution_type = InstitutionType.objects.create(name='Institution_Type_Test')
+        institution = Institution.objects.create(name='Institution_Test', type=institution_type)
+
+        event = Event.objects.create(
+            name='Event_Test',
+            publisher=institution,
+            start_date=timezone.now(),
+            end_date=timezone.now(),
+            local='Algum Lugar, Planeta Terra'
+        )
+
+        article = Article.objects.create(
+            team='s',
+            title='Article_Test',
+            research_result_type='a',
+            event=event,
+            status='Status_Test'
+        )
+
+        with self.assertRaises(ProtectedError) as e:
+            event.delete()
+
+        self.assertEqual(InstitutionType.objects.last(), institution_type)
+        self.assertEqual(Institution.objects.last(), institution)
+        self.assertEqual(Event.objects.last(), event)
+        self.assertEqual(Article.objects.last(), article)
+        self.assertEqual(Article.objects.last().event, event)
+
+    def test_do_not_delete_type_academic_work_if_there_is_academic_work_associated(self):
+        self.assertEqual(Person.objects.count(), 0)
+        self.assertEqual(TypeAcademicWork.objects.count(), 0)
+        self.assertEqual(AcademicWork.objects.count(), 0)
+
+        person = Person.objects.create(full_name='Person_Test')
+        type_academic_work = TypeAcademicWork.objects.create(name='Type_Academic_Work_Test')
+
+        academic_work = AcademicWork.objects.create(
+            type=type_academic_work,
+            title='Academic_Work_Test',
+            advisee=person,
+            advisor=person,
+            funding=True,
+            funding_agency='Funding_Agency_Test',
+            start_date=timezone.now(),
+            abstract='Abstract_Test'
+        )
+
+        with self.assertRaises(ProtectedError) as e:
+            type_academic_work.delete()
+
+        self.assertEqual(Person.objects.last(), person)
+        self.assertEqual(TypeAcademicWork.objects.last(), type_academic_work)
+        self.assertEqual(AcademicWork.objects.last(), academic_work)
+        self.assertEqual(AcademicWork.objects.last().type, type_academic_work)
+
+    def test_do_not_delete_person_if_there_is_academic_work_associated(self):
+        self.assertEqual(Person.objects.count(), 0)
+        self.assertEqual(TypeAcademicWork.objects.count(), 0)
+        self.assertEqual(AcademicWork.objects.count(), 0)
+
+        person = Person.objects.create(full_name='Person_Test')
+        type_academic_work = TypeAcademicWork.objects.create(name='Type_Academic_Work_Test')
+
+        academic_work = AcademicWork.objects.create(
+            type=type_academic_work,
+            title='Academic_Work_Test',
+            advisee=person,
+            advisor=person,
+            funding=True,
+            funding_agency='Funding_Agency_Test',
+            start_date=timezone.now(),
+            abstract='Abstract_Test'
+        )
+
+        with self.assertRaises(ProtectedError) as e:
+            person.delete()
+
+        self.assertEqual(Person.objects.last(), person)
+        self.assertEqual(TypeAcademicWork.objects.last(), type_academic_work)
+        self.assertEqual(AcademicWork.objects.last(), academic_work)
+        self.assertEqual(AcademicWork.objects.last().type, type_academic_work)
+
+    def test_delete_author_instance_associated_with_research_result_when_this_one_is_deleted(self):
+        self.assertEqual(Person.objects.count(), 0)
+        self.assertEqual(Author.objects.count(), 0)
+        self.assertEqual(ResearchResult.objects.count(), 0)
+
+        person = Person.objects.create(full_name='Person_Test')
+
+        research_result = ResearchResult.objects.create(
+            team='s',
+            title='Research_Result',
+            research_result_type='a')
+
+        author = Author.objects.create(author=person, research_result=research_result, order=1)
+
+        research_result.person.add(person)
+        research_result.save()
+
+        self.assertEqual(Person.objects.last(), person)
+        self.assertEqual(Author.objects.last(), author)
+        self.assertEqual(ResearchResult.objects.last(), research_result)
+
+        research_result.delete()
+
+        self.assertEqual(Person.objects.count(), 1)
+        self.assertEqual(Author.objects.count(), 0)
+        self.assertEqual(ResearchResult.objects.count(), 0)
+
+    def test_delete_periodical_rsi_file_instance_associated_with_periodical_when_this_one_is_deleted(self):
+        self.assertEqual(Periodical.objects.count(), 0)
+        self.assertEqual(PeriodicalRISFile.objects.count(), 0)
+
+        periodical = Periodical.objects.create(name='Periodical_Test')
+        periodical_rsi_file = PeriodicalRISFile.objects.create(periodical=periodical, name='Periodical_RSI_File_Test')
+
+        self.assertEqual(Periodical.objects.last(), periodical)
+        self.assertEqual(PeriodicalRISFile.objects.last(), periodical_rsi_file)
+
+        periodical.delete()
+
+        self.assertEqual(Periodical.objects.count(), 0)
+        self.assertEqual(PeriodicalRISFile.objects.count(), 0)
+
+    def test_delete_event_rsi_file_instance_associated_with_event_when_this_one_is_deleted(self):
+        self.assertEqual(Event.objects.count(), 0)
+        self.assertEqual(EventRISFile.objects.count(), 0)
+
+        event = Event.objects.create(
+            name='Event_Test',
+            start_date=timezone.now(),
+            end_date=timezone.now(),
+            local='Algum Lugar, Planeta Terra'
+        )
+
+        event_rsi_file = EventRISFile.objects.create(event=event, name='Event_RSI_File_Test')
+
+        self.assertEqual(Event.objects.last(), event)
+        self.assertEqual(EventRISFile.objects.last(), event_rsi_file)
+
+        event.delete()
+
+        self.assertEqual(Event.objects.count(), 0)
+        self.assertEqual(EventRISFile.objects.count(), 0)
+
+    def test_delete_draft_instance_associated_with_article_when_this_one_is_deleted(self):
+        self.assertEqual(Article.objects.count(), 0)
+        self.assertEqual(Draft.objects.count(), 0)
+
+        article = Article.objects.create(
+            team='s',
+            title='Article_Test',
+            research_result_type='a',
+            status='Status_Test'
+        )
+
+        draft = Draft.objects.create(article=article, date=timezone.now())
+
+        self.assertEqual(Article.objects.last(), article)
+        self.assertEqual(Draft.objects.last(), draft)
+
+        article.delete()
+
+        self.assertEqual(Article.objects.count(), 0)
+        self.assertEqual(Draft.objects.count(), 0)
+
+    def test_delete_submitted_instance_associated_with_article_when_this_one_is_deleted(self):
+        self.assertEqual(Article.objects.count(), 0)
+        self.assertEqual(Submitted.objects.count(), 0)
+
+        article = Article.objects.create(
+            team='s',
+            title='Article_Test',
+            research_result_type='a',
+            status='Status_Test'
+        )
+
+        submitted = Submitted.objects.create(article=article, date=timezone.now())
+
+        self.assertEqual(Article.objects.last(), article)
+        self.assertEqual(Submitted.objects.last(), submitted)
+
+        article.delete()
+
+        self.assertEqual(Article.objects.count(), 0)
+        self.assertEqual(Submitted.objects.count(), 0)
+
+    def test_delete_accepted_instance_associated_with_article_when_this_one_is_deleted(self):
+        self.assertEqual(Article.objects.count(), 0)
+        self.assertEqual(Accepted.objects.count(), 0)
+
+        article = Article.objects.create(
+            team='s',
+            title='Article_Test',
+            research_result_type='a',
+            status='Status_Test'
+        )
+
+        accepted = Accepted.objects.create(article=article, date=timezone.now())
+
+        self.assertEqual(Article.objects.last(), article)
+        self.assertEqual(Accepted.objects.last(), accepted)
+
+        article.delete()
+
+        self.assertEqual(Article.objects.count(), 0)
+        self.assertEqual(Accepted.objects.count(), 0)
+
+    def test_delete_published_instance_associated_with_article_when_this_one_is_deleted(self):
+        self.assertEqual(Article.objects.count(), 0)
+        self.assertEqual(Published.objects.count(), 0)
+
+        article = Article.objects.create(
+            team='s',
+            title='Article_Test',
+            research_result_type='a',
+            status='Status_Test'
+        )
+
+        published = Published.objects.create(article=article)
+
+        self.assertEqual(Article.objects.last(), article)
+        self.assertEqual(Published.objects.last(), published)
+
+        article.delete()
+
+        self.assertEqual(Article.objects.count(), 0)
+        self.assertEqual(Published.objects.count(), 0)
