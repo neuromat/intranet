@@ -402,7 +402,6 @@ class ProjectActivitiesTest(TestCase):
         os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
         shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=False, onerror=None)
 
-
     def test_project_activities_certificate_without_signature_render(self):
         response = self.client.post(reverse('certificate'), {
             'person': self.person.id,
