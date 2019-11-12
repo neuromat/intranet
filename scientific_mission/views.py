@@ -1,4 +1,5 @@
 import datetime
+import json as simplejson
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -7,8 +8,6 @@ from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_http_methods
-
-import json as simplejson
 
 from dal import autocomplete
 from cities_light.models import City
@@ -439,5 +438,4 @@ def missions_file(request):
 
     if extension == ".tex":
         return generate_latex('report/scientific_mission/tex/scientific_missions.tex', context, 'scientific_missions')
-    else:
-        return render_to_pdf('report/scientific_mission/pdf/scientific_missions.html', context, 'reports.css')
+    return render_to_pdf('report/scientific_mission/pdf/scientific_missions.html', context, 'reports.css')

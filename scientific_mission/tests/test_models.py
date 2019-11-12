@@ -93,7 +93,7 @@ class ScientificMissionAppIntegrationTest(TestCase):
 
         scientific_mission = ScientificMission.objects.create(person=person, amount_paid=10)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             person.delete()
 
         self.assertEqual(Person.objects.last(), person)
@@ -115,7 +115,7 @@ class ScientificMissionAppIntegrationTest(TestCase):
             amount_paid=10,
             project_activity=project_activities)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             project_activities.delete()
 
         self.assertEqual(Person.objects.last(), person)
@@ -138,7 +138,7 @@ class ScientificMissionAppIntegrationTest(TestCase):
             amount_paid=10,
             destination_city=city)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             city.delete()
 
         self.assertEqual(Person.objects.last(), person)
@@ -171,7 +171,7 @@ class ScientificMissionAppIntegrationTest(TestCase):
             arrival=timezone.now(),
             order=1)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             city_1.delete()
 
         self.assertEqual(Person.objects.last(), person)
@@ -205,7 +205,7 @@ class ScientificMissionAppIntegrationTest(TestCase):
             arrival=timezone.now(),
             order=1)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             city_2.delete()
 
         self.assertEqual(Person.objects.last(), person)

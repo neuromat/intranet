@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from cities_light.models import City, Country, Region
+from cities_light.models import City
 from activity.models import ProjectActivities
 from person.models import Person
 

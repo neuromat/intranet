@@ -10,10 +10,11 @@ from cities_light.models import City, Region, Country
 from person.models import Person
 from configuration.models import PrincipalInvestigator, ProcessNumber
 from scientific_mission.models import ScientificMission, Route
+from scientific_mission.views import get_missions
 
 from research.tests.test_orig import system_authentication
 
-from scientific_mission.views import get_missions
+
 
 
 # Create a scientific mission for testing
