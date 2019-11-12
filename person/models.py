@@ -93,15 +93,12 @@ class Institution(models.Model):
                     return u'%s - %s/%s' % (self.name, self.belongs_to.acronym, self.belongs_to.belongs_to.name)
                 elif not self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
                     return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.acronym)
-                else:  # elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
-                    return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.name)
-            else:
-                if self.belongs_to.acronym:
-                    return u'%s / %s' % (self.name, self.belongs_to.acronym)
-                else:
-                    return u'%s / %s' % (self.name, self.belongs_to.name)
-        else:
-            return u'%s' % self.name
+                # elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
+                return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.name)
+            if self.belongs_to.acronym:
+                return u'%s / %s' % (self.name, self.belongs_to.acronym)
+            return u'%s / %s' % (self.name, self.belongs_to.name)
+        return u'%s' % self.name
 
     def get_person_institution(self):
         if self.belongs_to:
@@ -112,22 +109,19 @@ class Institution(models.Model):
                     return u'%s - %s/%s' % (self.name, self.belongs_to.acronym, self.belongs_to.belongs_to.name)
                 elif not self.belongs_to.acronym and self.belongs_to.belongs_to.acronym:
                     return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.acronym)
-                else:  # elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
-                    return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.name)
-            else:
-                if self.acronym and self.belongs_to.acronym:
-                    return u'%s-%s' % (self.acronym, self.belongs_to.acronym)
-                elif not self.acronym and self.belongs_to.acronym:
-                    return u'%s-%s' % (self.name, self.belongs_to.acronym)
-                elif self.acronym and not self.belongs_to.acronym:
-                    return u'%s-%s' % (self.acronym, self.belongs_to.name)
-                else:  # elif not self.acronym and not self.belongs_to.acronym:
-                    return u'%s-%s' % (self.name, self.belongs_to.name)
-        else:
-            if self.acronym:
-                return u'%s' % self.acronym
-            else:
-                return u'%s' % self.name
+                # elif not self.belongs_to.acronym and not self.belongs_to.belongs_to.acronym:
+                return u'%s - %s/%s' % (self.name, self.belongs_to.name, self.belongs_to.belongs_to.name)
+            if self.acronym and self.belongs_to.acronym:
+                return u'%s-%s' % (self.acronym, self.belongs_to.acronym)
+            elif not self.acronym and self.belongs_to.acronym:
+                return u'%s-%s' % (self.name, self.belongs_to.acronym)
+            elif self.acronym and not self.belongs_to.acronym:
+                return u'%s-%s' % (self.acronym, self.belongs_to.name)
+            # elif not self.acronym and not self.belongs_to.acronym:
+            return u'%s-%s' % (self.name, self.belongs_to.name)
+        if self.acronym:
+            return u'%s' % self.acronym
+        return u'%s' % self.name
 
     class Meta:
         verbose_name = _('Institution')

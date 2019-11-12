@@ -38,8 +38,8 @@ def _gen(cpf):
 
     if res > 1:
         return 11 - res
-    else:
-        return 0
+
+    return 0
 
 
 class CPF(object):

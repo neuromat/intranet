@@ -38,14 +38,15 @@ class PersonAdmin(admin.ModelAdmin):
         qs = super(PersonAdmin, self).get_queryset(request)
         if request.user.is_superuser or request.user.is_nira_admin:
             return qs
+
         return qs.filter(user=request.user)
 
     # If not superuser or nira_admin, do not enable role and institution fields
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser or request.user.is_nira_admin:
             return super(PersonAdmin, self).get_readonly_fields(request, obj)
-        else:
-            return 'role', 'institution'
+
+        return 'role', 'institution'
 
     form = PersonForm
 

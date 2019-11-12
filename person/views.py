@@ -22,8 +22,8 @@ def name_with_first_letters(names, with_prep):
 
     if not with_prep:
         return last_name+','+' '+letters
-    else:
-        return last_name_with_prep+','+' '+letters
+
+    return last_name_with_prep+','+' '+letters
 
 
 def names_without_last_name(names, with_prep):
@@ -35,8 +35,7 @@ def names_without_last_name(names, with_prep):
     if not with_prep:
         return last_name+','+' '+citation_name
 
-    else:
-        return last_name_with_prep+','+' '+citation_name
+    return last_name_with_prep+','+' '+citation_name
 
 
 def first_name_and_first_letter(names, with_prep):
@@ -53,17 +52,16 @@ def first_name_and_first_letter(names, with_prep):
         if first_letter != '':
             citation_name = first_name+' '+first_letter
             return last_name+','+' '+citation_name
-        else:
-            citation_name = first_name
-            return last_name+','+' '+citation_name
 
-    else:
-        if first_letter != '':
-            citation_name = first_name+' '+first_letter
-            return last_name_with_prep+','+' '+citation_name
-        else:
-            citation_name = first_name
-            return last_name_with_prep+','+' '+citation_name
+        citation_name = first_name
+        return last_name+','+' '+citation_name
+
+    if first_letter != '':
+        citation_name = first_name+' '+first_letter
+        return last_name_with_prep+','+' '+citation_name
+
+    citation_name = first_name
+    return last_name_with_prep+','+' '+citation_name
 
 
 def generate_citation_names(person):

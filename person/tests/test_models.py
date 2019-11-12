@@ -4,7 +4,7 @@ from django.db.models import ProtectedError
 
 from person.models import Person, Institution, Role, InstitutionType, CitationName, validate_cpf
 from custom_auth.models import User
-from cities_light.models import City, Region, Country
+from cities_light.models import City, Country
 
 
 class CitationModelTest(TestCase):
@@ -262,7 +262,7 @@ class PersonAppIntegration(TestCase):
         institution_type = InstitutionType.objects.create(name='InstitutionType_Test')
         institution = Institution.objects.create(name='Institution_Test', type=institution_type)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             institution_type.delete()
 
         self.assertEqual(InstitutionType.objects.last(), institution_type)
@@ -279,7 +279,7 @@ class PersonAppIntegration(TestCase):
             type=institution_type,
             belongs_to=institution_parent)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             institution_parent.delete()
 
         self.assertEqual(InstitutionType.objects.last(), institution_type)
@@ -295,7 +295,7 @@ class PersonAppIntegration(TestCase):
         institution = Institution.objects.create(name='Institution_Parent_Test', type=institution_type)
         person = Person.objects.create(full_name='Person_Test', institution=institution)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             institution.delete()
 
         self.assertEqual(InstitutionType.objects.last(), institution_type)
@@ -314,7 +314,7 @@ class PersonAppIntegration(TestCase):
         institution_type = InstitutionType.objects.create(name='InstitutionType_Test')
         institution = Institution.objects.create(name='Institution_Parent_Test', type=institution_type, city=city)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             city.delete()
 
         self.assertEqual(Country.objects.last(), country)
@@ -329,7 +329,7 @@ class PersonAppIntegration(TestCase):
         role = Role.objects.create(name='Role_Test')
         person = Person.objects.create(full_name='Person', role=role)
 
-        with self.assertRaises(ProtectedError) as e:
+        with self.assertRaises(ProtectedError):
             role.delete()
 
         self.assertEqual(Role.objects.last(), role)
