@@ -14,26 +14,49 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='institution',
             name='belongs_to',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='person.Institution', verbose_name='Belongs to'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to='person.Institution',
+                verbose_name='Belongs to'),
         ),
         migrations.AlterField(
             model_name='institution',
             name='city',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='cities_light.City', verbose_name='City'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to='cities_light.City',
+                verbose_name='City'),
         ),
         migrations.AlterField(
             model_name='institution',
             name='type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='person.InstitutionType', verbose_name='Type'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='person.InstitutionType',
+                verbose_name='Type'),
         ),
         migrations.AlterField(
             model_name='person',
             name='institution',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='person.Institution', verbose_name='Institution'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to='person.Institution',
+                verbose_name='Institution'),
         ),
         migrations.AlterField(
             model_name='person',
             name='role',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='person.Role', verbose_name='Role'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to='person.Role',
+                verbose_name='Role'),
         ),
     ]

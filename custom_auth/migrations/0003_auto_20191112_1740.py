@@ -13,16 +13,31 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='groups',
-            field=models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups'),
+            field=models.ManyToManyField(
+                blank=True,
+                help_text='The groups this user belongs to. A user will get all permissions granted to each '
+                          'of their groups.',
+                related_name='user_set',
+                related_query_name='user',
+                to='auth.Group',
+                verbose_name='groups'),
         ),
         migrations.AlterField(
             model_name='user',
             name='is_active',
-            field=models.BooleanField(default=False, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='Active'),
+            field=models.BooleanField(
+                default=False,
+                help_text='Designates whether this user should be treated as active. Unselect this instead '
+                          'of deleting accounts.',
+                verbose_name='Active'),
         ),
         migrations.AlterField(
             model_name='user',
             name='is_nira_admin',
-            field=models.BooleanField(default=False, help_text='Designates whether this user has special permissions, e.g. add content on behalf of another user.', verbose_name='NIRA admin'),
+            field=models.BooleanField(
+                default=False,
+                help_text='Designates whether this user has special permissions, e.g. add content on behalf '
+                          'of another user.',
+                verbose_name='NIRA admin'),
         ),
     ]

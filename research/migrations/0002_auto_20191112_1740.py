@@ -14,41 +14,72 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='academicwork',
             name='advisee',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='person.Person', verbose_name='Advisee'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='person.Person',
+                verbose_name='Advisee'),
         ),
         migrations.AlterField(
             model_name='academicwork',
             name='advisor',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='advisor_academic_work', to='person.Person', verbose_name='Advisor'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name='advisor_academic_work',
+                to='person.Person',
+                verbose_name='Advisor'),
         ),
         migrations.AlterField(
             model_name='academicwork',
             name='type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='research.TypeAcademicWork', verbose_name='Type'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='research.TypeAcademicWork',
+                verbose_name='Type'),
         ),
         migrations.AlterField(
             model_name='article',
             name='event',
-            field=models.ForeignKey(blank=True, help_text='Name of the conference, congress, meeting or symposium', null=True, on_delete=django.db.models.deletion.PROTECT, to='research.Event', verbose_name='Event'),
+            field=models.ForeignKey(
+                blank=True,
+                help_text='Name of the conference, congress, meeting or symposium',
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to='research.Event',
+                verbose_name='Event'),
         ),
         migrations.AlterField(
             model_name='article',
             name='periodical',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='research.Periodical', verbose_name='Periodical'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to='research.Periodical',
+                verbose_name='Periodical'),
         ),
         migrations.AlterField(
             model_name='author',
             name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='person.Person'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='person.Person'),
         ),
         migrations.AlterField(
             model_name='book',
             name='publisher',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='person.Institution', verbose_name='Publisher'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='person.Institution',
+                verbose_name='Publisher'),
         ),
         migrations.AlterField(
             model_name='event',
             name='publisher',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='person.Institution', verbose_name='Publisher'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to='person.Institution',
+                verbose_name='Publisher'),
         ),
     ]
