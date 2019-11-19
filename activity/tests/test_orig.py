@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.conf import settings
 
@@ -98,6 +99,15 @@ class TrainingProgramTest(TestCase):
         response = self.client.post(reverse('training_programs_report'), {'start_date': '01/01/2017',
                                                                           'end_date': '03/05/2015'})
         self.assertEqual(response.status_code, 200)
+
+    def test_report_with_invalid_start_date(self):
+        response = self.client.post(reverse('training_programs_report'), {'start_date': '2015-01-01',
+                                                                          'end_date': '2017-05-03'})
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message,
+                             mark_safe(_('You entered a wrong date format or the end date is not greater than or equal'
+                                         ' to the start date.')))
 
 
 class SeminarsTest(TestCase):
@@ -225,6 +235,11 @@ class SeminarsTest(TestCase):
         response = self.client.get(reverse('seminars_show_titles'), {'speaker': speaker})
         self.assertEqual(response.status_code, 200)
 
+    def test_invalid_request_titles(self):
+        with self.assertRaises(ValueError):
+            response = self.client.post(reverse('seminars_show_titles'))
+            self.assertEqual(response, None)
+
     def test_titles_append_and_json_response(self):
         speaker = self.person.pk
         seminar1_result = json.dumps([{'pk': self.seminar1.id, 'valor': self.seminar1.__str__()}])
@@ -288,6 +303,13 @@ class MeetingsTest(TestCase):
         self.assertEqual(len(cont), 1)
         self.assertEqual(response.status_code, 200)
 
+        response = self.client.post(reverse('meetings_report'), {'start_date': '01/01/2014',
+                                                                 'end_date': '03/05/2015',
+                                                                 'broad_audience': 3})
+        cont = response.context['meetings']
+        self.assertEqual(len(cont), 0)
+        self.assertEqual(response.status_code, 200)
+
     def test_report_without_date(self):
         # Without date, all categories. Should get all results.
         response = self.client.post(reverse('meetings_report'), {'start_date': '',
@@ -301,6 +323,15 @@ class MeetingsTest(TestCase):
         response = self.client.post(reverse('meetings_report'), {'start_date': '01/01/2017',
                                                                  'end_date': '03/05/2015'})
         self.assertEqual(response.status_code, 200)
+
+    def test_meetings_report_with_invalid_start_date(self):
+        response = self.client.post(reverse('meetings_report'), {'start_date': '2015-01-01',
+                                                                 'end_date': '2017-05-03'})
+
+        for message in response.context['messages']:
+            self.assertEqual(message.message,
+                             mark_safe(_('You entered a wrong date format or the end date is not greater than or equal'
+                                         ' to the start date.')))
 
 
 class ProjectActivitiesTest(TestCase):
@@ -322,14 +353,23 @@ class ProjectActivitiesTest(TestCase):
 
         self.institution = Institution(name='USP')
 
-        self.seminar1 = seminar('Seminar1', type1, self.date1, self.person.id)
-        self.seminarX = Seminar(title='SeminarX', date=self.date2, belongs_to=self.institution.id)
-
         self.meeting1 = meeting('First meeting', self.date1, self.date2, False)
         self.meeting1.save()
 
+        self.seminar1 = seminar('Seminar1', type1, self.date1, self.person.id)
+        self.seminarX = Seminar(title='SeminarX',
+                                type_of_activity='s',
+                                category=type2,
+                                date=self.date2,
+                                belongs_to=self.meeting1)
+        self.seminarX.save()
+
         self.training1 = training_program("Test 1", self.date1)
         self.training1.save()
+
+    def test_project_activities_certificate_get_request(self):
+        response = self.client.get(reverse('certificate'))
+        self.assertTemplateUsed(response, 'certificate/certificate.html')
 
     def test_project_activities_certificate_without_person_render(self):
         response = self.client.post(reverse('certificate'), {
@@ -445,6 +485,41 @@ class ProjectActivitiesTest(TestCase):
             'hours': '222'
         })
         self.assertEqual(response.status_code, 200)
+
+        # Remove files used in test and created directories
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=False, onerror=None)
+
+    def test_signature_for_project_activities_trainning_certificate(self):
+        signature = SimpleUploadedFile("signatures/sign.jpeg", b"these are the file contents!")
+        self.person.signature = signature
+        self.person.save()
+
+        response = self.client.post(reverse('certificate'), {
+            'person': self.person.id,
+            'title': self.training1.id,
+            'signature': self.person.signature,
+            'hours': '222'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Remove files used in test and created directories
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=False, onerror=None)
+
+    def test_signature_for_project_activities_certificate_seminar_belonging_to_meeting(self):
+        signature = SimpleUploadedFile("signatures/sign.jpeg", b"these are the file contents!")
+        self.person.signature = signature
+        self.person.save()
+
+        response = self.client.post(reverse('certificate'), {
+            'person': self.person.id,
+            'title': self.seminarX.id,
+            'signature': self.person.signature,
+            'hours': '222'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'certificate/pdf/seminar_at_meeting.html')
 
         # Remove files used in test and created directories
         os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
