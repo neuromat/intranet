@@ -394,7 +394,7 @@ class ProjectActivitiesTest(TestCase):
         response = self.client.post(reverse('certificate'), {
             'person': inexistent_person_id,
             'title': self.seminar1.id,
-            'signature': self.person.signature,
+            'signature': self.person.id,
             'hours': '22'
         })
 
@@ -430,7 +430,7 @@ class ProjectActivitiesTest(TestCase):
         response = self.client.post(reverse('certificate'), {
             'person': self.person.id,
             'title': inexistent_project_activity,
-            'signature': self.person.signature,
+            'signature': self.person.id,
             'hours': '22'
         })
 
@@ -464,7 +464,7 @@ class ProjectActivitiesTest(TestCase):
         response = self.client.post(reverse('certificate'), {
             'person': self.person.id,
             'title': self.seminar1.id,
-            'signature': self.person.signature,
+            'signature': self.person.id,
             'hours': '222'
         })
         self.assertEqual(response.status_code, 200)
@@ -481,7 +481,7 @@ class ProjectActivitiesTest(TestCase):
         response = self.client.post(reverse('certificate'), {
             'person': self.person.id,
             'title': self.meeting1.id,
-            'signature': self.person.signature,
+            'signature': self.person.id,
             'hours': '222'
         })
         self.assertEqual(response.status_code, 200)
@@ -498,7 +498,7 @@ class ProjectActivitiesTest(TestCase):
         response = self.client.post(reverse('certificate'), {
             'person': self.person.id,
             'title': self.training1.id,
-            'signature': self.person.signature,
+            'signature': self.person.id,
             'hours': '222'
         })
         self.assertEqual(response.status_code, 200)
@@ -511,11 +511,11 @@ class ProjectActivitiesTest(TestCase):
         signature = SimpleUploadedFile("signatures/sign.jpeg", b"these are the file contents!")
         self.person.signature = signature
         self.person.save()
-
+        self.client.get(reverse('certificate'))
         response = self.client.post(reverse('certificate'), {
             'person': self.person.id,
             'title': self.seminarX.id,
-            'signature': self.person.signature,
+            'signature': self.person.id,
             'hours': '222'
         })
         self.assertEqual(response.status_code, 200)

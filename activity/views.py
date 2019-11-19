@@ -296,10 +296,7 @@ def project_activities_certificate(request):
             except ProjectActivities.DoesNotExist:
                 raise Http404(_('No training program matches the given query.'))
 
-            try:
-                persons = Person.objects.filter(id__in=person_signature_ids)
-            except Person.DoesNotExist:
-                raise Http404(_('No person matches the given query.'))
+            persons = Person.objects.filter(id__in=person_signature_ids)
 
             if chosen_activity.type_of_activity == 's':
                 seminar = chosen_activity.seminar
@@ -344,7 +341,7 @@ def project_activities_certificate(request):
                         'hours': hours
                     })
 
-            if chosen_activity.type_of_activity == 't':
+            else:  # if chosen_activity.type_of_activity == 't'
 
                 training_program = chosen_activity
 
