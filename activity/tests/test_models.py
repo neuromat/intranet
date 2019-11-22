@@ -41,6 +41,18 @@ class ActivityModelTest(TestCase):
 
         self.assertEqual(seminar_type.__str__(), name)
 
+    def test_news_string_representation(self):
+        title = 'News'
+        institution_type = InstitutionType.objects.create(name='Centro de Pesquisa')
+        local = Institution.objects.create(name='FAPESP', type=institution_type)
+
+        project_activity = ProjectActivities.objects.create(title=title, local=local, type_of_activity='t')
+
+        url = 'https://teste.com'
+        news = News.objects.create(activity=project_activity, url=url)
+
+        self.assertEqual(news.__str__(), url)
+
 
 class ActivityIntegrationTest(TestCase):
     def test_do_not_delete_institution_instance_if_there_is_project_activity_associated(self):
