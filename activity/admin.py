@@ -49,7 +49,7 @@ class TrainingProgramAdmin(admin.ModelAdmin):
         qs = super(TrainingProgramAdmin, self).get_queryset(request)
         if request.user.is_nira_admin or request.user.is_superuser:
             return qs
-        return qs.filter(speaker=request.user.projectmember)
+        return qs.filter(speaker__user=request.user)
 
 
 admin.site.register(TrainingProgram, TrainingProgramAdmin)
