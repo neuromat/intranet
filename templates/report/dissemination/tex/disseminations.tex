@@ -1,18 +1,21 @@
 {% autoescape off %}{% block content %}
-{% if type == 'i' and media != "Newsletter" %}\begin{longtable}{ |p{3,5cm}|p{2cm}|p{2,5cm}|p{5cm}|p{2cm}| }
+{% if type == 'i' and media != "Newsletter" %}\begin{longtable}{ |p{5cm}|p{3cm}|p{4cm}|p{3cm}| }
 \hline
-Title & Authors & Topics & URL & Date \\ \hline
-{% for dissemination in disseminations %}{{ dissemination.title }} & {{ dissemination.authors }} & {{ dissemination.topics }} & \url{ {{ dissemination.link }} } & {{ dissemination.date|date:"M d, Y" }} \\ \hline {% endfor %}
+Title & Authors & Topics & Date \\ \hline
+{% for dissemination in disseminations %}\href{ {{ dissemination.link }} }{\texttt{ {{ dissemination.title }} }} & {{
+dissemination.authors }} & {{ dissemination.topics }} & {{ dissemination.date|date:"M d, Y" }} \\ \hline {% endfor %}
 \end{longtable}
-{% elif type == 'i' and media == "Newsletter" %}\begin{longtable}{ |p{4cm}|p{4cm}|p{5cm}|p{2cm}| }
+{% elif type == 'i' and media == "Newsletter" %}\begin{longtable}{ |p{7cm}|p{5cm}|p{3cm}| }
 \hline
 Title & Topics & URL & Date \\ \hline
-{% for dissemination in disseminations %}{{ dissemination.title }} & {{ dissemination.topics }} & \url{ {{ dissemination.link }} } & {{ dissemination.date|date:"M d, Y" }} \\ \hline {% endfor %}
+{% for dissemination in disseminations %}\href{ {{ dissemination.link }} }{\texttt{ {{ dissemination.title }} }} & {{
+dissemination.topics }} & {{ dissemination.date|date:"M d, Y" }} \\ \hline {% endfor %}
 \end{longtable}
 {% elif type == 'e' %}
-\begin{longtable}{ |p{3cm}|p{2,3cm}|p{2cm}|p{3cm}|p{3,5cm}|p{1,2cm}| }
+\begin{longtable}{ |p{5cm}|p{3cm}|p{2cm}|p{3cm}|p{2cm}| }
 \hline
-Title & Authors & Media outlet & Topics & URL & Date \\ \hline
-{% for dissemination in disseminations %}{{ dissemination.title }} & {{ dissemination.external.authors }} & {{ dissemination.external.media_outlet }} & {{ dissemination.topics }} & \url{ {{ dissemination.link }} } & {{ dissemination.date|date:"M d, Y" }} \\ \hline {% endfor %}
+Title & Authors & Media outlet & Topics & Date \\ \hline
+{% for dissemination in disseminations %}\href{ {{ dissemination.link }} }{\texttt{ {{ dissemination.title }} }} & {{
+dissemination.external.authors }} & {{ dissemination.external.media_outlet }} & {{ dissemination.topics }} & {{ dissemination.date|date:"M d, Y" }} \\ \hline {% endfor %}
 \end{longtable}
 {% endif %}{% endblock %}{% endautoescape %}

@@ -14,20 +14,19 @@
 
         <table id="report-table">
             <tr>
-                <th width="20%">{% trans "Title" %}</th><th width="20%">{% trans "Authors" %}</th>
-                <th width="15%">{% trans "Media outlet" %}</th><th width="20%">{% trans "Topics" %}</th>
-                <th width="15%">{% trans "URL" %}</th><th width="10%">{% trans "Date" %}</th>
+                <th width="30%">{% trans "Title" %}</th>
+                <th width="20%">{% trans "Authors" %}</th>
+                <th width="15%">{% trans "Media outlet" %}</th>
+                <th width="25%">{% trans "Topics" %}</th>
+                <th width="10%">{% trans "Date" %}</th>
             </tr>
             {% for dissemination in disseminations %}
                 <tr>
-                    {% if type == 'e'%}
-                        <td>{{ dissemination.title }}</td>
-                        <td>{{ dissemination.external.authors }}</td>
-                        <td>{{ dissemination.external.media_outlet }}</td>
-                        <td>{{ dissemination.topics }}</td>
-                        <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.link }}</a></td>
-                        <td>{{ dissemination.date|date:"M d, Y" }}</td>
-                    {% endif %}
+                    <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
+                    <td>{{ dissemination.external.authors }}</td>
+                    <td>{{ dissemination.external.media_outlet }}d</td>
+                    <td>{{ dissemination.topics }}d</td>
+                    <td>{{ dissemination.date|date:"M d, Y" }}</td>
                 </tr>
             {% endfor %}
         </table>
@@ -44,22 +43,23 @@
 {#            {% endif %}#}
             {% if media_name != 'Newsletter' %}
                 <tr>
-                    <th width="25%">{% trans "Title" %}</th><th width="15%">{% trans "Authors" %}</th>
-                    <th width="20%">{% trans "Topics" %}</th><th width="30%">{% trans "URL" %}</th>
+                    <th width="40%">{% trans "Title" %}</th>
+                    <th width="25%">{% trans "Authors" %}</th>
+                    <th width="25%">{% trans "Topics" %}</th>
                     <th width="10%">{% trans "Date" %}</th>
                 </tr>
             {% else %}
                 <tr>
-                    <th width="35%">{% trans "Title" %}</th><th width="20%">{% trans "Topics" %}</th>
-                    <th width="35%">{% trans "URL" %}</th><th width="10%">{% trans "Date" %}</th>
+                    <th width="50%">{% trans "Title" %}</th>
+                    <th width="30%">{% trans "Topics" %}</th>
+                    <th width="20%">{% trans "Date" %}</th>
                 </tr>
             {% endif %}
             {% for dissemination in disseminations %}
                 <tr>
-                    <td>{{ dissemination.title }}</td>
+                    <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
                     {% if media_name != 'Newsletter' %}<td>{{ dissemination.authors }}</td>{% endif %}
                     <td>{{ dissemination.topics }}</td>
-                    <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.link }}</a></td>
                     <td>{{ dissemination.date|date:"M d, Y" }}</td>
                 </tr>
             {% endfor %}
