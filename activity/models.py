@@ -111,6 +111,7 @@ class Meeting(ProjectActivities):
         ordering = ('-start_date', )
 
     # Sets the type of activity as Meeting
+    # pylint: disable=W02221
     def save(self, *args, **kwargs):
         self.type_of_activity = MEETING
         super(Meeting, self).save(*args, **kwargs)
@@ -139,6 +140,7 @@ class TrainingProgram(ProjectActivities):
         ordering = ('-start_date', )
 
     # Sets the type of activity as Training Program
+    # pylint: disable=W02221
     def save(self, *args, **kwargs):
         self.type_of_activity = TRAINING_PROGRAM
         super(TrainingProgram, self).save(*args, **kwargs)
@@ -195,6 +197,7 @@ class Seminar(ProjectActivities):
         ordering = ('-date', )
 
     # Sets the type of activity as Seminar
+    # pylint: disable=W02221
     def save(self, *args, **kwargs):
         self.type_of_activity = SEMINAR
         super(Seminar, self).save(*args, **kwargs)

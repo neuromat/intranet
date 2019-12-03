@@ -15,8 +15,6 @@ from scientific_mission.views import get_missions
 from research.tests.test_orig import system_authentication
 
 
-
-
 # Create a scientific mission for testing
 def scientific_mission(person, amount_paid):
     return ScientificMission(person=person, amount_paid=amount_paid)

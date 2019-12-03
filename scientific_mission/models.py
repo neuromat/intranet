@@ -75,6 +75,7 @@ class Route(models.Model):
     class Meta:
         ordering = ('scientific_mission', 'order')
 
+    # pylint: disable=W02221
     def save(self, *args, **kwargs):
         if self.pk is not None:
             self.order = self.order
