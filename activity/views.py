@@ -270,11 +270,11 @@ def project_activities_certificate(request):
             messages.error(request, _('You have to choose a person!'))
             context = {'people': people, 'project_activities': project_activities, 'signatures': persons}
 
-        if title_id is None or title_id == '':
+        elif title_id is None or title_id == '':
             messages.error(request, _('You have to choose a project activity!'))
             context = {'people': people, 'project_activities': project_activities, 'signatures': persons}
 
-        if person_signature_ids is None or person_signature_ids == '' or person_signature_ids == ['']:
+        elif person_signature_ids is None or person_signature_ids == '' or person_signature_ids == ['']:
             messages.error(request, _('You have to choose who will sign the certificate!'))
             context = {'people': people, 'project_activities': project_activities, 'signatures': persons}
 
