@@ -23,6 +23,30 @@ def external_filter(start_date, end_date):
     return disseminations
 
 
+def validate_start_date(request):
+    try:
+        if request.POST['start_date'] == '':
+            start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
+        else:
+            start_date = datetime.datetime.strptime(request.POST['start_date'], "%d/%m/%Y").date()
+    except ValueError:
+        start_date = False
+
+    return start_date
+
+
+def validate_end_date(request):
+    try:
+        if request.POST['end_date'] == '':
+            end_date = now_plus_thirty()
+        else:
+            end_date = datetime.datetime.strptime(request.POST['end_date'], "%d/%m/%Y").date()
+    except ValueError:
+        end_date = False
+
+    return end_date
+
+
 @login_required
 def dissemination_report(request):
 
@@ -34,21 +58,8 @@ def dissemination_report(request):
     if request.method == 'POST':
         media_type = request.POST['type']
 
-        try:
-            if request.POST['start_date'] == '':
-                start_date = datetime.datetime.strptime('19700101 00:00:00', '%Y%m%d %H:%M:%S').date()
-            else:
-                start_date = datetime.datetime.strptime(request.POST['start_date'], "%d/%m/%Y").date()
-        except ValueError:
-            start_date = False
-
-        try:
-            if request.POST['end_date'] == '':
-                end_date = now_plus_thirty()
-            else:
-                end_date = datetime.datetime.strptime(request.POST['end_date'], "%d/%m/%Y").date()
-        except ValueError:
-            end_date = False
+        start_date = validate_start_date(request)
+        end_date = validate_end_date(request)
 
         if media_type != '0':
             if start_date and end_date and end_date >= start_date:

@@ -98,7 +98,7 @@ class Book(ResearchResult):
         verbose_name_plural = _('Books and chapters')
 
     # Sets the type of research result.
-    # pylint: disable=W02221
+    # pylint: disable=W0221
     def save(self, *args, **kwargs):
         if self.pk is None:
             self.research_result_type = BOOK_OR_CHAPTER
@@ -227,7 +227,7 @@ class Article(ResearchResult):
         ordering = ('title', )
 
     # Sets the type of research result as article.
-    # pylint: disable=W02221
+    # pylint: disable=W0221
     def save(self, *args, **kwargs):
         if self.pk is None:
             self.research_result_type = ARTICLE

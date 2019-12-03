@@ -85,7 +85,7 @@ class Internal(Dissemination):
         verbose_name_plural = _('Internal')
 
     # Sets the type of dissemination as Internal
-    # pylint: disable=W02221
+    # pylint: disable=W0221
     def save(self, *args, **kwargs):
         self.type_of_media = INTERNAL
         super(Internal, self).save(*args, **kwargs)
@@ -127,7 +127,7 @@ class External(Dissemination):
         verbose_name_plural = _('External')
 
     # Sets the type of dissemination as External
-    # pylint: disable=W02221
+    # pylint: disable=W0221
     def save(self, *args, **kwargs):
         self.type_of_media = EXTERNAL
         super(External, self).save(*args, **kwargs)

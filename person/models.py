@@ -167,7 +167,7 @@ class Person(models.Model):
         return u'%s' % self.full_name
 
     # Get the value of the email and put it in the email field of the User class.
-    # pylint: disable=W02221
+    # pylint: disable=W0221
     def save(self, *args, **kw):
         if self.pk is not None:
             orig = Person.objects.get(pk=self.pk)
@@ -199,7 +199,7 @@ class CitationName(models.Model):
     def __str__(self):
         return u'%s' % self.name
 
-    # pylint: disable=W02221
+    # pylint: disable=W0221
     def save(self, *args, **kwargs):
         if self.default_name:
             try:
