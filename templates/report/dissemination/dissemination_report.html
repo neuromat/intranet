@@ -30,7 +30,9 @@
         {% for dissemination in disseminations %}
             <tr>
                 {% if type == 'e'%}
-                    <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
+                    {% if dissemination.link %}
+                        <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
+                    {% else %}<td>{{ dissemination.title }}</td>{% endif %}
                     <td>{{ dissemination.external.authors }}</td>
                     <td>{{ dissemination.external.media_outlet }}</td>
                     <td>{{ dissemination.topics }}</td>
@@ -65,7 +67,9 @@
         {% endif %}
         {% for dissemination in disseminations %}
             <tr>
-                <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
+                {% if dissemination.link %}
+                    <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
+                {% else %}<td>{{ dissemination.title }}</td>{% endif %}
                 {% if media_name != 'Newsletter' %}<td>{{ dissemination.authors }}</td>{% endif %}
                 <td>{{ dissemination.topics }}</td>
                 <td>{{ dissemination.date|date:"M d, Y" }}</td>

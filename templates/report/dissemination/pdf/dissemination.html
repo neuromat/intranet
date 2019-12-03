@@ -22,10 +22,13 @@
             </tr>
             {% for dissemination in disseminations %}
                 <tr>
-                    <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
-                    <td>{{ dissemination.external.authors }}</td>
-                    <td>{{ dissemination.external.media_outlet }}d</td>
-                    <td>{{ dissemination.topics }}d</td>
+                    {% if dissemination.link %}
+                        <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
+                    {% else %}<td>{{ dissemination.title }}</td>{% endif %}
+                    {% if dissemination.external.authors %}<td>{{ dissemination.external.authors }}</td>
+                    {% else %}<td>&nbsp;</td>{% endif %}
+                    <td>{{ dissemination.external.media_outlet }}</td>
+                    {% if dissemination.topics %}<td>{{ dissemination.topics }}</td>{% else %}<td>&nbsp;</td>{% endif %}
                     <td>{{ dissemination.date|date:"M d, Y" }}</td>
                 </tr>
             {% endfor %}
@@ -57,9 +60,13 @@
             {% endif %}
             {% for dissemination in disseminations %}
                 <tr>
-                    <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
-                    {% if media_name != 'Newsletter' %}<td>{{ dissemination.authors }}</td>{% endif %}
-                    <td>{{ dissemination.topics }}</td>
+                    {% if dissemination.link %}
+                        <td><a href="{{ dissemination.link }}" target="_blank">{{ dissemination.title }}</a></td>
+                    {% else %}<td>{{ dissemination.title }}</td>{% endif %}
+                    {% if media_name != 'Newsletter' %}
+                        {% if dissemination.authors %}<td>{{ dissemination.authors }}</td>
+                        {% else %}<td>&nbsp;</td>{% endif %}{% endif %}
+                    {% if dissemination.topics %}<td>{{ dissemination.topics }}</td>{% else %}<td>&nbsp;</td>{% endif %}
                     <td>{{ dissemination.date|date:"M d, Y" }}</td>
                 </tr>
             {% endfor %}

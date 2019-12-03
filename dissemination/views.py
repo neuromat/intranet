@@ -26,7 +26,7 @@ def external_filter(start_date, end_date):
 @login_required
 def dissemination_report(request):
 
-    types = [{'value': media_type[0], 'display': media_type[1].encode('utf-8')} for media_type in TYPE_OF_MEDIA]
+    types = [{'value': media_type[0], 'display': media_type[1]} for media_type in TYPE_OF_MEDIA]
     internal_types = InternalMediaOutlet.objects.all()
     internal_types = [{'value': media.id, 'display': media.name} for media in internal_types]
     internal_type = ''
