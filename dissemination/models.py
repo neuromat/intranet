@@ -48,6 +48,7 @@ class Dissemination(models.Model):
     class Meta:
         ordering = ('-date', 'title')
 
+    # pylint: disable=E1101
     def topics(self):
         return ', '.join([str(topic) for topic in self.topic.all()])
 
@@ -90,6 +91,7 @@ class Internal(Dissemination):
         self.type_of_media = INTERNAL
         super(Internal, self).save(*args, **kwargs)
 
+    # pylint: disable=E1101
     def authors(self):
         return ', '.join([str(author) for author in self.author.all()])
 
@@ -132,5 +134,6 @@ class External(Dissemination):
         self.type_of_media = EXTERNAL
         super(External, self).save(*args, **kwargs)
 
+    # pylint: disable=E1101
     def authors(self):
         return ', '.join([str(author) for author in self.author.all()])
