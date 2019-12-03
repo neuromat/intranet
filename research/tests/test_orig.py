@@ -692,12 +692,12 @@ class ArticlesTest(TestCase):
 
         title = "Test article"
         team = "Test team"
-        self.published = Article(title=title, team=team, status='Published')
-        self.accepted = Article(title=title, team=team, status='Accepted')
-        self.submitted = Article(title=title, team=team, status='Submitted')
-        self.draft = Article(title=title, team=team, status='Draft')
+        self.published = Article(title=title, team=team, status='p')
+        self.accepted = Article(title=title, team=team, status='a')
+        self.submitted = Article(title=title, team=team, status='s')
+        self.draft = Article(title=title, team=team, status='d')
 
-    def current_status_test(self):
+    def test_current_status(self):
         self.assertEqual('Published', self.published.current_status())
         self.assertEqual('Accepted', self.accepted.current_status())
         self.assertEqual('Submitted', self.submitted.current_status())
