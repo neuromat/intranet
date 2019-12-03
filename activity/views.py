@@ -256,14 +256,11 @@ def meetings_report(request):
 def project_activities_certificate(request):
 
     people = Person.objects.all()
-    training_programs = ProjectActivities.objects.filter(type_of_activity='t')
-    seminars = ProjectActivities.objects.filter(type_of_activity='s')
-    meetings = ProjectActivities.objects.filter(type_of_activity='m')
-    project_activities = training_programs | seminars | meetings
     persons = people.exclude(signature='')
+    project_activities = ProjectActivities.objects.filter(type_of_activity='t') | ProjectActivities.objects.filter(
+        type_of_activity='s') | ProjectActivities.objects.filter(type_of_activity='m')
 
     if request.method == 'POST':
-
         person_id = request.POST.get('person', None)
         title_id = request.POST['title']
         person_signature_ids = request.POST.getlist('signature', None)
@@ -272,17 +269,14 @@ def project_activities_certificate(request):
         if person_id is None or person_id == '':
             messages.error(request, _('You have to choose a person!'))
             context = {'people': people, 'project_activities': project_activities, 'signatures': persons}
-            return render(request, 'certificate/certificate.html', context)
 
         if title_id is None or title_id == '':
             messages.error(request, _('You have to choose a project activity!'))
             context = {'people': people, 'project_activities': project_activities, 'signatures': persons}
-            return render(request, 'certificate/certificate.html', context)
 
         if person_signature_ids is None or person_signature_ids == '' or person_signature_ids == ['']:
             messages.error(request, _('You have to choose who will sign the certificate!'))
             context = {'people': people, 'project_activities': project_activities, 'signatures': persons}
-            return render(request, 'certificate/certificate.html', context)
 
         else:
 
@@ -354,6 +348,9 @@ def project_activities_certificate(request):
                         'signature': persons,
                         'hours': hours
                     })
+
+        # Common return for the three initial ifs
+        return render(request, 'certificate/certificate.html', context)
 
     context = {'people': people, 'project_activities': project_activities, 'signatures': persons}
     return render(request, 'certificate/certificate.html', context)

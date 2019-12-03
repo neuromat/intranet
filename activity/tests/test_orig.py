@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 import json
 import os
 import shutil
@@ -13,57 +13,41 @@ from django.conf import settings
 
 from activity.models import Seminar, SeminarType, TrainingProgram, Meeting
 from activity.views import training_programs_search, seminars_search
-from person.models import Person, Institution
+from person.models import Person
 from research.tests.test_orig import system_authentication
 
 # DRY with dates
-base_date1 = datetime.date(2015, 1, 16)
-base_date2 = datetime.date(2014, 1, 16)
-base_date3 = datetime.date(2014, 1, 17)
+base_date1 = timezone.datetime(2015, 1, 16)
+base_date2 = timezone.datetime(2014, 1, 16)
+base_date3 = timezone.datetime(2014, 1, 17)
 
 
-def seminar(title, seminar_type, date, speaker=None):
+def seminar(title, seminar_type, date, speaker=None, belongs_to=None):
+    seminar_obj = Seminar.objects.create(title=title, type_of_activity='s', category=seminar_type, date=date,
+                                         belongs_to=belongs_to)
     if speaker:
-        seminar_obj = Seminar.objects.create(title=title, type_of_activity='s', category=seminar_type, date=date)
         seminar_obj.speaker.add(speaker)
-        return seminar_obj
-    return Seminar.objects.create(title=title, type_of_activity='s', category=seminar_type, date=date)
+    return seminar_obj
 
 
 def training_program(title, start_date):
-    return TrainingProgram(title=title, start_date=start_date)
+    return TrainingProgram.objects.create(title=title, start_date=start_date)
 
 
 def meeting(title, start_date, end_date, broad_audience):
-    return Meeting(title=title, start_date=start_date, end_date=end_date, broad_audience=broad_audience)
+    return Meeting.objects.create(title=title, start_date=start_date, end_date=end_date, broad_audience=broad_audience)
 
 
 class TrainingProgramTest(TestCase):
-    """
-    The following tests are performed:
-    1 - Training programs search;
-    2 - Training programs report in .tex;
-    3 - Training programs report with date;
-    4 - Training programs report without date;
-    5 - Training programs report with invalid date.
-    6 - Training programs report in .pdf;
-    """
-
     def setUp(self):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-        self.date1 = base_date1
-        self.date2 = base_date2
-
-        training1 = training_program("Test 1", self.date1)
-        training1.save()
-
-        training2 = training_program("Test 2", self.date2)
-        training2.save()
+        training_program("Test 1", base_date1)
+        training_program("Test 2", base_date2)
 
     def test_search(self):
-        response = training_programs_search(self.date2, self.date1)
+        response = training_programs_search(base_date2, base_date1)
         self.assertTrue(isinstance(response, QuerySet))
 
     def test_tex(self):
@@ -111,34 +95,17 @@ class TrainingProgramTest(TestCase):
 
 
 class SeminarsTest(TestCase):
-    """
-    The following tests are performed:
-    1 - Seminars search;
-    2 - Seminars report in latex and pdf;
-    3 - Seminars report for internal with date;
-    4 - Seminars report  without date;
-    5 - Seminars report with invalid dates selected;
-    6 - Seminars poster.
-    """
-
     def setUp(self):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-        self.person = Person(full_name="Person Full Test")
-        self.person.save()
+        self.person = Person.objects.create(full_name="Person Full Test")
 
-        type1 = SeminarType(name="Testing 1")
-        type1.save()
+        type1 = SeminarType.objects.create(name="Testing 1")
+        type2 = SeminarType.objects.create(name="Testing 2")
 
-        type2 = SeminarType(name="Testing 2")
-        type2.save()
-
-        self.date1 = base_date1
-        self.date2 = base_date2
-
-        self.seminar1 = seminar('Seminar1', type1, self.date1, self.person.id)
-        self.seminar2 = seminar('Seminar2', type2, self.date2)
+        self.seminar1 = seminar('Seminar1', type1, base_date1, self.person.id)
+        self.seminar2 = seminar('Seminar2', type2, base_date2)
 
     def test_report_status_code(self):
         response = self.client.get(reverse('seminars_report'))
@@ -195,15 +162,8 @@ class SeminarsTest(TestCase):
         response = self.client.post(reverse('seminars_poster'), {'title': 0})
         self.assertEqual(response.status_code, 404)
 
-        # seminar_id = Seminar.objects.get(title='Seminar1')
-        # seminar_id = seminar_id.pk
-        #
-        # response = self.client.post(reverse('seminars_poster'), {'title': seminar_id})
-        # self.assertEqual(response.status_code, 200)
-
     def test_poster_except(self):
         # Just load the page
-
         seminar1 = Seminar.objects.first()
 
         response = self.client.post(reverse('seminars_poster'), {'title': seminar1.id})
@@ -224,10 +184,10 @@ class SeminarsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_search(self):
-        response = seminars_search(self.date2, self.date1, 'All')
+        response = seminars_search(base_date2, base_date1, 'All')
         self.assertTrue(isinstance(response, QuerySet))
 
-        response = seminars_search(self.date2, self.date1, 0)
+        response = seminars_search(base_date2, base_date1, 0)
         self.assertTrue(isinstance(response, QuerySet))
 
     def test_titles(self):
@@ -249,32 +209,15 @@ class SeminarsTest(TestCase):
 
 
 class MeetingsTest(TestCase):
-    """
-    The following tests are performed:
-    1 - Meetings report with date for each audience;
-    2 - Meetings report without date;
-    3 - Meetings report with invalid date.
-    """
-
     def setUp(self):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-        self.person = Person(full_name="Person Full Test")
-        self.person.save()
+        self.person = Person.objects.create(full_name="Person Full Test")
 
-        self.date1 = base_date2
-        self.date2 = base_date1
-        self.date3 = base_date3
-
-        meeting1 = meeting('First meeting', self.date1, self.date2, False)
-        meeting1.save()
-
-        meeting2 = meeting('Second meeting', self.date1, self.date3, True)
-        meeting2.save()
-
-        meeting3 = meeting('Third meeting', self.date1, self.date3, True)
-        meeting3.save()
+        meeting('First meeting', base_date1, base_date2, False)
+        meeting('Second meeting', base_date1, base_date3, True)
+        meeting('Third meeting', base_date1, base_date3, True)
 
     def test_report_status_code(self):
         response = self.client.get(reverse('meetings_report'))
@@ -339,33 +282,17 @@ class ProjectActivitiesTest(TestCase):
         logged, self.user, self.factory = system_authentication(self)
         self.assertEqual(logged, True)
 
-        self.person = Person(full_name="Person Full Test", signature='signatures/sign.jpeg')
-        self.person.save()
-        self.date1 = base_date2
-        self.date2 = base_date1
-        self.date3 = base_date3
+        self.person = Person.objects.create(full_name="Person Full Test", signature='signatures/sign.jpeg')
 
-        type1 = SeminarType(name="Testing 1")
-        type1.save()
+        type1 = SeminarType.objects.create(name="Testing 1")
+        type2 = SeminarType.objects.create(name="Testing 2")
 
-        type2 = SeminarType(name="Testing 2")
-        type2.save()
+        self.meeting1 = meeting('First meeting', base_date1, base_date2, False)
 
-        self.institution = Institution(name='USP')
+        self.seminar1 = seminar('Seminar1', type1, base_date1, self.person.id)
+        self.seminarX = seminar('SeminarX', type2, base_date2, belongs_to=self.meeting1)
 
-        self.meeting1 = meeting('First meeting', self.date1, self.date2, False)
-        self.meeting1.save()
-
-        self.seminar1 = seminar('Seminar1', type1, self.date1, self.person.id)
-        self.seminarX = Seminar(title='SeminarX',
-                                type_of_activity='s',
-                                category=type2,
-                                date=self.date2,
-                                belongs_to=self.meeting1)
-        self.seminarX.save()
-
-        self.training1 = training_program("Test 1", self.date1)
-        self.training1.save()
+        self.training1 = training_program("Test 1", base_date1)
 
     def test_project_activities_certificate_get_request(self):
         response = self.client.get(reverse('certificate'))

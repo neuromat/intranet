@@ -64,6 +64,7 @@ class ProjectActivities(models.Model):
     local = models.ForeignKey(Institution, verbose_name=_('Local'), blank=True, null=True, on_delete=models.PROTECT)
     type_of_activity = models.CharField(_('Type of activity'), max_length=1, choices=TYPE_OF_ACTIVITY, blank=True)
 
+    # pylint: disable=E1101
     def __str__(self):
         return u'%s - %s' % (self.get_type_of_activity_display(), self.title)
 
@@ -145,6 +146,7 @@ class TrainingProgram(ProjectActivities):
         self.type_of_activity = TRAINING_PROGRAM
         super(TrainingProgram, self).save(*args, **kwargs)
 
+    # pylint: disable=E1101
     def speakers(self):
         return format_html("<br>".join([
             str(speaker) +
@@ -202,6 +204,7 @@ class Seminar(ProjectActivities):
         self.type_of_activity = SEMINAR
         super(Seminar, self).save(*args, **kwargs)
 
+    # pylint: disable=E1101
     def speakers(self):
         return format_html("<br>".join([
             str(speaker) +
