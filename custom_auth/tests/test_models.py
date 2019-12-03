@@ -5,6 +5,7 @@ from person.models import Person
 
 
 class CustomAuthTest(TestCase):
+    # pylint: disable=E1120, E1123
     def test_user_manager_creation_with_wrong_fields_raises_error(self):
         with self.assertRaises(TypeError):
             UserManager.create_user(nameuser='')
@@ -18,6 +19,7 @@ class CustomAuthTest(TestCase):
         with self.assertRaisesMessage(ValueError, 'The username must be set'):
             User.objects.create_user(username='')
 
+    # pylint: disable=E1120, E1123
     def test_superuser_manager_creation_with_wrong_fields_raises_error(self):
         with self.assertRaises(TypeError):
             UserManager.create_superuser(nameuser='')
