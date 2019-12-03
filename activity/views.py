@@ -283,12 +283,12 @@ def project_activities_certificate(request):
             try:
                 person = Person.objects.get(id=person_id)
             except Person.DoesNotExist:
-                raise Http404(_('No person matches the given query.'))
+                raise ValueError(_('No person matches the given query.'))
 
             try:
                 chosen_activity = ProjectActivities.objects.get(id=title_id)
             except ProjectActivities.DoesNotExist:
-                raise Http404(_('No training program matches the given query.'))
+                raise ValueError(_('No training program matches the given query.'))
 
             persons = Person.objects.filter(id__in=person_signature_ids)
 

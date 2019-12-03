@@ -197,8 +197,7 @@ class SeminarsTest(TestCase):
 
     def test_invalid_request_titles(self):
         with self.assertRaises(ValueError):
-            response = self.client.post(reverse('seminars_show_titles'))
-            self.assertEqual(response, None)
+            self.client.post(reverse('seminars_show_titles'))
 
     def test_titles_append_and_json_response(self):
         speaker = self.person.pk
@@ -318,16 +317,15 @@ class ProjectActivitiesTest(TestCase):
         self.person.save()
 
         inexistent_person_id = '3883'
-        response = self.client.post(reverse('certificate'), {
-            'person': inexistent_person_id,
-            'title': self.seminar1.id,
-            'signature': self.person.id,
-            'hours': '22'
-        })
 
-        for message in response.context['messages']:
-            self.assertEqual(message.message,
-                             _('No person matches the given query.'))
+        with self.assertRaises(ValueError) as cm:
+            self.client.post(reverse('certificate'), {
+                'person': inexistent_person_id,
+                'title': self.seminar1.id,
+                'signature': self.person.id,
+                'hours': '22'
+            })
+            self.assertEqual(str(ValueError(_('No person matches the given query.'))), str(cm.exception))
 
         # Remove files used in test and created directories
         os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
@@ -354,16 +352,14 @@ class ProjectActivitiesTest(TestCase):
 
         inexistent_project_activity = '423423'
 
-        response = self.client.post(reverse('certificate'), {
-            'person': self.person.id,
-            'title': inexistent_project_activity,
-            'signature': self.person.id,
-            'hours': '22'
-        })
-
-        for message in response.context['messages']:
-            self.assertEqual(message.message,
-                             _('No training program matches the given query.'))
+        with self.assertRaises(ValueError) as cm:
+            self.client.post(reverse('certificate'), {
+                'person': self.person.id,
+                'title': inexistent_project_activity,
+                'signature': self.person.id,
+                'hours': '22'
+            })
+            self.assertEqual(str(ValueError(_('No training program matches the given query.'))), str(cm.exception))
 
         # Remove files used in test and created directories
         os.remove(os.path.join(settings.MEDIA_ROOT, self.person.signature.name))
