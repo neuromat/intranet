@@ -9,17 +9,6 @@ USERNAME = "Test_user"
 PASSWORD = "Test_psswd"
 
 
-def system_authentication(instance):
-    user = User.objects.create_user(username=USERNAME, password=PASSWORD)
-    user.is_active = True
-    user.is_staff = True
-    user.is_superuser = True
-    user.save()
-    factory = RequestFactory()
-    logged = instance.client.login(username=USERNAME, password=PASSWORD)
-    return logged, user, factory
-
-
 class CustomUserAdminTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username=USERNAME, password=PASSWORD)
